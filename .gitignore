@@ -1,0 +1,5 @@
+.envrc
+.direnv/*
+
+src/*.js
+src/*.js.*
