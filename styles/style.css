@@ -1,0 +1,12 @@
+.center {
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+}
+
+p {
+    font-size: 1.5em;
+    font-weight: bold;
+}
