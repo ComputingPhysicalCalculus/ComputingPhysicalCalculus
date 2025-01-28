@@ -14,13 +14,89 @@ p {
 body, html {
     margin: 0;
     padding: 0;
-    width: 100%;
+    max-width: 100%;
     height: 100%;
     border: 0;
     overflow: hidden;
 }
 
+#content {
+    position: absolute;
+    left: 0px;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    height: 100%;
+    overflow: none;
+}
+
 #main-canvas {
+    margin: 0;
     width: 100%;
     height: 100%;
+}
+
+#user-control {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+
+    resize: horizontal;
+    width: 20%;
+    height: 100%;
+    overflow: none;
+
+    background: #FFCEC4;
+    border-radius: 5;
+
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+#drag-and-drop {
+    display: flex;
+    flex-direction: column;
+    background: White;
+
+    margin: 5px;
+
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#drag-and-drop p {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+    text-decoration: underline;
+}
+
+#components-list {
+    display: grid;
+
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 5px;
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    background: red;
+    border-radius: 10px;
+    max-width: 100%;
+    overflow:none;
+    margin: 5px;
+    padding: 5px;
+    max-height: 100%;
+}
+
+.container-item {
+    aspect-ratio: 1/1;
+    height: 100%;
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
 }
