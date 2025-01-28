@@ -20,24 +20,24 @@ function setup(): void {
     }
 
     graph = new OutputGraph(0, 0, canvasElement.width, canvasElement.height / 2, "", 0, Math.PI * 4, "", -2.0, 2.0);
-    input_graph = new InputGraph(0, canvasElement.height / 2, canvasElement.width, canvasElement.height / 2, "", 0, Math.PI * 4, "", -2.0, 2.0);
+    input_graph = new InputGraph(0, canvasElement.height / 2, canvasElement.width, canvasElement.height / 2, "", -Math.PI * 1, Math.PI * 2, "", -2.0, 2.0);
 
     let generator_exp_fn  = function*(points: number, min: number, max: number) {
-        for (let i = min; i < max; i += (max - min) / points) {
+        for (let i = min; i <= max; i += (max - min) / points) {
             yield new Vector2(i, 0.1 * Math.exp(i / Math.PI / 1.5));
         }
     };
 
     let generator_sin_fn = function*(points: number, min: number, max: number) {
-        for (let i = min; i < max; i += (max - min) / points) {
-            yield new Vector2(i, Math.sin(i / Math.PI * 16));
+        for (let i = min; i <= max; i += (max - min) / points) {
+            yield new Vector2(Math.cos(i), Math.sin(i));
         }
         
     }
 
     let generator_exp = generator_exp_fn(1000, graph.x_axis_min, graph.x_axis_max);
     let generator_sin = generator_sin_fn(1000, graph.x_axis_min, graph.x_axis_max);
-    let generator_sin_2 = generator_sin_fn(1000, graph.x_axis_min, graph.x_axis_max);
+    let generator_sin_2 = generator_sin_fn(1000, input_graph.x_axis_min, input_graph.x_axis_max);
 
     input_graph.points.push(...generator_sin_2);
 
@@ -49,11 +49,11 @@ function setup(): void {
             return;
         }
 
+        input_graph.set_gantry_point(graph.points_a.length);
         graph.points_a.push(sample_a.value);
         graph.points_b.push(new Vector2(sample_a.value.x, sample_b.value.y * sample_a.value.y));
         graph.update_gantry_x();
 
-        input_graph.set_gantry_point(graph.points_a.length);
         
         draw();
     }, 1.0 / 60.0);

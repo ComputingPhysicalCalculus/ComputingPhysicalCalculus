@@ -86,7 +86,7 @@ export abstract class GraphBase implements Drawable {
     if (this.x_axis_max < 0.0) {
       x = this.left + this.width - this.padding;
     } else if (this.x_axis_min < 0.0) {
-      x = this.left - this.x_axis_min / (this.x_axis_max - this.x_axis_min) * this.drawable_width();
+      x = this.left + this.padding - this.x_axis_min / (this.x_axis_max - this.x_axis_min) * this.drawable_width();
     }
 
     // Bottom left with  padding
