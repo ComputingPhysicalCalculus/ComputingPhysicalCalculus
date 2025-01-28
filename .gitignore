@@ -1,6 +1,9 @@
+# Dev environment files
 .envrc
 .direnv/*
 
-src/*.js
-src/*.js.*
+# Build files output
+dist/*
+
+# Npm
 node_modules/*
