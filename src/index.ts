@@ -20,24 +20,17 @@ function setup(): void {
     }
 
     graph = new OutputGraph(0, 0, canvasElement.width, canvasElement.height / 2, "", 0, Math.PI * 4, "", -2.0, 2.0);
-    input_graph = new InputGraph(0, canvasElement.height / 2, canvasElement.width, canvasElement.height / 2, "", -Math.PI * 1, Math.PI * 2, "", -2.0, 2.0);
+    input_graph = new InputGraph(0, canvasElement.height / 2, canvasElement.width, canvasElement.height / 2, "", 0, Math.PI * 4, "", -2.0, 2.0);
 
-    let generator_exp_fn  = function*(points: number, min: number, max: number) {
-        for (let i = min; i <= max; i += (max - min) / points) {
-            yield new Vector2(i, 0.1 * Math.exp(i / Math.PI / 1.5));
+    let generator = function*(n: number, min: number, max: number, f: (x: number) => number) {
+        for (let i = min; i < max; i += (max - min) / n) {
+            yield new Vector2(i, f(i));
         }
-    };
-
-    let generator_sin_fn = function*(points: number, min: number, max: number) {
-        for (let i = min; i <= max; i += (max - min) / points) {
-            yield new Vector2(Math.cos(i), Math.sin(i));
-        }
-        
     }
 
-    let generator_exp = generator_exp_fn(1000, graph.x_axis_min, graph.x_axis_max);
-    let generator_sin = generator_sin_fn(1000, graph.x_axis_min, graph.x_axis_max);
-    let generator_sin_2 = generator_sin_fn(1000, input_graph.x_axis_min, input_graph.x_axis_max);
+    let generator_exp = generator(1000, graph.x_axis_min, graph.x_axis_max, x => 0.1 * Math.exp(x / 4));
+    let generator_sin = generator(1000, graph.x_axis_min, graph.x_axis_max, x => Math.sin(x * 8));
+    let generator_sin_2 = generator(1000, input_graph.x_axis_min, input_graph.x_axis_max, x => Math.sin(x * 8));
 
     input_graph.points.push(...generator_sin_2);
 
@@ -64,7 +57,10 @@ function resize(): void {
     canvasElement.height = window.innerHeight;
 
     graph.width = canvasElement.width;
-    graph.height = canvasElement.height;
+    graph.height = canvasElement.height / 2;
+
+    input_graph.width = canvasElement.width;
+    input_graph.height = canvasElement.height / 2;
 
     draw();
 }
