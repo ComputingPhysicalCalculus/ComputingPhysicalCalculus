@@ -49,8 +49,6 @@ function setup(): void {
         graph.points_a.push(sample_a.value);
         graph.points_b.push(sample_b.value);
 
-        graph.gantry_x = sample_a.value.x;
-
         draw();
     }, 1.0 / 60.0);
 }

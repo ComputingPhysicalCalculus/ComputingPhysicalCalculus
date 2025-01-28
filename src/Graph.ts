@@ -1,5 +1,7 @@
 import Vector2 from "./Vector2";
 
+const SQRT_3_2 = Math.sqrt(3) / 2;
+
 export default class Graph {
   left: number;
   top: number;
@@ -70,11 +72,16 @@ export default class Graph {
     ctx.strokeStyle = "red";
     this.draw_points(ctx, this.points_b);
 
+    const a_x = this.points_a.length > 0 ? this.points_a[this.points_a.length - 1].x : this.x_axis_min;
+    const b_x = this.points_b.length > 0 ? this.points_b[this.points_b.length - 1].x : this.x_axis_min;
+    this.gantry_x = Math.max(a_x, b_x);
+
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "gray";
     this.draw_gantry_shaft(ctx);
 
     ctx.lineWidth = 1;
+    ctx.strokeStyle = "black";
     this.draw_gantry_head(ctx, this.points_a, true);
     this.draw_gantry_head(ctx, this.points_b, false);
   }
@@ -173,7 +180,7 @@ export default class Graph {
     ctx.beginPath();
 
     const side_length = 10;
-    const width = side_length * Math.sqrt(3) / 2;
+    const width = side_length * SQRT_3_2;
 
     ctx.moveTo(gantry_x_screen, gantry_y_screen);
     ctx.lineTo(gantry_x_screen + side_mult * width, gantry_y_screen + side_length / 2);
