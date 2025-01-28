@@ -1,9 +1,9 @@
-import Graph from "./Graph";
+import { OutputGraph } from "./Graph";
 import Vector2 from "./Vector2";
 
 let canvasElement: HTMLCanvasElement;
 let canvasCtx: CanvasRenderingContext2D;
-let graph: Graph;
+let graph: OutputGraph;
 
 window.onload = setup;
 window.onresize = resize;
@@ -18,14 +18,11 @@ function setup(): void {
         return;
     }
 
-    graph = new Graph(0, 0, canvasElement.width, canvasElement.height, "", 0
-        -0.5, 2.0, "", -5.0, 3.0);
-
-    graph.gantry_x = 1.0;
+    graph = new OutputGraph(0, 0, canvasElement.width, canvasElement.height, "", 0, 2.0, "", -5.0, 5.0);
 
     let generator_exp_fn = function*(points: number, min: number, max: number) {
         for (let i = min; i < max; i += (max - min) / points) {
-            yield new Vector2(i, Math.exp(i));
+            yield new Vector2(i, Math.exp(i) - 5.0);
         }
     };
 
@@ -48,6 +45,7 @@ function setup(): void {
 
         graph.points_a.push(sample_a.value);
         graph.points_b.push(sample_b.value);
+        graph.update_gantry_x();
 
         draw();
     }, 1.0 / 60.0);

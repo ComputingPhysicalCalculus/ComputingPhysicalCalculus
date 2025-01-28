@@ -1,27 +1,23 @@
+import Drawable from "./Drawable";
 import Vector2 from "./Vector2";
 
 const SQRT_3_2 = Math.sqrt(3) / 2;
 
-export default class Graph {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
+export abstract class GraphBase implements Drawable {
+  public left: number;
+  public top: number;
+  public width: number;
+  public height: number;
 
-  x_axis_min: number;
-  x_axis_max: number;
-  y_axis_min: number;
-  y_axis_max: number;
+  public x_axis_min: number;
+  public x_axis_max: number;
+  public y_axis_min: number;
+  public y_axis_max: number;
 
-  x_axis_label: string;
-  y_axis_label: string;
+  public x_axis_label: string;
+  public y_axis_label: string;
 
-  padding: number;
-
-  points_a: Vector2[];
-  points_b: Vector2[];
-
-  gantry_x: number;
+  public padding: number;
 
   constructor(left: number, top: number, width: number, height: number, x_axis_label: string, x_axis_min: number, x_axis_max: number, y_axis_label: string, y_axis_min: number, y_axis_max: number) {
     this.left = left;
@@ -35,9 +31,6 @@ export default class Graph {
     this.y_axis_min = y_axis_min;
     this.y_axis_max = y_axis_max;
     this.padding = 20;
-    this.gantry_x = this.x_axis_min;
-    this.points_a = [];
-    this.points_b = [];
   }
 
   drawable_width(): number {
@@ -57,36 +50,17 @@ export default class Graph {
       return this.top + this.height - this.padding - (y - this.y_axis_min) / (this.y_axis_max - this.y_axis_min) * this.drawable_height();
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+
+  public draw(ctx: CanvasRenderingContext2D) {
     ctx.clearRect(this.left, this.top, this.width, this.height);
 
     ctx.lineWidth = 2;
     ctx.strokeStyle = "black";
     this.draw_x_axis(ctx);
     this.draw_y_axis(ctx);
-
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "blue";
-    this.draw_points(ctx, this.points_a);
-
-    ctx.strokeStyle = "red";
-    this.draw_points(ctx, this.points_b);
-
-    const a_x = this.points_a.length > 0 ? this.points_a[this.points_a.length - 1].x : this.x_axis_min;
-    const b_x = this.points_b.length > 0 ? this.points_b[this.points_b.length - 1].x : this.x_axis_min;
-    this.gantry_x = Math.max(a_x, b_x);
-
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "gray";
-    this.draw_gantry_shaft(ctx);
-
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "black";
-    this.draw_gantry_head(ctx, this.points_a, true);
-    this.draw_gantry_head(ctx, this.points_b, false);
   }
 
-  draw_x_axis(ctx: CanvasRenderingContext2D) {
+  private draw_x_axis(ctx: CanvasRenderingContext2D) {
     ctx.beginPath();
 
     let y = this.top + this.height - this.padding;
@@ -95,7 +69,6 @@ export default class Graph {
     } else if (this.y_axis_min < 0.0) {
       y +=  this.y_axis_min / (this.y_axis_max - this.y_axis_min) * this.drawable_height();
     }
-
 
     // Bottom left with padding
     ctx.moveTo(this.left + this.padding, y);
@@ -106,7 +79,7 @@ export default class Graph {
     ctx.stroke();
   }
 
-  draw_y_axis(ctx: CanvasRenderingContext2D) {
+  private draw_y_axis(ctx: CanvasRenderingContext2D) {
     ctx.beginPath();
 
     let x = this.left + this.padding;
@@ -125,7 +98,7 @@ export default class Graph {
     ctx.stroke();
   }
 
-  draw_points(ctx: CanvasRenderingContext2D, points: Vector2[]) {
+  public draw_points(ctx: CanvasRenderingContext2D, points: Vector2[]) {
     ctx.beginPath();
     for (let point of points) {
       if (point.x < this.x_axis_min || point.x > this.x_axis_max || point.y < this.y_axis_min || point.y > this.y_axis_max) {
@@ -138,20 +111,21 @@ export default class Graph {
       ctx.lineTo(x, y);
     }
 
-    if (points.length > 0) {
-      let point_y = points[points.length - 1].y;
-      if (this.gantry_x >= this.x_axis_min && this.gantry_x <= this.x_axis_max && point_y >= this.y_axis_min && point_y <= this.y_axis_max) {
-        const gantry_x_screen = this.map_x_graph_to_screen(this.gantry_x);
-        const gantry_y_screen = this.map_y_graph_to_screen(points[points.length - 1].y);
-
-        ctx.lineTo(gantry_x_screen,  gantry_y_screen);
-      }
-    }
-
     ctx.stroke();
   }
 
-  draw_gantry_shaft(ctx: CanvasRenderingContext2D) {
+}
+
+export class GantryGraph extends GraphBase {
+
+  protected gantry_x: number;
+
+  constructor(left: number, top: number, width: number, height: number, x_axis_label: string, x_axis_min: number, x_axis_max: number, y_axis_label: string, y_axis_min: number, y_axis_max: number) {
+    super(left, top, width, height, x_axis_label, x_axis_min, x_axis_max, y_axis_label, y_axis_min, y_axis_max);
+    this.gantry_x = this.x_axis_min;
+  }
+
+  protected draw_gantry_shaft(ctx: CanvasRenderingContext2D): void {
     // Gantry vertical bar
     ctx.beginPath();
 
@@ -162,7 +136,7 @@ export default class Graph {
     ctx.stroke();
   }
 
-  draw_gantry_head(ctx: CanvasRenderingContext2D, points: Vector2[], side: boolean) {
+  protected draw_gantry_head(ctx: CanvasRenderingContext2D, points: Vector2[], side: boolean): void {
     let gantry_y = this.y_axis_min;
     if (points.length > 0) {
       gantry_y = points[points.length - 1].y;
@@ -187,5 +161,68 @@ export default class Graph {
     ctx.lineTo(gantry_x_screen + side_mult * width, gantry_y_screen - side_length / 2);
 
     ctx.fill();
+  }
+}
+
+export class InputGraph extends GantryGraph {
+  public points: Vector2[];
+
+  constructor(left: number, top: number, width: number, height: number, x_axis_label: string, x_axis_min: number, x_axis_max: number, y_axis_label: string, y_axis_min: number, y_axis_max: number) {
+    super(left, top, width, height, x_axis_label, x_axis_min, x_axis_max, y_axis_label, y_axis_min, y_axis_max);
+    this.points = [];
+  }
+
+  public override draw(ctx: CanvasRenderingContext2D): void {
+    super.draw(ctx);
+    
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "blue";
+    this.draw_points(ctx, this.points);
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "gray";
+    this.draw_gantry_shaft(ctx);
+
+    ctx.lineWidth = 1;
+    ctx.fillStyle = "blue";
+    this.draw_gantry_head(ctx, this.points, true);
+  }
+}
+
+export class OutputGraph extends GantryGraph {
+  public points_a: Vector2[];
+  public points_b: Vector2[];
+
+  constructor(left: number, top: number, width: number, height: number, x_axis_label: string, x_axis_min: number, x_axis_max: number, y_axis_label: string, y_axis_min: number, y_axis_max: number) {
+    super(left, top, width, height, x_axis_label, x_axis_min, x_axis_max, y_axis_label, y_axis_min, y_axis_max);
+    this.points_a = [];
+    this.points_b = [];
+  }
+
+  public update_gantry_x(): void {
+    const a_x = this.points_a.length > 0 ? this.points_a[this.points_a.length - 1].x : this.x_axis_min;
+    const b_x = this.points_b.length > 0 ? this.points_b[this.points_b.length - 1].x : this.x_axis_min;
+    this.gantry_x = Math.max(a_x, b_x);
+  }
+
+  public override draw(ctx: CanvasRenderingContext2D): void {
+    super.draw(ctx);
+    
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "blue";
+    this.draw_points(ctx, this.points_a);
+
+    ctx.strokeStyle = "red";
+    this.draw_points(ctx, this.points_b);
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "gray";
+    this.draw_gantry_shaft(ctx);
+
+    ctx.lineWidth = 1;
+    ctx.fillStyle = "blue";
+    this.draw_gantry_head(ctx, this.points_a, true);
+    ctx.fillStyle = "red";
+    this.draw_gantry_head(ctx, this.points_b, false);
   }
 }
