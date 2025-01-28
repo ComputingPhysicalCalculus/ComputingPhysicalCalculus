@@ -21,6 +21,8 @@ function setup(): void {
     graph = new Graph(0, 0, canvasElement.width, canvasElement.height, "", 0
         -0.5, 2.0, "", -5.0, 3.0);
 
+    graph.gantry_x = 1.0;
+
     let generator_exp_fn = function*(points: number, min: number, max: number) {
         for (let i = min; i < max; i += (max - min) / points) {
             yield new Vector2(i, Math.exp(i));
@@ -33,8 +35,8 @@ function setup(): void {
         }
     };
 
-    let generator_exp = generator_exp_fn(400, graph.x_axis_min, graph.x_axis_max);
-    let generator_log = generator_log_fn(400, graph.x_axis_min, graph.x_axis_max);
+    let generator_exp = generator_exp_fn(1000, graph.x_axis_min, graph.x_axis_max);
+    let generator_log = generator_log_fn(1000, graph.x_axis_min, graph.x_axis_max);
 
     window.setInterval(() => {
         let sample_a = generator_exp.next();
@@ -47,6 +49,8 @@ function setup(): void {
         graph.points_a.push(sample_a.value);
         graph.points_b.push(sample_b.value);
 
+        graph.gantry_x = sample_a.value.x;
+
         draw();
     }, 1.0 / 60.0);
 }
@@ -58,7 +62,7 @@ function resize(): void {
     graph.width = canvasElement.width;
     graph.height = canvasElement.height;
 
-    draw()
+    draw();
 }
 
 function draw(): void {
