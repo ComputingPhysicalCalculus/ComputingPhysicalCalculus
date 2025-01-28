@@ -1,8 +1,13 @@
 {
+  "name": "ComputingPhysicalCalculus",
+  "type": "module",
   "scripts": {
-    "tsc": "tsc"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11"
   }
 }

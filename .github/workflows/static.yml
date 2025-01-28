@@ -32,12 +32,12 @@ jobs:
       - name: Build static files
         id: build
         run: |
-          npm run tsc
+          npm run build
       - name: Upload static files as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./
+          path: ./dist
 
   deploy:
     environment:

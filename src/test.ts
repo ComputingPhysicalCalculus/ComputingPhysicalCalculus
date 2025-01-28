@@ -1,5 +1,5 @@
 let numberInput: HTMLInputElement;
-let printButton: HTMLButtonElement
+let printButton: HTMLButtonElement;
 let printValue: HTMLOutputElement;
 
 window.onload = setup;
