@@ -30,7 +30,7 @@ export abstract class GraphBase implements Drawable {
     this.y_axis_label = y_axis_label;
     this.y_axis_min = y_axis_min;
     this.y_axis_max = y_axis_max;
-    this.padding = 20;
+    this.padding = 50;
   }
 
   drawable_width(): number {
@@ -136,18 +136,14 @@ export class GantryGraph extends GraphBase {
     ctx.stroke();
   }
 
-  protected draw_gantry_head(ctx: CanvasRenderingContext2D, points: Vector2[], side: boolean): void {
-    let gantry_y = this.y_axis_min;
-    if (points.length > 0) {
-      gantry_y = points[points.length - 1].y;
-    }
+  protected draw_gantry_head(ctx: CanvasRenderingContext2D, y: number, side: boolean): void {
 
-    if (this.gantry_x < this.x_axis_min || this.gantry_x > this.x_axis_max || gantry_y < this.y_axis_min || gantry_y > this.y_axis_max) {
+    if (this.gantry_x < this.x_axis_min || this.gantry_x > this.x_axis_max || y < this.y_axis_min || y > this.y_axis_max) {
       return;
     }
     
     const gantry_x_screen = this.map_x_graph_to_screen(this.gantry_x);
-    let gantry_y_screen = this.map_y_graph_to_screen(gantry_y);
+    let gantry_y_screen = this.map_y_graph_to_screen(y);
 
     let side_mult = side ? 1.0 : -1.0;
 
@@ -167,9 +163,12 @@ export class GantryGraph extends GraphBase {
 export class InputGraph extends GantryGraph {
   public points: Vector2[];
 
+  private gantry_y: number
+
   constructor(left: number, top: number, width: number, height: number, x_axis_label: string, x_axis_min: number, x_axis_max: number, y_axis_label: string, y_axis_min: number, y_axis_max: number) {
     super(left, top, width, height, x_axis_label, x_axis_min, x_axis_max, y_axis_label, y_axis_min, y_axis_max);
     this.points = [];
+    this.gantry_y = this.y_axis_min;
   }
 
   public override draw(ctx: CanvasRenderingContext2D): void {
@@ -184,8 +183,13 @@ export class InputGraph extends GantryGraph {
     this.draw_gantry_shaft(ctx);
 
     ctx.lineWidth = 1;
-    ctx.fillStyle = "blue";
-    this.draw_gantry_head(ctx, this.points, true);
+    ctx.fillStyle = "black";
+    this.draw_gantry_head(ctx, this.gantry_y, true);
+  }
+
+  public set_gantry_point(time: number): void {
+    this.gantry_y = this.points[time].y;
+    this.gantry_x = this.points[time].x;
   }
 }
 
@@ -219,10 +223,20 @@ export class OutputGraph extends GantryGraph {
     ctx.strokeStyle = "gray";
     this.draw_gantry_shaft(ctx);
 
+    let gantry_y_a = this.y_axis_min;
+    if (this.points_a.length > 0) {
+      gantry_y_a = this.points_a[this.points_a.length - 1].y;
+    }
+
     ctx.lineWidth = 1;
     ctx.fillStyle = "blue";
-    this.draw_gantry_head(ctx, this.points_a, true);
+    this.draw_gantry_head(ctx, gantry_y_a, true);
+
+    let gantry_y_b = this.y_axis_min;
+    if (this.points_b.length > 0) {
+      gantry_y_b = this.points_b[this.points_b.length - 1].y;
+    }
     ctx.fillStyle = "red";
-    this.draw_gantry_head(ctx, this.points_b, false);
+    this.draw_gantry_head(ctx, gantry_y_b, false);
   }
 }
