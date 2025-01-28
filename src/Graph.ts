@@ -45,8 +45,9 @@ export default class Graph {
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.clearRect(this.left, this.top, this.width, this.height);
-    
-    this.draw_x_axis(ctx);
+
+    ctx.strokeStyle = "black";
+      this.draw_x_axis(ctx);
     this.draw_y_axis(ctx);
 
     ctx.strokeStyle = "blue";
