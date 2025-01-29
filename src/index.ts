@@ -1,6 +1,8 @@
 import { InputGraph, OutputGraph } from "./Graph";
 import Vector2 from "./Vector2";
 
+import { setupDragHooks } from "./Drag";
+
 let canvasElement: HTMLCanvasElement;
 let canvasCtx: CanvasRenderingContext2D;
 let graph: OutputGraph;
@@ -13,7 +15,7 @@ function setup(): void {
     canvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
-    
+
     canvasCtx = canvasElement.getContext("2d") as CanvasRenderingContext2D;
     if (canvasCtx === null) {
         return;
@@ -47,9 +49,11 @@ function setup(): void {
         graph.points_b.push(new Vector2(sample_a.value.x, sample_b.value.y * sample_a.value.y));
         graph.update_gantry_x();
 
-        
+
         draw();
     }, 1.0 / 60.0);
+
+    setupDragHooks();
 }
 
 function resize(): void {
