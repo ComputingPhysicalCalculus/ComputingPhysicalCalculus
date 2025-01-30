@@ -1,0 +1,48 @@
+#components-area {
+    display: flex;
+    flex-direction: column;
+    background: White;
+
+    margin: 5px;
+
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#components-area p {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+    text-decoration: underline;
+}
+
+#components-list {
+    display: grid;
+
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 5px;
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    background: red;
+    border-radius: 10px;
+    max-width: 100%;
+    overflow:none;
+    margin: 5px;
+    padding: 5px;
+    max-height: 100%;
+}
+
+.component {
+    position: relative;
+    aspect-ratio: 1;
+    height: 100%;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    user-select: none;
+}
