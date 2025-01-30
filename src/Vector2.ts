@@ -6,4 +6,8 @@ export default class Vector2 {
     this.x = x;
     this.y = y;
   }
+
+  toString(): string {
+    return "(x: " + this.x + " y: " + this.y + ")";
+  }
 }

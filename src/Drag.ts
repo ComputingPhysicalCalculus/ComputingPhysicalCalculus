@@ -1,5 +1,6 @@
 import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
-import { GRID_SIZE } from "./Grid.ts";
+import Vector2 from "./Vector2.ts"
+import { GRID_SIZE, allValid, setCells } from "./Grid.ts";
 
 let components: Array<HTMLDivElement> = new Array<HTMLDivElement>;
 let draggableItems: Array<HTMLDivElement> = new Array<HTMLDivElement>;
@@ -81,9 +82,36 @@ function creation(event: MouseEvent): void {
   createNewObject(event.clientX, event.clientY, type);
 }
 
+function calculateTopLeftCell(mousePos: Vector2): Vector2 {
+  let currentMouseCol = Math.floor(event.clientX / GRID_SIZE);
+  let currentMouseRow = Math.floor(event.clientY / GRID_SIZE);
+
+  const offX = Math.floor(-curDragItem.offsetX / GRID_SIZE);
+  const offY = Math.floor(-curDragItem.offsetY / GRID_SIZE);
+
+  const placementCol = currentMouseCol - offX;
+  const placementRow = currentMouseRow - offX;
+
+  return new Vector2(placementCol, placementRow);
+}
+
 function pickup(event: MouseEvent): void {
   const target = event.target as HTMLDivElement;
   target.style.opacity = opacity_moving;
+
+  // Refree the cells below the item that has just started to be dragged
+  {
+    const width = Number(target.dataset.width);
+    const height = Number(target.dataset.height);
+
+    const topLeft = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
+    const size = new Vector2(width, height);
+
+    setCells(topLeft, size, false);
+
+    target.dataset.previousCol = topLeft.x + "";
+    target.dataset.previousRow = topLeft.y + "";
+  }
 
   const diffX = stripUnits(target.style.left) - event.clientX;
   const diffY = stripUnits(target.style.top) - event.clientY;
@@ -101,19 +129,24 @@ function drop(event: MouseEvent): void {
   const item = curDragItem.item;
   item.style.opacity = "100%";
 
-  let currentMouseCol = Math.floor(event.clientX / GRID_SIZE);
-  let currentMouseRow = Math.floor(event.clientY / GRID_SIZE);
+  let topLeft = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
 
-  Math.floor(curDragItem.offsetX)
+  // Check whether or not the item being dragged can be placed
+  {
+    const width = Number(item.dataset.width);
+    const height = Number(item.dataset.height);
 
-  const offX = Math.floor(-curDragItem.offsetX / GRID_SIZE);
-  const offY = Math.floor(-curDragItem.offsetY / GRID_SIZE);
+    const size = new Vector2(width, height);
+    if (!allValid(topLeft, size)) {
+      topLeft.x = Number(item.dataset.previousCol);
+      topLeft.y = Number(item.dataset.previousRow);
+    }
 
-  item.style.left = ((currentMouseCol - offX) * GRID_SIZE) + "px";
-  item.style.top = ((currentMouseRow - offY) * GRID_SIZE) + "px";
+    setCells(topLeft, size, true);
+  }
 
-  console.log("Current Row: " + currentMouseRow + " Current Col: " + currentMouseCol + " Off X: " + offX + " Off Y: " + offY);
+  item.style.left = (topLeft.x * GRID_SIZE) + "px";
+  item.style.top = (topLeft.y * GRID_SIZE) + "px";
 
   curDragItem.item = null;
 }
-

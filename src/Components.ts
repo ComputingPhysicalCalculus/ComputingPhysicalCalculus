@@ -2,7 +2,8 @@ import { GRID_SIZE } from "./Grid.ts"
 
 export enum ComponentType {
   VShaft,
-  HShaft
+  HShaft,
+  Multiplier
 };
 
 export function stringToComponent(componentName: string): ComponentType | null {
@@ -26,6 +27,9 @@ export function createComponent(component: ComponentType): HTMLDivElement {
     case ComponentType.HShaft:
       createHShaft(comp);
       break;
+    case ComponentType.Multiplier:
+      createMultiplier(comp);
+      break;
     default:
       console.error("No function defined for component: ", component);
   }
@@ -46,4 +50,10 @@ function createHShaft(div: HTMLDivElement): void {
   div.dataset.width = "2";
   div.dataset.height = "1";
   div.style.background = "Green";
+}
+
+function createMultiplier(div: HTMLDivElement): void {
+  div.dataset.width = "3";
+  div.dataset.height = "1";
+  div.style.background = "Blue";
 }
