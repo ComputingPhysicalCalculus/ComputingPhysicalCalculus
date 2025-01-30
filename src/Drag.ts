@@ -52,8 +52,6 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
 
 export function setupDragHooks(): void {
-  console.log("Hello, World");
-
   components = new Array<HTMLDivElement>;
   draggableItems = new Array<HTMLDivElement>;
 
@@ -133,10 +131,11 @@ function drop(event: MouseEvent): void {
 
   let topLeft = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
 
+  const width = Number(item.dataset.width);
+  const height = Number(item.dataset.height);
+
   // Check whether or not the item being dragged can be placed
   {
-    const width = Number(item.dataset.width);
-    const height = Number(item.dataset.height);
 
     const size = new Vector2(width, height);
     if (!allValid(topLeft, size)) {
@@ -154,6 +153,13 @@ function drop(event: MouseEvent): void {
 
   item.style.left = (topLeft.x * GRID_SIZE) + "px";
   item.style.top = (topLeft.y * GRID_SIZE) + "px";
+
+  const grid = document.getElementById("grid") as HTMLDivElement;
+  if ((topLeft.x + width) * GRID_SIZE > grid.clientWidth || topLeft.x < 0 ||
+    (topLeft.y + height) * GRID_SIZE > grid.clientHeight || topLeft.y < 0) {
+
+    item.remove();
+  }
 
   item.dataset.hasBeenPlaced = "1";
 

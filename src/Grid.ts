@@ -24,9 +24,9 @@ function createCell(col: number, row: number): HTMLDivElement {
 }
 
 export function createGrid(): void {
-  const machine = document.getElementById("machine") as HTMLDivElement;
-  const totalWidth = machine.clientWidth;
-  const totalHeight = machine.clientHeight;
+  const grid = document.getElementById("grid") as HTMLDivElement;
+  const totalWidth = grid.clientWidth;
+  const totalHeight = grid.clientHeight;
 
   const cols = Math.ceil(totalWidth / GRID_SIZE);
   const rows = Math.ceil(totalHeight / GRID_SIZE);
@@ -36,7 +36,7 @@ export function createGrid(): void {
       const div = createCell(j, i);
       const pos = new Vector2(j, i);
       gridCells.set(pos.toString(), div);
-      machine.appendChild(div);
+      grid.appendChild(div);
     }
   }
 }
