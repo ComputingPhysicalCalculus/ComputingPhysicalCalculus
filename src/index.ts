@@ -3,6 +3,8 @@ import Vector2 from "./Vector2";
 
 import { setupDragHooks } from "./Drag";
 
+import { register as registerIntegratorComponent } from "./IntegratorComponent.ts";
+
 let canvasElement: HTMLCanvasElement;
 let canvasCtx: CanvasRenderingContext2D;
 let graph: OutputGraph;
@@ -12,6 +14,15 @@ window.onload = setup;
 window.onresize = resize;
 
 function setup(): void {
+    registerIntegratorComponent();
+
+    let i = document.createElement("integrator-component");
+    i.setAttribute("style", "position:absolute;left:50%;bottom:50%");
+    i.setAttribute("leg-one", "80");
+    i.setAttribute("leg-two", "25");
+    i.setAttribute("leg-three", "60");
+    document.body.appendChild(i);
+
     canvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
