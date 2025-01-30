@@ -131,10 +131,18 @@ export class IntegratorComponent extends HTMLElement {
       this.svg.appendChild(child);
     }
 
+    for (let attribute of IntegratorComponent.observedAttributes) {
+      this.attributeChangedCallback(attribute, null, this.getAttribute(attribute));
+    }
+
     shadow.appendChild(this.svg);
   }
 
-  attributeChangedCallback(name: string, _old_value: string, new_value: string) {
+  attributeChangedCallback(name: string, _old_value: string | null, new_value: string | null) {
+    if (new_value == null) {
+      return;
+    }
+    
     switch (name) {
       case "leg-one": {
         const new_length = Number.parseFloat(new_value);
