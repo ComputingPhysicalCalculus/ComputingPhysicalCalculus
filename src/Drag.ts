@@ -1,52 +1,67 @@
-let components: Array<HTMLDivElement>;
+import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
 
-const DRAG_WIDTH: number = 100;
-const DRAG_HEIGHT: number = 100;
+let components: Array<HTMLDivElement> = new Array<HTMLDivElement>;
+let draggableItems: Array<HTMLDivElement> = new Array<HTMLDivElement>;
 
-let dragItem: HTMLDivElement | null;
+type DragItem = {
+  item: HTMLDivElement | null,
+  offsetX: number,
+  offsetY: number
+};
+
+let curDragItem: DragItem = { item: null, offsetX: 0, offsetY: 0 };
+
+
+// let dragItem: HTMLDivElement | null;
 
 const opacity_moving: string = "10%";
 
-function createNewObject(x: number, y: number, id: number): void {
-  console.log("Create new");
-  dragItem = document.createElement("div");
+function stripUnits(value: string): number {
+  return Number(value.substring(0, value.length - 2));
+}
 
-  // dragItem.addEventListener("dragstart", dragStart);
-  // dragItem.addEventListener("dragend", dragEnd);
+function createNewObject(x: number, y: number, typeString: string): void {
+  const componentType: ComponentType | null = stringToComponent(typeString);
 
-  const posX: number = x - DRAG_WIDTH / 2;
-  const posY: number = y - DRAG_HEIGHT / 2;
+  if (componentType == null)
+    return;
 
-  dragItem.id = "draggingComponent";
+  const item: HTMLDivElement = createComponent(componentType);
+  curDragItem.item = item;
 
-  dragItem.style.position = "absolute";
-  dragItem.style.left = posX + "px";
-  dragItem.style.top = posY + "px";
-  dragItem.style.top = "absolute";
+  curDragItem.offsetX = -stripUnits(item.style.width) / 2;
+  curDragItem.offsetY = -stripUnits(item.style.height) / 2;
 
-  const COLOURS = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
-  dragItem.style.background = COLOURS[id];
-  dragItem.style.width = DRAG_WIDTH + "px";
-  dragItem.style.height = DRAG_HEIGHT + "px";
+  const posX: number = x + curDragItem.offsetX;
+  const posY: number = y + curDragItem.offsetY;
 
-  dragItem.style.opacity = opacity_moving;
+  item.style.left = posX + "px";
+  item.style.top = posY + "px";
 
-  dragItem.addEventListener("mousedown", (event) => {
+  item.style.opacity = opacity_moving;
+
+  item.addEventListener("mousedown", (event) => {
     const target = event.target as HTMLDivElement;
     target.style.opacity = opacity_moving;
-    dragItem = target;
+
+    const diffX = stripUnits(target.style.left) - event.clientX;
+    const diffY = stripUnits(target.style.top) - event.clientY;
+
+    curDragItem.offsetX = diffX;
+    curDragItem.offsetY = diffY;
+    curDragItem.item = target;
   });
 
-  document.getElementById("content")!.appendChild(dragItem);
-
+  document.getElementById("content")!.appendChild(item);
+  draggableItems.push(item);
 }
 
 function mousePress(event: MouseEvent): void {
   console.log("Press");
 
   const target = event.target as HTMLDivElement;
-  const id = Number(target.innerHTML);
-  createNewObject(event.clientX, event.clientY, id - 1);
+  const type: string = target.dataset.type as string;
+  createNewObject(event.clientX, event.clientY, type);
 }
 
 
@@ -54,6 +69,7 @@ export function setupDragHooks(): void {
   console.log("Hello, World");
 
   components = new Array<HTMLDivElement>;
+  draggableItems = new Array<HTMLDivElement>;
 
   const list = document.querySelectorAll('.component');
   list.forEach(element => {
@@ -65,20 +81,19 @@ export function setupDragHooks(): void {
   });
 
   document.addEventListener("mousemove", (event: MouseEvent) => {
-    if (dragItem == null) {
+    if (curDragItem.item == null) {
       return;
     }
 
-    dragItem.style.left = (event.clientX - DRAG_WIDTH / 2) + "px";
-    dragItem.style.top = (event.clientY - DRAG_HEIGHT / 2) + "px";
+    curDragItem.item.style.left = (event.clientX + curDragItem.offsetX) + "px";
+    curDragItem.item.style.top = (event.clientY + curDragItem.offsetY) + "px";
   });
 
   document.addEventListener("mouseup", () => {
     console.log("Mouse up");
-    if (dragItem != null) {
-      dragItem.style.opacity = "100%";
-      dragItem = null;
-      // dragItem.remove(); // Removes item
+    if (curDragItem.item != null) {
+      curDragItem.item.style.opacity = "100%";
+      curDragItem.item = null;
     }
   });
 }

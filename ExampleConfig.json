@@ -1,0 +1,34 @@
+{
+  "Shafts": [
+    {
+      "shaftID": 1,
+      "start": [0, 1],
+      "end": [0, 5]
+    },
+    {
+      "shaftID": 2,
+      "start": [1, 1],
+      "end": [1, 5]
+    },
+    {
+      "shaftID": 3,
+      "start": [2, 1],
+      "end": [2, 5]
+    }
+  ],
+
+  "Components": [
+    {
+      "component": "integrator",
+      "compID": 1
+    }
+  ],
+
+  "Connections": [
+    {
+      "compID": 1,
+      "inputID": [ 2, 3 ],
+      "outputID": 1
+    }
+  ]
+}
