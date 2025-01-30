@@ -30,17 +30,20 @@ export function createComponent(component: ComponentType): HTMLDivElement {
       console.error("No function defined for component: ", component);
   }
 
+  comp.style.width = Number(comp.dataset.width) * GRID_SIZE + "px";
+  comp.style.height = Number(comp.dataset.height) * GRID_SIZE + "px";
+
   return comp;
 }
 
 function createVShaft(div: HTMLDivElement): void {
-  div.style.width = GRID_SIZE + "px";
-  div.style.height = 2 * GRID_SIZE + "px";
+  div.dataset.width = "1";
+  div.dataset.height = "2";
   div.style.background = "Red";
 }
 
 function createHShaft(div: HTMLDivElement): void {
-  div.style.width = 2 * GRID_SIZE + "px";
-  div.style.height = GRID_SIZE + "px";
+  div.dataset.width = "2";
+  div.dataset.height = "1";
   div.style.background = "Green";
 }

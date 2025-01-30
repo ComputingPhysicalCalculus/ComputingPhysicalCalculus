@@ -1,0 +1,10 @@
+.grid-cell {
+    position: absolute;
+
+    border-style: solid;
+    border-color: red;
+    border-width: 1px;
+    z-index: -10;
+
+    box-sizing: border-
+}

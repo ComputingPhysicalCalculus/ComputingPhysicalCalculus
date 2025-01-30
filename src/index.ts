@@ -2,6 +2,7 @@ import { InputGraph, OutputGraph } from "./Graph";
 import Vector2 from "./Vector2";
 
 import { setupDragHooks } from "./Drag";
+import { createGrid } from "./Grid";
 
 import { register as registerIntegratorComponent } from "./IntegratorComponent.ts";
 
@@ -65,6 +66,7 @@ function setup(): void {
     }, 1.0 / 60.0);
 
     setupDragHooks();
+    createGrid();
 }
 
 function resize(): void {
