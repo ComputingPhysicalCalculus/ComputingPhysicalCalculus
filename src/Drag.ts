@@ -43,6 +43,8 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
   item.style.opacity = opacity_moving;
 
+  item.dataset.hasBeenPlaced = "0";
+
   item.addEventListener("mousedown", pickup);
   document.getElementById("content")!.appendChild(item);
   draggableItems.push(item);
@@ -83,14 +85,14 @@ function creation(event: MouseEvent): void {
 }
 
 function calculateTopLeftCell(mousePos: Vector2): Vector2 {
-  let currentMouseCol = Math.floor(event.clientX / GRID_SIZE);
-  let currentMouseRow = Math.floor(event.clientY / GRID_SIZE);
+  let currentMouseCol = Math.floor(mousePos.x / GRID_SIZE);
+  let currentMouseRow = Math.floor(mousePos.y / GRID_SIZE);
 
   const offX = Math.floor(-curDragItem.offsetX / GRID_SIZE);
   const offY = Math.floor(-curDragItem.offsetY / GRID_SIZE);
 
   const placementCol = currentMouseCol - offX;
-  const placementRow = currentMouseRow - offX;
+  const placementRow = currentMouseRow - offY;
 
   return new Vector2(placementCol, placementRow);
 }
@@ -138,6 +140,11 @@ function drop(event: MouseEvent): void {
 
     const size = new Vector2(width, height);
     if (!allValid(topLeft, size)) {
+      if (item.dataset.hasBeenPlaced == "0") {
+        item.remove();
+        return;
+      }
+
       topLeft.x = Number(item.dataset.previousCol);
       topLeft.y = Number(item.dataset.previousRow);
     }
@@ -147,6 +154,8 @@ function drop(event: MouseEvent): void {
 
   item.style.left = (topLeft.x * GRID_SIZE) + "px";
   item.style.top = (topLeft.y * GRID_SIZE) + "px";
+
+  item.dataset.hasBeenPlaced = "1";
 
   curDragItem.item = null;
 }
