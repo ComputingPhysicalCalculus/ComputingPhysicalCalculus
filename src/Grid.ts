@@ -2,6 +2,9 @@ import Vector2 from "./Vector2";
 
 export const GRID_SIZE: number = 50;
 
+const LOCKED_CELL: string = "locked-cell";
+const HIGHLIGHT_CELL: string = "highlighted-cell";
+
 // String is json version of Vector2
 let gridCells: Map<string, HTMLDivElement> = new Map<string, HTMLDivElement>;
 
@@ -41,7 +44,7 @@ export function createGrid(): void {
   }
 }
 
-export function allValid(topLeft: Vector2, size: Vector2): boolean {
+function mapCells(topLeft: Vector2, size: Vector2, func: (e: HTMLDivElement) => void): void {
   for (let y = 0; y < size.y; y++) {
     for (let x = 0; x < size.x; x++) {
       const pos = new Vector2(topLeft.x + x, topLeft.y + y);
@@ -50,25 +53,41 @@ export function allValid(topLeft: Vector2, size: Vector2): boolean {
         continue;
       }
 
-      if (cell.dataset.filled == "1") {
-        return false;
-      }
+      func(cell);
     }
   }
+}
 
-  return true;
+export function allValid(topLeft: Vector2, size: Vector2): boolean {
+
+  let valid: boolean = true;
+  const func = (cell: HTMLDivElement) => {
+    if (cell.classList.contains(LOCKED_CELL)) valid = false;
+  }
+
+  mapCells(topLeft, size, func);
+
+  return valid;
 }
 
 export function setCells(topLeft: Vector2, size: Vector2, filled: boolean): void {
-  for (let y = 0; y < size.y; y++) {
-    for (let x = 0; x < size.x; x++) {
-      const pos = new Vector2(topLeft.x + x, topLeft.y + y);
-      const cell = gridCells.get(pos.toString());
-      if (cell == undefined) {
-        continue;
-      }
-
-      cell.dataset.filled = String(Number(filled));
+  const func = (cell: HTMLDivElement) => {
+    if (filled) {
+      cell.classList.add(LOCKED_CELL);
+    } else {
+      cell.classList.remove(LOCKED_CELL);
     }
   }
+
+  mapCells(topLeft, size, func);
+}
+
+export function highlightHoveredCells(topLeft: Vector2, size: Vector2, highlight: boolean): void {
+  mapCells(topLeft, size, (cell: HTMLDivElement) => {
+    if (highlight) {
+      cell.classList.add(HIGHLIGHT_CELL);
+    } else {
+      cell.classList.remove(HIGHLIGHT_CELL);
+    }
+  });
 }

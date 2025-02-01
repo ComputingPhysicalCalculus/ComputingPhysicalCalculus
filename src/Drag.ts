@@ -1,6 +1,6 @@
 import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
 import Vector2 from "./Vector2.ts"
-import { GRID_SIZE, allValid, setCells } from "./Grid.ts";
+import { GRID_SIZE, allValid, setCells, highlightHoveredCells } from "./Grid.ts";
 
 let components: Array<HTMLDivElement> = new Array<HTMLDivElement>;
 let draggableItems: Array<HTMLDivElement> = new Array<HTMLDivElement>;
@@ -8,13 +8,13 @@ let draggableItems: Array<HTMLDivElement> = new Array<HTMLDivElement>;
 type DragItem = {
   item: HTMLDivElement | null,
   offsetX: number,
-  offsetY: number
+  offsetY: number,
+
+  mouseX: number,
+  mouseY: number,
 };
 
 let curDragItem: DragItem = { item: null, offsetX: 0, offsetY: 0 };
-
-
-// let dragItem: HTMLDivElement | null;
 
 const opacity_moving: string = "10%";
 
@@ -64,14 +64,7 @@ export function setupDragHooks(): void {
     comp.addEventListener("mousedown", creation);
   });
 
-  document.addEventListener("mousemove", (event: MouseEvent) => {
-    if (curDragItem.item == null) {
-      return;
-    }
-
-    curDragItem.item.style.left = (event.clientX + curDragItem.offsetX) + "px";
-    curDragItem.item.style.top = (event.clientY + curDragItem.offsetY) + "px";
-  });
+  document.addEventListener("mousemove", move);
 
   document.addEventListener("mouseup", drop);
 }
@@ -82,7 +75,11 @@ function creation(event: MouseEvent): void {
   createNewObject(event.clientX, event.clientY, type);
 }
 
-function calculateTopLeftCell(mousePos: Vector2): Vector2 {
+function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
+  if (curDragItem.item == null) {
+    return null;
+  }
+
   let currentMouseCol = Math.floor(mousePos.x / GRID_SIZE);
   let currentMouseRow = Math.floor(mousePos.y / GRID_SIZE);
 
@@ -95,17 +92,33 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 {
   return new Vector2(placementCol, placementRow);
 }
 
+function getSize(): Vector2 | null {
+  if (curDragItem.item == null) {
+    return null;
+  }
+
+  const width = Number(curDragItem.item.dataset.width);
+  const height = Number(curDragItem.item.dataset.height);
+
+  return new Vector2(width, height);
+}
+
 function pickup(event: MouseEvent): void {
   const target = event.target as HTMLDivElement;
   target.style.opacity = opacity_moving;
 
+  curDragItem.item = target;
+
   // Refree the cells below the item that has just started to be dragged
   {
-    const width = Number(target.dataset.width);
-    const height = Number(target.dataset.height);
+    const size = getSize();
+    // const topLeft = calculateTopLeftCell(new Vector2(target.clientLeft, target.clientTop));
 
-    const topLeft = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
-    const size = new Vector2(width, height);
+    let topLeft = new Vector2(0, 0);
+    topLeft.x = Number(target.dataset.topLeftX);
+    topLeft.y = Number(target.dataset.topLeftY);
+
+    if (size == null) return;
 
     setCells(topLeft, size, false);
 
@@ -118,7 +131,31 @@ function pickup(event: MouseEvent): void {
 
   curDragItem.offsetX = diffX;
   curDragItem.offsetY = diffY;
-  curDragItem.item = target;
+  curDragItem.mouseX = event.clientX;
+  curDragItem.mouseY = event.clientY;
+}
+
+function move(event: MouseEvent): void {
+  if (curDragItem.item == null) {
+    return;
+  }
+
+  const previousPos = calculateTopLeftCell(new Vector2(curDragItem.mouseX, curDragItem.mouseY));
+  const size = getSize()
+
+  if (previousPos == null || size == null) return;
+
+  highlightHoveredCells(previousPos, size, false);
+
+  curDragItem.item.style.left = (event.clientX + curDragItem.offsetX) + "px";
+  curDragItem.item.style.top = (event.clientY + curDragItem.offsetY) + "px";
+  curDragItem.mouseX = event.clientX;
+  curDragItem.mouseY = event.clientY;
+
+  const newPos = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
+  if (newPos == null) return;
+
+  highlightHoveredCells(newPos, size, true);
 }
 
 function drop(event: MouseEvent): void {
@@ -130,14 +167,12 @@ function drop(event: MouseEvent): void {
   item.style.opacity = "100%";
 
   let topLeft = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
+  const size = getSize();
 
-  const width = Number(item.dataset.width);
-  const height = Number(item.dataset.height);
+  if (topLeft == null || size == null) return;
 
   // Check whether or not the item being dragged can be placed
   {
-
-    const size = new Vector2(width, height);
     if (!allValid(topLeft, size)) {
       if (item.dataset.hasBeenPlaced == "0") {
         item.remove();
@@ -155,13 +190,15 @@ function drop(event: MouseEvent): void {
   item.style.top = (topLeft.y * GRID_SIZE) + "px";
 
   const grid = document.getElementById("grid") as HTMLDivElement;
-  if ((topLeft.x + width) * GRID_SIZE > grid.clientWidth || topLeft.x < 0 ||
-    (topLeft.y + height) * GRID_SIZE > grid.clientHeight || topLeft.y < 0) {
+  if ((topLeft.x + size.x) * GRID_SIZE > grid.clientWidth || topLeft.x < 0 ||
+    (topLeft.y + size.y) * GRID_SIZE > grid.clientHeight || topLeft.y < 0) {
 
     item.remove();
   }
 
   item.dataset.hasBeenPlaced = "1";
+  item.dataset.topLeftX = topLeft.x + "";
+  item.dataset.topLeftY = topLeft.y + "";
 
   curDragItem.item = null;
 }

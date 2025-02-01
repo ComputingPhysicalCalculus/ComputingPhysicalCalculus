@@ -16,3 +16,11 @@
 
     box-sizing: border-
 }
+
+.locked-cell {
+    background: Pink;
+}
+
+.highlighted-cell {
+    background: Magenta;
+}
