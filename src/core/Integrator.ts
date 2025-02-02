@@ -43,9 +43,9 @@ export class Integrator implements Device {
      */
     getOutput(): Shaft | undefined {
         // Linear speed of the wheel = f(x) * dx.
-        let wheelLinearSpeed: number = this.variableOfIntegration.current_rotation * this.integrand.current_rotation;
+        let wheelLinearSpeed: number = this.variableOfIntegration.currentRotation * this.integrand.currentRotation;
         let wheelAngularSpeed: number = wheelLinearSpeed / this.wheelRadius;
-        this.output.next_rotation = wheelAngularSpeed;
+        this.output.nextRotation = wheelAngularSpeed;
         return this.output;
     }
 }
