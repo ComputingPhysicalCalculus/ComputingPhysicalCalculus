@@ -1,18 +1,24 @@
 import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
-export class Integrator extends Device {
+export class Integrator implements Device {
     output: Shaft;
-    constructor(inputs: Shaft[], output: Shaft, initial: number) {
-        if(inputs.length != 2) {
-            throw new Error("Wrong Length for Integrator");
-        }
-        super(inputs, initial);
+    disk_position: number;
+    integrand: Shaft;
+    variable_of_integration: Shaft;
+    constructor(
+        variable_of_integration: Shaft, 
+        integrand: Shaft, 
+        output: Shaft, 
+        initial_disk_position: number
+    ) {
         this.output = output;
+        this.integrand = integrand;
+        this.disk_position = initial_disk_position;
+        this.variable_of_integration = variable_of_integration;
     }
     getOutput(): Shaft | undefined {
-        // TODO: do the integrator part
-        // use the current_rotation value of inputs to calculate the rotation for output
+        this.disk_position += this.integrand.current_rotation;
         return this.output;
     }
 }

@@ -1,8 +1,10 @@
 import { Shaft } from "./Shaft";
 import { Motor } from "./Motor";
+import { OutputTable } from "./OutputTable";
 
 var shafts: Shaft[];
 var motor: Motor;
+var outputTables: OutputTable[];
 
 function simulate_one_cycle(): void {
     let stack: Shaft[] = [motor.getOutput()];
@@ -19,6 +21,9 @@ function simulate_one_cycle(): void {
 function update(): void {
     for(const shaft of shafts) {
         shaft.update();
+    }
+    for(const outputTable of outputTables) {
+        outputTable.addPlot();
     }
 }
 

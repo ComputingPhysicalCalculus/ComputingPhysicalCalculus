@@ -1,24 +1,22 @@
 import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
-export class FunctionTable extends Device {
+export class FunctionTable implements Device {
     output: Shaft;
-    Xposition: number;
+    x_position: number;
     fun: (n: number) => number;
-    constructor(inputs: Shaft[], output: Shaft, initial: number, fun: (n: number) => number) {
-        if(inputs.length != 1) {
-            throw new Error("Wrong Length for FunctionTable");
-        }
-        super(inputs, initial);
+    input: Shaft;
+    constructor(input: Shaft, output: Shaft, initial_x_position: number, fun: (n: number) => number) {
+        this.input = input;
         this.output = output;
         this.fun = fun;
-        this.Xposition = initial;
+        this.x_position = initial_x_position;
     }
     getOutput(): Shaft | undefined {
         if(!this.output.result_ready) {
-            this.Xposition += this.shafts[0].next_rotation;
+            this.x_position += this.input.next_rotation;
             this.output.result_ready = true;
-            this.output.next_rotation = this.fun(this.Xposition);
+            this.output.next_rotation = this.fun(this.x_position);
         }
         return this.output;
     }

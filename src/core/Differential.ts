@@ -1,13 +1,14 @@
 import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
-export class Differential extends Device {
+export class Differential implements Device {
     output: Shaft | undefined;
+    shafts: Shaft[];
     constructor(shafts: Shaft[]) {
         if(shafts.length != 3) {
             throw new Error("Wrong Length for Differential");
         }
-        super(shafts, 0);
+        this.shafts = shafts;
     }
     getOutput() : Shaft | undefined {
         let count: number = 0
