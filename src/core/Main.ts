@@ -21,3 +21,9 @@ function update(): void {
         shaft.update();
     }
 }
+
+/*
+ TODO: 
+ 1. have some sort of initialization function to initial global variables
+ 2. have a main function to repeatedly call simulate_one_cycle and update
+ */
