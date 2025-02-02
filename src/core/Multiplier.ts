@@ -2,9 +2,9 @@ import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
 export class Multiplier implements Device {
-    output: Shaft;
-    factor: number;
-    input: Shaft;
+    private output: Shaft;
+    private factor: number;
+    private input: Shaft;
     constructor(input: Shaft, output: Shaft, factor: number) {
         this.factor = factor
         this.input = input;

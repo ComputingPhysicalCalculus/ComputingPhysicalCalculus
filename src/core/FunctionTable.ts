@@ -2,10 +2,10 @@ import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
 export class FunctionTable implements Device {
-    output: Shaft;
-    x_position: number;
-    fun: (n: number) => number;
-    input: Shaft;
+    private output: Shaft;
+    private x_position: number;
+    private fun: (n: number) => number;
+    private input: Shaft;
     constructor(input: Shaft, output: Shaft, initial_x_position: number, fun: (n: number) => number) {
         this.input = input;
         this.output = output;

@@ -2,10 +2,10 @@ import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
 export class Integrator implements Device {
-    output: Shaft;
-    disk_position: number;
-    integrand: Shaft;
-    variable_of_integration: Shaft;
+    private output: Shaft;
+    private disk_position: number;
+    private integrand: Shaft;
+    private variable_of_integration: Shaft;
     constructor(
         variable_of_integration: Shaft, 
         integrand: Shaft, 

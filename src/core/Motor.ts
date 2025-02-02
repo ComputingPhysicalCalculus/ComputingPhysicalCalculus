@@ -1,8 +1,8 @@
 import { Shaft } from "./Shaft";
 
 export class Motor {
-    rotation: number;
-    output: Shaft;
+    private rotation: number;
+    private output: Shaft;
     constructor(rotation: number, output: Shaft) {
         this.rotation = rotation;
         this.output = output;

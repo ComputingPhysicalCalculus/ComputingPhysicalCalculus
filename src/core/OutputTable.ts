@@ -2,11 +2,11 @@ import { Shaft } from "./Shaft";
 import { Device } from "./Device";
 
 export class OutputTable implements Device {
-    x: Shaft;
-    y1: Shaft;
-    y2: Shaft | undefined;
-    initial_y1: number;
-    initial_y2: number | undefined;
+    private x: Shaft;
+    private y1: Shaft;
+    private y2: Shaft | undefined;
+    private initial_y1: number;
+    private initial_y2: number | undefined;
     constructor(x: Shaft, y1: Shaft, initial_y1: number, y2: Shaft, initial_y2: number);
     constructor(x: Shaft, y1: Shaft, initial_y1: number);
     constructor(x: Shaft, y1: Shaft, initial_y1: number, y2?: Shaft, initial_y2?: number) {
