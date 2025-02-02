@@ -12,6 +12,7 @@ export class Integrator extends Device {
     }
     getOutput(): Shaft | undefined {
         // TODO: do the integrator part
+        // use the current_rotation value of inputs to calculate the rotation for output
         return this.output;
     }
 }
