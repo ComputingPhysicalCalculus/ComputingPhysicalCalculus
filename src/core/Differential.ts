@@ -3,12 +3,10 @@ import { Shaft } from "./Shaft";
 
 export class Differential implements Device {
     output: Shaft | undefined;
+    // the sum shaft is always in the middle
     shafts: Shaft[];
-    constructor(shafts: Shaft[]) {
-        if(shafts.length != 3) {
-            throw new Error("Wrong Length for Differential");
-        }
-        this.shafts = shafts;
+    constructor(diff_shaft1: Shaft, diff_shaft2: Shaft, sum_shaft: Shaft) {
+        this.shafts = [diff_shaft1, sum_shaft, diff_shaft2];
     }
     getOutput() : Shaft | undefined {
         let count: number = 0
