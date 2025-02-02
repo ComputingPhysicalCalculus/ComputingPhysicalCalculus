@@ -11,13 +11,13 @@ export class Multiplier implements Device {
         this.output = output;
     }
     getOutput(): Shaft | undefined {
-        if(this.output.result_ready) {
+        if(this.output.resultReady) {
             return this.output;
-        } else if(!this.input.result_ready) {
+        } else if(!this.input.resultReady) {
             return undefined;
         } else {
-            this.output.next_rotation = this.input.next_rotation * this.factor;
-            this.output.result_ready = true;
+            this.output.nextRotation = this.input.nextRotation * this.factor;
+            this.output.resultReady = true;
         }
         return this.output;
     }
