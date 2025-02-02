@@ -13,10 +13,10 @@ export class FunctionTable implements Device {
         this.x_position = initial_x_position;
     }
     getOutput(): Shaft | undefined {
-        if(!this.output.result_ready) {
-            this.x_position += this.input.next_rotation;
-            this.output.result_ready = true;
-            this.output.next_rotation = this.fun(this.x_position);
+        if(!this.output.resultReady) {
+            this.x_position += this.input.nextRotation;
+            this.output.resultReady = true;
+            this.output.nextRotation = this.fun(this.x_position);
         }
         return this.output;
     }

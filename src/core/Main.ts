@@ -27,8 +27,13 @@ function update(): void {
     }
 }
 
+function init(shafts: Shaft[], motor: Motor, outputTables: OutputTable[]): void {
+    (globalThis as any).shafts = shafts;
+    (globalThis as any).motor = motor;
+    (globalThis as any).outputTables = outputTables;
+}
+
 /*
  TODO: 
- 1. have some sort of initialization function to initial global variables
  2. have a main function to repeatedly call simulate_one_cycle and update
  */

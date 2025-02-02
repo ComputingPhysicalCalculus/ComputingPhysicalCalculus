@@ -1,18 +1,18 @@
 import { Device } from "./Device";
 
 export class Shaft {
-    current_rotation: number;
-    next_rotation: number;
-    result_ready: boolean;
+    currentRotation: number;
+    nextRotation: number;
+    resultReady: boolean;
     outputs: Device[];
     constructor(outputs: Device[]) {
-        this.current_rotation = 0;
-        this.next_rotation = 0;
-        this.result_ready = false;
+        this.currentRotation = 0;
+        this.nextRotation = 0;
+        this.resultReady = false;
         this.outputs = outputs;
     }
     update(): void {
-        this.current_rotation = this.next_rotation;
-        this.result_ready = false;
+        this.currentRotation = this.nextRotation;
+        this.resultReady = false;
     }
 }
