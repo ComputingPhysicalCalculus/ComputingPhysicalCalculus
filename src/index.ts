@@ -76,6 +76,7 @@ function resize(): void {
     graph.width = canvasElement.width;
     graph.height = canvasElement.height / 2;
 
+    input_graph.top = canvasElement.height / 2;
     input_graph.width = canvasElement.width;
     input_graph.height = canvasElement.height / 2;
 
