@@ -19,16 +19,43 @@
 
   "Components": [
     {
-      "component": "integrator",
-      "compID": 1
-    }
-  ],
-
-  "Connections": [
-    {
+      "type": "integrator",
       "compID": 1,
-      "inputID": [ 2, 3 ],
-      "outputID": 1
+      "variableOfIntegrationShaft": 1,
+      "integrandShaft": 2,
+      "outputShaft": 3
+    },
+    {
+      "type": "differential",
+      "compID": 2,
+      "inputShaft1": 1,
+      "inputShaft2": 2,
+      "outputShaft": 3
+    },
+    {
+      "type": "multiplier",
+      "compID": 3,
+      "inputShaft": 1,
+      "outputShaft": 2,
+      "factor": 2
+    },
+    {
+      "type": "functionTable",
+      "compID": 4,
+      "inputShaft": 1,
+      "outputShaft": 2
+    },
+    {
+      "type": "motor",
+      "compID": 5,
+      "outputShaft": 1
+    },
+    {
+      "type": "outputTable",
+      "compID": 6,
+      "inputShaft": 1,
+      "outputShaft1": 2,
+      "outputShaft2": ""
     }
   ]
 }
