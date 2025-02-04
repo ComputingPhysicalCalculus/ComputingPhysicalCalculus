@@ -1,9 +1,13 @@
-import { html, LitElement } from "lit";
+import { css, html, LitElement, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { pickup } from "./Drag";
 
+import styles from "../../styles/DraggableElement.css?inline";
+
 @customElement("draggable-component")
 export class DraggableComponentElement extends LitElement {
+  static styles = css`${unsafeCSS(styles)}`;
+  
   @property({ type: Number })
   width: number = 1;
 
@@ -22,7 +26,9 @@ export class DraggableComponentElement extends LitElement {
 
   render() {
     return html`
-      <slot></slot>
+      <div class="container">
+        <slot></slot>
+      </div>
     `;
   }
 }

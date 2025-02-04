@@ -81,7 +81,7 @@ function createHShaft(div: DraggableComponentElement): void {
 
 function createMultiplier(div: DraggableComponentElement): void {
   div.style.background = "Blue";
-  div.setAttribute("width", "2");
+  div.setAttribute("width", "3");
   div.setAttribute("height", "2");
 
   render(html`<integrator-component></integrator-component>`, div);
