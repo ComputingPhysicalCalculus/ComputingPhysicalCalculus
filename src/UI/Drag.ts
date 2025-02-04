@@ -1,12 +1,13 @@
 import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
 import Vector2 from "./Vector2.ts"
 import { GRID_SIZE, allValid, setCells, highlightHoveredCells } from "./Grid.ts";
+import { DraggableComponentElement } from "./DraggableElement.ts";
 
-let components: Array<HTMLDivElement> = new Array<HTMLDivElement>;
-let draggableItems: Array<HTMLDivElement> = new Array<HTMLDivElement>;
+// let components: Array<DraggableComponentElement> = new Array<DraggableComponentElement>;
+// let draggableItems: Array<DraggableComponentElement> = new Array<DraggableComponentElement>;
 
 type DragItem = {
-  item: HTMLDivElement | null,
+  item: DraggableComponentElement | null,
   offsetX: number,
   offsetY: number,
 
@@ -28,7 +29,7 @@ function createNewObject(x: number, y: number, typeString: string): void {
   if (componentType == null)
     return;
 
-  const item: HTMLDivElement = createComponent(componentType);
+  const item = createComponent(componentType);
   curDragItem.item = item;
 
   // +1 to prevent being perfecttly centered
@@ -45,27 +46,16 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
   item.dataset.hasBeenPlaced = "0";
 
-  item.addEventListener("mousedown", pickup);
   document.getElementById("content")!.appendChild(item);
-  draggableItems.push(item);
 }
 
-
 export function setupDragHooks(): void {
-  components = new Array<HTMLDivElement>;
-  draggableItems = new Array<HTMLDivElement>;
-
   const list = document.querySelectorAll('.component');
   list.forEach(element => {
-    components.push(element as HTMLDivElement);
-  });
-
-  components.forEach(comp => {
-    comp.addEventListener("mousedown", creation);
+    (element as HTMLElement).addEventListener("mousedown", creation);
   });
 
   document.addEventListener("mousemove", move);
-
   document.addEventListener("mouseup", drop);
 }
 
@@ -97,37 +87,39 @@ function getSize(): Vector2 | null {
     return null;
   }
 
-  const width = Number(curDragItem.item.dataset.width);
-  const height = Number(curDragItem.item.dataset.height);
+  const width = curDragItem.item.width;
+  const height = curDragItem.item.height;
 
   return new Vector2(width, height);
 }
 
-function pickup(event: MouseEvent): void {
-  const target = event.target as HTMLDivElement;
-  target.style.opacity = opacity_moving;
+export function pickup(event: MouseEvent): void {
+  if (event.button != 0) { return }
 
-  curDragItem.item = target;
+  const currentTarget = event.currentTarget as DraggableComponentElement;
+  currentTarget.style.opacity = opacity_moving;
+
+  curDragItem.item = currentTarget;
 
   // Refree the cells below the item that has just started to be dragged
   {
     const size = getSize();
-    // const topLeft = calculateTopLeftCell(new Vector2(target.clientLeft, target.clientTop));
+    // const topLeft = calculateTopLeftCell(new Vector2(.currentTarget.clientLeft, .currentTarget.clientTop));
 
     let topLeft = new Vector2(0, 0);
-    topLeft.x = Number(target.dataset.topLeftX);
-    topLeft.y = Number(target.dataset.topLeftY);
+    topLeft.x = Number(currentTarget.dataset.topLeftX);
+    topLeft.y = Number(currentTarget.dataset.topLeftY);
 
     if (size == null) return;
 
     setCells(topLeft, size, false);
 
-    target.dataset.previousCol = topLeft.x + "";
-    target.dataset.previousRow = topLeft.y + "";
+    currentTarget.dataset.previousCol = topLeft.x + "";
+    currentTarget.dataset.previousRow = topLeft.y + "";
   }
 
-  const diffX = stripUnits(target.style.left) - event.clientX;
-  const diffY = stripUnits(target.style.top) - event.clientY;
+  const diffX = stripUnits(currentTarget.style.left) - event.clientX;
+  const diffY = stripUnits(currentTarget.style.top) - event.clientY;
 
   curDragItem.offsetX = diffX;
   curDragItem.offsetY = diffY;
@@ -159,6 +151,8 @@ function move(event: MouseEvent): void {
 }
 
 function drop(event: MouseEvent): void {
+  if (event.button != 0) { return }
+
   if (curDragItem.item == null) {
     return
   }
@@ -176,6 +170,8 @@ function drop(event: MouseEvent): void {
     if (!allValid(topLeft, size)) {
       if (item.dataset.hasBeenPlaced == "0") {
         item.remove();
+        curDragItem.item = null;
+        highlightHoveredCells(topLeft, size, false);
         return;
       }
 
@@ -194,6 +190,10 @@ function drop(event: MouseEvent): void {
     (topLeft.y + size.y) * GRID_SIZE > grid.clientHeight || topLeft.y < 0) {
 
     item.remove();
+    curDragItem.item = null;
+    setCells(topLeft, size, false);
+    highlightHoveredCells(topLeft, size, false);
+    return;
   }
 
   item.dataset.hasBeenPlaced = "1";

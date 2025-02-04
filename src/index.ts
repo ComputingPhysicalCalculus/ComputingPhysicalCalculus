@@ -1,13 +1,16 @@
 // import { InputGraph, OutputGraph } from "./UI/Graph";
 // import Vector2 from "./UI/Vector2";
 
-import { setupDragHooks } from "./UI/Drag";
-import { createGrid } from "./UI/Grid";
-
 // Required to register components
 import "./UI/IntegratorComponent";
 import "./UI/GraphElement";
+import "./UI/DraggableElement.ts";
 import { GraphElement } from "./UI/GraphElement";
+
+import { setupDragHooks } from "./UI/Drag";
+import { createGrid } from "./UI/Grid";
+import { setupPopups } from "./UI/Components.ts";
+
 
 // let canvasElement: HTMLCanvasElement;
 // let canvasCtx: CanvasRenderingContext2D;
@@ -42,7 +45,8 @@ function setup(): void {
     graph.set_data_set("a", Array.from([...generator_exp]));
     graph.set_data_set("b", Array.from([...generator_exp_1]), "red");
     graph.set_data_set("c", Array.from([...generator_exp_2]), "green");
-    
+
+    setupPopups();
     setupDragHooks();
     createGrid();
 }
