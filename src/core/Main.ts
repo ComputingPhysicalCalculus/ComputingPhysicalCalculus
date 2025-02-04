@@ -27,12 +27,9 @@ var components: Device[];
 function simulate_one_cycle(): void {
     let stack: Shaft[] = [motor.getOutput()];
     while (stack.length > 0) {
-    while (stack.length > 0) {
         let shaft = stack.pop()!;
         for (const device of shaft.outputs) {
-        for (const device of shaft.outputs) {
             let output = device.getOutput();
-            if (!output) continue;
             if (!output) continue;
             stack.push(output);
         }
@@ -46,10 +43,8 @@ function simulate_one_cycle(): void {
  */
 function update(): void {
     for (const shaft of shafts) {
-    for (const shaft of shafts) {
         shaft.update();
     }
-    for (const outputTable of outputTables) {
     for (const outputTable of outputTables) {
         outputTable.addPlot();
     }
