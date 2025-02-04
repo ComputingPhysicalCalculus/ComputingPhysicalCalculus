@@ -9,6 +9,7 @@ import { GraphElement } from "./UI/GraphElement";
 
 import { setupDragHooks } from "./UI/Drag";
 import { createGrid } from "./UI/Grid";
+import { setupPopups } from "./UI/Components.ts";
 
 
 // let canvasElement: HTMLCanvasElement;
@@ -44,7 +45,8 @@ function setup(): void {
     graph.set_data_set("a", Array.from([...generator_exp]));
     graph.set_data_set("b", Array.from([...generator_exp_1]), "red");
     graph.set_data_set("c", Array.from([...generator_exp_2]), "green");
-    
+
+    setupPopups();
     setupDragHooks();
     createGrid();
 }

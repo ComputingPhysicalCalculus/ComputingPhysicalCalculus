@@ -8,6 +8,22 @@ export enum ComponentType {
   Multiplier
 };
 
+let shaftpopup: HTMLDivElement;
+
+export function setupPopups(): void {
+  {
+    shaftpopup = document.createElement("div");
+    shaftpopup.id = "shaft_popup";
+    shaftpopup.style.visibility = "hidden";
+
+    shaftpopup.addEventListener("mouseleave", () => {
+      shaftpopup.style.visibility = "hidden";
+    })
+
+    document.getElementById("content")!.appendChild(shaftpopup);
+  }
+}
+
 export function stringToComponent(componentName: string): ComponentType | null {
   return ComponentType[componentName as keyof typeof ComponentType];
 }
@@ -46,6 +62,15 @@ function createVShaft(div: DraggableComponentElement): void {
   div.style.background = "Red";
   div.setAttribute("width", "1");
   div.setAttribute("height", "2");
+
+  div.addEventListener("contextmenu", (e) => {
+    shaftpopup.style.visibility = "visible";
+    shaftpopup.style.left = e.clientX + "px";
+    shaftpopup.style.top = e.clientY + "px";
+    shaftpopup.style.zIndex = "10";
+    console.log("popup");
+    e.preventDefault();
+  });
 }
 
 function createHShaft(div: DraggableComponentElement): void {

@@ -46,26 +46,16 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
   item.dataset.hasBeenPlaced = "0";
 
-  // item.addEventListener("mousedown", pickup);
   document.getElementById("content")!.appendChild(item);
-  // draggableItems.push(item);
 }
 
 export function setupDragHooks(): void {
-  // components = new Array<HTMLDivElement>;
-  // draggableItems = new Array<HTMLDivElement>;
-
   const list = document.querySelectorAll('.component');
   list.forEach(element => {
-    // components.push(element as HTMLDivElement);
     (element as HTMLElement).addEventListener("mousedown", creation);
   });
 
-  // components.forEach(comp => {
-  // });
-
   document.addEventListener("mousemove", move);
-
   document.addEventListener("mouseup", drop);
 }
 
@@ -104,7 +94,8 @@ function getSize(): Vector2 | null {
 }
 
 export function pickup(event: MouseEvent): void {
-  console.log(event.currentTarget);
+  if (event.button != 0) { return }
+
   const currentTarget = event.currentTarget as DraggableComponentElement;
   currentTarget.style.opacity = opacity_moving;
 
@@ -160,6 +151,8 @@ function move(event: MouseEvent): void {
 }
 
 function drop(event: MouseEvent): void {
+  if (event.button != 0) { return }
+
   if (curDragItem.item == null) {
     return
   }
@@ -177,6 +170,8 @@ function drop(event: MouseEvent): void {
     if (!allValid(topLeft, size)) {
       if (item.dataset.hasBeenPlaced == "0") {
         item.remove();
+        curDragItem.item = null;
+        highlightHoveredCells(topLeft, size, false);
         return;
       }
 
@@ -195,6 +190,10 @@ function drop(event: MouseEvent): void {
     (topLeft.y + size.y) * GRID_SIZE > grid.clientHeight || topLeft.y < 0) {
 
     item.remove();
+    curDragItem.item = null;
+    setCells(topLeft, size, false);
+    highlightHoveredCells(topLeft, size, false);
+    return;
   }
 
   item.dataset.hasBeenPlaced = "1";
