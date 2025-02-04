@@ -57,6 +57,15 @@ function init(shafts: Shaft[], motor: Motor, outputTables: OutputTable[]): void 
     (globalThis as any).outputTables = outputTables;
 }
 
+function run() {
+    // TODO:
+    // 
+    while(true) {
+        simulate_one_cycle();
+        update();
+    }
+}
+
 /*
  TODO: 
  2. have a main function to repeatedly call simulate_one_cycle and update
