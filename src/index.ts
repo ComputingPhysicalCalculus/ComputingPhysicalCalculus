@@ -1,13 +1,15 @@
 // import { InputGraph, OutputGraph } from "./UI/Graph";
 // import Vector2 from "./UI/Vector2";
 
-import { setupDragHooks } from "./UI/Drag";
-import { createGrid } from "./UI/Grid";
-
 // Required to register components
 import "./UI/IntegratorComponent";
 import "./UI/GraphElement";
+import "./UI/DraggableElement.ts";
 import { GraphElement } from "./UI/GraphElement";
+
+import { setupDragHooks } from "./UI/Drag";
+import { createGrid } from "./UI/Grid";
+
 
 // let canvasElement: HTMLCanvasElement;
 // let canvasCtx: CanvasRenderingContext2D;

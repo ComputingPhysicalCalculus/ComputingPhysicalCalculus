@@ -1,4 +1,6 @@
+import { html, render } from "lit";
 import { GRID_SIZE } from "./Grid.ts"
+import { DraggableComponentElement } from "./DraggableElement.ts";
 
 export enum ComponentType {
   VShaft,
@@ -10,8 +12,8 @@ export function stringToComponent(componentName: string): ComponentType | null {
   return ComponentType[componentName as keyof typeof ComponentType];
 }
 
-export function createComponent(component: ComponentType): HTMLDivElement {
-  const comp = document.createElement("div");
+export function createComponent(component: ComponentType): DraggableComponentElement {
+  const comp = document.createElement("draggable-component") as DraggableComponentElement;
 
   comp.id = "component";
 
@@ -34,26 +36,28 @@ export function createComponent(component: ComponentType): HTMLDivElement {
       console.error("No function defined for component: ", component);
   }
 
-  comp.style.width = Number(comp.dataset.width) * GRID_SIZE + "px";
-  comp.style.height = Number(comp.dataset.height) * GRID_SIZE + "px";
+  comp.style.width = Number(comp.width) * GRID_SIZE + "px";
+  comp.style.height = Number(comp.height) * GRID_SIZE + "px";
 
   return comp;
 }
 
-function createVShaft(div: HTMLDivElement): void {
-  div.dataset.width = "1";
-  div.dataset.height = "2";
+function createVShaft(div: DraggableComponentElement): void {
   div.style.background = "Red";
+  div.setAttribute("width", "1");
+  div.setAttribute("height", "2");
 }
 
-function createHShaft(div: HTMLDivElement): void {
-  div.dataset.width = "2";
-  div.dataset.height = "1";
+function createHShaft(div: DraggableComponentElement): void {
   div.style.background = "Green";
+  div.setAttribute("width", "2");
+  div.setAttribute("height", "1");
 }
 
-function createMultiplier(div: HTMLDivElement): void {
-  div.dataset.width = "3";
-  div.dataset.height = "1";
+function createMultiplier(div: DraggableComponentElement): void {
   div.style.background = "Blue";
+  div.setAttribute("width", "2");
+  div.setAttribute("height", "2");
+
+  render(html`<integrator-component></integrator-component>`, div);
 }
