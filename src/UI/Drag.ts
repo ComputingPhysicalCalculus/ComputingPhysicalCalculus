@@ -165,13 +165,14 @@ function drop(event: MouseEvent): void {
 
   if (topLeft == null || size == null) return;
 
+  highlightHoveredCells(topLeft, size, false);
+
   // Check whether or not the item being dragged can be placed
   {
     if (!allValid(topLeft, size)) {
       if (item.dataset.hasBeenPlaced == "0") {
         item.remove();
         curDragItem.item = null;
-        highlightHoveredCells(topLeft, size, false);
         return;
       }
 
@@ -192,7 +193,6 @@ function drop(event: MouseEvent): void {
     item.remove();
     curDragItem.item = null;
     setCells(topLeft, size, false);
-    highlightHoveredCells(topLeft, size, false);
     return;
   }
 

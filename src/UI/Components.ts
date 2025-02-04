@@ -5,6 +5,12 @@ import { DraggableComponentElement } from "./DraggableElement.ts";
 export enum ComponentType {
   VShaft,
   HShaft,
+  Gear,
+  Integrator,
+  FunctionTable,
+  Differential,
+  OutputTable,
+  Motor,
   Multiplier
 };
 
@@ -45,6 +51,14 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     case ComponentType.HShaft:
       createHShaft(comp);
       break;
+    case ComponentType.Gear:
+    case ComponentType.Integrator:
+    case ComponentType.FunctionTable:
+    case ComponentType.Differential:
+    case ComponentType.OutputTable:
+    case ComponentType.Motor:
+      temp(comp);
+      break;
     case ComponentType.Multiplier:
       createMultiplier(comp);
       break;
@@ -71,6 +85,13 @@ function createVShaft(div: DraggableComponentElement): void {
     console.log("popup");
     e.preventDefault();
   });
+}
+
+function temp(div: DraggableComponentElement): void {
+  div.style.background = "Cyan";
+  div.setAttribute("width", "4");
+  div.setAttribute("height", "4");
+
 }
 
 function createHShaft(div: DraggableComponentElement): void {
