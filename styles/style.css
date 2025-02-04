@@ -26,9 +26,16 @@ body, html {
     margin: 0;
     display: flex;
     flex-direction: row;
-    max-width: 100%;
+    width: 100%;
     height: 100%;
     overflow: none;
+}
+
+#machine {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #main-canvas {
@@ -52,4 +59,11 @@ body, html {
 
     padding: 1em;
     box-sizing: border-box;
+
+    z-index: 10;
+}
+
+integrator-component {
+    width: 100%;
+    height: 100%;
 }

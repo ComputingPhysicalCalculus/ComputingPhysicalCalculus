@@ -98,21 +98,6 @@ export abstract class GraphBase implements Drawable {
     ctx.stroke();
   }
 
-  public draw_points(ctx: CanvasRenderingContext2D, points: Vector2[]) {
-    ctx.beginPath();
-    for (let point of points) {
-      if (point.x < this.x_axis_min || point.x > this.x_axis_max || point.y < this.y_axis_min || point.y > this.y_axis_max) {
-        continue;
-      }
-
-      const x = this.map_x_graph_to_screen(point.x);
-      const y = this.map_y_graph_to_screen(point.y);
-
-      ctx.lineTo(x, y);
-    }
-
-    ctx.stroke();
-  }
 
 }
 
@@ -138,8 +123,14 @@ export class GantryGraph extends GraphBase {
 
   protected draw_gantry_head(ctx: CanvasRenderingContext2D, y: number, side: boolean): void {
 
-    if (this.gantry_x < this.x_axis_min || this.gantry_x > this.x_axis_max || y < this.y_axis_min || y > this.y_axis_max) {
+    if (this.gantry_x < this.x_axis_min || this.gantry_x > this.x_axis_max) {
       return;
+    }
+
+    if (y < this.y_axis_min) {
+      y = this.y_axis_min;
+    } else if (y > this.y_axis_max) {
+      y = this.y_axis_max;
     }
     
     const gantry_x_screen = this.map_x_graph_to_screen(this.gantry_x);
