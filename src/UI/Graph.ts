@@ -98,28 +98,6 @@ export abstract class GraphBase implements Drawable {
     ctx.stroke();
   }
 
-  public draw_points(ctx: CanvasRenderingContext2D, points: Vector2[]) {
-    ctx.beginPath();
-    for (let point of points) {
-      if (point.x < this.x_axis_min || point.x > this.x_axis_max) {
-        continue;
-      }
-
-      let point_y = point.y;
-      if (point_y < this.y_axis_min) {
-        point_y = this.y_axis_min;
-      } else if (point_y > this.y_axis_max) {
-        point_y = this.y_axis_max;
-      }
-
-      const x = this.map_x_graph_to_screen(point.x);
-      const y = this.map_y_graph_to_screen(point_y);
-
-      ctx.lineTo(x, y);
-    }
-
-    ctx.stroke();
-  }
 
 }
 

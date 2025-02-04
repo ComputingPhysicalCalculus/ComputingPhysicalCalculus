@@ -1,22 +1,28 @@
-import { InputGraph, OutputGraph } from "./UI/Graph";
-import Vector2 from "./UI/Vector2";
+// import { InputGraph, OutputGraph } from "./UI/Graph";
+// import Vector2 from "./UI/Vector2";
 
 import { setupDragHooks } from "./UI/Drag";
 import { createGrid } from "./UI/Grid";
 
-import { register as registerIntegratorComponent } from "./UI/IntegratorComponent.ts";
+// Required to register components
+import "./UI/IntegratorComponent";
+import "./UI/GraphElement";
+import { GraphElement } from "./UI/GraphElement";
 
-let canvasElement: HTMLCanvasElement;
-let canvasCtx: CanvasRenderingContext2D;
-let graph: OutputGraph;
-let input_graph: InputGraph;
+// let canvasElement: HTMLCanvasElement;
+// let canvasCtx: CanvasRenderingContext2D;
+// let graph: OutputGraph;
+// let input_graph: InputGraph;
 
 window.onload = setup;
-window.onresize = resize;
+
+const generator = function*(n: number, min: number, max: number, f: (x: number) => number) {
+    for (let i = min; i < max; i += (max - min) / n) {
+        yield { x: i, y: f(i) };
+    }
+}
 
 function setup(): void {
-    registerIntegratorComponent();
-
     let i = document.createElement("integrator-component");
     i.setAttribute("style", "position:absolute;left:50%;bottom:50%");
     i.setAttribute("leg-one", "80");
@@ -24,66 +30,19 @@ function setup(): void {
     i.setAttribute("leg-three", "60");
     document.body.appendChild(i);
 
-    canvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
-    canvasElement.width = window.innerWidth;
-    canvasElement.height = window.innerHeight;
+    let graph = document.getElementById("graph-table-1") as GraphElement;
+    let generator_exp = generator(1000, graph.x_min, graph.x_max, x => Math.exp(x));
+    let generator_exp_1 = generator(1000, graph.x_min, graph.x_max, x => 0.5 * Math.exp(x));
+    let generator_exp_2 = generator(1000, graph.x_min, graph.x_max, x => 0.25 * Math.exp(x));
 
-    canvasCtx = canvasElement.getContext("2d") as CanvasRenderingContext2D;
-    if (canvasCtx === null) {
-        return;
-    }
-
-    graph = new OutputGraph(0, 0, canvasElement.width, canvasElement.height / 2, "", 0, Math.PI * 4, "", -2.0, 2.0);
-    input_graph = new InputGraph(0, canvasElement.height / 2, canvasElement.width, canvasElement.height / 2, "", 0, Math.PI * 4, "", -2.0, 2.0);
-
-    let generator = function*(n: number, min: number, max: number, f: (x: number) => number) {
-        for (let i = min; i < max; i += (max - min) / n) {
-            yield new Vector2(i, f(i));
-        }
-    }
-
-    let generator_exp = generator(1000, graph.x_axis_min, graph.x_axis_max, x => 0.1 * Math.exp(x / 4));
-    let generator_sin = generator(1000, graph.x_axis_min, graph.x_axis_max, x => Math.sin(x * 8));
-    let generator_sin_2 = generator(1000, input_graph.x_axis_min, input_graph.x_axis_max, x => Math.sin(x * 8));
-
-    input_graph.points.push(...generator_sin_2);
-
-    window.setInterval(() => {
-        let sample_a = generator_exp.next();
-        let sample_b = generator_sin.next();
-
-        if (sample_a.done || sample_b.done) {
-            return;
-        }
-
-        input_graph.set_gantry_point(graph.points_a.length);
-        graph.points_a.push(sample_a.value);
-        graph.points_b.push(new Vector2(sample_a.value.x, sample_b.value.y * sample_a.value.y));
-        graph.update_gantry_x();
-
-
-        draw();
-    }, 1.0 / 60.0);
-
+    // graph.set_data_set("a", Array.from([
+    //     { x: 0.0, y: 1.0 },
+    //     { x: 1.0, y: 1.0 },
+    // ]));
+    graph.set_data_set("a", Array.from([...generator_exp]));
+    graph.set_data_set("b", Array.from([...generator_exp_1]), "red");
+    graph.set_data_set("c", Array.from([...generator_exp_2]), "green");
+    
     setupDragHooks();
     createGrid();
-}
-
-function resize(): void {
-    canvasElement.width = window.innerWidth;
-    canvasElement.height = window.innerHeight;
-
-    graph.width = canvasElement.width;
-    graph.height = canvasElement.height / 2;
-
-    input_graph.top = canvasElement.height / 2;
-    input_graph.width = canvasElement.width;
-    input_graph.height = canvasElement.height / 2;
-
-    draw();
-}
-
-function draw(): void {
-    graph.draw(canvasCtx);
-    input_graph.draw(canvasCtx);
 }
