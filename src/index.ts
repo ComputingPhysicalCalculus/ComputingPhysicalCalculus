@@ -8,7 +8,6 @@ import "./UI/DraggableElement.ts";
 import { GraphElement } from "./UI/GraphElement";
 
 import { setupDragHooks } from "./UI/Drag";
-import { createGrid } from "./UI/Grid";
 import { setupPopups } from "./UI/Components.ts";
 
 
@@ -48,5 +47,4 @@ function setup(): void {
 
     setupPopups();
     setupDragHooks();
-    createGrid();
 }
