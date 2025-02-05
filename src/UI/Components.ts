@@ -15,19 +15,19 @@ export enum ComponentType {
 };
 
 let shaftpopup: HTMLDivElement;
+let CURRENT_ID: number = 0;
 
 export function setupPopups(): void {
-  {
-    shaftpopup = document.createElement("div");
-    shaftpopup.id = "shaft_popup";
-    shaftpopup.style.visibility = "hidden";
+  shaftpopup = document.getElementById("shaft-popup") as HTMLDivElement;
+  shaftpopup.addEventListener("mouseleave", (e) => {
+    (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
+  });
 
-    shaftpopup.addEventListener("mouseleave", () => {
-      shaftpopup.style.visibility = "hidden";
-    })
-
-    document.getElementById("content")!.appendChild(shaftpopup);
-  }
+  shaftpopup.getElementsByTagName("input")[0].addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+    updateShaftLength(component, Number(input.value));
+  });
 }
 
 export function stringToComponent(componentName: string): ComponentType | null {
@@ -37,12 +37,14 @@ export function stringToComponent(componentName: string): ComponentType | null {
 export function createComponent(component: ComponentType): DraggableComponentElement {
   const comp = document.createElement("draggable-component") as DraggableComponentElement;
 
-  comp.id = "component";
+  comp.classList.add("placed-component")
 
   comp.style.position = "absolute";
   comp.style.background = "Blue";
   comp.style.width = GRID_SIZE + "px";
   comp.style.height = GRID_SIZE + "px";
+
+  setID(comp);
 
   switch (component) {
     case ComponentType.VShaft:
@@ -72,17 +74,37 @@ export function createComponent(component: ComponentType): DraggableComponentEle
   return comp;
 }
 
+function createUniqueID(): number {
+  const v = CURRENT_ID;
+  CURRENT_ID += 1;
+  return v;
+}
+
+function setID(div: DraggableComponentElement): void {
+  const v = createUniqueID();
+  div.setAttribute("componentID", v + "");
+  div.id = "component-" + v;
+}
+
 function createVShaft(div: DraggableComponentElement): void {
   div.style.background = "Red";
-  div.setAttribute("width", "1");
-  div.setAttribute("height", "2");
+  div.width = 1;
+  div.height = 2;
+  div.componentType = "vShaft";
+  div.shouldLockCells = false;;
+
+  div.classList.add("vShaft");
 
   div.addEventListener("contextmenu", (e) => {
     shaftpopup.style.visibility = "visible";
     shaftpopup.style.left = e.clientX + "px";
     shaftpopup.style.top = e.clientY + "px";
     shaftpopup.style.zIndex = "10";
-    console.log("popup");
+
+    const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
+    shaftpopup.getElementsByTagName("input")[0].value = target.getAttribute("height") as string;
+    shaftpopup.dataset.id = target.id;
+
     e.preventDefault();
   });
 }
@@ -91,13 +113,29 @@ function temp(div: DraggableComponentElement): void {
   div.style.background = "Cyan";
   div.setAttribute("width", "4");
   div.setAttribute("height", "4");
-
 }
 
 function createHShaft(div: DraggableComponentElement): void {
   div.style.background = "Green";
-  div.setAttribute("width", "2");
-  div.setAttribute("height", "1");
+  div.width = 2;
+  div.height = 1;
+  div.componentType = "hShaft";
+  div.shouldLockCells = false;;
+
+  div.classList.add("hShaft");
+
+  div.addEventListener("contextmenu", (e) => {
+    shaftpopup.style.visibility = "visible";
+    shaftpopup.style.left = e.clientX + "px";
+    shaftpopup.style.top = e.clientY + "px";
+    shaftpopup.style.zIndex = "10";
+
+    const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
+    shaftpopup.getElementsByTagName("input")[0].value = target.getAttribute("width") as string;
+    shaftpopup.dataset.id = target.id;
+
+    e.preventDefault();
+  });
 }
 
 function createMultiplier(div: DraggableComponentElement): void {
@@ -106,4 +144,16 @@ function createMultiplier(div: DraggableComponentElement): void {
   div.setAttribute("height", "2");
 
   render(html`<integrator-component></integrator-component>`, div);
+}
+
+function updateShaftLength(comp: DraggableComponentElement, newLength: number) {
+  const isVertical = comp.componentType == "vShaft";
+
+  if (isVertical) {
+    comp.setAttribute("height", newLength + "");
+    comp.style.height = Number(comp.height) * GRID_SIZE + "px";
+  } else {
+    comp.setAttribute("width", newLength + "");
+    comp.style.width = Number(comp.width) * GRID_SIZE + "px";
+  }
 }

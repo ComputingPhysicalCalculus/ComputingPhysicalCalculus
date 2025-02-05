@@ -15,7 +15,7 @@ type DragItem = {
   mouseY: number,
 };
 
-let curDragItem: DragItem = { item: null, offsetX: 0, offsetY: 0 };
+let curDragItem: DragItem = { item: null, offsetX: 0, offsetY: 0, mouseX: 0, mouseY: 0 };
 
 const opacity_moving: string = "10%";
 
@@ -112,7 +112,7 @@ export function pickup(event: MouseEvent): void {
 
     if (size == null) return;
 
-    setCells(topLeft, size, false);
+    if (curDragItem.item.shouldLockCells) setCells(topLeft, size, false);
 
     currentTarget.dataset.previousCol = topLeft.x + "";
     currentTarget.dataset.previousRow = topLeft.y + "";
@@ -169,7 +169,7 @@ function drop(event: MouseEvent): void {
 
   // Check whether or not the item being dragged can be placed
   {
-    if (!allValid(topLeft, size)) {
+    if (item.shouldLockCells && !allValid(topLeft, size)) {
       if (item.dataset.hasBeenPlaced == "0") {
         item.remove();
         curDragItem.item = null;
@@ -180,7 +180,9 @@ function drop(event: MouseEvent): void {
       topLeft.y = Number(item.dataset.previousRow);
     }
 
-    setCells(topLeft, size, true);
+    if (item.shouldLockCells) {
+      setCells(topLeft, size, true);
+    }
   }
 
   item.style.left = (topLeft.x * GRID_SIZE) + "px";
@@ -192,7 +194,9 @@ function drop(event: MouseEvent): void {
 
     item.remove();
     curDragItem.item = null;
-    setCells(topLeft, size, false);
+    if (item.shouldLockCells) {
+      setCells(topLeft, size, false);
+    }
     return;
   }
 

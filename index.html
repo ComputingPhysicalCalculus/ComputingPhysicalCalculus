@@ -12,11 +12,9 @@
 <body>
     <div id="content">
         <div id="machine">
-            <!-- <canvas id="main-canvas"> -->
-            <!-- </canvas> -->
-
             <div id="grid"></div>
         </div>
+
         <graph-table style="width:100%;height:100%" id="graph-table-1" x-min="0.0" x-max="2.0" y-min="0.0" y-max="5.0" gantry-x="1.0">
         </graph-table>
 
@@ -34,6 +32,13 @@
                     <div data-type="Motor" class="component">8</div>
                     <div data-type="Multiplier" class="component">9</div>
                 </div>
+            </div>
+        </div>
+
+        <div id="popups">
+            <div class="popup" id="shaft-popup" position="absolute" >
+                <label>Shaft Length</label>
+                <input class="input" type="number" id="shaft-popup-length" min="1" value="2">
             </div>
         </div>
     </div>

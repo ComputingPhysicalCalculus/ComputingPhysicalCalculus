@@ -47,13 +47,33 @@
     user-select: none;
 }
 
-#shaft_popup {
+.popup {
     position: absolute;
-    width: 100px;
-    height: 100px;
-    background: Magenta;
     border-radius: 10px;
     border-color: Black;
     border-style: solid;
     border-width: 5px;
+
+    box-sizing: border;
+}
+
+#shaft-popup {
+    width: 100px;
+    height: 100px;
+    background: Magenta;
+
+    /* Default */
+    visibility: hidden;
+}
+
+#shaft-popup > input {
+    width: 100%;
+}
+
+.vShaft {
+    z-index: 2;
+}
+
+.hShaft {
+    z-index: 1;
 }

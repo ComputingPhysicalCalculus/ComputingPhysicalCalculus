@@ -7,17 +7,26 @@ import styles from "../../styles/DraggableElement.css?inline";
 @customElement("draggable-component")
 export class DraggableComponentElement extends LitElement {
   static styles = css`${unsafeCSS(styles)}`;
-  
+
   @property({ type: Number })
   width: number = 1;
 
-  @property({ type: Number})
+  @property({ type: Number })
   height: number = 1;
+
+  @property({ type: Number })
+  componentID: number = 0;
+
+  @property({ type: String })
+  componentType: string = "";
+
+  @property({ type: Boolean })
+  shouldLockCells: boolean = true;
 
   private _handle_mousedown(e: MouseEvent) {
     pickup(e);
   }
-  
+
   connectedCallback(): void {
     super.connectedCallback();
 
