@@ -3,6 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { pickup } from "./Drag";
 
 import styles from "../../styles/DraggableElement.css?inline";
+import { GRID_SIZE } from "./Grid";
 
 @customElement("draggable-component")
 export class DraggableComponentElement extends LitElement {
@@ -13,6 +14,12 @@ export class DraggableComponentElement extends LitElement {
 
   @property({ type: Number })
   height: number = 1;
+
+  @property({ type: Number })
+  top: number = 0;
+
+  @property({ type: Number })
+  left: number = 0;
 
   @property({ type: Number })
   componentID: number = 0;
@@ -34,6 +41,9 @@ export class DraggableComponentElement extends LitElement {
   }
 
   render() {
+    this.style.width = `${this.width * GRID_SIZE}px`;
+    this.style.height = `${this.height * GRID_SIZE}px`;
+    
     return html`
       <div class="container">
         <slot></slot>

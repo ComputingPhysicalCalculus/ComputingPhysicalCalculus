@@ -1,5 +1,5 @@
 {
-  "Shafts": [
+  "shafts": [
     {
       "shaftID": 1,
       "start": [0, 1],
@@ -17,7 +17,7 @@
     }
   ],
 
-  "Components": [
+  "components": [
     {
       "type": "integrator",
       "compID": 1,
