@@ -37,7 +37,7 @@ export function setupPopups(): void {
 
       let positiveLength = 0;
       if (input.id == "shaft-popup-positive-increase") positiveLength = 1;
-      if (input.id == "shaft-popup-positiive-decrease") positiveLength = -1;
+      if (input.id == "shaft-popup-positive-decrease") positiveLength = -1;
 
       updateShaftLength(component, negativeLength, positiveLength);
     })
