@@ -11,8 +11,6 @@ type DragItem = {
 
 let curDragItem: DragItem = { item: null, mouseX: 0, mouseY: 0 };
 
-const opacity_moving: string = "80%";
-
 function createNewObject(x: number, y: number, typeString: string): void {
   const componentType: ComponentType | null = stringToComponent(typeString);
 
@@ -36,7 +34,7 @@ function createNewObject(x: number, y: number, typeString: string): void {
   const posX: number = x + item.offsetX;
   const posY: number = y + item.offsetY;
 
-  item.style.opacity = opacity_moving;
+  item.classList.add("dragged");
 
   item.style.top = `${posY}px`;
   item.style.left = `${posX}px`;
@@ -81,7 +79,7 @@ export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
   const currentTarget = event.currentTarget as DraggableComponentElement;
-  currentTarget.style.opacity = opacity_moving;
+  currentTarget.classList.add("dragged");
 
   curDragItem.item = currentTarget;
 
@@ -146,7 +144,7 @@ function drop(event: MouseEvent): void {
   }
 
   const item = curDragItem.item;
-  item.style.opacity = "100%";
+  item.classList.remove("dragged");
 
   let topLeft = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
   const size = item.getSize();

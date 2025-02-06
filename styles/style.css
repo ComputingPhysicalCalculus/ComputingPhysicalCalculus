@@ -1,3 +1,21 @@
+:root {
+    --colour-background: #CCC5B9;
+    --colour-accent1: #4F6D5A;
+    --colour-accent2: #5A7D7C;
+    --colour-accent3: #C4703D;
+    --colour-accent4: #B89B53;
+    --colour-accent5: #30555E;
+    --colour-highlight1: #8CCB5E;
+    --colour-highlight2: #D48C35;
+    --colour-highlight3: #364D1A;
+    --text-colour: #E0E0E0;
+    /* --text-colour: #101010; */
+
+    font-family: monospace;
+    color: var(--text-colour);
+    background: var(--colour-background);
+}
+
 .center {
     width: 50%;
     border: 3px solid green;
@@ -29,17 +47,13 @@ body, html {
     width: 100%;
     height: 100%;
     overflow: none;
+
+    background: var(--colour-background);
 }
 
 #machine {
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#main-canvas {
-    margin: 0;
     width: 100%;
     height: 100%;
 }
@@ -50,17 +64,17 @@ body, html {
     flex-direction: column;
 
     resize: horizontal;
-    width: 20%;
+    width: 30vw;
     height: 100%;
     overflow: none;
 
-    background: #FFCEC4;
+    background: var(--colour-accent2);
     border-radius: 5;
 
-    padding: 1em;
+    padding: 15px;
     box-sizing: border-box;
 
-    z-index: 10;
+    z-index: 6;
 }
 
 integrator-component {
