@@ -1,6 +1,8 @@
 import { html, render } from "lit";
 import { GRID_SIZE } from "./Grid.ts"
 import { DraggableComponentElement } from "./DraggableElement.ts";
+import { GraphElement } from "./GraphElement.ts";
+import { generator } from "../index.ts";
 
 export enum ComponentType {
   VShaft,
@@ -55,7 +57,6 @@ export function createComponent(component: ComponentType): DraggableComponentEle
       break;
     case ComponentType.Gear:
     case ComponentType.Integrator:
-    case ComponentType.FunctionTable:
     case ComponentType.Differential:
     case ComponentType.OutputTable:
     case ComponentType.Motor:
@@ -63,6 +64,9 @@ export function createComponent(component: ComponentType): DraggableComponentEle
       break;
     case ComponentType.Multiplier:
       createMultiplier(comp);
+      break;
+    case ComponentType.FunctionTable:
+      createFunctionTable(comp);
       break;
     default:
       console.error("No function defined for component: ", component);
@@ -113,6 +117,26 @@ function temp(div: DraggableComponentElement): void {
   div.style.background = "Cyan";
   div.setAttribute("width", "4");
   div.setAttribute("height", "4");
+}
+
+function createFunctionTable(div: DraggableComponentElement): void {
+  div.style.background = "lightgray";
+  div.setAttribute("width", "4");
+  div.setAttribute("height", "4");
+
+  let function_table = document.createElement("graph-table") as GraphElement;
+  function_table.setAttribute("style", "width:100%;height:100%");
+  function_table.setAttribute("x-min", "0.0");
+  function_table.setAttribute("x-max", "2.0");
+  function_table.setAttribute("y-min", "0.0");
+  function_table.setAttribute("y-max", "5.0");
+  function_table.setAttribute("gantry-x", "1.0");
+  function_table.setAttribute("padding", "1");
+
+  let generator_exp = generator(100, function_table.x_min, function_table.x_max, x => Math.exp(x));
+
+  function_table.set_data_set("a", Array.from([...generator_exp]));
+  div.appendChild(function_table);
 }
 
 function createHShaft(div: DraggableComponentElement): void {

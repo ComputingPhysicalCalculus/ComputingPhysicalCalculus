@@ -4,8 +4,8 @@
 // Required to register components
 import "./UI/IntegratorComponent";
 import "./UI/GraphElement";
-import "./UI/DraggableElement.ts";
-import { GraphElement } from "./UI/GraphElement";
+import "./UI/DraggableElement";
+import "./UI/GraphElement";
 
 import { setupDragHooks } from "./UI/Drag";
 import { setupPopups } from "./UI/Components.ts";
@@ -18,7 +18,7 @@ import { setupPopups } from "./UI/Components.ts";
 
 window.onload = setup;
 
-const generator = function*(n: number, min: number, max: number, f: (x: number) => number) {
+export const generator = function*(n: number, min: number, max: number, f: (x: number) => number) {
     for (let i = min; i < max; i += (max - min) / n) {
         yield { x: i, y: f(i) };
     }
@@ -32,18 +32,18 @@ function setup(): void {
     // i.setAttribute("leg-three", "60");
     // document.body.appendChild(i);
 
-    let graph = document.getElementById("graph-table-1") as GraphElement;
-    let generator_exp = generator(1000, graph.x_min, graph.x_max, x => Math.exp(x));
-    let generator_exp_1 = generator(1000, graph.x_min, graph.x_max, x => 0.5 * Math.exp(x));
-    let generator_exp_2 = generator(1000, graph.x_min, graph.x_max, x => 0.25 * Math.exp(x));
+    // let graph = document.getElementById("graph-table-1") as GraphElement;
+    // let generator_exp = generator(1000, graph.x_min, graph.x_max, x => Math.exp(x));
+    // let generator_exp_1 = generator(1000, graph.x_min, graph.x_max, x => 0.5 * Math.exp(x));
+    // let generator_exp_2 = generator(1000, graph.x_min, graph.x_max, x => 0.25 * Math.exp(x));
 
     // graph.set_data_set("a", Array.from([
     //     { x: 0.0, y: 1.0 },
     //     { x: 1.0, y: 1.0 },
     // ]));
-    graph.set_data_set("a", Array.from([...generator_exp]));
-    graph.set_data_set("b", Array.from([...generator_exp_1]), "red");
-    graph.set_data_set("c", Array.from([...generator_exp_2]), "green");
+    // graph.set_data_set("a", Array.from([...generator_exp]));
+    // graph.set_data_set("b", Array.from([...generator_exp_1]), "red");
+    // graph.set_data_set("c", Array.from([...generator_exp_2]), "green");
 
     setupPopups();
     setupDragHooks();
