@@ -86,8 +86,8 @@ function parse_config(config: any): void {
     const initialY2: number = 0; // initial y2 position of the output table
 
     // create the shafts
-    for(let i = 0;i<config.shafts.length;++i) {
-        shafts.push(new Shaft(i, []));
+    for(const shaft of config.shafts) {
+        shafts.push(new Shaft(shaft.id, []));
     }
 
     // create the components
