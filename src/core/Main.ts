@@ -23,15 +23,21 @@ var components: Device[];
  * @function simulate_one_cycle
  * @description simulates one cycle of the differential analyzer using topological sort
  * @return void
+ * @author Andy Zhu
  */
 function simulate_one_cycle(): void {
     let stack: Shaft[] = [motor.getOutput()];
+    let visited: Set<number> = new Set<number>();
+    visited.add(stack[0].id);
     while (stack.length > 0) {
         let shaft = stack.pop()!;
         for (const device of shaft.outputs) {
             let output = device.getOutput();
             if (!output) continue;
-            stack.push(output);
+            if (!visited.has(output.id)) {
+                stack.push(output);
+                visited.add(output.id);
+            }
         }
     }
 }
@@ -40,6 +46,7 @@ function simulate_one_cycle(): void {
  * @function update
  * @description update the value of all shafts and call addPlot on all outputTable
  * @return void
+ * @author Andy Zhu
  */
 function update(): void {
     for (const shaft of shafts) {
@@ -57,6 +64,7 @@ function update(): void {
  * @param motor the motor object from UI
  * @param outputTables list of outputTable from UI
  * @return void
+ * @author Andy Zhu
  */
 function init(shafts: Shaft[], motor: Motor, outputTables: OutputTable[]): void {
     (globalThis as any).shafts = shafts;
@@ -78,8 +86,8 @@ function parse_config(config: any): void {
     const initialY2: number = 0; // initial y2 position of the output table
 
     // create the shafts
-    for (const _ of config.shafts) {
-        shafts.push(new Shaft([]));
+    for(let i = 0;i<config.shafts.length;++i) {
+        shafts.push(new Shaft(i, []));
     }
 
     // create the components
@@ -106,7 +114,6 @@ function parse_config(config: any): void {
                 );
                 shafts[component.variableOfIntegrationShaft].outputs.push(new_component);
                 shafts[component.integrandShaft].outputs.push(new_component);
-                shafts[component.outputShaft].outputs.push(new_component);
                 components.push(new_component);
                 break;
 
@@ -117,7 +124,6 @@ function parse_config(config: any): void {
                     component.factor
                 );
                 shafts[component.inputShaft].outputs.push(new_component);
-                shafts[component.outputShaft].outputs.push(new_component);
                 components.push(new_component);
                 break;
 
@@ -129,7 +135,6 @@ function parse_config(config: any): void {
                     Math.sin // TODO: hardcoded for now to test the engine
                 );
                 shafts[component.inputShaft].outputs.push(new_component);
-                shafts[component.outputShaft].outputs.push(new_component);
                 components.push(new_component);
                 break;
 
@@ -140,7 +145,6 @@ function parse_config(config: any): void {
                     rotation,
                     shafts[component.outputShaft]
                 );
-                shafts[component.outputShaft].outputs.push(motor);
                 components.push(motor);
                 break;
 
@@ -177,9 +181,4 @@ function run(): void {
 }
 
 run();
-
-/*
- TODO: 
- 2. have a main function to repeatedly call simulate_one_cycle and update
- */
 
