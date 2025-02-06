@@ -50,6 +50,12 @@ export class DraggableComponentElement extends LitElement {
   @property({ type: Number })
   offsetY: number = 0;
 
+  @property({ type: Number })
+  inputRatio: number = 1;
+
+  @property({ type: Number })
+  outputRatio: number = 1;
+
 
   connectedCallback(): void {
     super.connectedCallback();
