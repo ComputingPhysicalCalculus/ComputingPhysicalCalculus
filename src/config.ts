@@ -1,4 +1,6 @@
 import { ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { DraggableComponentElement } from "./UI/DraggableElement";
+import { setCells } from "./UI/Grid";
 
 export type Config = {
   shafts: ShaftConfig[];
@@ -89,8 +91,11 @@ export function downloadConfig(config: Config): void {
 export function clearEnvironment(): void {
   let components = document.querySelectorAll(".placed-component");
   for (let component of components) {
+    let { top, left, width, height } = component as DraggableComponentElement;
     console.log(component);
     component.remove();
+
+    setCells({ x: left, y: top }, { x: width, y: height }, false);
   }
 }
 
@@ -119,6 +124,7 @@ export function loadConfig(config: Config): void {
     let item = createComponent(stringToComponent(componentType) as ComponentType);
     item.top = top;
     item.left = left;
+    item.id = `component-${components.compID}`;
 
     item.dataset.hasBeenPlaced = "0";
 
@@ -148,6 +154,7 @@ export function loadConfig(config: Config): void {
     item.left = left;
     item.width = width;
     item.height = height;
+    item.id = `shaft-component-${shaft.shaftID}`;
 
     item.dataset.hasBeenPlaced = "0";
 
