@@ -16,9 +16,9 @@ export class OutputTable implements Device {
     private x: Shaft;
     private y1: Shaft;
     private y2: Shaft | undefined;
-    private xHistory: number[];
-    private y1History: number[];
-    private y2History: number[] | undefined;
+    xHistory: number[];
+    y1History: number[];
+    y2History: number[] | undefined;
     constructor(x: Shaft, y1: Shaft, initialY1: number, y2: Shaft, initialY2: number);
     constructor(x: Shaft, y1: Shaft, initialY1: number);
 
