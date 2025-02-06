@@ -23,14 +23,16 @@
       "compID": 1,
       "variableOfIntegrationShaft": 1,
       "integrandShaft": 2,
-      "outputShaft": 0
+      "outputShaft": 0,
+      "position": [6, 6]
     },
     {
       "type": "differential",
       "compID": 2,
       "inputShaft1": 1,
       "inputShaft2": 2,
-      "outputShaft": 0
+      "outputShaft": 0,
+      "position": [6, 6]
     },
     {
       "type": "multiplier",
