@@ -89,6 +89,13 @@
     z-index: 1;
 }
 
-.gear {
+.gear,
+.integrator,
+.functionTable,
+.differential,
+.outputTable,
+.motor,
+.multiplier
+{
     z-index: 3;
 }

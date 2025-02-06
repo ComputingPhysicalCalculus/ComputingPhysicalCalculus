@@ -62,14 +62,17 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     case ComponentType.VShaft:
       createVShaft(comp);
       break;
-    case ComponentType.HShaft:
-      createHShaft(comp);
-      break;
     case ComponentType.Gear:
       createGear(comp);
       break;
+    case ComponentType.HShaft:
+      createHShaft(comp);
+      break;
     case ComponentType.Integrator:
       createIntegrator(comp);
+      break;
+    case ComponentType.FunctionTable:
+      createFunctionTable(comp);
       break;
     case ComponentType.Differential:
       createDifferential(comp);
@@ -82,9 +85,6 @@ export function createComponent(component: ComponentType): DraggableComponentEle
       break;
     case ComponentType.Multiplier:
       createMultiplier(comp);
-      break;
-    case ComponentType.FunctionTable:
-      createFunctionTable(comp);
       break;
     default:
       console.error("No function defined for component: ", component);
@@ -177,6 +177,30 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.classList.add("integrator");
 }
 
+function createFunctionTable(div: DraggableComponentElement): void {
+  div.style.background = "lightgray";
+  div.width = 4;
+  div.height = 4;
+  div.componentType = "functionTable";
+  div.shouldLockCells = true;
+  div.classList.add("functionTable");
+
+  let function_table = document.createElement("graph-table") as GraphElement;
+  function_table.setAttribute("style", "width:100%;height:100%");
+  function_table.setAttribute("x-min", "0.0");
+  function_table.setAttribute("x-max", "2.0");
+  function_table.setAttribute("y-min", "0.0");
+  function_table.setAttribute("y-max", "5.0");
+  function_table.setAttribute("gantry-x", "1.0");
+  function_table.setAttribute("padding", "1");
+
+  let generator_exp = generator(100, function_table.x_min, function_table.x_max, x => Math.exp(x));
+
+  function_table.set_data_set("a", Array.from([...generator_exp]));
+  div.appendChild(function_table);
+}
+
+
 function createDifferential(div: DraggableComponentElement): void {
   div.style.background = "LawnGreen";
   div.width = 1;
@@ -213,29 +237,6 @@ function createMultiplier(div: DraggableComponentElement): void {
   div.classList.add("multiplier");
 
   render(html`<integrator-component></integrator-component>`, div);
-}
-
-function createFunctionTable(div: DraggableComponentElement): void {
-  div.style.background = "lightgray";
-  div.width = 4;
-  div.height = 4;
-  div.componentType = "functionTable";
-  div.shouldLockCells = true;
-  div.classList.add("functionTable");
-
-  let function_table = document.createElement("graph-table") as GraphElement;
-  function_table.setAttribute("style", "width:100%;height:100%");
-  function_table.setAttribute("x-min", "0.0");
-  function_table.setAttribute("x-max", "2.0");
-  function_table.setAttribute("y-min", "0.0");
-  function_table.setAttribute("y-max", "5.0");
-  function_table.setAttribute("gantry-x", "1.0");
-  function_table.setAttribute("padding", "1");
-
-  let generator_exp = generator(100, function_table.x_min, function_table.x_max, x => Math.exp(x));
-
-  function_table.set_data_set("a", Array.from([...generator_exp]));
-  div.appendChild(function_table);
 }
 
 

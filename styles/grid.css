@@ -23,4 +23,6 @@
 
 .highlighted-cell {
     background: DarkOrchid;
+    z-index: 4;
+    opacity: 30%;
 }

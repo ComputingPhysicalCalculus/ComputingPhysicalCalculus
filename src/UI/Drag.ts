@@ -11,7 +11,7 @@ type DragItem = {
 
 let curDragItem: DragItem = { item: null, mouseX: 0, mouseY: 0 };
 
-const opacity_moving: string = "10%";
+const opacity_moving: string = "80%";
 
 function createNewObject(x: number, y: number, typeString: string): void {
   const componentType: ComponentType | null = stringToComponent(typeString);
