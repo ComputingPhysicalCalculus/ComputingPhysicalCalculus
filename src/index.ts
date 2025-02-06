@@ -33,7 +33,11 @@ function setup(): void {
     let export_button = document.getElementById("export-button") as HTMLButtonElement;
     let file_picker = document.getElementById("config-file-upload") as HTMLInputElement;
 
-    export_button.addEventListener("click", _ => downloadConfig(example_config as Config));
+    export_button.addEventListener("click", _ => {
+        // TODO: Generate config
+        
+        downloadConfig(example_config as Config)
+    });
     import_button.addEventListener("click", _ => {
         let file = file_picker.files?.[0];
         if (file === null || file === undefined) {
