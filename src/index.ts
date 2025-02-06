@@ -103,7 +103,7 @@ function setup(): void {
                     output_graph.mutate_data_set("1", points => {
                         let set_1 = [];
                         for (let i = 0; i < table.xHistory.length; i++) {
-                            set_1.push(new Vector2(table.xHistory[i] / steps * 10, table.y1History[i]));
+                            set_1.push(new Vector2(table.xHistory[i] / steps * (output_graph.x_max - output_graph.x_min) - output_graph.x_min, table.y1History[i]));
                         }
                         
                         points.splice(0, points.length, ...set_1)
@@ -115,7 +115,7 @@ function setup(): void {
                         }
                         let set_2 = []
                         for (let i = 0; i < table.xHistory.length; i++) {
-                            set_2.push(new Vector2(table.xHistory[i] / steps * 10, table.y2History[i]));
+                            set_2.push(new Vector2(table.xHistory[i] / steps * (output_graph.x_max - output_graph.x_min) - output_graph.x_min, table.y2History[i]));
                         }
 
                         points.splice(0, points.length, ...set_2);
