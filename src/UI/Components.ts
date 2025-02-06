@@ -55,8 +55,6 @@ export function createComponent(component: ComponentType): DraggableComponentEle
 
   comp.style.position = "absolute";
   comp.style.background = "Blue";
-  comp.style.width = GRID_SIZE + "px";
-  comp.style.height = GRID_SIZE + "px";
 
   setID(comp);
 
@@ -91,9 +89,6 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     default:
       console.error("No function defined for component: ", component);
   }
-
-  comp.style.width = Number(comp.width) * GRID_SIZE + "px";
-  comp.style.height = Number(comp.height) * GRID_SIZE + "px";
 
   return comp;
 }
@@ -144,7 +139,6 @@ function createGear(div: DraggableComponentElement): void {
   div.height = 1;
   div.componentType = "gear";
   div.shouldLockCells = true;
-
   div.classList.add("gear");
 }
 
@@ -223,8 +217,11 @@ function createMultiplier(div: DraggableComponentElement): void {
 
 function createFunctionTable(div: DraggableComponentElement): void {
   div.style.background = "lightgray";
-  div.setAttribute("width", "4");
-  div.setAttribute("height", "4");
+  div.width = 4;
+  div.height = 4;
+  div.componentType = "functionTable";
+  div.shouldLockCells = true;
+  div.classList.add("functionTable");
 
   let function_table = document.createElement("graph-table") as GraphElement;
   function_table.setAttribute("style", "width:100%;height:100%");
@@ -252,6 +249,4 @@ function updateShaftLength(comp: DraggableComponentElement, negativeLength: numb
     comp.left = comp.left - negativeLength;
     comp.width = Math.max(comp.width + negativeLength + positiveLength, 1);
   }
-
-  comp.update();
 }
