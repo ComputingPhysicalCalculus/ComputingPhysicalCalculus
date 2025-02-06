@@ -34,6 +34,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
   },
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["src/UI/**/*"]
 }
