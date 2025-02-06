@@ -194,13 +194,13 @@ function createFunctionTable(div: DraggableComponentElement): void {
   let function_table = document.createElement("graph-table") as GraphElement;
   function_table.setAttribute("style", "width:100%;height:100%");
   function_table.setAttribute("x-min", "0.0");
-  function_table.setAttribute("x-max", "2.0");
-  function_table.setAttribute("y-min", "0.0");
-  function_table.setAttribute("y-max", "5.0");
-  function_table.setAttribute("gantry-x", "1.0");
+  function_table.setAttribute("x-max", "10.0");
+  function_table.setAttribute("y-min", "-1.5");
+  function_table.setAttribute("y-max", "1.5");
+  function_table.setAttribute("gantry-x", "0.0");
   function_table.setAttribute("padding", "1");
 
-  let generator_exp = generator(100, function_table.x_min, function_table.x_max, x => Math.exp(x));
+  let generator_exp = generator(100, function_table.x_min, function_table.x_max, Math.sin);
 
   function_table.set_data_set("a", Array.from([...generator_exp]));
   div.appendChild(function_table);
@@ -223,6 +223,24 @@ function createOutputTable(div: DraggableComponentElement): void {
   div.componentType = "outputTable";
   div.shouldLockCells = true;
   div.classList.add("outputTable");
+
+  render(html`
+    <graph-table
+      style="width:100%;height:100%"
+      x-min="0.0"
+      x-max="10.0"
+      y-min="-1.5"
+      y-max="1.5"
+      gantry-x="0.0"
+      padding="1"
+    >
+    </graph-table>
+  `, div)
+
+  let graph = div.querySelector("graph-table") as GraphElement;
+
+  graph.set_data_set("1", [{ x: 0, y: 0 }], "blue");
+  graph.set_data_set("2", [{ x: 0, y: 0 }], "red", true);
 }
 
 function createMotor(div: DraggableComponentElement): void {

@@ -12,7 +12,12 @@ import "./UI/MotorComponent";
 import { setupDragHooks } from "./UI/Drag";
 import { setupPopups } from "./UI/Components.ts";
 import { Config, downloadConfig, loadConfig } from "./config.ts";
-import example_config from "../ExampleConfig.json";
+import _example_config from "../integrating-linear.json";
+import { Simulator } from "./core/Main.ts";
+import { GraphElement } from "./UI/GraphElement";
+import Vector2 from "./UI/Vector2.ts";
+
+export const EXAMPLE_CONFIG: Config = _example_config as any;
 
 // import exampleConfig from "../ExampleConfig.json";
 
@@ -30,15 +35,21 @@ export const generator = function*(n: number, min: number, max: number, f: (x: n
     }
 }
 
+// Sorry for the gobal
+let current_config: Config | null = null;
+
 function setup(): void {
     let import_button = document.getElementById("import-button") as HTMLButtonElement;
     let export_button = document.getElementById("export-button") as HTMLButtonElement;
     let file_picker = document.getElementById("config-file-upload") as HTMLInputElement;
+    let run_button = document.getElementById("run-simulation") as HTMLButtonElement;
+    let steps_input = document.getElementById("step-counter") as HTMLInputElement;
+    let step_period_input = document.getElementById("step-period") as HTMLInputElement;
 
     export_button.addEventListener("click", _ => {
         // TODO: Generate config
         
-        downloadConfig(example_config as Config)
+        downloadConfig(EXAMPLE_CONFIG)
     });
     import_button.addEventListener("click", _ => {
         let file = file_picker.files?.[0];
@@ -55,8 +66,69 @@ function setup(): void {
                 return;
             }
 
-            loadConfig(JSON.parse(content.toString()) as Config);
+            current_config = JSON.parse(content.toString()) as Config;
+            loadConfig(current_config);
         }
+    });
+    run_button.addEventListener("click", _ => {
+        // Generate config
+        
+        let steps = Number(steps_input.value);
+        let step_period = Number(step_period_input.value);
+
+        if (steps <= 0 || step_period < 0 || current_config === null) {
+            return;
+        }
+
+        let simulator = Simulator.parse_config(current_config);
+
+        // for (let i = 0; i < steps; i++) {
+        //     simulator.step();
+        // }
+        let i = 0;
+        const step_function = () => {
+            if (i >= steps) {
+                return;
+            }
+
+            simulator.step();
+
+            if (simulator.outputTables.length > 0) {
+                let output_graph = document.querySelector(".outputTable > graph-table") as GraphElement | null;
+                if (output_graph !== null && output_graph !== undefined) {
+                    let table = simulator.outputTables[0];
+
+                    console.log(table.y1History);
+
+                    output_graph.mutate_data_set("1", points => {
+                        let set_1 = [];
+                        for (let i = 0; i < table.xHistory.length; i++) {
+                            set_1.push(new Vector2(table.xHistory[i] / steps * 10, table.y1History[i]));
+                        }
+                        
+                        points.splice(0, points.length, ...set_1)
+                    });
+
+                    output_graph.mutate_data_set("2", points => {
+                        if (table.y2History === undefined) {
+                            return;
+                        }
+                        let set_2 = []
+                        for (let i = 0; i < table.xHistory.length; i++) {
+                            set_2.push(new Vector2(table.xHistory[i] / steps * 10, table.y2History[i]));
+                        }
+
+                        points.splice(0, points.length, ...set_2);
+                    })
+                }
+            }
+            
+            i += 1;
+
+            window.setTimeout(step_function, step_period * 1000.0);
+        }
+
+        step_function();
     });
     
     // let i = document.createElement("integrator-component");

@@ -10,7 +10,7 @@ export type Config = {
 export type ShaftID = number;
 
 export type ShaftConfig = {
-  shaftID: ShaftID;
+  id: ShaftID;
   start: [ number, number ];
   end: [ number, number ];
 };
@@ -21,7 +21,7 @@ export type IntegratorConfig = {
   type: "integrator";
   compID: number;
   variableOfIntegrationShaft: ShaftID;
-  intagrandShaft: ShaftID;
+  integrandShaft: ShaftID;
   outputShaft: ShaftID;
   position: [ number, number ];
 };
@@ -112,10 +112,8 @@ const type_name_dict = {
 export function loadConfig(config: Config): void {
   clearEnvironment();
 
-  console.log(config);
-
   for (let components of config.components) {
-    let [top, left] = components.position;
+    let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
     if (componentType === null || componentType === undefined) {
       return;
@@ -132,9 +130,8 @@ export function loadConfig(config: Config): void {
   }
 
   for (let shaft of config.shafts) {
-    console.log(shaft);
-    let [top, left] = shaft.start;
-    let [bottom, right] = shaft.end;
+    let [left, top] = shaft.start;
+    let [right, bottom] = shaft.end;
 
     let width = right - left + 1;
     let height = bottom - top + 1;
@@ -154,7 +151,7 @@ export function loadConfig(config: Config): void {
     item.left = left;
     item.width = width;
     item.height = height;
-    item.id = `shaft-component-${shaft.shaftID}`;
+    item.id = `shaft-component-${shaft.id}`;
 
     item.dataset.hasBeenPlaced = "0";
 
