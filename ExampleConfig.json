@@ -1,36 +1,36 @@
 {
-  "Shafts": [
+  "shafts": [
     {
-      "shaftID": 1,
+      "shaftID": 0,
       "start": [0, 1],
       "end": [0, 5]
     },
     {
-      "shaftID": 2,
+      "shaftID": 1,
       "start": [1, 1],
       "end": [1, 5]
     },
     {
-      "shaftID": 3,
+      "shaftID": 2,
       "start": [2, 1],
       "end": [2, 5]
     }
   ],
 
-  "Components": [
+  "components": [
     {
       "type": "integrator",
       "compID": 1,
       "variableOfIntegrationShaft": 1,
       "integrandShaft": 2,
-      "outputShaft": 3
+      "outputShaft": 0
     },
     {
       "type": "differential",
       "compID": 2,
       "inputShaft1": 1,
       "inputShaft2": 2,
-      "outputShaft": 3
+      "outputShaft": 0
     },
     {
       "type": "multiplier",
@@ -56,13 +56,6 @@
       "inputShaft": 1,
       "outputShaft1": 2,
       "outputShaft2": ""
-    },
-    {
-      "type": "gear",
-      "compID": 7,
-      "horizotan": 1,
-      "vertical": 2,
-      "ratio": 1
     }
   ]
 }
