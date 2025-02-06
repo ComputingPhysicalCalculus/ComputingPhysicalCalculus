@@ -42,6 +42,7 @@ export class GraphElement extends LitElement {
     }
   } = {};
 
+  // Keep in this form otherwise `this` will be undefined
   private _handle_resize = () => {
     this._canvas.width = this.offsetWidth;
     this._canvas.height = this.offsetHeight;
@@ -98,6 +99,8 @@ export class GraphElement extends LitElement {
       console.log("Failed to get canvas 2d context");
       return;
     }
+
+    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
     ctx.lineWidth = 2;
     ctx.strokeStyle = "black";

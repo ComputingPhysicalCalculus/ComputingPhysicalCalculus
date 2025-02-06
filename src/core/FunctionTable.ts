@@ -39,6 +39,9 @@ export class FunctionTable implements Device {
      * @returns The output shaft that represents the output of the FunctionTable
      */
     getOutput(): Shaft | undefined {
+        if(!this.input.resultReady) {
+            return undefined;
+        }
         if(!this.output.resultReady) {
             this.x_position += this.input.nextRotation;
             this.output.resultReady = true;

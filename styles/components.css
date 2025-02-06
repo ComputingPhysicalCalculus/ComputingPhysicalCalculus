@@ -47,44 +47,21 @@
     user-select: none;
 }
 
-.popup {
-    position: absolute;
-    border-radius: 10px;
-    border-color: Black;
-    border-style: solid;
-    border-width: 5px;
-    padding: 5px;
-
-    box-sizing: border;
-}
-
-#shaft-popup {
-    background: Magenta;
-    display: flex;
-    flex-direction: column;
-
-    /* Default */
-    /* left: 100px; */
-    /* top: 100px; */
-    visibility: hidden;
-}
-
-#shaft-popup > div {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding: 0 10px;
-    gap: 50px;
-}
-
-#shaft-popup > div >button {
-    width: 50%;
-}
-
 .vShaft {
     z-index: 2;
 }
 
 .hShaft {
     z-index: 1;
+}
+
+.gear,
+.integrator,
+.functionTable,
+.differential,
+.outputTable,
+.motor,
+.multiplier
+{
+    z-index: 3;
 }

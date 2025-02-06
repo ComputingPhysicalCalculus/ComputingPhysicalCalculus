@@ -2,7 +2,6 @@ import Vector2 from "./Vector2";
 
 export const GRID_SIZE: number = 50;
 
-const LOCKED_CELL: string = "locked-cell";
 const HIGHLIGHT_CELL: string = "highlighted-cell";
 
 // String is json version of Vector2
