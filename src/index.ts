@@ -9,6 +9,10 @@ import "./UI/GraphElement";
 
 import { setupDragHooks } from "./UI/Drag";
 import { setupPopups } from "./UI/Components.ts";
+import { Config, downloadConfig, loadConfig } from "./config.ts";
+import example_config from "../ExampleConfig.json";
+
+// import exampleConfig from "../ExampleConfig.json";
 
 
 // let canvasElement: HTMLCanvasElement;
@@ -25,6 +29,30 @@ export const generator = function*(n: number, min: number, max: number, f: (x: n
 }
 
 function setup(): void {
+    let import_button = document.getElementById("import-button") as HTMLButtonElement;
+    let export_button = document.getElementById("export-button") as HTMLButtonElement;
+    let file_picker = document.getElementById("config-file-upload") as HTMLInputElement;
+
+    export_button.addEventListener("click", _ => downloadConfig(example_config as Config));
+    import_button.addEventListener("click", _ => {
+        let file = file_picker.files?.[0];
+        if (file === null || file === undefined) {
+            return;
+        }
+
+        let reader = new FileReader();
+        reader.readAsText(file, "utf-8");
+
+        reader.onload = e => {
+            let content = e.target?.result;
+            if (content === null || content === undefined) {
+                return;
+            }
+
+            loadConfig(JSON.parse(content.toString()) as Config);
+        }
+    });
+    
     // let i = document.createElement("integrator-component");
     // i.setAttribute("style", "position:absolute;left:50%;bottom:50%");
     // i.setAttribute("leg-one", "80");
