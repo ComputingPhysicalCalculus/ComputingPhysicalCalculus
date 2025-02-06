@@ -8,6 +8,7 @@ import "./UI/DraggableElement";
 import "./UI/GraphElement";
 import "./UI/ShaftElement";
 import "./UI/MotorComponent";
+import "./UI/GearComponentElement";
 
 import { setupDragHooks } from "./UI/Drag";
 import { setupPopups } from "./UI/Components.ts";

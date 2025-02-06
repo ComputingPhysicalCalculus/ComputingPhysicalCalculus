@@ -54,7 +54,7 @@ export function createComponent(component: ComponentType): DraggableComponentEle
   comp.classList.add("placed-component")
 
   comp.style.position = "absolute";
-  comp.style.background = "Blue";
+  // comp.style.background = "Blue";
 
   setID(comp);
 
@@ -106,7 +106,7 @@ function setID(div: DraggableComponentElement): void {
 }
 
 function createVShaft(div: DraggableComponentElement): void {
-  div.style.background = "Red";
+  // div.style.background = "Red";
   div.width = 1;
   div.height = 2;
   div.componentType = "vShaft";
@@ -136,16 +136,18 @@ function createVShaft(div: DraggableComponentElement): void {
 }
 
 function createGear(div: DraggableComponentElement): void {
-  div.style.background = "Cyan";
+  // div.style.background = "Cyan";
   div.width = 1;
   div.height = 1;
   div.componentType = "gear";
   div.shouldLockCells = true;
   div.classList.add("gear");
+
+  render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div)  
 }
 
 function createHShaft(div: DraggableComponentElement): void {
-  div.style.background = "Green";
+  // div.style.background = "Green";
   div.width = 2;
   div.height = 1;
   div.componentType = "hShaft";
@@ -173,7 +175,7 @@ function createHShaft(div: DraggableComponentElement): void {
 }
 
 function createIntegrator(div: DraggableComponentElement): void {
-  div.style.background = "DarkMagenta";
+  // div.style.background = "DarkMagenta";
   div.width = 3;
   div.height = 2;
   div.componentType = "integrator";
@@ -184,12 +186,14 @@ function createIntegrator(div: DraggableComponentElement): void {
 }
 
 function createFunctionTable(div: DraggableComponentElement): void {
-  div.style.background = "lightgray";
+  // div.style.background = "lightgray";
   div.width = 4;
   div.height = 4;
   div.componentType = "functionTable";
   div.shouldLockCells = true;
   div.classList.add("functionTable");
+  div.style.border = "2px solid black";
+  div.style["border-radius"] = "5px";
 
   let function_table = document.createElement("graph-table") as GraphElement;
   function_table.setAttribute("style", "width:100%;height:100%");
@@ -198,7 +202,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
   function_table.setAttribute("y-min", "-1.5");
   function_table.setAttribute("y-max", "1.5");
   function_table.setAttribute("gantry-x", "0.0");
-  function_table.setAttribute("padding", "1");
+  function_table.setAttribute("padding", "5");
 
   let generator_exp = generator(100, function_table.x_min, function_table.x_max, Math.sin);
 
@@ -208,7 +212,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
 
 
 function createDifferential(div: DraggableComponentElement): void {
-  div.style.background = "LawnGreen";
+  // div.style.background = "LawnGreen";
   div.width = 1;
   div.height = 3;
   div.componentType = "differential";
@@ -217,7 +221,7 @@ function createDifferential(div: DraggableComponentElement): void {
 }
 
 function createOutputTable(div: DraggableComponentElement): void {
-  div.style.background = "Brown";
+  // div.style.background = "Brown";
   div.width = 4;
   div.height = 4;
   div.componentType = "outputTable";
@@ -244,7 +248,7 @@ function createOutputTable(div: DraggableComponentElement): void {
 }
 
 function createMotor(div: DraggableComponentElement): void {
-  div.style.background = "Aquamarine";
+  // div.style.background = "Aquamarine";
   div.width = 2;
   div.height = 1;
   div.componentType = "motor";
@@ -255,7 +259,7 @@ function createMotor(div: DraggableComponentElement): void {
 }
 
 function createMultiplier(div: DraggableComponentElement): void {
-  div.style.background = "Blue";
+  // div.style.background = "Blue";
   div.width = 3;
   div.height = 2;
   div.componentType = "multiplier";
