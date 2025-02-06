@@ -26,9 +26,12 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
   curDragItem.item = item;
 
-  const size = item.getScreenSize();
-  item.offsetX = -size.x / 2;
-  item.offsetY = -size.y / 2;
+  const cellSize = item.getSize();
+  item.offsetX = -(Math.floor((cellSize.x + 1) / 2)) * GRID_SIZE + (GRID_SIZE / 2);
+  item.offsetY = -(Math.floor((cellSize.y + 1) / 2)) * GRID_SIZE + (GRID_SIZE / 2);
+
+  // item.offsetX = -size.x / 2;
+  // item.offsetY = -size.y / 2;
 
   const posX: number = x + item.offsetX;
   const posY: number = y + item.offsetY;
