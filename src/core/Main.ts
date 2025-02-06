@@ -178,13 +178,23 @@ export class Simulator {
                     break;
 
                 case 'outputTable':
-                    let outputTable: OutputTable = new OutputTable(
-                        shafts[component.inputShaft],
-                        shafts[component.outputShaft1],
-                        initialY1,
-                        component.outputShaft2 ? shafts[component.outputShaft2] : undefined,
-                        initialY2 ? shafts[component.outputShaft2] : undefined
-                    );
+                    let outputTable: OutputTable;
+                    if (component.outputShaft2 && initialY2) {
+                        outputTable = new OutputTable(
+                            shafts[component.inputShaft],
+                            shafts[component.outputShaft1],
+                            initialY1,
+                            shafts[component.outputShaft2],
+                            initialY2
+                        );
+                    } else {
+                        outputTable = new OutputTable(
+                            shafts[component.inputShaft],
+                            shafts[component.outputShaft1],
+                            initialY1,
+                        );
+                    }
+                    
                     shafts[component.inputShaft].outputs.push(outputTable);
                     shafts[component.outputShaft1].outputs.push(outputTable);
                     if (component.outputShaft2) {
@@ -195,7 +205,7 @@ export class Simulator {
                     break;
 
                 default:
-                    throw new Error(`Invalid component type: ${component.type}.`);
+                    throw new Error(`Invalid component type`);
             }
         }
 
