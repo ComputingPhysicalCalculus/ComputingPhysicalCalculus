@@ -42,14 +42,6 @@ export function setupPopups(): void {
       updateShaftLength(component, negativeLength, positiveLength);
     })
   }
-
-  // const changeEvent = (e: Event) => {
-  //   const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-  //   const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
-  //   const negativeLength: number = (input.id == "shaft-popup-length-negative") ? Number(input.value) : 0;
-  //   const postiveLength: number = (input.id == "shaft-popup-length-positive") ? Number(input.value) : 0;
-  //   updateShaftLength(component, negativeLength, postiveLength);
-  // }
 }
 
 export function stringToComponent(componentName: string): ComponentType | null {
@@ -76,11 +68,19 @@ export function createComponent(component: ComponentType): DraggableComponentEle
       createHShaft(comp);
       break;
     case ComponentType.Gear:
+      createGear(comp);
+      break;
     case ComponentType.Integrator:
+      createIntegrator(comp);
+      break;
     case ComponentType.Differential:
+      createDifferential(comp);
+      break;
     case ComponentType.OutputTable:
+      createOutputTable(comp);
+      break;
     case ComponentType.Motor:
-      temp(comp);
+      createMotor(comp);
       break;
     case ComponentType.Multiplier:
       createMultiplier(comp);
@@ -138,30 +138,14 @@ function createVShaft(div: DraggableComponentElement): void {
   });
 }
 
-function temp(div: DraggableComponentElement): void {
+function createGear(div: DraggableComponentElement): void {
   div.style.background = "Cyan";
-  div.setAttribute("width", "4");
-  div.setAttribute("height", "4");
-}
+  div.width = 1;
+  div.height = 1;
+  div.componentType = "gear";
+  div.shouldLockCells = true;
 
-function createFunctionTable(div: DraggableComponentElement): void {
-  div.style.background = "lightgray";
-  div.setAttribute("width", "4");
-  div.setAttribute("height", "4");
-
-  let function_table = document.createElement("graph-table") as GraphElement;
-  function_table.setAttribute("style", "width:100%;height:100%");
-  function_table.setAttribute("x-min", "0.0");
-  function_table.setAttribute("x-max", "2.0");
-  function_table.setAttribute("y-min", "0.0");
-  function_table.setAttribute("y-max", "5.0");
-  function_table.setAttribute("gantry-x", "1.0");
-  function_table.setAttribute("padding", "1");
-
-  let generator_exp = generator(100, function_table.x_min, function_table.x_max, x => Math.exp(x));
-
-  function_table.set_data_set("a", Array.from([...generator_exp]));
-  div.appendChild(function_table);
+  div.classList.add("gear");
 }
 
 function createHShaft(div: DraggableComponentElement): void {
@@ -190,28 +174,84 @@ function createHShaft(div: DraggableComponentElement): void {
   });
 }
 
+function createIntegrator(div: DraggableComponentElement): void {
+  div.style.background = "DarkMagenta";
+  div.width = 3;
+  div.height = 2;
+  div.componentType = "integrator";
+  div.shouldLockCells = true;
+  div.classList.add("integrator");
+}
+
+function createDifferential(div: DraggableComponentElement): void {
+  div.style.background = "LawnGreen";
+  div.width = 1;
+  div.height = 3;
+  div.componentType = "differential";
+  div.shouldLockCells = true;
+  div.classList.add("differential");
+}
+
+function createOutputTable(div: DraggableComponentElement): void {
+  div.style.background = "Brown";
+  div.width = 4;
+  div.height = 4;
+  div.componentType = "outputTable";
+  div.shouldLockCells = true;
+  div.classList.add("outputTable");
+}
+
+function createMotor(div: DraggableComponentElement): void {
+  div.style.background = "Aquamarine";
+  div.width = 2;
+  div.height = 1;
+  div.componentType = "motor";
+  div.shouldLockCells = true;
+  div.classList.add("motor");
+}
+
 function createMultiplier(div: DraggableComponentElement): void {
   div.style.background = "Blue";
-  div.setAttribute("width", "3");
-  div.setAttribute("height", "2");
+  div.width = 3;
+  div.height = 2;
+  div.componentType = "multiplier";
+  div.shouldLockCells = true;
+  div.classList.add("multiplier");
 
   render(html`<integrator-component></integrator-component>`, div);
 }
+
+function createFunctionTable(div: DraggableComponentElement): void {
+  div.style.background = "lightgray";
+  div.setAttribute("width", "4");
+  div.setAttribute("height", "4");
+
+  let function_table = document.createElement("graph-table") as GraphElement;
+  function_table.setAttribute("style", "width:100%;height:100%");
+  function_table.setAttribute("x-min", "0.0");
+  function_table.setAttribute("x-max", "2.0");
+  function_table.setAttribute("y-min", "0.0");
+  function_table.setAttribute("y-max", "5.0");
+  function_table.setAttribute("gantry-x", "1.0");
+  function_table.setAttribute("padding", "1");
+
+  let generator_exp = generator(100, function_table.x_min, function_table.x_max, x => Math.exp(x));
+
+  function_table.set_data_set("a", Array.from([...generator_exp]));
+  div.appendChild(function_table);
+}
+
 
 function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";
 
   if (isVertical) {
-    comp.dataset.topLeftY = String(Number(comp.dataset.topLeftY) - negativeLength);
-    comp.style.top = Number(comp.dataset.topLeftY) * GRID_SIZE + "px";
-
+    comp.top = comp.top - negativeLength;
     comp.height = Math.max(comp.height + negativeLength + positiveLength, 1);
-    comp.style.height = Number(comp.height) * GRID_SIZE + "px";
   } else {
-    comp.dataset.topLeftX = String(Number(comp.dataset.topLeftX) - negativeLength);
-    comp.style.left = Number(comp.dataset.topLeftX) * GRID_SIZE + "px";
-
+    comp.left = comp.left - negativeLength;
     comp.width = Math.max(comp.width + negativeLength + positiveLength, 1);
-    comp.style.width = Number(comp.width) * GRID_SIZE + "px";
   }
+
+  comp.update();
 }

@@ -88,3 +88,7 @@
 .hShaft {
     z-index: 1;
 }
+
+.gear {
+    z-index: 3;
+}

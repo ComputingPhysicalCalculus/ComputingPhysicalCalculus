@@ -30,20 +30,21 @@ export class DraggableComponentElement extends LitElement {
   @property({ type: Boolean })
   shouldLockCells: boolean = true;
 
-  private _handle_mousedown(e: MouseEvent) {
-    pickup(e);
-  }
-
   connectedCallback(): void {
     super.connectedCallback();
 
-    this.addEventListener("mousedown", this._handle_mousedown, { capture: true });
+    this.addEventListener("mousedown", pickup, { capture: true });
+  }
+
+  update() {
+    this.style.width = `${this.width * GRID_SIZE}px`;
+    this.style.height = `${this.height * GRID_SIZE}px`;
+
+    this.style.top = `${this.top * GRID_SIZE}px`;
+    this.style.left = `${this.left * GRID_SIZE}px`;
   }
 
   render() {
-    this.style.width = `${this.width * GRID_SIZE}px`;
-    this.style.height = `${this.height * GRID_SIZE}px`;
-    
     return html`
       <div class="container">
         <slot></slot>

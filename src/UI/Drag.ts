@@ -107,8 +107,8 @@ export function pickup(event: MouseEvent): void {
     // const topLeft = calculateTopLeftCell(new Vector2(.currentTarget.clientLeft, .currentTarget.clientTop));
 
     let topLeft = new Vector2(0, 0);
-    topLeft.x = Number(currentTarget.dataset.topLeftX);
-    topLeft.y = Number(currentTarget.dataset.topLeftY);
+    topLeft.x = Number(currentTarget.left);
+    topLeft.y = Number(currentTarget.top);
 
     if (size == null) return;
 
@@ -201,8 +201,8 @@ function drop(event: MouseEvent): void {
   }
 
   item.dataset.hasBeenPlaced = "1";
-  item.dataset.topLeftX = topLeft.x + "";
-  item.dataset.topLeftY = topLeft.y + "";
+  item.left = topLeft.x;
+  item.top = topLeft.y;
 
   curDragItem.item = null;
 }
