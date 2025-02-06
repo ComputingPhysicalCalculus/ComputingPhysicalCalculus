@@ -1,6 +1,5 @@
 {
   "shafts": [
-  "shafts": [
     {
       "shaftID": 0,
       "start": [0, 1],
@@ -18,7 +17,6 @@
     }
   ],
 
-  "components": [
   "components": [
     {
       "type": "integrator",
@@ -60,7 +58,6 @@
       "compID": 6,
       "inputShaft": 1,
       "outputShaft1": 2,
-      "outputShaft2": ""
       "outputShaft2": "",
       "position": [6, 6]
     },
