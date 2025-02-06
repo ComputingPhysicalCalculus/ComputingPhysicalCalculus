@@ -20,21 +20,26 @@ export class ShaftElement extends LitElement {
   }
 
   render() {
-    let top = this.horizontal ? this.offsetHeight / 2 : 0;
-    let left = this.horizontal ? 0 : this.offsetWidth / 2;
-    let bottom = this.horizontal ? this.offsetHeight / 2 : this.offsetHeight;
-    let right = this.horizontal ? this.offsetWidth : this.offsetWidth / 2;
+    let grid_size = Math.min(this.offsetHeight, this.offsetWidth);
+    
+    let width = this.offsetWidth / grid_size;
+    let height = this.offsetHeight / grid_size;
+
+    let top = this.horizontal ? height / 2 : 0;
+    let left = this.horizontal ? 0 : width / 2;
+    let bottom = this.horizontal ? height / 2 : height;
+    let right = this.horizontal ? width : width / 2;
     
     return svg`
       <svg
         xmlns="https://www.w3.org/2000/svg"
-        width="${this.offsetWidth}" height="${this.offsetHeight}"
-        viewBox="0 0 ${this.offsetWidth} ${this.offsetHeight}"
+        width="${width * 50}" height="${height * 50}"
+        viewBox="0 0 ${width * 50} ${height * 50}"
       >
         <line
           id="line"
-          x1="${left}" y1="${top}"
-          x2="${right}" y2="${bottom}"
+          x1="${left * 50}" y1="${top * 50}"
+          x2="${right * 50}" y2="${bottom * 50}"
           stroke="black"
           stroke-width="2"
           stroke-linecap="round"

@@ -218,6 +218,8 @@ function createDifferential(div: DraggableComponentElement): void {
   div.componentType = "differential";
   div.shouldLockCells = true;
   div.classList.add("differential");
+
+  render(html`<differential-component></differential-component>`, div);
 }
 
 function createOutputTable(div: DraggableComponentElement): void {

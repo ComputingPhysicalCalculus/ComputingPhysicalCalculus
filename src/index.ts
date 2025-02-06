@@ -9,6 +9,7 @@ import "./UI/GraphElement";
 import "./UI/ShaftElement";
 import "./UI/MotorComponent";
 import "./UI/GearComponentElement";
+import "./UI/DifferentialComponentElement";
 
 import { setupDragHooks } from "./UI/Drag";
 import { setupPopups } from "./UI/Components.ts";
@@ -80,8 +81,9 @@ function setup(): void {
         if (steps <= 0 || step_period < 0 || current_config === null) {
             return;
         }
-
+        
         let simulator = Simulator.parse_config(current_config);
+        simulator.motor.changeRotation(step_period);
 
         // for (let i = 0; i < steps; i++) {
         //     simulator.step();
@@ -99,13 +101,13 @@ function setup(): void {
                 if (output_graph !== null && output_graph !== undefined) {
                     let table = simulator.outputTables[0];
 
-                    console.log(table.y1History);
-
                     output_graph.mutate_data_set("1", points => {
                         let set_1 = [];
                         for (let i = 0; i < table.xHistory.length; i++) {
-                            set_1.push(new Vector2(table.xHistory[i] / steps * (output_graph.x_max - output_graph.x_min) - output_graph.x_min, table.y1History[i]));
+                            set_1.push(new Vector2(table.xHistory[i], table.y1History[i]));
                         }
+
+                        output_graph.gantry_x = table.xHistory[table.xHistory.length - 1];
                         
                         points.splice(0, points.length, ...set_1)
                     });
@@ -116,7 +118,7 @@ function setup(): void {
                         }
                         let set_2 = []
                         for (let i = 0; i < table.xHistory.length; i++) {
-                            set_2.push(new Vector2(table.xHistory[i] / steps * (output_graph.x_max - output_graph.x_min) - output_graph.x_min, table.y2History[i]));
+                            set_2.push(new Vector2(table.xHistory[i], table.y2History[i]));
                         }
 
                         points.splice(0, points.length, ...set_2);

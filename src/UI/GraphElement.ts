@@ -100,6 +100,8 @@ export class GraphElement extends LitElement {
       return;
     }
 
+    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
     ctx.lineWidth = 2;
     ctx.strokeStyle = "black";
     this._draw_axis(ctx);
