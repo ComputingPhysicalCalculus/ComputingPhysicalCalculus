@@ -42,7 +42,8 @@ export class GraphElement extends LitElement {
     }
   } = {};
 
-  private _handle_resize() {
+  // Keep in this form otherwise `this` will be undefined
+  private _handle_resize = () => {
     this._canvas.width = this.offsetWidth;
     this._canvas.height = this.offsetHeight;
 
