@@ -186,14 +186,14 @@ function createIntegrator(div: DraggableComponentElement): void {
 }
 
 function createFunctionTable(div: DraggableComponentElement): void {
-  // div.style.background = "lightgray";
+  div.style.background = "white";
+  div.style.border = "2px solid black";
+  div.style["border-radius"] = "5px";
   div.width = 4;
   div.height = 4;
   div.componentType = "functionTable";
   div.shouldLockCells = true;
   div.classList.add("functionTable");
-  div.style.border = "2px solid black";
-  div.style["border-radius"] = "5px";
 
   let function_table = document.createElement("graph-table") as GraphElement;
   function_table.setAttribute("style", "width:100%;height:100%");
@@ -222,6 +222,9 @@ function createDifferential(div: DraggableComponentElement): void {
 
 function createOutputTable(div: DraggableComponentElement): void {
   // div.style.background = "Brown";
+  div.style.background = "white";
+  div.style.border = "2px solid black";
+  div.style["border-radius"] = "5px";
   div.width = 4;
   div.height = 4;
   div.componentType = "outputTable";
@@ -236,7 +239,7 @@ function createOutputTable(div: DraggableComponentElement): void {
       y-min="-1.5"
       y-max="1.5"
       gantry-x="0.0"
-      padding="1"
+      padding="5"
     >
     </graph-table>
   `, div)
