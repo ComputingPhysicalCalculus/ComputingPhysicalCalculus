@@ -179,6 +179,8 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.componentType = "integrator";
   div.shouldLockCells = true;
   div.classList.add("integrator");
+
+  render(html`<integrator-component></integrator-component>`, div);
 }
 
 function createFunctionTable(div: DraggableComponentElement): void {
@@ -230,6 +232,8 @@ function createMotor(div: DraggableComponentElement): void {
   div.componentType = "motor";
   div.shouldLockCells = true;
   div.classList.add("motor");
+
+  render(html`<motor-component style="width:100%;height:100%"></motor-component>`, div);
 }
 
 function createMultiplier(div: DraggableComponentElement): void {
@@ -239,8 +243,6 @@ function createMultiplier(div: DraggableComponentElement): void {
   div.componentType = "multiplier";
   div.shouldLockCells = true;
   div.classList.add("multiplier");
-
-  render(html`<integrator-component></integrator-component>`, div);
 }
 
 

@@ -6,7 +6,8 @@ import "./UI/IntegratorComponent";
 import "./UI/GraphElement";
 import "./UI/DraggableElement";
 import "./UI/GraphElement";
-import "./UI/ShaftElement.ts";
+import "./UI/ShaftElement";
+import "./UI/MotorComponent";
 
 import { setupDragHooks } from "./UI/Drag";
 import { setupPopups } from "./UI/Components.ts";

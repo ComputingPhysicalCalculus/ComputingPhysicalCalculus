@@ -8,24 +8,26 @@ export class IntegratorComponentElement extends LitElement {
   static styles = css`${unsafeCSS(styles)}`;
   
   render() {
+        // viewBox="4 4 92 62"
     return svg`
       <svg
         xmlns="https://www.w3.org/2000/svg"
-        width="100" height="70"
-        viewBox="4 4 92 62"
+        width="90" height="60"
+        viewBox="0 0 150 100"
       >
-        <rect x="5" y="5" width="90" height="60" fill="none" stroke="black" stroke-width="2" rx="5" />
-        <rect x="44" y="25" width="12" height="20" fill="none" stroke="black" stroke-width="2" rx="2" />
-        <circle cx="26" cy="35" r="18" fill="none" stroke="black" stroke-width="2" />
-        <line x1="18" y1="35" x2="34" y2="35" stroke="black" stroke-width="2" stroke-linecap="round" />
-        <polygon fill="black" stroke="black" stroke-width="2" stroke-linejoin="round" points="74,19 71,13 77,13" />
+        <rect x="1" y="1" width="148" height="98" fill="none" stroke="black" stroke-width="2" rx="5" />
+        <rect x="65" y="30" width="20" height="40" fill="none" stroke="black" stroke-width="2" rx="2" />
+        <circle cx="35" cy="50" r="30" fill="none" stroke="black" stroke-width="2" />
+        <line x1="20" y1="50" x2="50" y2="50" stroke="black" stroke-width="2" stroke-linecap="round" />
 
-        ${[ 0, 1, 2, 3 ].map(i => svg`
+        <polygon fill="black" stroke="black" stroke-width="2" stroke-linejoin="round" points="107.5,20 112.5,30 117.5,20" />
+
+        ${[ -2, -1, 0, 1, 2 ].map(i => svg`
           <line
-            x1="45"
-            y1="${29 + i * 5}"
-            x2="55"
-            y2="${26 + i * 5}"
+            x1="65"
+            y1="${52 + i * 7}"
+            x2="85"
+            y2="${48 + i * 7}"
             stroke="black"
             stroke-width="2"
             stroke-linecap="round"
