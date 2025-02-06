@@ -59,7 +59,9 @@ export class Differential implements Device {
                 this.shafts[2].nextRotation = this.shafts[1].nextRotation - this.shafts[0].nextRotation;
             }
             this.output = this.shafts[idx];
-        } 
-        return this.output;
+            return this.output;
+        } else {
+            return undefined;
+        }
     }
 }
