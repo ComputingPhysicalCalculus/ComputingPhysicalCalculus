@@ -14,7 +14,7 @@
     border-width: 1px;
     z-index: -10;
 
-    box-sizing: border-
+    box-sizing: border;
 }
 
 .locked-cell {
