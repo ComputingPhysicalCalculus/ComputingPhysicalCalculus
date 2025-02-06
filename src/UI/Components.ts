@@ -1,8 +1,8 @@
 import { html, render } from "lit";
-import { GRID_SIZE } from "./Grid.ts"
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
+import { openShaftPopup, openGearPopup, openMultiplierPopup } from "./Popups.ts"
 
 export enum ComponentType {
   VShaft,
@@ -16,33 +16,8 @@ export enum ComponentType {
   Multiplier
 };
 
-let shaftpopup: HTMLDivElement;
 let CURRENT_ID: number = 0;
 
-export function setupPopups(): void {
-  shaftpopup = document.getElementById("shaft-popup") as HTMLDivElement;
-  shaftpopup.addEventListener("mouseleave", (e) => {
-    (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
-  });
-
-  const buttons = shaftpopup.getElementsByTagName("button");
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("click", (e) => {
-      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
-
-      let negativeLength = 0;
-      if (input.id == "shaft-popup-negative-increase") negativeLength = 1;
-      if (input.id == "shaft-popup-negative-decrease") negativeLength = -1;
-
-      let positiveLength = 0;
-      if (input.id == "shaft-popup-positive-increase") positiveLength = 1;
-      if (input.id == "shaft-popup-positive-decrease") positiveLength = -1;
-
-      updateShaftLength(component, negativeLength, positiveLength);
-    })
-  }
-}
 
 export function stringToComponent(componentName: string): ComponentType | null {
   return ComponentType[componentName as keyof typeof ComponentType];
@@ -106,7 +81,6 @@ function setID(div: DraggableComponentElement): void {
 }
 
 function createVShaft(div: DraggableComponentElement): void {
-  // div.style.background = "Red";
   div.width = 1;
   div.height = 2;
   div.componentType = "vShaft";
@@ -114,68 +88,36 @@ function createVShaft(div: DraggableComponentElement): void {
 
   div.classList.add("vShaft");
 
-  div.addEventListener("contextmenu", (e) => {
-    shaftpopup.style.visibility = "visible";
-    shaftpopup.style.left = e.clientX + "px";
-    shaftpopup.style.top = e.clientY + "px";
-    shaftpopup.style.zIndex = "10";
-
-    const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
-    const inputs = shaftpopup.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
-
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].value = "0";
-    }
-
-    shaftpopup.dataset.id = target.id;
-
-    e.preventDefault();
-  });
+  div.addEventListener("contextmenu", openShaftPopup);
 
   render(html`<shaft-component style="width:100%;height:100%"></shaft-component>`, div);
 }
 
 function createGear(div: DraggableComponentElement): void {
-  // div.style.background = "Cyan";
   div.width = 1;
   div.height = 1;
   div.componentType = "gear";
   div.shouldLockCells = true;
   div.classList.add("gear");
 
-  render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div)  
+  div.addEventListener("contextmenu", openGearPopup);
+
+  render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div)
 }
 
 function createHShaft(div: DraggableComponentElement): void {
-  // div.style.background = "Green";
   div.width = 2;
   div.height = 1;
   div.componentType = "hShaft";
   div.shouldLockCells = false;;
-
   div.classList.add("hShaft");
 
-  div.addEventListener("contextmenu", (e) => {
-    shaftpopup.style.visibility = "visible";
-    shaftpopup.style.left = e.clientX + "px";
-    shaftpopup.style.top = e.clientY + "px";
-    shaftpopup.style.zIndex = "10";
-
-    const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
-    const inputs = shaftpopup.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].value = "0";
-    }
-    shaftpopup.dataset.id = target.id;
-
-    e.preventDefault();
-  });
+  div.addEventListener("contextmenu", openShaftPopup);
 
   render(html`<shaft-component style="width: 100%;height:100%" horizontal></shaft-component>`, div);
 }
 
 function createIntegrator(div: DraggableComponentElement): void {
-  // div.style.background = "DarkMagenta";
   div.width = 3;
   div.height = 2;
   div.componentType = "integrator";
@@ -212,7 +154,6 @@ function createFunctionTable(div: DraggableComponentElement): void {
 
 
 function createDifferential(div: DraggableComponentElement): void {
-  // div.style.background = "LawnGreen";
   div.width = 1;
   div.height = 3;
   div.componentType = "differential";
@@ -223,7 +164,6 @@ function createDifferential(div: DraggableComponentElement): void {
 }
 
 function createOutputTable(div: DraggableComponentElement): void {
-  // div.style.background = "Brown";
   div.style.background = "white";
   div.style.border = "2px solid black";
   div.style["border-radius"] = "5px";
@@ -253,7 +193,6 @@ function createOutputTable(div: DraggableComponentElement): void {
 }
 
 function createMotor(div: DraggableComponentElement): void {
-  // div.style.background = "Aquamarine";
   div.width = 2;
   div.height = 1;
   div.componentType = "motor";
@@ -264,23 +203,13 @@ function createMotor(div: DraggableComponentElement): void {
 }
 
 function createMultiplier(div: DraggableComponentElement): void {
-  // div.style.background = "Blue";
   div.width = 3;
   div.height = 2;
   div.componentType = "multiplier";
   div.shouldLockCells = true;
   div.classList.add("multiplier");
+
+  div.addEventListener("contextmenu", openMultiplierPopup);
 }
 
 
-function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
-  const isVertical = comp.componentType == "vShaft";
-
-  if (isVertical) {
-    comp.top = comp.top - negativeLength;
-    comp.height = Math.max(comp.height + negativeLength + positiveLength, 1);
-  } else {
-    comp.left = comp.left - negativeLength;
-    comp.width = Math.max(comp.width + negativeLength + positiveLength, 1);
-  }
-}

@@ -98,14 +98,14 @@ export class Simulator {
         let components = [];
         let outputTables = [];
         let motor = undefined;
-        
+
         const rotation: number = 1; // rotation of the motor
         const initial_x_position: number = 0; // initial x position of the function table
         const initialY1: number = 0; // initial y1 position of the output table
         const initialY2: number = 0; // initial y2 position of the output table
 
         // create the shafts
-        for(const shaft of config.shafts) {
+        for (const shaft of config.shafts) {
             shafts.push(new Shaft(shaft.id, []));
         }
 
@@ -194,7 +194,7 @@ export class Simulator {
                             initialY1,
                         );
                     }
-                    
+
                     shafts[component.inputShaft].outputs.push(outputTable);
                     shafts[component.outputShaft1].outputs.push(outputTable);
                     if (component.outputShaft2) {

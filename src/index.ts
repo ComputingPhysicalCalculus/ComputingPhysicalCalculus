@@ -12,7 +12,7 @@ import "./UI/GearComponentElement";
 import "./UI/DifferentialComponentElement";
 
 import { setupDragHooks } from "./UI/Drag";
-import { setupPopups } from "./UI/Components.ts";
+import { setupPopups } from "./UI/Popups.ts";
 import { Config, downloadConfig, loadConfig } from "./config.ts";
 import _example_config from "../integrating-linear.json";
 import { Simulator } from "./core/Main.ts";
@@ -50,7 +50,7 @@ function setup(): void {
 
     export_button.addEventListener("click", _ => {
         // TODO: Generate config
-        
+
         downloadConfig(EXAMPLE_CONFIG)
     });
     import_button.addEventListener("click", _ => {
@@ -74,14 +74,14 @@ function setup(): void {
     });
     run_button.addEventListener("click", _ => {
         // Generate config
-        
+
         let steps = Number(steps_input.value);
         let step_period = Number(step_period_input.value);
 
         if (steps <= 0 || step_period < 0 || current_config === null) {
             return;
         }
-        
+
         let simulator = Simulator.parse_config(current_config);
         simulator.motor.changeRotation(step_period);
 
@@ -108,7 +108,7 @@ function setup(): void {
                         }
 
                         output_graph.gantry_x = table.xHistory[table.xHistory.length - 1];
-                        
+
                         points.splice(0, points.length, ...set_1)
                     });
 
@@ -125,7 +125,7 @@ function setup(): void {
                     })
                 }
             }
-            
+
             i += 1;
 
             window.setTimeout(step_function, step_period * 1000.0);
@@ -133,7 +133,7 @@ function setup(): void {
 
         step_function();
     });
-    
+
     // let i = document.createElement("integrator-component");
     // i.setAttribute("style", "position:absolute;left:50%;bottom:50%");
     // i.setAttribute("leg-one", "80");

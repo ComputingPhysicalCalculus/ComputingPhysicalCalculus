@@ -5,6 +5,7 @@
 
     <script type="module" src="./src/index.ts"></script>
 
+    <link rel="stylesheet" href="./styles/popups.css">
     <link rel="stylesheet" href="./styles/style.css">
     <link rel="stylesheet" href="./styles/components.css">
     <link rel="stylesheet" href="./styles/grid.css">
@@ -60,6 +61,20 @@
                     <button id="shaft-popup-positive-decrease">-</button>
                     <button id="shaft-popup-positive-increase">+</button>
                 </div>
+            </div>
+
+            <div class="popup" id="gear-popup" position="absolute" >
+                <label>Gear ratio</label>
+                <div>
+                    <input id="gear-input-ratio" type="number" min="1" value="1">
+                    <label>:</label>
+                    <input id="gear-output-ratio" type="number" min="1" value="1">
+                </div>
+            </div>
+
+            <div class="popup" id="multiplier-popup" position="absolute" >
+                <label>Factor</label>
+                <input id="multiplier-input-factor" type="number" min="1" value="1">
             </div>
         </div>
     </div>
