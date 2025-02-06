@@ -57,11 +57,23 @@ export class OutputTable implements Device {
      * @returns void
      */
     addPlot(): void {
-        console.log(this.xHistory.length);
-        this.xHistory.push(this.xHistory[this.xHistory.length - 1] + this.x.currentRotation);
-        this.y1History.push(this.y1History[this.y1History.length - 1] + this.y1.currentRotation);
+        // console.log(this.xHistory.length);
+
+        // push the new x value on
+        let x_length = this.xHistory.length;
+        let new_x = this.xHistory[x_length - 1] + this.x.currentRotation;
+        this.xHistory.push(new_x);
+
+        // push the new y value on
+        let y1_length = this.y1History.length;
+        let new_y1 = this.y1History[y1_length - 1] + this.y1.currentRotation;
+        this.y1History.push(new_y1);
+
+        // check if y2 exists and push if needed
         if(this.y2 != undefined && this.y2History != undefined) {
-            this.y2History.push(this.y2History[this.y2History.length - 1] + this.y2.currentRotation);
+            let y2_length = this.y2History.length;
+            let new_y2 = this.y2History[y2_length - 1] + this.y2.currentRotation;
+            this.y2History.push(new_y2);
         }
     }
 }
