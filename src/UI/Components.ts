@@ -131,6 +131,8 @@ function createVShaft(div: DraggableComponentElement): void {
 
     e.preventDefault();
   });
+
+  render(html`<shaft-component style="width:100%;height:100%"></shaft-component>`, div);
 }
 
 function createGear(div: DraggableComponentElement): void {
@@ -166,6 +168,8 @@ function createHShaft(div: DraggableComponentElement): void {
 
     e.preventDefault();
   });
+
+  render(html`<shaft-component style="width: 100%;height:100%" horizontal></shaft-component>`, div);
 }
 
 function createIntegrator(div: DraggableComponentElement): void {

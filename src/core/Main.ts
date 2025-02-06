@@ -1,23 +1,23 @@
 /**
  * @file Main.ts
  * @description This file contains functions to simulate the differential analyzer
- * @author Andy Zhu
+ * @author Andy Zhu, Hanzhang Shen
  */
 
-import { Device } from "./Device";
-import { Differential } from "./Differential";
-import { FunctionTable } from "./FunctionTable";
-import { Integrator } from "./Integrator";
-import { Motor } from "./Motor";
-import { Multiplier } from "./Multiplier";
-import { OutputTable } from "./OutputTable";
-import { Shaft } from "./Shaft";
-import config from "../../ExampleConfig.json";
+import { Device } from "./Device.js";
+import { Differential } from "./Differential.js";
+import { FunctionTable } from "./FunctionTable.js";
+import { Integrator } from "./Integrator.js";
+import { Motor } from "./Motor.js";
+import { Multiplier } from "./Multiplier.js";
+import { OutputTable } from "./OutputTable.js";
+import { Shaft } from "./Shaft.js";
+import config from "../../ExampleConfig.json" with { type: "json" };;
 
-var shafts: Shaft[];
+var shafts: Shaft[] = [];
 var motor: Motor;
-var outputTables: OutputTable[];
-var components: Device[];
+var outputTables: OutputTable[] = [];
+var components: Device[] = [];
 
 /**
  * @function simulate_one_cycle
@@ -156,10 +156,10 @@ function parse_config(config: any): void {
                     component.outputShaft2 ? component.outputShaft2 : undefined,
                     initialY2 ? component.outputShaft2 : undefined
                 );
-                component.inputShaft.outputs.push(outputTable);
-                component.outputShaft1.outputs.push(outputTable);
+                shafts[component.inputShaft].outputs.push(outputTable);
+                shafts[component.outputShaft1].outputs.push(outputTable);
                 if (component.outputShaft2) {
-                    component.outputShaft2.outputs.push(outputTable);
+                    shafts[component.outputShaft2].outputs.push(outputTable);
                 }
                 components.push(outputTable);
                 outputTables.push(outputTable);

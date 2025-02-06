@@ -33,7 +33,7 @@ export class OutputTable implements Device {
      */
     constructor(x: Shaft, y1: Shaft, initialY1: number, y2?: Shaft, initialY2?: number) {
         this.x = x;
-        this.xHistory = []
+        this.xHistory = [x.currentRotation];
         this.y1 = y1;
         this.y1History = [initialY1];
         if(y2 != undefined && initialY2 != undefined) {
@@ -57,6 +57,7 @@ export class OutputTable implements Device {
      * @returns void
      */
     addPlot(): void {
+        console.log(this.xHistory.length);
         this.xHistory.push(this.xHistory[this.xHistory.length - 1] + this.x.currentRotation);
         this.y1History.push(this.y1History[this.y1History.length - 1] + this.y1.currentRotation);
         if(this.y2 != undefined && this.y2History != undefined) {

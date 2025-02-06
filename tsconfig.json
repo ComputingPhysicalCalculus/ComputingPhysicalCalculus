@@ -6,13 +6,15 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": true, // Set this to false when compiling and running the core engine functions.
 
     /* Linting */
     "strict": true,
@@ -23,6 +25,8 @@
 
     /* JSON */
     "resolveJsonModule": true,
+    "esModuleInterop": true,
   },
-  "include": ["src"]
+  "include": ["src/**/*"],
+  "exclude": ["src/UI/**/*"]
 }
