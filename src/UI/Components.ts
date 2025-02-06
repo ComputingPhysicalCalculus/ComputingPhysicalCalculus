@@ -23,11 +23,31 @@ export function setupPopups(): void {
     (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
   });
 
-  shaftpopup.getElementsByTagName("input")[0].addEventListener("change", (e) => {
-    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-    const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
-    updateShaftLength(component, Number(input.value));
-  });
+  const buttons = shaftpopup.getElementsByTagName("button");
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", (e) => {
+      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
+
+      let negativeLength = 0;
+      if (input.id == "shaft-popup-negative-increase") negativeLength = 1;
+      if (input.id == "shaft-popup-negative-decrease") negativeLength = -1;
+
+      let positiveLength = 0;
+      if (input.id == "shaft-popup-positive-increase") positiveLength = 1;
+      if (input.id == "shaft-popup-positiive-decrease") positiveLength = -1;
+
+      updateShaftLength(component, negativeLength, positiveLength);
+    })
+  }
+
+  // const changeEvent = (e: Event) => {
+  //   const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+  //   const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+  //   const negativeLength: number = (input.id == "shaft-popup-length-negative") ? Number(input.value) : 0;
+  //   const postiveLength: number = (input.id == "shaft-popup-length-positive") ? Number(input.value) : 0;
+  //   updateShaftLength(component, negativeLength, postiveLength);
+  // }
 }
 
 export function stringToComponent(componentName: string): ComponentType | null {
@@ -102,7 +122,12 @@ function createVShaft(div: DraggableComponentElement): void {
     shaftpopup.style.zIndex = "10";
 
     const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
-    shaftpopup.getElementsByTagName("input")[0].value = target.getAttribute("height") as string;
+    const inputs = shaftpopup.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
+
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].value = "0";
+    }
+
     shaftpopup.dataset.id = target.id;
 
     e.preventDefault();
@@ -131,7 +156,10 @@ function createHShaft(div: DraggableComponentElement): void {
     shaftpopup.style.zIndex = "10";
 
     const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
-    shaftpopup.getElementsByTagName("input")[0].value = target.getAttribute("width") as string;
+    const inputs = shaftpopup.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].value = "0";
+    }
     shaftpopup.dataset.id = target.id;
 
     e.preventDefault();
@@ -146,14 +174,20 @@ function createMultiplier(div: DraggableComponentElement): void {
   render(html`<integrator-component></integrator-component>`, div);
 }
 
-function updateShaftLength(comp: DraggableComponentElement, newLength: number) {
+function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";
 
   if (isVertical) {
-    comp.setAttribute("height", newLength + "");
+    comp.dataset.topLeftY = String(Number(comp.dataset.topLeftY) - negativeLength);
+    comp.style.top = Number(comp.dataset.topLeftY) * GRID_SIZE + "px";
+
+    comp.height = Math.max(comp.height + negativeLength + positiveLength, 1);
     comp.style.height = Number(comp.height) * GRID_SIZE + "px";
   } else {
-    comp.setAttribute("width", newLength + "");
+    comp.dataset.topLeftX = String(Number(comp.dataset.topLeftX) - negativeLength);
+    comp.style.left = Number(comp.dataset.topLeftX) * GRID_SIZE + "px";
+
+    comp.width = Math.max(comp.width + negativeLength + positiveLength, 1);
     comp.style.width = Number(comp.width) * GRID_SIZE + "px";
   }
 }
