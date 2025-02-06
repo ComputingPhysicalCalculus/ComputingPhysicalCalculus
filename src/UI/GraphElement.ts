@@ -2,6 +2,7 @@ import { css, html, LitElement, PropertyValues, unsafeCSS } from "lit";
 import { customElement, property, query, queryAsync } from "lit/decorators.js";
 
 import styles from "../../styles/GraphElement.css?inline";
+import Vector2 from "./Vector2";
 
 const SQRT_3_2 = Math.sqrt(3) / 2;
 
@@ -35,7 +36,7 @@ export class GraphElement extends LitElement {
 
   data_sets: {
     [key: string]: {
-      points: { x: number, y: number }[];
+      points: Vector2[];
       style: string;
       invert_head: boolean;
     }
@@ -68,6 +69,17 @@ export class GraphElement extends LitElement {
   set_data_set(key: string, points: { x: number, y: number }[], style: string = "blue", invert_head: boolean = false) {
     this.data_sets[key] = { points, style, invert_head };
     this.requestUpdate();
+  }
+
+  mutate_data_set(key: string, callback: (points: Vector2[]) => void): boolean {
+    if (!(key in this.data_sets)) {
+      return false;
+    }
+
+    callback(this.data_sets[key].points);
+    
+    this.requestUpdate();
+    return true;
   }
 
   protected updated(_changedProperties: PropertyValues): void {
@@ -178,7 +190,7 @@ export class GraphElement extends LitElement {
     ctx.stroke();
   }
 
-  private _draw_points(ctx: CanvasRenderingContext2D, points: { x: number, y: number }[]) {
+  private _draw_points(ctx: CanvasRenderingContext2D, points: Vector2[]) {
     ctx.beginPath();
     for (let point of points) {
       if (point.x < this.x_min || point.x > this.x_max) {
