@@ -1,5 +1,6 @@
 {
   "shafts": [
+  "shafts": [
     {
       "shaftID": 0,
       "start": [0, 1],
@@ -17,6 +18,7 @@
     }
   ],
 
+  "components": [
   "components": [
     {
       "type": "integrator",
@@ -37,18 +39,21 @@
       "compID": 3,
       "inputShaft": 1,
       "outputShaft": 2,
-      "factor": 2
+      "factor": 2,
+      "position": [6, 6]
     },
     {
       "type": "functionTable",
       "compID": 4,
       "inputShaft": 1,
-      "outputShaft": 2
+      "outputShaft": 2,
+      "position": [6, 6]
     },
     {
       "type": "motor",
       "compID": 5,
-      "outputShaft": 1
+      "outputShaft": 1,
+      "position": [6, 6]
     },
     {
       "type": "outputTable",
@@ -56,6 +61,16 @@
       "inputShaft": 1,
       "outputShaft1": 2,
       "outputShaft2": ""
+      "outputShaft2": "",
+      "position": [6, 6]
+    },
+    {
+      "type": "gear",
+      "compID": 7,
+      "horizotal": 1,
+      "vertical": 2,
+      "ratio": 1,
+      "position": [6, 6]
     }
   ]
 }

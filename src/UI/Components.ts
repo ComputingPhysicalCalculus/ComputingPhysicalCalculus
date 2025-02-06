@@ -1,6 +1,8 @@
 import { html, render } from "lit";
 import { GRID_SIZE } from "./Grid.ts"
 import { DraggableComponentElement } from "./DraggableElement.ts";
+import { GraphElement } from "./GraphElement.ts";
+import { generator } from "../index.ts";
 
 export enum ComponentType {
   VShaft,
@@ -23,11 +25,23 @@ export function setupPopups(): void {
     (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
   });
 
-  shaftpopup.getElementsByTagName("input")[0].addEventListener("change", (e) => {
-    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-    const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
-    updateShaftLength(component, Number(input.value));
-  });
+  const buttons = shaftpopup.getElementsByTagName("button");
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", (e) => {
+      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
+
+      let negativeLength = 0;
+      if (input.id == "shaft-popup-negative-increase") negativeLength = 1;
+      if (input.id == "shaft-popup-negative-decrease") negativeLength = -1;
+
+      let positiveLength = 0;
+      if (input.id == "shaft-popup-positive-increase") positiveLength = 1;
+      if (input.id == "shaft-popup-positiive-decrease") positiveLength = -1;
+
+      updateShaftLength(component, negativeLength, positiveLength);
+    })
+  }
 }
 
 export function stringToComponent(componentName: string): ComponentType | null {
@@ -41,8 +55,6 @@ export function createComponent(component: ComponentType): DraggableComponentEle
 
   comp.style.position = "absolute";
   comp.style.background = "Blue";
-  comp.style.width = GRID_SIZE + "px";
-  comp.style.height = GRID_SIZE + "px";
 
   setID(comp);
 
@@ -50,16 +62,26 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     case ComponentType.VShaft:
       createVShaft(comp);
       break;
+    case ComponentType.Gear:
+      createGear(comp);
+      break;
     case ComponentType.HShaft:
       createHShaft(comp);
       break;
-    case ComponentType.Gear:
     case ComponentType.Integrator:
+      createIntegrator(comp);
+      break;
     case ComponentType.FunctionTable:
+      createFunctionTable(comp);
+      break;
     case ComponentType.Differential:
+      createDifferential(comp);
+      break;
     case ComponentType.OutputTable:
+      createOutputTable(comp);
+      break;
     case ComponentType.Motor:
-      temp(comp);
+      createMotor(comp);
       break;
     case ComponentType.Multiplier:
       createMultiplier(comp);
@@ -67,9 +89,6 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     default:
       console.error("No function defined for component: ", component);
   }
-
-  comp.style.width = Number(comp.width) * GRID_SIZE + "px";
-  comp.style.height = Number(comp.height) * GRID_SIZE + "px";
 
   return comp;
 }
@@ -102,17 +121,25 @@ function createVShaft(div: DraggableComponentElement): void {
     shaftpopup.style.zIndex = "10";
 
     const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
-    shaftpopup.getElementsByTagName("input")[0].value = target.getAttribute("height") as string;
+    const inputs = shaftpopup.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
+
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].value = "0";
+    }
+
     shaftpopup.dataset.id = target.id;
 
     e.preventDefault();
   });
 }
 
-function temp(div: DraggableComponentElement): void {
+function createGear(div: DraggableComponentElement): void {
   div.style.background = "Cyan";
-  div.setAttribute("width", "4");
-  div.setAttribute("height", "4");
+  div.width = 1;
+  div.height = 1;
+  div.componentType = "gear";
+  div.shouldLockCells = true;
+  div.classList.add("gear");
 }
 
 function createHShaft(div: DraggableComponentElement): void {
@@ -131,29 +158,96 @@ function createHShaft(div: DraggableComponentElement): void {
     shaftpopup.style.zIndex = "10";
 
     const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
-    shaftpopup.getElementsByTagName("input")[0].value = target.getAttribute("width") as string;
+    const inputs = shaftpopup.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].value = "0";
+    }
     shaftpopup.dataset.id = target.id;
 
     e.preventDefault();
   });
 }
 
+function createIntegrator(div: DraggableComponentElement): void {
+  div.style.background = "DarkMagenta";
+  div.width = 3;
+  div.height = 2;
+  div.componentType = "integrator";
+  div.shouldLockCells = true;
+  div.classList.add("integrator");
+}
+
+function createFunctionTable(div: DraggableComponentElement): void {
+  div.style.background = "lightgray";
+  div.width = 4;
+  div.height = 4;
+  div.componentType = "functionTable";
+  div.shouldLockCells = true;
+  div.classList.add("functionTable");
+
+  let function_table = document.createElement("graph-table") as GraphElement;
+  function_table.setAttribute("style", "width:100%;height:100%");
+  function_table.setAttribute("x-min", "0.0");
+  function_table.setAttribute("x-max", "2.0");
+  function_table.setAttribute("y-min", "0.0");
+  function_table.setAttribute("y-max", "5.0");
+  function_table.setAttribute("gantry-x", "1.0");
+  function_table.setAttribute("padding", "1");
+
+  let generator_exp = generator(100, function_table.x_min, function_table.x_max, x => Math.exp(x));
+
+  function_table.set_data_set("a", Array.from([...generator_exp]));
+  div.appendChild(function_table);
+}
+
+
+function createDifferential(div: DraggableComponentElement): void {
+  div.style.background = "LawnGreen";
+  div.width = 1;
+  div.height = 3;
+  div.componentType = "differential";
+  div.shouldLockCells = true;
+  div.classList.add("differential");
+}
+
+function createOutputTable(div: DraggableComponentElement): void {
+  div.style.background = "Brown";
+  div.width = 4;
+  div.height = 4;
+  div.componentType = "outputTable";
+  div.shouldLockCells = true;
+  div.classList.add("outputTable");
+}
+
+function createMotor(div: DraggableComponentElement): void {
+  div.style.background = "Aquamarine";
+  div.width = 2;
+  div.height = 1;
+  div.componentType = "motor";
+  div.shouldLockCells = true;
+  div.classList.add("motor");
+}
+
 function createMultiplier(div: DraggableComponentElement): void {
   div.style.background = "Blue";
-  div.setAttribute("width", "3");
-  div.setAttribute("height", "2");
+  div.width = 3;
+  div.height = 2;
+  div.componentType = "multiplier";
+  div.shouldLockCells = true;
+  div.classList.add("multiplier");
 
   render(html`<integrator-component></integrator-component>`, div);
 }
 
-function updateShaftLength(comp: DraggableComponentElement, newLength: number) {
+
+function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";
 
   if (isVertical) {
-    comp.setAttribute("height", newLength + "");
-    comp.style.height = Number(comp.height) * GRID_SIZE + "px";
+    comp.top = comp.top - negativeLength;
+    comp.height = Math.max(comp.height + negativeLength + positiveLength, 1);
   } else {
-    comp.setAttribute("width", newLength + "");
-    comp.style.width = Number(comp.width) * GRID_SIZE + "px";
+    comp.left = comp.left - negativeLength;
+    comp.width = Math.max(comp.width + negativeLength + positiveLength, 1);
   }
 }

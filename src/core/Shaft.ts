@@ -15,17 +15,19 @@ export class Shaft {
     nextRotation: number;
     resultReady: boolean;
     outputs: Device[];
+    id: number;
 
     /**
      * @constructor
      * @description The constructor of the Shaft class.
      * @param outputs An array of Devices the shaft output to
      */
-    constructor(outputs: Device[]) {
+    constructor(id: number, outputs: Device[]) {
         this.currentRotation = 0;
         this.nextRotation = 0;
         this.resultReady = false;
         this.outputs = outputs;
+        this.id = id;
     }
 
     /**

@@ -3,25 +3,15 @@ import Vector2 from "./Vector2.ts"
 import { GRID_SIZE, allValid, setCells, highlightHoveredCells } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 
-// let components: Array<DraggableComponentElement> = new Array<DraggableComponentElement>;
-// let draggableItems: Array<DraggableComponentElement> = new Array<DraggableComponentElement>;
-
 type DragItem = {
   item: DraggableComponentElement | null,
-  offsetX: number,
-  offsetY: number,
-
   mouseX: number,
   mouseY: number,
 };
 
-let curDragItem: DragItem = { item: null, offsetX: 0, offsetY: 0, mouseX: 0, mouseY: 0 };
+let curDragItem: DragItem = { item: null, mouseX: 0, mouseY: 0 };
 
-const opacity_moving: string = "10%";
-
-function stripUnits(value: string): number {
-  return Number(value.substring(0, value.length - 2));
-}
+const opacity_moving: string = "80%";
 
 function createNewObject(x: number, y: number, typeString: string): void {
   const componentType: ComponentType | null = stringToComponent(typeString);
@@ -30,21 +20,23 @@ function createNewObject(x: number, y: number, typeString: string): void {
     return;
 
   const item = createComponent(componentType);
+
+  item.dontUpdatePosition = true;
+  item.updated();
+
   curDragItem.item = item;
 
-  // +1 to prevent being perfecttly centered
-  curDragItem.offsetX = -stripUnits(item.style.width) / 2 + 1;
-  curDragItem.offsetY = -stripUnits(item.style.height) / 2 + 1;
+  const size = item.getScreenSize();
+  item.offsetX = -size.x / 2;
+  item.offsetY = -size.y / 2;
 
-  const posX: number = x + curDragItem.offsetX;
-  const posY: number = y + curDragItem.offsetY;
-
-  item.style.left = posX + "px";
-  item.style.top = posY + "px";
+  const posX: number = x + item.offsetX;
+  const posY: number = y + item.offsetY;
 
   item.style.opacity = opacity_moving;
 
-  item.dataset.hasBeenPlaced = "0";
+  item.style.top = `${posY}px`;
+  item.style.left = `${posX}px`;
 
   document.getElementById("content")!.appendChild(item);
 }
@@ -73,24 +65,13 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
   let currentMouseCol = Math.floor(mousePos.x / GRID_SIZE);
   let currentMouseRow = Math.floor(mousePos.y / GRID_SIZE);
 
-  const offX = Math.floor(-curDragItem.offsetX / GRID_SIZE);
-  const offY = Math.floor(-curDragItem.offsetY / GRID_SIZE);
+  const offX = Math.floor(-curDragItem.item.offsetX / GRID_SIZE);
+  const offY = Math.floor(-curDragItem.item.offsetY / GRID_SIZE);
 
   const placementCol = currentMouseCol - offX;
   const placementRow = currentMouseRow - offY;
 
   return new Vector2(placementCol, placementRow);
-}
-
-function getSize(): Vector2 | null {
-  if (curDragItem.item == null) {
-    return null;
-  }
-
-  const width = curDragItem.item.width;
-  const height = curDragItem.item.height;
-
-  return new Vector2(width, height);
 }
 
 export function pickup(event: MouseEvent): void {
@@ -103,28 +84,32 @@ export function pickup(event: MouseEvent): void {
 
   // Refree the cells below the item that has just started to be dragged
   {
-    const size = getSize();
-    // const topLeft = calculateTopLeftCell(new Vector2(.currentTarget.clientLeft, .currentTarget.clientTop));
+    const size = curDragItem.item.getSize();
 
     let topLeft = new Vector2(0, 0);
-    topLeft.x = Number(currentTarget.dataset.topLeftX);
-    topLeft.y = Number(currentTarget.dataset.topLeftY);
+    topLeft.x = Number(currentTarget.left);
+    topLeft.y = Number(currentTarget.top);
 
     if (size == null) return;
 
     if (curDragItem.item.shouldLockCells) setCells(topLeft, size, false);
 
-    currentTarget.dataset.previousCol = topLeft.x + "";
-    currentTarget.dataset.previousRow = topLeft.y + "";
+    highlightHoveredCells(topLeft, size, true);
+
+    currentTarget.previousLeft = topLeft.x;
+    currentTarget.previousTop = topLeft.y;
   }
 
-  const diffX = stripUnits(currentTarget.style.left) - event.clientX;
-  const diffY = stripUnits(currentTarget.style.top) - event.clientY;
+  const pos = currentTarget.getScreenPosition();
+  const diffX = pos.x - event.clientX;
+  const diffY = pos.y - event.clientY;
 
-  curDragItem.offsetX = diffX;
-  curDragItem.offsetY = diffY;
+  currentTarget.offsetX = diffX;
+  currentTarget.offsetY = diffY;
+  currentTarget.dontUpdatePosition = true;
   curDragItem.mouseX = event.clientX;
   curDragItem.mouseY = event.clientY;
+
 }
 
 function move(event: MouseEvent): void {
@@ -133,14 +118,14 @@ function move(event: MouseEvent): void {
   }
 
   const previousPos = calculateTopLeftCell(new Vector2(curDragItem.mouseX, curDragItem.mouseY));
-  const size = getSize()
+  const size = curDragItem.item.getSize()
 
   if (previousPos == null || size == null) return;
 
   highlightHoveredCells(previousPos, size, false);
 
-  curDragItem.item.style.left = (event.clientX + curDragItem.offsetX) + "px";
-  curDragItem.item.style.top = (event.clientY + curDragItem.offsetY) + "px";
+  curDragItem.item.style.left = (event.clientX + curDragItem.item.offsetX) + "px";
+  curDragItem.item.style.top = (event.clientY + curDragItem.item.offsetY) + "px";
   curDragItem.mouseX = event.clientX;
   curDragItem.mouseY = event.clientY;
 
@@ -161,7 +146,7 @@ function drop(event: MouseEvent): void {
   item.style.opacity = "100%";
 
   let topLeft = calculateTopLeftCell(new Vector2(event.clientX, event.clientY));
-  const size = getSize();
+  const size = item.getSize();
 
   if (topLeft == null || size == null) return;
 
@@ -170,14 +155,14 @@ function drop(event: MouseEvent): void {
   // Check whether or not the item being dragged can be placed
   {
     if (item.shouldLockCells && !allValid(topLeft, size)) {
-      if (item.dataset.hasBeenPlaced == "0") {
+      if (!item.hasBeenPlaced) {
         item.remove();
         curDragItem.item = null;
         return;
       }
 
-      topLeft.x = Number(item.dataset.previousCol);
-      topLeft.y = Number(item.dataset.previousRow);
+      topLeft.x = Number(item.previousLeft);
+      topLeft.y = Number(item.previousTop);
     }
 
     if (item.shouldLockCells) {
@@ -185,10 +170,8 @@ function drop(event: MouseEvent): void {
     }
   }
 
-  item.style.left = (topLeft.x * GRID_SIZE) + "px";
-  item.style.top = (topLeft.y * GRID_SIZE) + "px";
-
   const grid = document.getElementById("grid") as HTMLDivElement;
+  // Delete element because it is out of bounds
   if ((topLeft.x + size.x) * GRID_SIZE > grid.clientWidth || topLeft.x < 0 ||
     (topLeft.y + size.y) * GRID_SIZE > grid.clientHeight || topLeft.y < 0) {
 
@@ -200,9 +183,12 @@ function drop(event: MouseEvent): void {
     return;
   }
 
-  item.dataset.hasBeenPlaced = "1";
-  item.dataset.topLeftX = topLeft.x + "";
-  item.dataset.topLeftY = topLeft.y + "";
+  item.hasBeenPlaced = true;
+  item.left = topLeft.x;
+  item.top = topLeft.y;
+  item.dontUpdatePosition = false;
+
+  item.updated();
 
   curDragItem.item = null;
 }
