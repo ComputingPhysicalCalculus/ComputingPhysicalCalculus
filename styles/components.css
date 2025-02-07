@@ -23,7 +23,8 @@
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr 1fr;
 
-    gap: 7px;
+    gap: 10px;
+    padding: 10px;
 
     grid-column-start: 1;
     grid-column-end: 3;
@@ -31,7 +32,6 @@
     border-radius: 5px;
     max-width: 100%;
     overflow: none;
-    padding: 7px;
     max-height: 100%;
 }
 

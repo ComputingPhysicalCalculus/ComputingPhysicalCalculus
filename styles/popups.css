@@ -2,12 +2,12 @@
   background: var(--colour-accent2);
 
   position: absolute;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   border-color: var(--colour-accent3);
   border-style: solid;
-  border-width: 5px;
-  padding: 5px;
-  font-size: 1.3em;
+  border-width: calc(var(--border-radius) / 2);
+  padding: var(--gap-size);
+  font-size: calc(var(--text-size) * 1.2);
   text-decoration: bold;
 
   box-sizing: border;
@@ -53,7 +53,7 @@
 
 #gear-popup>div>label {
   font-weight: bold;
-  margin: 0 5px;
+  margin: 0 var(--gap-size);
   max-width: 40%;
 }
 
