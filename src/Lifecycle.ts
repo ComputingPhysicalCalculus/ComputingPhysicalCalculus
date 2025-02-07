@@ -162,8 +162,6 @@ export class Lifecycle {
         node.elem.setAttribute(k, v);
       }
 
-      console.log(node.elem);
-
       this.content.appendChild(node.elem);
     }
   }
