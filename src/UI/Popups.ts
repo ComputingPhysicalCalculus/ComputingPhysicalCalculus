@@ -133,9 +133,11 @@ function updateShaftLength(comp: DraggableComponentElement, negativeLength: numb
   const isVertical = comp.componentType == "vShaft";
 
   if (isVertical) {
+    if (comp.height == 1) return;
     comp.top = comp.top - negativeLength;
     comp.height = Math.max(comp.height + negativeLength + positiveLength, 1);
   } else {
+    if (comp.width == 1) return;
     comp.left = comp.left - negativeLength;
     comp.width = Math.max(comp.width + negativeLength + positiveLength, 1);
   }
