@@ -1,12 +1,15 @@
 .popup {
-    background: Magenta;
+    background: var(--colour-accent2);
 
     position: absolute;
     border-radius: 10px;
-    border-color: Black;
+    border-color: var(--colour-accent5);
     border-style: solid;
     border-width: 5px;
     padding: 5px;
+
+    font-size: 1.3em;
+    text-decoration: bold;
 
     box-sizing: border;
 }
@@ -15,9 +18,6 @@
     display: flex;
     flex-direction: column;
 
-    /* Default */
-    /* left: 100px; */
-    /* top: 100px; */
     visibility: hidden;
 }
 
@@ -25,12 +25,11 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: 0 10px;
-    gap: 50px;
+    gap: 10%;
 }
 
 #shaft-popup > div > button {
-    width: 50%;
+    width: 100%;
 }
 
 #gear-popup {
@@ -38,7 +37,7 @@
   flex-direction: column;
   justify-content: center;
 
-  max-width: 8vw;
+  max-width: 10vw;
 
   visibility: hidden;
 }

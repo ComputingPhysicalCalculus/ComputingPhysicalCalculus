@@ -74,7 +74,103 @@ body, html {
     padding: 15px;
     box-sizing: border-box;
 
+    gap: 20px;
+
     z-index: 6;
+}
+
+#components-area {
+    display: flex;
+    flex-direction: column;
+    background: var(--colour-accent5);
+
+    padding: 10px;
+    border-radius: 15px;
+}
+
+#components-area p {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+    text-decoration: underline;
+    margin: 10px 0;
+    color: var(--text-colour);
+}
+
+#components-list {
+    display: grid;
+    background: var(--colour-highlight2);
+
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 7px;
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    border-radius: 15px;
+    max-width: 100%;
+    overflow:none;
+    padding: 7px;
+    max-height: 100%;
+}
+
+.component {
+    background: var(--colour-accent1);
+    border-radius: 10px;
+    position: relative;
+    aspect-ratio: 1;
+    height: 100%;
+
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    justify-content: center;
+    user-select: none;
+}
+
+#configuration {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: var(--colour-accent5);
+    padding: 10px;
+    border-radius: 15px;
+    font-size: 1.2em;
+}
+
+#configuration p {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+    margin: 10px 0;
+    text-decoration: underline;
+    color: var(--text-colour);
+}
+
+#configuration > label {
+    text-decoration: bold;
+}
+
+#configuration > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10%;
+    padding: 5px 0 5px 0;
+}
+
+#configuration > div > button {
+    font-size: 0.8em;
+    width: 45%;
+}
+
+#configuration > button {
+    font-size: 0.8em;
+    margin: 5px 0 0 0;
 }
 
 integrator-component {
