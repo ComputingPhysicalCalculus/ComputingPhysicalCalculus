@@ -6,6 +6,8 @@ import { DraggableComponentElement } from "./UI/DraggableElement";
 import { setCells } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 
+const MAX_HISTORY_LENGTH = 32;
+
 /**
  * represents the lifecycle of the application and when certain code should be called.
  */
@@ -46,6 +48,14 @@ export class Lifecycle {
   @query("#simulation-step-period")
   step_period_input!: HTMLInputElement;
 
+  @query("#content")
+  content!: Node;
+  
+  private history: {
+    elem: DraggableComponentElement,
+    attrs: { [k: string]: string },
+  }[][] = [];
+
   /**
    * Sets up the internal lifecycle state
    */
@@ -69,6 +79,16 @@ export class Lifecycle {
     this.import_button.addEventListener("click", _ => this._handle_import_file());
     this.export_button.addEventListener("click", _ => this._handle_export_file());
     this.clear_button.addEventListener("click", _ => this._clear_components());
+
+    window.addEventListener("keydown", e => {
+      if (e.ctrlKey) {
+        switch (e.key) {
+          case 'z':
+            this.popHistory();
+            break;
+        }
+      }
+    })
     
     // KEEP THIS AT THE END OF THIS FUNCTION.
     this.resolveSetupCompleted();
@@ -80,6 +100,7 @@ export class Lifecycle {
    */
   public initialLoad(): void {
     this.loadState(EXAMPLE_CONFIG);
+    this.history.pop();
   }
 
   /**
@@ -87,6 +108,8 @@ export class Lifecycle {
    * or an example program.
    */
   public loadState(config: Config): void {
+    this.pushHistory();
+    
     // Remove any components placed in the scene.
     this._clear_components();
 
@@ -95,6 +118,54 @@ export class Lifecycle {
 
   public exportState(): Config {
     return EXAMPLE_CONFIG;
+  }
+
+  public pushHistory(): void {
+    // Clear future
+    // this.future.splice(0, this.future.length);
+
+    // Add to history
+    this._pushHistory();
+  }
+
+  private _pushHistory(): void {
+    // Copy nodes
+    let nodes = [];
+    for (let node of this.placedComponents) {
+      let clone = node.cloneNode(true) as DraggableComponentElement;
+
+      let attrs: { [k: string]: string } = {};
+      for (let attr of DraggableComponentElement.observedAttributes) {
+        attrs[attr] = (node as any)[attr]!;
+      }
+
+      nodes.push({ elem: clone, attrs });
+    }
+
+    // Append to history, truncating it if it is too long
+    this.history.splice(0, Math.max(this.history.length - MAX_HISTORY_LENGTH, 0));
+    this.history.push(nodes);
+  }
+
+  public popHistory(): void {
+    if (this.history.length < 1) {
+      return;
+    }
+    
+    // Remove current components
+    this._clear_components();
+
+    // Restore state
+    let newNodes = this.history.pop()!;
+    for (let node of newNodes) {
+      for (let [k, v] of Object.entries(node.attrs)) {
+        node.elem.setAttribute(k, v);
+      }
+
+      console.log(node.elem);
+
+      this.content.appendChild(node.elem);
+    }
   }
 
   private _clear_components(): void {

@@ -98,7 +98,8 @@ export function loadConfig(config: Config): void {
     item.left = left;
     item.id = `component-${components.compID}`;
 
-    item.dataset.hasBeenPlaced = "0";
+    item.hasBeenPlaced = true;
+    item.requestUpdate();
 
     document.getElementById("content")!.appendChild(item);
   }
@@ -127,7 +128,8 @@ export function loadConfig(config: Config): void {
     item.height = height;
     item.id = `shaft-component-${shaft.id}`;
 
-    item.dataset.hasBeenPlaced = "0";
+    item.hasBeenPlaced = true;
+    item.requestUpdate();
 
     document.getElementById("content")!.appendChild(item);
   }
