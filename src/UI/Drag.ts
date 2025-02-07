@@ -78,6 +78,9 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
 export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
+  // Will come up with a better solution
+  (window as any).lifecycle.pushHistory();
+
   const currentTarget = event.currentTarget as DraggableComponentElement;
   currentTarget.classList.add("dragged");
 
