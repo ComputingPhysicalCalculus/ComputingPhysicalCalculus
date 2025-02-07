@@ -23,6 +23,20 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
 export function openShaftPopup(e: MouseEvent): void {
   openPopup(e, shaftPopup);
 
+  const target = e.currentTarget as DraggableComponentElement;
+  const isVertical = target.componentType == "vShaft";
+
+  const labels = shaftPopup.getElementsByTagName("label");
+  for (let i = 0; i < labels.length; i++) {
+    const input = labels[i] as HTMLLabelElement;
+
+    if (input.id == "shaft-negative-label") {
+      input.innerText = (isVertical) ? "Top Length" : "Left Length";
+    } else if (input.id == "shaft-positive-label") {
+      input.innerText = (isVertical) ? "Bottom Length" : "Right Length";
+    }
+  }
+
   e.preventDefault();
 }
 
@@ -86,7 +100,6 @@ function setupGearPopup(): void {
   gearPopup.addEventListener("mouseleave", closePopup);
 
   const inputs = gearPopup.getElementsByTagName("input");
-  console.log(inputs);
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
@@ -106,7 +119,6 @@ function setupMultiplierPopup(): void {
   multiplierPopup.addEventListener("mouseleave", closePopup);
 
   const inputs = multiplierPopup.getElementsByTagName("input");
-  console.log(inputs);
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;

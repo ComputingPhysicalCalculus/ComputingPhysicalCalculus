@@ -61,7 +61,6 @@ export function setCells(topLeft: Vector2, size: Vector2, fill: boolean): void {
     } else {
       if (lockedCells.has(posStr)) {
         lockedCells.delete(posStr);
-        console.log("Removing locked cell");
       }
     }
   }
