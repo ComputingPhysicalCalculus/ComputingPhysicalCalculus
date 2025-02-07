@@ -8,13 +8,6 @@
 
 .grid-cell {
     position: absolute;
-
-    border-style: solid;
-    border-color: red;
-    border-width: 1px;
-    z-index: -10;
-
-    box-sizing: border;
 }
 
 .locked-cell {
@@ -22,7 +15,7 @@
 }
 
 .highlighted-cell {
-    background: DarkOrchid;
+    background: var(--colour-highlight3);
     z-index: 4;
     opacity: 30%;
 }

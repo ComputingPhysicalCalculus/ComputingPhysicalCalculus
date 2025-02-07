@@ -16,9 +16,6 @@
             <div id="grid"></div>
         </div>
 
-        <!-- <graph-table style="width:100%;height:100%" id="graph-table-1" x-min="0.0" x-max="2.0" y-min="0.0" y-max="5.0" gantry-x="1.0"> -->
-        <!-- </graph-table> -->
-
         <div id="user-control">
             <div id="components-area">
                 <p>Components List</p>
@@ -35,28 +32,35 @@
                 </div>
             </div>
 
-            <label for="config-file-upload">Config File</label>
-            <input id="config-file-upload" type="file" />
+            <div id="configuration">
+                <p>Configuration</p>
+                <label for="config-file-upload">Config File</label>
+                <input id="config-file-upload" type="file" />
 
-            <button id="import-button">Import</button>
-            <button id="export-button">Export</button>
+                <div>
+                    <button id="import-button">Import</button>
+                    <button id="export-button">Export</button>
+                    <button id="clear-button">Clear</button>
+                </div>
 
-            <label for="step-counter">Steps</label>
-            <input id="step-counter" type="number" value="0"/>
-            <label for="step-period">Step period</label>
-            <input id="step-period" type="number" value="0.05"/>
-            <button id="run-simulation">Run</button>
+                <label for="simulation-step-counter">Steps</label>
+                <input id="simulation-step-counter" type="number" value="0"/>
+
+                <label for="simulation-step-period">Step period</label>
+                <input id="simulation-step-period" type="number" value="0.05"/>
+                <button id="run-simulation">Run</button>
+            </div>
         </div>
 
         <div id="popups">
             <div class="popup" id="shaft-popup" position="absolute" >
-                <label>Negative Shaft Length</label>
+                <label id="shaft-negative-label">Negative Shaft Length</label>
                 <div>
                     <button id="shaft-popup-negative-decrease">-</button>
                     <button id="shaft-popup-negative-increase">+</button>
                 </div>
 
-                <label>Positive Shaft Length</label>
+                <label id="shaft-positive-label">Positive Shaft Length</label>
                 <div>
                     <button id="shaft-popup-positive-decrease">-</button>
                     <button id="shaft-popup-positive-increase">+</button>

@@ -1,3 +1,22 @@
+:root {
+    --colour-background: #CCC5B9;
+    --colour-accent1: #B6BCAB;
+    --colour-accent2: #A7B887;
+    --colour-accent3: #88986C;
+    --colour-accent4: #62783B;
+    --colour-highlight1: #ECCF7E;
+    --colour-highlight2: #D48C35;
+    --colour-highlight3: #364D1A;
+    --text-colour: #F0F0F0;
+    --text-size: 1vw;
+    --text-button-size: 0.8vw;
+    --text-header-size: 2vw;
+
+    font-family: monospace;
+    color: var(--text-colour);
+    background: var(--colour-background);
+}
+
 .center {
     width: 50%;
     border: 3px solid green;
@@ -6,12 +25,8 @@
     text-align: center;
 }
 
-p {
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     max-width: 100%;
@@ -22,24 +37,20 @@ body, html {
 
 #content {
     position: absolute;
-    left: 0px;
+    left: 0;
     margin: 0;
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
-    overflow: none;
+    overflow: hidden;
+
+    background: var(--colour-background);
 }
 
 #machine {
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#main-canvas {
-    margin: 0;
     width: 100%;
     height: 100%;
 }
@@ -50,17 +61,112 @@ body, html {
     flex-direction: column;
 
     resize: horizontal;
-    width: 20%;
+    width: 30vw;
     height: 100%;
-    overflow: none;
+    overflow: hidden;
 
-    background: #FFCEC4;
-    border-radius: 5;
+    background: var(--colour-accent1);
+    border-radius: 5px;
 
-    padding: 1em;
+    padding: 15px;
     box-sizing: border-box;
+    gap: 20px;
 
-    z-index: 10;
+    z-index: 6;
+}
+
+#components-area {
+    display: flex;
+    flex-direction: column;
+    background: var(--colour-accent2);
+
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#components-area p {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: var(--text-header-size);
+    text-decoration: underline;
+    margin: 10px 0;
+    color: var(--text-colour);
+}
+
+#components-list {
+    display: grid;
+    background: var(--colour-highlight1);
+
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 7px;
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    border-radius: 5px;
+    max-width: 100%;
+    overflow: none;
+    padding: 7px;
+    max-height: 100%;
+}
+
+.component {
+    background: var(--colour-accent2);
+    border-radius: 5px;
+    position: relative;
+    aspect-ratio: 1;
+    height: 100%;
+
+    font-size: var(--text-size);
+    font-weight: bold;
+    text-align: center;
+    justify-content: center;
+    user-select: none;
+}
+
+#configuration {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: var(--colour-accent2);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: var(--text-size);
+}
+
+#configuration>p {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: var(--text-header-size);
+    margin: 10px 0;
+    text-decoration: underline;
+    color: var(--text-colour);
+}
+
+#configuration>label {
+    text-decoration: bold;
+}
+
+#configuration>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10%;
+    padding: 5px 0 5px 0;
+}
+
+#configuration>div>button {
+    font-size: var(--text-button-size);
+    width: 45%;
+}
+
+#configuration>button {
+    font-size: var(--text-button-size);
+    margin: 5px 0 0 0;
 }
 
 integrator-component {

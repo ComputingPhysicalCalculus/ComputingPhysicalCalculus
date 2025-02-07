@@ -6,9 +6,9 @@ import styles from "../../styles/IntegratorComponent.css?inline";
 @customElement("integrator-component")
 export class IntegratorComponentElement extends LitElement {
   static styles = css`${unsafeCSS(styles)}`;
-  
+
   render() {
-        // viewBox="4 4 92 62"
+    // viewBox="4 4 92 62"
     return svg`
       <svg
         xmlns="https://www.w3.org/2000/svg"
@@ -22,7 +22,7 @@ export class IntegratorComponentElement extends LitElement {
 
         <polygon fill="black" stroke="black" stroke-width="2" stroke-linejoin="round" points="107.5,20 112.5,30 117.5,20" />
 
-        ${[ -2, -1, 0, 1, 2 ].map(i => svg`
+        ${[-2, -1, 0, 1, 2].map(i => svg`
           <line
             x1="65"
             y1="${52 + i * 7}"

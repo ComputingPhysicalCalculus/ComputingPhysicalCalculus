@@ -1,6 +1,4 @@
 import { ComponentType, createComponent, stringToComponent } from "./UI/Components";
-import { DraggableComponentElement } from "./UI/DraggableElement";
-import { setCells } from "./UI/Grid";
 
 export type Config = {
   shafts: ShaftConfig[];
@@ -77,28 +75,6 @@ export type GearConfig = {
   position: [ number, number ];
 };
 
-export function downloadConfig(config: Config): void {
-  const link = document.createElement("a");
-  const file = new Blob([JSON.stringify(config)], { type: "application/json" });
-
-  link.href = URL.createObjectURL(file);
-  link.download = "differential-analyzer.json";
-  link.click();
-
-  URL.revokeObjectURL(link.href);
-}
-
-export function clearEnvironment(): void {
-  let components = document.querySelectorAll(".placed-component");
-  for (let component of components) {
-    let { top, left, width, height } = component as DraggableComponentElement;
-    console.log(component);
-    component.remove();
-
-    setCells({ x: left, y: top }, { x: width, y: height }, false);
-  }
-}
-
 const type_name_dict = {
   "gear": "Gear",
   "integrator": "Integrator",
@@ -110,8 +86,6 @@ const type_name_dict = {
 };
 
 export function loadConfig(config: Config): void {
-  clearEnvironment();
-
   for (let components of config.components) {
     let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
@@ -124,7 +98,8 @@ export function loadConfig(config: Config): void {
     item.left = left;
     item.id = `component-${components.compID}`;
 
-    item.dataset.hasBeenPlaced = "0";
+    item.hasBeenPlaced = true;
+    item.requestUpdate();
 
     document.getElementById("content")!.appendChild(item);
   }
@@ -153,7 +128,8 @@ export function loadConfig(config: Config): void {
     item.height = height;
     item.id = `shaft-component-${shaft.id}`;
 
-    item.dataset.hasBeenPlaced = "0";
+    item.hasBeenPlaced = true;
+    item.requestUpdate();
 
     document.getElementById("content")!.appendChild(item);
   }

@@ -1,50 +1,56 @@
 #components-area {
     display: flex;
     flex-direction: column;
-    background: White;
-
-    margin: 5px;
+    background: var(--colour-accent2);
 
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 #components-area p {
     display: block;
     text-align: center;
     font-weight: bold;
-    font-size: 2em;
+    font-size: var(--text-header-size);
     text-decoration: underline;
+    color: var(--text-colour);
 }
 
 #components-list {
     display: grid;
+    background: var(--colour-accent3);
 
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr 1fr;
 
-    gap: 5px;
+    gap: 7px;
 
     grid-column-start: 1;
     grid-column-end: 3;
 
-    background: red;
-    border-radius: 10px;
+    border-radius: 5px;
     max-width: 100%;
-    overflow:none;
-    margin: 5px;
-    padding: 5px;
+    overflow: none;
+    padding: 7px;
     max-height: 100%;
 }
 
 .component {
+    background: var(--colour-accent4);
+    border-radius: 5px;
     position: relative;
     aspect-ratio: 1;
     height: 100%;
-    font-size: 1.5em;
+
+    font-size: var(--text-button-size);
     font-weight: bold;
     text-align: center;
+    justify-content: center;
     user-select: none;
+}
+
+.component.dragged {
+    opacity: 95%;
 }
 
 .vShaft {
@@ -61,7 +67,6 @@
 .differential,
 .outputTable,
 .motor,
-.multiplier
-{
+.multiplier {
     z-index: 3;
 }
