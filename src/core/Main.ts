@@ -129,7 +129,8 @@ export class Simulator {
                     new_component = new Integrator(
                         shafts[component.variableOfIntegrationShaft],
                         shafts[component.integrandShaft],
-                        shafts[component.outputShaft]
+                        shafts[component.outputShaft],
+                        component.reverse
                     );
                     shafts[component.variableOfIntegrationShaft].outputs.push(new_component);
                     shafts[component.integrandShaft].outputs.push(new_component);

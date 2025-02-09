@@ -18,6 +18,7 @@ export class Integrator implements Device {
     private integrand: Shaft;
     private variableOfIntegration: Shaft;
     private readonly wheelRadius: number = 1;
+    private reverse: boolean = false;
 
     /**
      * @constructor
@@ -30,10 +31,12 @@ export class Integrator implements Device {
         variableOfIntegration: Shaft,
         integrand: Shaft,
         output: Shaft,
+        reverse: boolean
     ) {
         this.output = output;
         this.integrand = integrand;
         this.variableOfIntegration = variableOfIntegration;
+        this.reverse = reverse
     }
 
     /**
@@ -46,6 +49,8 @@ export class Integrator implements Device {
         if(!this.variableOfIntegration.resultReady) return undefined;
         let wheelLinearSpeed: number = this.variableOfIntegration.currentRotation * this.integrand.currentRotation;
         let wheelAngularSpeed: number = wheelLinearSpeed / this.wheelRadius;
+        if (this.reverse)
+            wheelAngularSpeed = -wheelAngularSpeed
         this.output.nextRotation = wheelAngularSpeed;
         return this.output;
     }

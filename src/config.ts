@@ -22,6 +22,7 @@ export type IntegratorConfig = {
   integrandShaft: ShaftID;
   outputShaft: ShaftID;
   position: [ number, number ];
+  reverse: boolean;
 };
 
 export type DifferentialConfig = {

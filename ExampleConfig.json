@@ -1,67 +1,104 @@
+
 {
   "shafts": [
     {
       "id": 0,
       "start": [0, 1],
-      "end": [0, 5]
+      "end": [0, 5],
+      "_comment": "t"
     },
     {
       "id": 1,
       "start": [1, 1],
-      "end": [1, 5]
+      "end": [1, 5],
+      "_comment": "x"
     },
     {
       "id": 2,
       "start": [2, 1],
-      "end": [2, 5]
+      "end": [2, 5],
+      "_comment": "dx/dt"
+    },
+    {
+      "id": 3,
+      "start": [2, 1],
+      "end": [2, 5],
+      "_comment": "F(dx/dt)"
+    },
+    {
+      "id": 4,
+      "start": [2, 1],
+      "end": [2, 5],
+      "_comment": "F(dx/dt) + kx/m"
+    },
+    {
+      "id": 5,
+      "start": [2, 1],
+      "end": [2, 5],
+      "_comment": "kx/m"
     }
   ],
-
   "components": [
     {
-      "type": "integrator",
-      "compID": 1,
-      "variableOfIntegrationShaft": 1,
-      "integrandShaft": 2,
+      "type": "motor",
+      "compID": 0,
       "outputShaft": 0,
-      "position": [6, 6]
+      "position": [6, 6],
+      "_comment": "output is t"
     },
     {
       "type": "differential",
-      "compID": 2,
-      "inputShaft1": 1,
-      "inputShaft2": 2,
-      "outputShaft": 0,
-      "position": [6, 6]
+      "compID": 1,
+      "inputShaft1": 3,
+      "inputShaft2": 5,
+      "outputShaft": 4,
+      "position": [6, 6],
+      "_comment": "input1 is F(dx/dt); input 2 is kx/m; output is F(dx/dt) + kx/m"
     },
     {
-      "type": "multiplier",
-      "compID": 3,
-      "inputShaft": 1,
+      "type": "integrator",
+      "compID": 2,
+      "variableOfIntegrationShaft": 0,
+      "integrandShaft": 4,
       "outputShaft": 2,
-      "factor": 2,
-      "position": [6, 6]
+      "reverse": "true",
+      "position": [6, 6],
+      "_comment": "variable of integration is t; integrand is F(dx/dt) + kx/m; output is -(dx/dt)"
+    },
+    {
+      "type": "integrator",
+      "compID": 3,
+      "variableOfIntegrationShaft": 0,
+      "integrandShaft": 2,
+      "outputShaft": 1,
+      "reverse": "false",
+      "position": [6, 6],
+      "_comment": "variable of integration is t; integrand is dx/dt; output is x"
     },
     {
       "type": "functionTable",
       "compID": 4,
-      "inputShaft": 1,
-      "outputShaft": 2,
-      "position": [6, 6]
+      "inputShaft": 2,
+      "outputShaft": 3,
+      "position": [6, 6],
+      "_comment": "input is dx/dt; output is F(dx/dt)"
     },
     {
-      "type": "motor",
+      "type": "multiplier",
       "compID": 5,
-      "outputShaft": 1,
-      "position": [6, 6]
+      "inputShaft": 1,
+      "outputShaft": 5,
+      "position": [6, 6],
+      "_comment": "input is x; output is kx/m"
     },
     {
       "type": "outputTable",
       "compID": 6,
-      "inputShaft": 1,
-      "outputShaft1": 2,
-      "outputShaft2": "",
-      "position": [6, 6]
+      "inputShaft": 0,
+      "outputShaft1": 1,
+      "outputShaft2": 2,
+      "position": [6, 6],
+      "_comment": "input is t; output1 is x; output2 is dx/dt"
     }
   ]
 }
