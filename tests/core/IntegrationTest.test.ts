@@ -18,49 +18,66 @@ import { assert, test, describe, expect, it } from 'vitest'
 
 describe("Differential Class Testing 1", () =>{
     // create mock shafts 
-    let mock_shaft_1 = new Shaft(1, []); // t
-    let mock_shaft_2 = new Shaft(2, []); // x
-    let mock_shaft_3 = new Shaft(3, []); // dx/dt
-    let mock_shaft_4 = new Shaft(4, []); // F(dx/dt)
-    let mock_shaft_5 = new Shaft(5, []); // F(dx/dt) + k/m x
-    let mock_shaft_6 = new Shaft(6, []); // k/m x
+    let t_shaft = new Shaft(1, []); // t
+    let x_shaft = new Shaft(2, []); // x
+    let dx_shaft = new Shaft(3, []); // dx/dt
+    let three_dx_shaft = new Shaft(4, []); // 3dx/dt
+    let minus_two_x_shaft = new Shaft(5, []); // -2x
+    let to_int_shaft = new Shaft(6, []); // 3dx - 2x
 
-    // set constants
-    let k = 2;
-    let m = 1;
-    let F = (x: number) => { return -3 * x; };
+    let dx_0 = 1;
+    let ddx_0 = 1;
+    let x_0 = 0.5 * (3*dx_0 - ddx_0);
 
     // create instance of Devices
-    let differential = new Differential(mock_shaft_4, mock_shaft_6, mock_shaft_5);
-    let integrator1 = new Integrator(mock_shaft_1, mock_shaft_5, mock_shaft_3, true, 1);
-    let integrator2 = new Integrator(mock_shaft_1, mock_shaft_3, mock_shaft_2, false, 1);
-    let multiplier = new Multiplier(mock_shaft_2, mock_shaft_6, k / m);
-    let functionTable = new FunctionTable(mock_shaft_3, mock_shaft_4, 0, F);
-    let outputTable = new OutputTable(mock_shaft_1, mock_shaft_2, 0, mock_shaft_3, 0);
-    let motor = new Motor(1, mock_shaft_1);
+    let differential = new Differential(three_dx_shaft, minus_two_x_shaft, to_int_shaft);
+    let integrator1 = new Integrator(t_shaft, to_int_shaft, dx_shaft, false, dx_0);
+    let integrator2 = new Integrator(t_shaft, dx_shaft, x_shaft, false, x_0);
+    let multiplier1 = new Multiplier(x_shaft, minus_two_x_shaft, -2);
+    let multiplier2 = new Multiplier(three_dx_shaft, dx_shaft, 3);
+    let outputTable = new OutputTable(t_shaft, x_shaft, x_0, dx_shaft, dx_0);
+
+    const MAX_VALUE_POWER = 2;
+
+    // number of cycles
+    let N = 100;
+    let rotation_rate = MAX_VALUE_POWER / N;
+
+    let motor = new Motor(rotation_rate, t_shaft);
 
     // setting outputs to each shaft
-    mock_shaft_1.outputs = [integrator1, integrator2, outputTable];
-    mock_shaft_2.outputs = [multiplier, outputTable];
-    mock_shaft_3.outputs = [functionTable, integrator2, outputTable];
-    mock_shaft_4.outputs = [differential];
-    mock_shaft_5.outputs = [differential, integrator1];
-    mock_shaft_6.outputs = [differential];
+    t_shaft.outputs = [integrator1, integrator2, outputTable];
+    x_shaft.outputs = [multiplier1, outputTable];
+    dx_shaft.outputs = [integrator2, multiplier2, outputTable];
+    three_dx_shaft.outputs = [differential];
+    minus_two_x_shaft.outputs = [differential];
+    to_int_shaft.outputs = [integrator1];
 
     // create instance of array to test 
 
-    let mock_shafts = [mock_shaft_1, mock_shaft_2, mock_shaft_3, mock_shaft_4, mock_shaft_5, mock_shaft_6];
-    let devices = [differential, integrator1, integrator2, multiplier, functionTable, outputTable];
+    let mock_shafts = [t_shaft, x_shaft, dx_shaft, three_dx_shaft, minus_two_x_shaft, to_int_shaft];
+    let devices = [differential, integrator1, integrator2, multiplier1, multiplier2, outputTable];
     let simulator = new Simulator(mock_shafts, motor, [outputTable], devices);
 
 
-    for(let i = 1;i<=10;++i) {
+    for(let i = 0; i < N; i++) {
         simulator.step();
-        console.log(mock_shaft_3.currentRotation);
     }    
 
-    test("", () => {
-        console.log(simulator.outputTables[0].y1History);
-        expect(false);
+    let MSE = 0;
+
+    let xhist = simulator.outputTables[0].xHistory;
+    let yhist = simulator.outputTables[0].y1History;
+    for (let i = 0; i < xhist.length; i++){
+        let d = Math.exp(xhist[i]) - yhist[i];
+        MSE += d*d;
+    }
+
+    MSE = MSE / N;
+    
+    console.log(MSE);
+    test("MSE value", () =>{
+        expect(MSE).toBeLessThan(0.1);
+        console.log(MSE);
     });
 });
