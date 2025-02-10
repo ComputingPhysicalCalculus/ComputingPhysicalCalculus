@@ -98,6 +98,11 @@ export class Lifecycle {
             }
           }
           break;
+        case 'S':
+        case 's':
+          e.preventDefault();
+          this._handle_export_file();
+          break;
       }
     })
     
