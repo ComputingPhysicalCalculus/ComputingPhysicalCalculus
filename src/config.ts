@@ -1,4 +1,5 @@
 import { ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { GRID_SIZE } from "./UI/Grid";
 
 export type Config = {
   shafts: ShaftConfig[];
@@ -9,8 +10,8 @@ export type ShaftID = number;
 
 export type ShaftConfig = {
   id: ShaftID;
-  start: [ number, number ];
-  end: [ number, number ];
+  start: [number, number];
+  end: [number, number];
 };
 
 export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig;
@@ -21,7 +22,7 @@ export type IntegratorConfig = {
   variableOfIntegrationShaft: ShaftID;
   integrandShaft: ShaftID;
   outputShaft: ShaftID;
-  position: [ number, number ];
+  position: [number, number];
   reverse: boolean;
 };
 
@@ -31,7 +32,7 @@ export type DifferentialConfig = {
   inputShaft1: ShaftID;
   inputShaft2: ShaftID;
   outputShaft: ShaftID;
-  position: [ number, number ];
+  position: [number, number];
 };
 
 export type MultiplierConfig = {
@@ -40,7 +41,7 @@ export type MultiplierConfig = {
   inputShaft: ShaftID;
   outputShaft: ShaftID;
   factor: ShaftID;
-  position: [ number, number ];
+  position: [number, number];
 };
 
 export type FunctionTableConfig = {
@@ -48,14 +49,14 @@ export type FunctionTableConfig = {
   compID: number;
   inputShaft: ShaftID;
   outputShaft: ShaftID;
-  position: [ number, number ];
+  position: [number, number];
 };
 
 export type MotorConfig = {
   type: "motor";
   compID: number;
   outputShaft: ShaftID;
-  position: [ number, number ];
+  position: [number, number];
 };
 
 export type OutputTableConfig = {
@@ -64,7 +65,7 @@ export type OutputTableConfig = {
   inputShaft: ShaftID;
   outputShaft1: ShaftID;
   outputShaft2: ShaftID;
-  position: [ number, number ];
+  position: [number, number];
 };
 
 export type GearConfig = {
@@ -73,7 +74,7 @@ export type GearConfig = {
   horizontal: ShaftID;
   vertical: ShaftID;
   ratio: number;
-  position: [ number, number ];
+  position: [number, number];
 };
 
 const type_name_dict = {
@@ -97,6 +98,8 @@ export function loadConfig(config: Config): void {
     let item = createComponent(stringToComponent(componentType) as ComponentType);
     item.top = top;
     item.left = left;
+    item.renderTop = top * GRID_SIZE;
+    item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
 
     item.hasBeenPlaced = true;
@@ -125,6 +128,8 @@ export function loadConfig(config: Config): void {
     let item = createComponent(shaft_type);
     item.top = top;
     item.left = left;
+    item.renderTop = top * GRID_SIZE;
+    item.renderLeft = left * GRID_SIZE;
     item.width = width;
     item.height = height;
     item.id = `shaft-component-${shaft.id}`;

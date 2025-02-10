@@ -4,7 +4,7 @@ import { query, queryAll } from "./decorators";
 import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
-import { setCells } from "./UI/Grid";
+import { setCells, setupScreenDrag } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 
 const MAX_HISTORY_LENGTH = 32;
@@ -51,7 +51,7 @@ export class Lifecycle {
 
   @query("#content")
   content!: Node;
-  
+
   private history: {
     _type: ComponentType,
     data: any,
@@ -69,7 +69,7 @@ export class Lifecycle {
     // Make sure to run initialLoad after setup
     this.setupCompleted.then(() => this.initialLoad());
   }
-  
+
   /**
    * A function that is only called once, on window load. It should never be called again.
    * Only callbacks and other such stateful objects should exist in this function.
@@ -80,6 +80,9 @@ export class Lifecycle {
 
     // Popups on right click
     setupPopups();
+
+    // Screen Dragging
+    setupScreenDrag();
 
     // Setup click event listener
     this.import_button.addEventListener("click", _ => this._handle_import_file());
@@ -105,7 +108,7 @@ export class Lifecycle {
           break;
       }
     })
-    
+
     // KEEP THIS AT THE END OF THIS FUNCTION.
     this.resolveSetupCompleted();
   }
@@ -125,7 +128,7 @@ export class Lifecycle {
    */
   public loadState(config: Config): void {
     this.pushHistory();
-    
+
     // Remove any components placed in the scene.
     this._clear_components();
 
@@ -168,7 +171,7 @@ export class Lifecycle {
     }
 
     this.future.push(saved_data);
-    
+
     // Remove current components
     this._clear_components();
 
@@ -194,7 +197,7 @@ export class Lifecycle {
     }
 
     this.history.push(saved_data);
-    
+
     // Remove current components
     this._clear_components();
 

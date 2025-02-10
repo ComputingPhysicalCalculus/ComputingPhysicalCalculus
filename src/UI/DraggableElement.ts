@@ -25,6 +25,12 @@ export class DraggableComponentElement extends LitElement {
   left: number = 0;
 
   @property({ type: Number })
+  renderTop: number = 0;
+
+  @property({ type: Number })
+  renderLeft: number = 0;
+
+  @property({ type: Number })
   componentID: number = 0;
 
   @property({ type: String })
@@ -35,9 +41,6 @@ export class DraggableComponentElement extends LitElement {
 
   @property({ type: Boolean })
   hasBeenPlaced: boolean = false;
-
-  @property({ type: Boolean })
-  dontUpdatePosition: boolean = false;
 
   @property({ type: Number })
   previousLeft: number = 0;
@@ -57,9 +60,9 @@ export class DraggableComponentElement extends LitElement {
   @property({ type: Number })
   outputRatio: number = 1;
 
-  export_fn: (_this: DraggableComponentElement) => { _type: ComponentType, data: any}= () => ({ _type: ComponentType.Gear, data: {} });
+  export_fn: (_this: DraggableComponentElement) => { _type: ComponentType, data: any } = () => ({ _type: ComponentType.Gear, data: {} });
 
-  import_fn: (_this: DraggableComponentElement, obj: any) => void = (_obj) => {};
+  import_fn: (_this: DraggableComponentElement, obj: any) => void = (_obj) => { };
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -80,20 +83,18 @@ export class DraggableComponentElement extends LitElement {
   }
 
   getScreenPosition(): Vector2 {
-    return new Vector2(this.left * GRID_SIZE, this.top * GRID_SIZE);
+    return new Vector2(this.renderLeft, this.renderTop);
   }
 
   updated() {
     this.style.width = `${this.width * GRID_SIZE}px`;
     this.style.height = `${this.height * GRID_SIZE}px`;
 
-    if (!this.dontUpdatePosition) {
-      this.style.top = `${this.top * GRID_SIZE}px`;
-      this.style.left = `${this.left * GRID_SIZE}px`;
-    }
+    this.style.top = `${this.renderTop}px`;
+    this.style.left = `${this.renderLeft}px`;
   }
 
-  export(): { _type: ComponentType, data: any }{
+  export(): { _type: ComponentType, data: any } {
     return this.export_fn(this);
   }
 

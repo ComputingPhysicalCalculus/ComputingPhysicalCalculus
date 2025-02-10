@@ -1,4 +1,5 @@
 import { DraggableComponentElement } from "./DraggableElement.ts";
+import { currentlyDragging } from "./Grid.ts";
 
 let shaftPopup: HTMLDivElement;
 let gearPopup: HTMLDivElement;
@@ -21,6 +22,8 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
 }
 
 export function openShaftPopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
   openPopup(e, shaftPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
@@ -41,6 +44,8 @@ export function openShaftPopup(e: MouseEvent): void {
 }
 
 export function openGearPopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
   openPopup(e, gearPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
@@ -59,6 +64,8 @@ export function openGearPopup(e: MouseEvent): void {
 }
 
 export function openMultiplierPopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
   openPopup(e, multiplierPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
