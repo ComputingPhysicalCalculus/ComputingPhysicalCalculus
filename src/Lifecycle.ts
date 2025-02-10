@@ -1,6 +1,7 @@
 import { EXAMPLE_CONFIG } from ".";
 import { Config, loadConfig } from "./config";
 import { query, queryAll } from "./decorators";
+import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { setCells } from "./UI/Grid";
@@ -52,8 +53,8 @@ export class Lifecycle {
   content!: Node;
   
   private history: {
-    elem: DraggableComponentElement,
-    attrs: { [k: string]: string },
+    _type: ComponentType,
+    data: any,
   }[][] = [];
 
   /**
@@ -130,21 +131,14 @@ export class Lifecycle {
 
   private _pushHistory(): void {
     // Copy nodes
-    let nodes = [];
+    let saved_data = [];
     for (let node of this.placedComponents) {
-      let clone = node.cloneNode(true) as DraggableComponentElement;
-
-      let attrs: { [k: string]: string } = {};
-      for (let attr of DraggableComponentElement.observedAttributes) {
-        attrs[attr] = (node as any)[attr]!;
-      }
-
-      nodes.push({ elem: clone, attrs });
+      saved_data.push(node.export());
     }
 
     // Append to history, truncating it if it is too long
     this.history.splice(0, Math.max(this.history.length - MAX_HISTORY_LENGTH, 0));
-    this.history.push(nodes);
+    this.history.push(saved_data);
   }
 
   public popHistory(): void {
@@ -158,11 +152,10 @@ export class Lifecycle {
     // Restore state
     let newNodes = this.history.pop()!;
     for (let node of newNodes) {
-      for (let [k, v] of Object.entries(node.attrs)) {
-        node.elem.setAttribute(k, v);
-      }
+      let component = createComponent(node._type);
+      component.import(node.data)
 
-      this.content.appendChild(node.elem);
+      this.content.appendChild(component);
     }
   }
 

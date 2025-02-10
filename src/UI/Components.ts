@@ -3,6 +3,7 @@ import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
 import { openShaftPopup, openGearPopup, openMultiplierPopup } from "./Popups.ts"
+import Vector2 from "./Vector2.ts";
 
 export enum ComponentType {
   VShaft,
@@ -91,6 +92,29 @@ function createVShaft(div: DraggableComponentElement): void {
   div.addEventListener("contextmenu", openShaftPopup);
 
   render(html`<shaft-component style="width:100%;height:100%"></shaft-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    height: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type:ComponentType.VShaft,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        height: _this.height,
+      }
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top,
+    _this.left = data.left,
+    _this.height = data.height;
+  }
 }
 
 function createGear(div: DraggableComponentElement): void {
@@ -102,7 +126,27 @@ function createGear(div: DraggableComponentElement): void {
 
   div.addEventListener("contextmenu", openGearPopup);
 
-  render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div)
+  render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type:ComponentType.Gear,
+      data: {
+        top: _this.top,
+        left: _this.left,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+  };
 }
 
 function createHShaft(div: DraggableComponentElement): void {
@@ -115,6 +159,29 @@ function createHShaft(div: DraggableComponentElement): void {
   div.addEventListener("contextmenu", openShaftPopup);
 
   render(html`<shaft-component style="width: 100%;height:100%" horizontal></shaft-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    width: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type:ComponentType.HShaft,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        width: _this.width,
+      }
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top,
+    _this.left = data.left,
+    _this.width = data.width;
+  }
 }
 
 function createIntegrator(div: DraggableComponentElement): void {
@@ -125,6 +192,26 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.classList.add("integrator");
 
   render(html`<integrator-component></integrator-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type:ComponentType.Integrator,
+      data: {
+        top: _this.top,
+        left: _this.left,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+  };
 }
 
 function createFunctionTable(div: DraggableComponentElement): void {
@@ -150,6 +237,54 @@ function createFunctionTable(div: DraggableComponentElement): void {
 
   function_table.set_data_set("a", Array.from([...generator_exp]));
   div.appendChild(function_table);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    x_min: number,
+    x_max: number,
+    y_min: number,
+    y_max: number,
+    gantry_x?: number,
+    data_sets: {
+      [key: string]: {
+        points: Vector2[],
+        style: string,
+        invert_head: boolean,
+      },
+    },
+  };
+
+  div.export_fn = (_this) => {
+    let graph_element = _this.querySelector("graph-table") as GraphElement;
+    
+    return {
+      _type:ComponentType.FunctionTable,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        x_min: graph_element.x_min,
+        x_max: graph_element.x_max,
+        y_min: graph_element.y_min,
+        y_max: graph_element.y_max,
+        gantry_x: graph_element.gantry_x,
+        data_sets: graph_element.data_sets,
+      }
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    let graph_element = _this.querySelector("graph-table") as GraphElement;
+
+    _this.top = data.top,
+    _this.left = data.left,
+    graph_element.x_min = data.x_min;
+    graph_element.x_max = data.x_max;
+    graph_element.y_min = data.y_min;
+    graph_element.y_max = data.y_max;
+    graph_element.gantry_x = data.gantry_x;
+    graph_element.data_sets = data.data_sets;
+  }
 }
 
 
@@ -161,6 +296,26 @@ function createDifferential(div: DraggableComponentElement): void {
   div.classList.add("differential");
 
   render(html`<differential-component></differential-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type:ComponentType.Differential,
+      data: {
+        top: _this.top,
+        left: _this.left,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+  };
 }
 
 function createOutputTable(div: DraggableComponentElement): void {
@@ -190,6 +345,54 @@ function createOutputTable(div: DraggableComponentElement): void {
 
   graph.set_data_set("1", [{ x: 0, y: 0 }], "blue");
   graph.set_data_set("2", [{ x: 0, y: 0 }], "red", true);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    x_min: number,
+    x_max: number,
+    y_min: number,
+    y_max: number,
+    gantry_x?: number,
+    data_sets: {
+      [key: string]: {
+        points: Vector2[],
+        style: string,
+        invert_head: boolean,
+      },
+    },
+  };
+
+  div.export_fn = (_this) => {
+    let graph_element = _this.querySelector("graph-table") as GraphElement;
+    
+    return {
+      _type:ComponentType.OutputTable,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        x_min: graph_element.x_min,
+        x_max: graph_element.x_max,
+        y_min: graph_element.y_min,
+        y_max: graph_element.y_max,
+        gantry_x: graph_element.gantry_x,
+        data_sets: graph_element.data_sets,
+      }
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    let graph_element = _this.querySelector("graph-table") as GraphElement;
+
+    _this.top = data.top,
+    _this.left = data.left,
+    graph_element.x_min = data.x_min;
+    graph_element.x_max = data.x_max;
+    graph_element.y_min = data.y_min;
+    graph_element.y_max = data.y_max;
+    graph_element.gantry_x = data.gantry_x;
+    graph_element.data_sets = data.data_sets;
+  }
 }
 
 function createMotor(div: DraggableComponentElement): void {
@@ -200,6 +403,26 @@ function createMotor(div: DraggableComponentElement): void {
   div.classList.add("motor");
 
   render(html`<motor-component style="width:100%;height:100%"></motor-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type:ComponentType.Motor,
+      data: {
+        top: _this.top,
+        left: _this.left,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+  };
 }
 
 function createMultiplier(div: DraggableComponentElement): void {
@@ -210,6 +433,26 @@ function createMultiplier(div: DraggableComponentElement): void {
   div.classList.add("multiplier");
 
   div.addEventListener("contextmenu", openMultiplierPopup);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type:ComponentType.Multiplier,
+      data: {
+        top: _this.top,
+        left: _this.left,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+  };
 }
 
 

@@ -6,6 +6,7 @@ import Vector2 from "./Vector2.ts"
 
 import styles from "../../styles/DraggableElement.css?inline";
 import { GRID_SIZE } from "./Grid";
+import { ComponentType } from "./Components.ts";
 
 @customElement("draggable-component")
 export class DraggableComponentElement extends LitElement {
@@ -56,6 +57,9 @@ export class DraggableComponentElement extends LitElement {
   @property({ type: Number })
   outputRatio: number = 1;
 
+  export_fn: (_this: DraggableComponentElement) => { _type: ComponentType, data: any}= () => ({ _type: ComponentType.Gear, data: {} });
+
+  import_fn: (_this: DraggableComponentElement, obj: any) => void = (_obj) => {};
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -87,6 +91,14 @@ export class DraggableComponentElement extends LitElement {
       this.style.top = `${this.top * GRID_SIZE}px`;
       this.style.left = `${this.left * GRID_SIZE}px`;
     }
+  }
+
+  export(): { _type: ComponentType, data: any }{
+    return this.export_fn(this);
+  }
+
+  import(obj: any): void {
+    this.import_fn(this, obj)
   }
 
   render() {
