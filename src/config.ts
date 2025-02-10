@@ -1,5 +1,6 @@
 import { ComponentType, createComponent, stringToComponent } from "./UI/Components";
-import { GRID_SIZE } from "./UI/Grid";
+import { setCells, GRID_SIZE } from "./UI/Grid";
+import Vector2 from "./UI/Vector2.ts";
 
 export type Config = {
   shafts: ShaftConfig[];
@@ -101,6 +102,8 @@ export function loadConfig(config: Config): void {
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
+
+    setCells(new Vector2(top, left), item.getSize(), true);
 
     item.hasBeenPlaced = true;
     item.requestUpdate();
