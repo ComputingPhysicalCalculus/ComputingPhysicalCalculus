@@ -178,9 +178,9 @@ function drop(event: MouseEvent): void {
   // Delete element because it is out of bounds
   {
     let worldTopLeft = worldToScreenPosition(new Vector2(topLeft.x * GRID_SIZE, topLeft.y * GRID_SIZE));
-    let worldBottomRight = worldToScreenPosition(new Vector2((topLeft.x + size.x) * GRID_SIZE, (topLeft.y + size.y) * GRID_SIZE));
+    // let worldBottomRight = worldToScreenPosition(new Vector2((topLeft.x + size.x) * GRID_SIZE, (topLeft.y + size.y) * GRID_SIZE));
 
-    if (worldTopLeft.x < 0. || worldTopLeft.y < 0. || worldBottomRight.x > grid.clientWidth || worldBottomRight.y > grid.clientHeight) {
+    if (worldTopLeft.x > grid.clientWidth) {
       item.remove();
       curDragItem.item = null;
       if (item.shouldLockCells) {

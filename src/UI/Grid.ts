@@ -11,7 +11,6 @@ let currentCells: Map<string, HTMLDivElement> = new Map<string, HTMLDivElement>;
 
 let rightMouseDown: boolean = false;
 let screenDragging: boolean = false;
-let originalDrag: Vector2;
 
 let screenOffset: Vector2;
 let previousX: number;
@@ -49,10 +48,6 @@ export function setupScreenDrag(): void {
   document.addEventListener("mousedown", e => {
     if (e.button == 2) {
       rightMouseDown = true;
-
-      originalDrag = new Vector2(0, 0);
-      originalDrag.x = e.clientX;
-      originalDrag.y = e.clientY;
     }
   })
 
@@ -70,6 +65,10 @@ export function setupScreenDrag(): void {
 
 export function getScreenOffset(): Vector2 {
   return screenOffset;
+}
+
+export function resetScreenOffset(): void {
+  screenOffset = new Vector2(0, 0);
 }
 
 export function screenToWorldPosition(pos: Vector2): Vector2 {

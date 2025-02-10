@@ -4,7 +4,7 @@ import { query, queryAll } from "./decorators";
 import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
-import { setCells, setupScreenDrag } from "./UI/Grid";
+import { resetScreenOffset, setCells, setupScreenDrag } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 
 const MAX_HISTORY_LENGTH = 32;
@@ -131,6 +131,9 @@ export class Lifecycle {
 
     // Remove any components placed in the scene.
     this._clear_components();
+
+    // Reset screen dragging offset 
+    resetScreenOffset();
 
     loadConfig(config);
   }
