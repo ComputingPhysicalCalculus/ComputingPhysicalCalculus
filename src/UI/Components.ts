@@ -30,7 +30,6 @@ export function createComponent(component: ComponentType): DraggableComponentEle
   comp.classList.add("placed-component")
 
   comp.style.position = "absolute";
-  // comp.style.background = "Blue";
 
   setID(comp);
 
@@ -101,7 +100,7 @@ function createVShaft(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type:ComponentType.VShaft,
+      _type: ComponentType.VShaft,
       data: {
         top: _this.top,
         left: _this.left,
@@ -112,8 +111,8 @@ function createVShaft(div: DraggableComponentElement): void {
 
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top,
-    _this.left = data.left,
-    _this.height = data.height;
+      _this.left = data.left,
+      _this.height = data.height;
   }
 }
 
@@ -135,7 +134,7 @@ function createGear(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type:ComponentType.Gear,
+      _type: ComponentType.Gear,
       data: {
         top: _this.top,
         left: _this.left,
@@ -168,7 +167,7 @@ function createHShaft(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type:ComponentType.HShaft,
+      _type: ComponentType.HShaft,
       data: {
         top: _this.top,
         left: _this.left,
@@ -179,8 +178,8 @@ function createHShaft(div: DraggableComponentElement): void {
 
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top,
-    _this.left = data.left,
-    _this.width = data.width;
+      _this.left = data.left,
+      _this.width = data.width;
   }
 }
 
@@ -200,7 +199,7 @@ function createIntegrator(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type:ComponentType.Integrator,
+      _type: ComponentType.Integrator,
       data: {
         top: _this.top,
         left: _this.left,
@@ -257,9 +256,9 @@ function createFunctionTable(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
-    
+
     return {
-      _type:ComponentType.FunctionTable,
+      _type: ComponentType.FunctionTable,
       data: {
         top: _this.top,
         left: _this.left,
@@ -277,8 +276,8 @@ function createFunctionTable(div: DraggableComponentElement): void {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
 
     _this.top = data.top,
-    _this.left = data.left,
-    graph_element.x_min = data.x_min;
+      _this.left = data.left,
+      graph_element.x_min = data.x_min;
     graph_element.x_max = data.x_max;
     graph_element.y_min = data.y_min;
     graph_element.y_max = data.y_max;
@@ -304,7 +303,7 @@ function createDifferential(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type:ComponentType.Differential,
+      _type: ComponentType.Differential,
       data: {
         top: _this.top,
         left: _this.left,
@@ -365,9 +364,9 @@ function createOutputTable(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
-    
+
     return {
-      _type:ComponentType.OutputTable,
+      _type: ComponentType.OutputTable,
       data: {
         top: _this.top,
         left: _this.left,
@@ -385,8 +384,8 @@ function createOutputTable(div: DraggableComponentElement): void {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
 
     _this.top = data.top,
-    _this.left = data.left,
-    graph_element.x_min = data.x_min;
+      _this.left = data.left,
+      graph_element.x_min = data.x_min;
     graph_element.x_max = data.x_max;
     graph_element.y_min = data.y_min;
     graph_element.y_max = data.y_max;
@@ -411,7 +410,7 @@ function createMotor(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type:ComponentType.Motor,
+      _type: ComponentType.Motor,
       data: {
         top: _this.top,
         left: _this.left,
@@ -441,7 +440,7 @@ function createMultiplier(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type:ComponentType.Multiplier,
+      _type: ComponentType.Multiplier,
       data: {
         top: _this.top,
         left: _this.left,
