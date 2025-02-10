@@ -175,12 +175,9 @@ export class Lifecycle {
 
       this.content.appendChild(component);
     }
-
-    console.log(this.future, this.history);
   }
 
   public popFuture(): void {
-    console.log(this.future, this.history);
     if (this.future.length < 1) {
       return;
     }
