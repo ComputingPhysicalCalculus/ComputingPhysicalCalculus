@@ -57,6 +57,11 @@ export class Lifecycle {
     data: any,
   }[][] = [];
 
+  private future: {
+    _type: ComponentType,
+    data: any,
+  }[][] = [];
+
   /**
    * Sets up the internal lifecycle state
    */
@@ -82,12 +87,17 @@ export class Lifecycle {
     this.clear_button.addEventListener("click", _ => this._clear_components());
 
     window.addEventListener("keydown", e => {
-      if (e.ctrlKey) {
-        switch (e.key) {
-          case 'z':
-            this.popHistory();
-            break;
-        }
+      switch (e.key) {
+        case 'Z':
+        case 'z':
+          if (e.ctrlKey) {
+            if (e.shiftKey) {
+              this.popFuture();
+            } else {
+              this.popHistory();
+            }
+          }
+          break;
       }
     })
     
@@ -123,7 +133,7 @@ export class Lifecycle {
 
   public pushHistory(): void {
     // Clear future
-    // this.future.splice(0, this.future.length);
+    this.future.splice(0, this.future.length);
 
     // Add to history
     this._pushHistory();
@@ -145,12 +155,49 @@ export class Lifecycle {
     if (this.history.length < 1) {
       return;
     }
+
+    // Copy nodes
+    let saved_data = [];
+    for (let node of this.placedComponents) {
+      saved_data.push(node.export());
+    }
+
+    this.future.push(saved_data);
     
     // Remove current components
     this._clear_components();
 
     // Restore state
     let newNodes = this.history.pop()!;
+    for (let node of newNodes) {
+      let component = createComponent(node._type);
+      component.import(node.data)
+
+      this.content.appendChild(component);
+    }
+
+    console.log(this.future, this.history);
+  }
+
+  public popFuture(): void {
+    console.log(this.future, this.history);
+    if (this.future.length < 1) {
+      return;
+    }
+
+    // Copy nodes
+    let saved_data = [];
+    for (let node of this.placedComponents) {
+      saved_data.push(node.export());
+    }
+
+    this.history.push(saved_data);
+    
+    // Remove current components
+    this._clear_components();
+
+    // Restore state
+    let newNodes = this.future.pop()!;
     for (let node of newNodes) {
       let component = createComponent(node._type);
       component.import(node.data)
