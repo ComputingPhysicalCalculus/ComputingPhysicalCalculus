@@ -9,6 +9,7 @@
   padding: var(--gap-size);
   font-size: calc(var(--text-size) * 1.2);
   text-decoration: bold;
+  z-index: 10;
 
   box-sizing: border;
 }
@@ -63,10 +64,13 @@
   justify-content: center;
 
   max-width: 8vw;
-
-  visibility: visible;
+  visibility: hidden;
 }
 
 #multiplier-popup>label {
   font-weight: bold;
+}
+
+#motor-popup {
+  visibility: hidden;
 }

@@ -5,11 +5,13 @@ import Vector2 from "./Vector2.ts";
 let shaftPopup: HTMLDivElement;
 let gearPopup: HTMLDivElement;
 let multiplierPopup: HTMLDivElement;
+let motorPopup: HTMLDivElement;
 
 export function setupPopups(): void {
   setupShaftPopup();
   setupGearPopup();
   setupMultiplierPopup();
+  setupMotorPopup();
 }
 
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
@@ -75,6 +77,22 @@ export function openMultiplierPopup(e: MouseEvent): void {
   e.preventDefault();
 }
 
+export function openMotorPopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
+  openPopup(e, motorPopup);
+
+  const target = e.currentTarget as DraggableComponentElement;
+
+  if (target.outputRatio < 0) {
+    motorPopup.getElementsByTagName("input")[0].checked = true;
+  } else {
+    motorPopup.getElementsByTagName("input")[0].checked = false;
+  }
+
+  e.preventDefault();
+}
+
 function closePopup(e: MouseEvent) {
   (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
 }
@@ -133,6 +151,24 @@ function setupMultiplierPopup(): void {
       const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
       component.outputRatio = Number(input.value);
+    })
+  }
+}
+
+function setupMotorPopup(): void {
+  motorPopup = document.getElementById("motor-popup") as HTMLDivElement;
+  motorPopup.addEventListener("mouseleave", closePopup);
+
+  const inputs = motorPopup.getElementsByTagName("input");
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener("change", (e) => {
+      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+
+      if (input.checked)
+        component.outputRatio = -1;
+      else
+        component.outputRatio = 1;
     })
   }
 }
