@@ -1,5 +1,6 @@
 import { DraggableComponentElement } from "./DraggableElement.ts";
-import { currentlyDragging } from "./Grid.ts";
+import { currentlyDragging, GRID_SIZE, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
+import Vector2 from "./Vector2.ts";
 
 let shaftPopup: HTMLDivElement;
 let gearPopup: HTMLDivElement;
@@ -148,4 +149,7 @@ function updateShaftLength(comp: DraggableComponentElement, negativeLength: numb
     comp.left = comp.left - negativeLength;
     comp.width = Math.max(comp.width + negativeLength + positiveLength, 1);
   }
+  let screenPosition = worldToScreenPosition(new Vector2(comp.left * GRID_SIZE, comp.top * GRID_SIZE));
+  comp.renderLeft = screenPosition.x;
+  comp.renderTop = screenPosition.y;
 }
