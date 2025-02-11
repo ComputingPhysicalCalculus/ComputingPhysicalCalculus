@@ -45,7 +45,7 @@ export class FunctionTable implements Device {
         if(!this.output.resultReady) {
             this.x_position += this.input.nextRotation;
             this.output.resultReady = true;
-            this.output.nextRotation = this.fun(this.x_position);
+            this.output.nextRotation = this.fun(this.x_position) - this.fun(this.x_position - this.input.nextRotation);
         }
         return this.output;
     }

@@ -25,6 +25,7 @@ export type IntegratorConfig = {
   outputShaft: ShaftID;
   position: [number, number];
   reverse: boolean;
+  initialPosition: number;
 };
 
 export type DifferentialConfig = {
@@ -41,7 +42,7 @@ export type MultiplierConfig = {
   compID: number;
   inputShaft: ShaftID;
   outputShaft: ShaftID;
-  factor: ShaftID;
+  factor: number;
   position: [number, number];
 };
 
