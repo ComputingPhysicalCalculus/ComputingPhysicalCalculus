@@ -6,12 +6,14 @@ let shaftPopup: HTMLDivElement;
 let gearPopup: HTMLDivElement;
 let multiplierPopup: HTMLDivElement;
 let motorPopup: HTMLDivElement;
+let integratorPopup: HTMLDivElement;
 
 export function setupPopups(): void {
   setupShaftPopup();
   setupGearPopup();
   setupMultiplierPopup();
   setupMotorPopup();
+  setupIntegratorPopup();
 }
 
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
@@ -93,6 +95,18 @@ export function openMotorPopup(e: MouseEvent): void {
   e.preventDefault();
 }
 
+export function openIntegratorPopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
+  openPopup(e, integratorPopup);
+
+  const target = e.currentTarget as DraggableComponentElement;
+
+  integratorPopup.getElementsByTagName("input")[0].value = String(target.inputRatio);
+
+  e.preventDefault();
+}
+
 function closePopup(e: MouseEvent) {
   (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
 }
@@ -169,6 +183,21 @@ function setupMotorPopup(): void {
         component.outputRatio = -1;
       else
         component.outputRatio = 1;
+    })
+  }
+}
+
+function setupIntegratorPopup(): void {
+  integratorPopup = document.getElementById("integrator-popup") as HTMLDivElement;
+  integratorPopup.addEventListener("mouseleave", closePopup);
+
+  const inputs = integratorPopup.getElementsByTagName("input");
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener("change", (e) => {
+      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+
+      component.inputRatio = Number(input.value);
     })
   }
 }

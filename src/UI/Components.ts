@@ -2,7 +2,7 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openGearPopup, openMultiplierPopup, openMotorPopup } from "./Popups.ts"
+import { openShaftPopup, openGearPopup, openMultiplierPopup, openMotorPopup, openIntegratorPopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
 
 export enum ComponentType {
@@ -191,6 +191,8 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.classList.add("integrator");
 
   render(html`<integrator-component></integrator-component>`, div);
+
+  div.addEventListener("contextmenu", openIntegratorPopup);
 
   type ExportedData = {
     top: number,

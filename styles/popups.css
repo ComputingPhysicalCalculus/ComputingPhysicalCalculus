@@ -74,3 +74,9 @@
 #motor-popup {
   visibility: hidden;
 }
+
+#integrator-popup {
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+}
