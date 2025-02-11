@@ -14,6 +14,7 @@ import { OutputTable } from "./OutputTable.js";
 import { Shaft } from "./Shaft.js";
 // import config from "../../ExampleConfig.json";
 import { Config } from "../config.js";
+import { Gear } from "./Gear.js";
 
 export class Simulator {
     shafts: Shaft[] = [];
@@ -149,12 +150,12 @@ export class Simulator {
                     break;
 
                 case 'gear':
-                    new_component = new Multiplier(
+                    new_component = new Gear(
                         shafts[component.horizontal],
                         shafts[component.vertical],
-                        1
                     );
                     shafts[component.horizontal].outputs.push(new_component);
+                    shafts[component.vertical].outputs.push(new_component);
                     components.push(new_component);
                     break;
 
