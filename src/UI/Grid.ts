@@ -9,7 +9,7 @@ const HIGHLIGHT_CELL: string = "highlighted-cell";
 let lockedCells: Set<string> = new Set<string>;
 let currentCells: Map<string, HTMLDivElement> = new Map<string, HTMLDivElement>;
 
-let rightMouseDown: boolean = false;
+let canStartDragging: boolean = false;
 let screenDragging: boolean = false;
 
 let screenOffset: Vector2;
@@ -47,20 +47,48 @@ export function setupScreenDrag(): void {
 
   document.addEventListener("mousedown", e => {
     if (e.button == 2) {
-      rightMouseDown = true;
+      canStartDragging = true;
     }
   })
 
   document.addEventListener("mouseup", e => {
     if (e.button == 2) {
-      rightMouseDown = false;
+      canStartDragging = false;
       screenDragging = false;
     }
   })
 
   screenOffset = new Vector2(0, 0);
 
-  document.addEventListener("mousemove", dragScreen);
+  document.addEventListener("mousemove", e => {
+    dragScreen(e.clientX, e.clientY);
+  });
+
+  document.addEventListener("touchstart", e => {
+    switch (e.touches.length) {
+      case 1:
+        canStartDragging = true;
+        break;
+    }
+  })
+
+  document.addEventListener("touchmove", e => {
+    switch (e.touches.length) {
+      case 1:
+        dragScreen(e.touches[0].clientX, e.touches[0].clientY);
+        e.preventDefault();
+        break;
+    }
+  }, { passive: false });
+
+  document.addEventListener("touchend", e => {
+    switch (e.touches.length) {
+      case 0:
+        screenDragging = false;
+        break;
+    }
+  })
+
 }
 
 export function getScreenOffset(): Vector2 {
@@ -87,20 +115,19 @@ export function worldToScreenPosition(pos: Vector2): Vector2 {
   return ret;
 }
 
-function dragScreen(event: MouseEvent): void {
-  if (!rightMouseDown) return;
+function dragScreen(x: number, y: number): void {
+  if (!canStartDragging) return;
 
-  if (!screenDragging && Math.abs(event.offsetX) + Math.abs(event.offsetY) > draggingStartLimit) {
+  if (!screenDragging) {
     screenDragging = true;
 
-    previousX = event.clientX;
-    previousY = event.clientY;
+    previousX = x;
+    previousY = y;
   }
 
   if (screenDragging) {
-
-    let diffX = (event.clientX - previousX) * sensitivity;
-    let diffY = (event.clientY - previousY) * sensitivity;
+    let diffX = (x - previousX) * sensitivity;
+    let diffY = (y - previousY) * sensitivity;
 
     screenOffset.x += diffX
     screenOffset.y += diffY;
@@ -112,8 +139,8 @@ function dragScreen(event: MouseEvent): void {
       component.renderTop += diffY;
     }
 
-    previousX = event.clientX;
-    previousY = event.clientY;
+    previousX = x;
+    previousY = y;
   }
 }
 
