@@ -130,7 +130,8 @@ export class Simulator {
                         shafts[component.variableOfIntegrationShaft],
                         shafts[component.integrandShaft],
                         shafts[component.outputShaft],
-                        component.reverse
+                        component.reverse,
+                        component.initialPosition
                     );
                     shafts[component.variableOfIntegrationShaft].outputs.push(new_component);
                     shafts[component.integrandShaft].outputs.push(new_component);

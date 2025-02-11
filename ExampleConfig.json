@@ -1,4 +1,3 @@
-
 {
   "shafts": [
     {
@@ -71,6 +70,7 @@
       "variableOfIntegrationShaft": 0,
       "integrandShaft": 2,
       "outputShaft": 1,
+      "initialPosition": 0,
       "reverse": "false",
       "position": [6, 6],
       "_comment": "variable of integration is t; integrand is dx/dt; output is x"
@@ -88,6 +88,7 @@
       "compID": 5,
       "inputShaft": 1,
       "outputShaft": 5,
+      "factor": 2,
       "position": [6, 6],
       "_comment": "input is x; output is kx/m"
     },
