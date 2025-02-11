@@ -104,7 +104,7 @@ export function loadConfig(config: Config): void {
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
 
-    setCells(new Vector2(top, left), item.getSize(), true);
+    setCells(new Vector2(left, top), item.getSize(), true);
 
     item.hasBeenPlaced = true;
     item.requestUpdate();

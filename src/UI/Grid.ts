@@ -133,7 +133,7 @@ export function allValid(topLeft: Vector2, size: Vector2): boolean {
 
   let valid: boolean = true;
   const func = (pos: Vector2) => {
-    if (lockedCells.has(pos.toString())) {
+    if (lockedCells.has(JSON.stringify(pos))) {
       valid = false;
     }
   }
@@ -145,7 +145,7 @@ export function allValid(topLeft: Vector2, size: Vector2): boolean {
 
 export function setCells(topLeft: Vector2, size: Vector2, fill: boolean): void {
   const func = (pos: Vector2) => {
-    const posStr = pos.toString();
+    const posStr = JSON.stringify(pos);
     if (fill) {
       if (!lockedCells.has(posStr)) {
         lockedCells.add(posStr);
@@ -162,7 +162,7 @@ export function setCells(topLeft: Vector2, size: Vector2, fill: boolean): void {
 
 export function highlightHoveredCells(topLeft: Vector2, size: Vector2, highlight: boolean): void {
   mapCells(topLeft, size, (pos: Vector2) => {
-    const posStr = pos.toString();
+    const posStr = JSON.stringify(pos);
     if (highlight) {
       const cell = createCell(pos.x, pos.y);
       cell.classList.add(HIGHLIGHT_CELL);
