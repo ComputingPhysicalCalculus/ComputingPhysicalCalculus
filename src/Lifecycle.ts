@@ -1,6 +1,6 @@
-import { EXAMPLE_CONFIG } from ".";
 import { Config, loadConfig } from "./config";
 import { query, queryAll } from "./decorators";
+import { INTEGRATING_LINEAR } from "./examples";
 import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
@@ -118,7 +118,7 @@ export class Lifecycle {
    * is never run.
    */
   public initialLoad(): void {
-    this.loadState(EXAMPLE_CONFIG);
+    this.loadState(INTEGRATING_LINEAR);
     this.history.pop();
   }
 

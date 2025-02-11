@@ -1,4 +1,10 @@
 // function setup(): void {
+
+import { Config } from "./config";
+import { Simulator } from "./core/Main";
+
+  
+  
 //     let run_button = document.getElementById("run-simulation") as HTMLButtonElement;
 
 //     run_button.addEventListener("click", _ => {
@@ -63,3 +69,10 @@
 //         step_function();
 //     });
 // }
+
+export function run(config: Config): void {
+  let simulator = Simulator.parse_config(config);
+
+  console.log(simulator);
+}
+
