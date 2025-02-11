@@ -90,6 +90,10 @@ export class Lifecycle {
     this.clear_button.addEventListener("click", _ => this._clear_components());
 
     window.addEventListener("keydown", e => {
+      if (e.defaultPrevented) {
+        return;
+      }
+
       switch (e.key) {
         case 'Z':
         case 'z':
@@ -103,11 +107,12 @@ export class Lifecycle {
           break;
         case 'S':
         case 's':
-          e.preventDefault();
           this._handle_export_file();
           break;
       }
-    })
+
+      e.preventDefault();
+    }, true)
 
     // KEEP THIS AT THE END OF THIS FUNCTION.
     this.resolveSetupCompleted();
