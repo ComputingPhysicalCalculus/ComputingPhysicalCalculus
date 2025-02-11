@@ -32,6 +32,7 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
   item.classList.add("dragged");
 
+  item.style.zIndex = "100";
   item.renderLeft = posX;
   item.renderTop = posY;
 

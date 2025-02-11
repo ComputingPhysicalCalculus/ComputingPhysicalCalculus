@@ -1,11 +1,4 @@
-UI:
-    - Add remaining components
-    - Add correct context menus to components that need them
-    - Render components in list
-    - Create components list for CORE
-    FUTURE:
-    - Connect horizontal shafts
-    - Loading from JSON
-    - Offsetting vertical shafts to align with components
-
-    - 3D
+POPUPS:
+    Motor: Reverse
+    Integrator: Initial position
+                Initial output

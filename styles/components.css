@@ -36,10 +36,13 @@
 }
 
 .component {
+    display: flexbox;
+    flex-direction: row;
     background: var(--colour-accent4);
     border-radius: 5px;
     position: relative;
     aspect-ratio: 1;
+    width: 100%;
     height: 100%;
 
     font-size: var(--text-button-size);
@@ -50,9 +53,9 @@
 }
 
 .component-render {
-    max-width: 10px;
-    max-height: 10px;
+    width: 100%;
 }
+
 
 .component.dragged {
     opacity: 95%;

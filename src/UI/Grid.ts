@@ -84,6 +84,7 @@ export function setupScreenDrag(): void {
   document.addEventListener("touchend", e => {
     switch (e.touches.length) {
       case 0:
+        canStartDragging = false;
         screenDragging = false;
         break;
     }
