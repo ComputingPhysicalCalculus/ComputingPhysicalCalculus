@@ -15,56 +15,15 @@ import { Motor } from "../../src/core/Motor";
 import { Simulator } from "../../src/core/Main";
 import { Shaft } from "../../src/core/Shaft";
 import { assert, test, describe, expect, it } from 'vitest'
+import { PPMC, binary_search} from "./TestingUtil.ts";
 
 
 /**
- * @function binary_search
- * @description finds the x value s.t. F(x) is close to goal
+ * @function test_diff_eq
+ * @description tests the differential equation x'' - 3x' + 2x = 0; dx_0 = x'(0), ddx_0 = x''(0)
  * @return x value
- * @author Simon Solca
+ * @author Andy Zhu, Simon Solca
 */
-function binary_search(F: (v :number) => number, low: number, high: number, goal:number, epsilon = 0.001){
-    while (high - low > epsilon){
-        let mid = (low + high);
-        let v = F(mid);
-
-        if (Math.abs(v - goal) < epsilon){
-            return mid;
-        }
-        else if (v < goal){
-            low = mid + epsilon;
-        }
-        else{
-            high = mid - epsilon;
-        }
-    }
-    return (low + high) / 2;
-}
-
-/**
- * @function PPMC
- * @description calculates the Pearsons Product Moment Corellation Coefficient
- * @return returns this r value
- * @author Simon Solca
-*/
-function PPMC(x: number[], y: number[]){
-    let n = x.length;
-    let xbar = x.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / n;
-    let ybar = y.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / n;
-    let numerator = 0
-    for (let i = 0; i < x.length; i++){
-        numerator += (x[i] - xbar) * (y[i] - ybar);
-    }
-    let denominator_lhs = 0;
-    let denominator_rhs = 0;
-    for (let i = 0; i < x.length; i++){
-        denominator_lhs += (x[i] - xbar) * (x[i] - xbar);
-        denominator_rhs += (y[i] - ybar) * (y[i] - ybar);
-    }
-    return numerator / Math.sqrt(denominator_lhs * denominator_rhs);
-}
-
-//  x'' - 3x' + 2x = 0; dx_0 = x'(0), ddx_0 = x''(0)
 function test_diff_eq(dx_0: number, ddx_0: number){
     // number of cycles
     const N = 100;
@@ -146,7 +105,11 @@ function test_diff_eq(dx_0: number, ddx_0: number){
 
     let mock_shafts = [t_shaft, x_shaft, dx_shaft, three_dx_shaft, minus_two_x_shaft, to_int_shaft];
     let devices = [differential, integrator1, integrator2, multiplier1, multiplier2, outputTable];
-    let simulator = new Simulator(mock_shafts, motor, [outputTable], devices);
+    let simulator = new Simulator();
+    simulator.shafts = mock_shafts;
+    simulator.motor = motor;
+    simulator.outputTables = [outputTable];
+    simulator.components = devices;
 
 
     for(let i = 0; i < N; i++) {
