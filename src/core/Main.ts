@@ -14,6 +14,7 @@ import { OutputTable } from "./OutputTable";
 import { Shaft } from "./Shaft";
 import { EXAMPLE_CONFIG } from "../examples";
 import { Config } from "../config";
+import { Gear } from "./Gear.js";
 
 export class Simulator {
     shafts: Shaft[] = [];

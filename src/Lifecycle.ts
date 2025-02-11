@@ -90,9 +90,14 @@ export class Lifecycle {
     this.clear_button.addEventListener("click", _ => this._clear_components());
 
     window.addEventListener("keydown", e => {
+      if (e.defaultPrevented) {
+        return;
+      }
+
       switch (e.key) {
         case 'Z':
         case 'z':
+          e.preventDefault();
           if (e.ctrlKey) {
             if (e.shiftKey) {
               this.popFuture();
@@ -107,7 +112,7 @@ export class Lifecycle {
           this._handle_export_file();
           break;
       }
-    })
+    }, true);
 
     // KEEP THIS AT THE END OF THIS FUNCTION.
     this.resolveSetupCompleted();
