@@ -20,15 +20,46 @@
             <div id="components-area">
                 <p>Components List</p>
                 <div id="components-list">
-                    <div data-type="VShaft" class="component">V</div>
-                    <div data-type="HShaft" class="component">H</div>
-                    <div data-type="Gear" class="component">G</div>
-                    <div data-type="Integrator" class="component">I</div>
-                    <div data-type="FunctionTable" class="component">F</div>
-                    <div data-type="Differential" class="component">D</div>
-                    <div data-type="OutputTable" class="component">O</div>
-                    <div data-type="Motor" class="component">Mo</div>
-                    <div data-type="Multiplier" class="component">M</div>
+                    <div data-type="VShaft" class="component">
+                        <div>V</div>
+                    </div>
+
+                    <div data-type="HShaft" class="component">
+                        <div>H</div>
+                        <!-- <shaft-component horizontal></shaft-component> -->
+                    </div>
+
+                    <div data-type="Gear" class="component">
+                        <div>G</div>
+                        <gear-component class="component-render" teeth="6"></gear-component>
+                    </div>
+
+                    <div data-type="Integrator" class="component">
+                        <div>I</div>
+                        <integrator-component class="component-render"></integrator-component>
+                    </div>
+
+                    <div data-type="FunctionTable" class="component">
+                        <div>F</div>
+                    </div>
+
+                    <div data-type="Differential" class="component">
+                        <div>D</div>
+                        <differential-component class="component-render"></differential-component>
+                    </div>
+
+                    <div data-type="OutputTable" class="component">
+                        <div>O</div>
+                    </div>
+
+                    <div data-type="Motor" class="component">
+                        <div>Mo</div>
+                        <motor-component class="component-render"></motor-component>
+                    </div>
+
+                    <div data-type="Multiplier" class="component">
+                        <div>M</div>
+                    </div>
                 </div>
             </div>
 
