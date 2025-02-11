@@ -22,8 +22,9 @@ export class Simulator {
     outputTables: OutputTable[] = [];
     components: Device[] = [];
 
-    constructor(config: Config = EXAMPLE_CONFIG) {
-        this.parse_config(config);
+    constructor(config ? : Config) {
+        if (config !== undefined)
+            this.parse_config(config);
     }
 
     /**
