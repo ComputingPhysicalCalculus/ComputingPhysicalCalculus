@@ -97,6 +97,7 @@ export class Lifecycle {
       switch (e.key) {
         case 'Z':
         case 'z':
+          e.preventDefault();
           if (e.ctrlKey) {
             if (e.shiftKey) {
               this.popFuture();
@@ -107,12 +108,11 @@ export class Lifecycle {
           break;
         case 'S':
         case 's':
+          e.preventDefault();
           this._handle_export_file();
           break;
       }
-
-      e.preventDefault();
-    }, true)
+    }, true);
 
     // KEEP THIS AT THE END OF THIS FUNCTION.
     this.resolveSetupCompleted();
