@@ -1,11 +1,15 @@
 import { Config, loadConfig } from "./config";
+import { OutputTable } from "./core/OutputTable";
 import { query, queryAll } from "./decorators";
 import { INTEGRATING_LINEAR } from "./examples";
+import { export_simulator, run } from "./run";
 import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
+import { GraphElement } from "./UI/GraphElement";
 import { resetScreenOffset, setCells, setupScreenDrag } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
+import Vector2 from "./UI/Vector2";
 
 const MAX_HISTORY_LENGTH = 32;
 
@@ -88,6 +92,7 @@ export class Lifecycle {
     this.import_button.addEventListener("click", _ => this._handle_import_file());
     this.export_button.addEventListener("click", _ => this._handle_export_file());
     this.clear_button.addEventListener("click", _ => this._clear_components());
+    this.run_button.addEventListener("click", _ => this._run_simulator());
 
     window.addEventListener("keydown", e => {
       if (e.defaultPrevented) {
@@ -144,7 +149,7 @@ export class Lifecycle {
   }
 
   public exportState(): Config {
-    return EXAMPLE_CONFIG;
+    return INTEGRATING_LINEAR;
   }
 
   public pushHistory(): void {
@@ -258,5 +263,54 @@ export class Lifecycle {
       let config = JSON.parse(content.toString()) as Config;
       this.loadState(config);
     }
+  }
+
+  private _run_simulator(): void {
+    this.run_button.disabled = true;
+    
+    const steps = Number(this.step_counter_input.value);
+    const step_period = Number(this.step_period_input.value);
+
+    console.log(steps, step_period);
+    
+    const simulator = export_simulator(this.exportState(), 10 / steps);
+
+    for (let i = 0; i < steps; i++) {
+      simulator.step();
+    }
+
+    let x = simulator.outputTables[0].xHistory;
+    let y1 =  simulator.outputTables[0].y1History;
+    let y2 =  simulator.outputTables[0].y2History!;
+
+    let i = 0;
+
+    const output_table = document.querySelector(".outputTable > graph-table")! as GraphElement;
+    const function_table = document.querySelector(".functionTable > graph-table")! as GraphElement;
+
+    output_table.set_data_set("a", []);
+    output_table.set_data_set("b", [], "red", true);
+
+    let interval_id = window.setInterval(() => {
+      if (i >= x.length) {
+        window.clearInterval(interval_id);
+        this.run_button.disabled = false;
+        return;
+      }
+
+      output_table.mutate_data_set("a", points => {
+        points.push(new Vector2(x[i], y1[i]));
+      });
+
+      output_table.mutate_data_set("b", points => {
+        points.push(new Vector2(x[i], (y2[i] - 1) / 2));
+      });
+
+      output_table.gantry_x = x[i];
+      function_table.gantry_x = x[i];
+      
+      i += 1
+    }, step_period * 1000);
+
   }
 }

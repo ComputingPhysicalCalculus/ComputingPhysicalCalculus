@@ -15,8 +15,6 @@ import "./UI/GearComponentElement";
 import "./UI/DifferentialComponentElement";
 
 import "./run.ts";
-import { INTEGRATING_LINEAR } from "./examples.ts";
-import { run } from "./run.ts";
 
 // Give the example configuration a type
 
@@ -34,8 +32,6 @@ window.onload = () => {
     const lifecycle = new Lifecycle();
     window.lifecycle = lifecycle;
     lifecycle.setup();
-
-    run(INTEGRATING_LINEAR);
 }
 
 
