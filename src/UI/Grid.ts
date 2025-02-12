@@ -1,7 +1,7 @@
 import { DraggableComponentElement } from "./DraggableElement";
 import Vector2 from "./Vector2";
 
-export const GRID_SIZE: number = 100;
+export var GRID_SIZE: number = 100;
 
 const HIGHLIGHT_CELL: string = "highlighted-cell";
 
@@ -19,6 +19,7 @@ let previousY: number;
 
 const draggingStartLimit: number = 10.;
 const sensitivity: number = 1.0;
+const scroll_sensitivity: number = 0.1;
 
 function createCell(col: number, row: number): HTMLDivElement {
   const comp = document.createElement("div");
@@ -40,7 +41,7 @@ function createCell(col: number, row: number): HTMLDivElement {
   return comp;
 }
 
-export function setupScreenDrag(): void {
+export function setupScreenHooks(): void {
   document.addEventListener("contextmenu", e => {
     // Disable screen wide context menu
     e.preventDefault();
@@ -65,6 +66,10 @@ export function setupScreenDrag(): void {
   document.addEventListener("mousemove", e => {
     dragScreen(e.clientX, e.clientY);
   });
+
+  document.addEventListener("wheel", e => {
+    resizeScreen(e.deltaY * scroll_sensitivity);
+  })
 
   document.addEventListener("touchstart", e => {
     switch (e.touches.length) {
@@ -149,6 +154,11 @@ function dragScreen(x: number, y: number): void {
     previousX = x;
     previousY = y;
   }
+}
+
+function resizeScreen(scale: number): void {
+  GRID_SIZE += scale;
+  updateComponentPositions();
 }
 
 function updateComponentPositions(): void {

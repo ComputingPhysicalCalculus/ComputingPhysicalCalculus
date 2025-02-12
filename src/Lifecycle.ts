@@ -6,7 +6,7 @@ import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GraphElement } from "./UI/GraphElement";
-import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenDrag } from "./UI/Grid";
+import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 import Vector2 from "./UI/Vector2";
 
@@ -88,7 +88,7 @@ export class Lifecycle {
     setupPopups();
 
     // Screen Dragging
-    setupScreenDrag();
+    setupScreenHooks();
 
     // Setup click event listener
     this.import_button.addEventListener("click", _ => this._handle_import_file());
@@ -290,7 +290,7 @@ export class Lifecycle {
     this.run_button.disabled = true;
     this.step_period_input.disabled = true;
     this.import_button.disabled = true;
-    
+
     const step_period = Number(this.step_period_input.value);
     const get_motor_speed = () => Number(this.motor_speed_input.value);
 
@@ -328,8 +328,8 @@ export class Lifecycle {
       }
 
       let x = simulator.outputTables[0].xHistory;
-      let y1 =  simulator.outputTables[0].y1History;
-      let y2 =  simulator.outputTables[0].y2History!;
+      let y1 = simulator.outputTables[0].y1History;
+      let y2 = simulator.outputTables[0].y2History!;
 
       output_table.mutate_data_set("a", points => {
         for (let i = points.length; i < x.length; i++) {
