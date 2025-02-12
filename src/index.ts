@@ -13,6 +13,7 @@ import "./UI/ShaftElement";
 import "./UI/MotorComponent";
 import "./UI/GearComponentElement";
 import "./UI/DifferentialComponentElement";
+import "./UI/MultiplierComponentElement";
 
 import "./run.ts";
 

@@ -296,7 +296,7 @@ function createDifferential(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("differential");
 
-  render(html`<differential-component></differential-component>`, div);
+  render(html`<differential-component style="width:100%;height:100%"></differential-component>`, div);
 
   type ExportedData = {
     top: number,
@@ -439,6 +439,8 @@ function createMultiplier(div: DraggableComponentElement): void {
 
   div.addEventListener("contextmenu", openMultiplierPopup);
 
+  render(html`<multiplier-component style="width:100%;height:100%"></multiplier-component>`, div);
+
   type ExportedData = {
     top: number,
     left: number,
@@ -459,5 +461,3 @@ function createMultiplier(div: DraggableComponentElement): void {
     _this.left = data.left;
   };
 }
-
-

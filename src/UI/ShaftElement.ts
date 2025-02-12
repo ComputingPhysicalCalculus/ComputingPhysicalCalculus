@@ -35,6 +35,7 @@ export class ShaftElement extends LitElement {
         xmlns="https://www.w3.org/2000/svg"
         width="${width * 50}" height="${height * 50}"
         viewBox="0 0 ${width * 50} ${height * 50}"
+        style="width:100%;height:100%"
       >
         <line
           id="line"

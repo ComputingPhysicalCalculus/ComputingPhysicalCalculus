@@ -1,8 +1,7 @@
 import { Config, loadConfig } from "./config";
-import { OutputTable } from "./core/OutputTable";
 import { query, queryAll } from "./decorators";
 import { INTEGRATING_LINEAR } from "./examples";
-import { export_simulator, run } from "./run";
+import { export_simulator } from "./run";
 import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";

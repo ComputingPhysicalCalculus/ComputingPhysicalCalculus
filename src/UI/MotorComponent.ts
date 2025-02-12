@@ -9,7 +9,7 @@ export class MotorComponentElement extends LitElement {
   render() {
     return svg`
       <svg
-        style="transform:rotateY(${this.inverted ? 180 : 0}deg)"
+        style="width:100%;height:100%;transform:rotateY(${this.inverted ? 180 : 0}deg)"
         xmlns="https://www.w3.org/2000/svg"
         width="100" height="50"
         viewBox="0 0 100 50"

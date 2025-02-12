@@ -33,6 +33,7 @@ export class GearComponentElement extends LitElement {
         xmlns="https://www.w3.org/2000/svg"
         width="50" height="50"
         viewBox="-25 -25 50 50"
+        style="width:100%;height:100%"
       >
         <circle rx="0" ry="0" r="5" stroke="black" stroke-width="2" fill="black" />
         ${this.inverted ?
