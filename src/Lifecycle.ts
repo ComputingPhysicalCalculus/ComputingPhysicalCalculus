@@ -47,9 +47,6 @@ export class Lifecycle {
   @query("#config-file-upload")
   config_file_input!: HTMLInputElement;
 
-  @query("#simulation-step-counter")
-  step_counter_input!: HTMLInputElement;
-
   @query("#simulation-step-period")
   step_period_input!: HTMLInputElement;
 
@@ -270,11 +267,9 @@ export class Lifecycle {
 
   private _run_simulator(): void {
     this.run_button.disabled = true;
-    this.step_counter_input.disabled = true;
     this.step_period_input.disabled = true;
     this.import_button.disabled = true;
     
-    const steps = Number(this.step_counter_input.value);
     const step_period = Number(this.step_period_input.value);
     const get_motor_speed = () => Number(this.motor_speed_input.value);
 
@@ -336,7 +331,6 @@ export class Lifecycle {
 
     simulation_finished_promise.then(() => {
       this.run_button.disabled = false;
-      this.step_counter_input.disabled = false;
       this.step_period_input.disabled = false;
       this.import_button.disabled = false;
     });
