@@ -4,7 +4,7 @@ import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
 import { openShaftPopup, openGearPopup, openMultiplierPopup, openMotorPopup, openIntegratorPopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
-import { GRID_SIZE, screenToWorldPosition } from "./Grid.ts";
+import { GRID_SIZE } from "./Grid.ts";
 
 export enum ComponentType {
   VShaft,
@@ -240,7 +240,7 @@ function createHShaft(div: DraggableComponentElement): void {
 }
 
 function createIntegrator(div: DraggableComponentElement): void {
-  div.width = 3;
+  div.width = 4;
   div.height = 2;
   div.componentType = "integrator";
   div.shouldLockCells = true;
