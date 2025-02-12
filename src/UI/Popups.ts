@@ -1,3 +1,4 @@
+import { M } from "vitest/dist/chunks/reporters.6vxQttCV.js";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { currentlyDragging, GRID_SIZE, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
 import Vector2 from "./Vector2.ts";
@@ -14,6 +15,8 @@ export function setupPopups(): void {
   setupMultiplierPopup();
   setupMotorPopup();
   setupIntegratorPopup();
+
+  document.addEventListener("click", documentClick);
 }
 
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
@@ -27,6 +30,8 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
 }
 
 export function openShaftPopup(e: MouseEvent): void {
+  console.log(e.button);
+  if (e.button != 2) return;
   if (currentlyDragging()) return;
 
   openPopup(e, shaftPopup);
@@ -109,6 +114,31 @@ export function openIntegratorPopup(e: MouseEvent): void {
 
 function closePopup(e: MouseEvent) {
   (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
+}
+
+function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
+  if (popup.style.visibility == "hidden") return false;
+
+  let left_style = popup.style.left;
+  let top_style = popup.style.top;
+
+  let left = Number(left_style.substring(0, left_style.length - 2));
+  let top = Number(top_style.substring(0, top_style.length - 2));
+
+  if (e.clientX > left && e.clientX < left + popup.clientWidth &&
+    e.clientY > top && e.clientY < top + popup.clientHeight) {
+    return true;
+  }
+  return false;
+}
+
+function documentClick(e: MouseEvent) {
+  let popups = [shaftPopup, gearPopup, multiplierPopup, motorPopup, integratorPopup];
+  popups.forEach(popup => {
+    if (!mouseWithin(popup, e)) {
+      popup.style.visibility = "hidden";
+    }
+  });
 }
 
 function setupShaftPopup(): void {
