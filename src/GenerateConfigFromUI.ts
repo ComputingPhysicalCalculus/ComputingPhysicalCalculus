@@ -30,13 +30,13 @@ export function toConfig(): Config {
             if (thisComponent.componentType === "vShaft") {
                 // height
                 // shaft.height = thisComponent.height;
-                shaft.end = [Number(thisComponent.left),Number(thisComponent.top)+thisComponent.height];
+                shaft.end = [Number(thisComponent.left),Number(thisComponent.top)+thisComponent.height-1];
             }
             // if horizontal
             else if (thisComponent.componentType === "hShaft") {
                 // width
                 // shaft.width = thisComponent.width;
-                shaft.end = [Number(thisComponent.left)+thisComponent.width,Number(thisComponent.top)];
+                shaft.end = [Number(thisComponent.left)+thisComponent.width-1,Number(thisComponent.top)];
             }
             // remove this shaft from the list of components
             // elements.remove(thisComponent); 
@@ -48,14 +48,33 @@ export function toConfig(): Config {
     console.log(componentElements);
     // for all components
     const config2 = Array.from(componentElements).map((thisComponent) => {
-        //type 
-        const type = thisComponent.componentType;
-        // id
-        const id = thisComponent.componentID;
-        // position
-        const position = [Number(thisComponent.left),Number(thisComponent.top)];
 
-        const component : any = {type, id, position};
+        if (thisComponent.componentType === "label") {
+
+            const {_type, data: {top, left, width, height, align, _comment}} = thisComponent.export_fn(thisComponent);
+            
+            const position = [Number(left),Number(top)];
+            const size = [Number(width),Number(height)];
+            console.log(size);
+            const type = "label";
+            const id = thisComponent.componentID;
+            console.log(_comment);
+            const component : any = {type, id, position, size, align, _comment};
+            console.log(component);
+            return component;
+        }
+        else {
+            //type 
+            const type = thisComponent.componentType;
+            // id
+            const id = thisComponent.componentID;
+            // position
+            const position = [Number(thisComponent.left),Number(thisComponent.top)];
+
+            const component : any = {type, id, position};
+            return component;
+        }
+        
         /*
         if (thisComponent.componentType === "multiplier") {
             // output 
@@ -93,7 +112,7 @@ export function toConfig(): Config {
             component.outputShaft = thisComponent.getAttribute("output");
         }
             */
-        return component;
+        
     });
 
     const shafts = config1;
