@@ -40,6 +40,7 @@ html {
     height: 100%;
     overflow: hidden;
     background: var(--colour-background);
+    user-select: none;
 }
 
 #machine {
