@@ -1,7 +1,7 @@
 import { DraggableComponentElement } from "./DraggableElement";
 import Vector2 from "./Vector2";
 
-export var GRID_SIZE: number = 100;
+export let GRID_SIZE: number = 50;
 
 const HIGHLIGHT_CELL: string = "highlighted-cell";
 

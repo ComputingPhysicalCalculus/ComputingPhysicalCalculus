@@ -14,7 +14,8 @@ export enum ComponentType {
   Differential,
   OutputTable,
   Motor,
-  Multiplier
+  Multiplier,
+  Label,
 };
 
 let CURRENT_ID: number = 0;
@@ -60,6 +61,9 @@ export function createComponent(component: ComponentType): DraggableComponentEle
       break;
     case ComponentType.Multiplier:
       createMultiplier(comp);
+      break;
+    case ComponentType.Label:
+      createLabel(comp);
       break;
     default:
       console.error("No function defined for component: ", component);
@@ -114,6 +118,54 @@ function createVShaft(div: DraggableComponentElement): void {
       _this.left = data.left,
       _this.height = data.height;
   }
+}
+
+function createLabel(div: DraggableComponentElement): void {
+  div.width = 3;
+  div.height = 1;
+  div.componentType = "label";
+  div.shouldLockCells = false;
+
+  div.classList.add("label");
+
+  div.addEventListener("contextmenu", openShaftPopup);
+
+  render(html`<p style="color:black;font-size:2rem;width:100%;padding:0.5rem">This is a label</p>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    width: number,
+    height: number,
+    align: string,
+    _comment: string,
+  };
+
+  div.export_fn = (_this) => {
+    let p = _this.querySelector("p")!;
+    return {
+      _type: ComponentType.Label,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        height: _this.height,
+        width: _this.width,
+        align: p.style.textAlign,
+        _comment: p.textContent,
+      }
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+    _this.height = data.height;
+    _this.width = data.width;
+
+    let p = _this.querySelector("p")!;
+    p.style.textAlign = data.align;
+    p.textContent = data._comment;
+  };
 }
 
 function createGear(div: DraggableComponentElement): void {
