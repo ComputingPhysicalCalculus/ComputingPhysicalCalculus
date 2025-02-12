@@ -30,7 +30,6 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
 }
 
 export function openShaftPopup(e: MouseEvent): void {
-  console.log(e.button);
   if (e.button != 2) return;
   if (currentlyDragging()) return;
 

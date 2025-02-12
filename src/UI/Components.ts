@@ -93,7 +93,7 @@ function createVShaft(div: DraggableComponentElement): void {
 
   div.classList.add("vShaft");
 
-  div.addEventListener("contextmenu", openShaftPopup);
+  div.addEventListener("mouseup", openShaftPopup);
 
   render(html`<shaft-component style="width:100%;height:100%"></shaft-component>`, div);
 
@@ -129,7 +129,7 @@ function createLabel(div: DraggableComponentElement): void {
 
   div.classList.add("label");
 
-  div.addEventListener("contextmenu", openShaftPopup);
+  div.addEventListener("mouseup", openShaftPopup);
 
   let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
 
@@ -179,7 +179,7 @@ function createGear(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("gear");
 
-  div.addEventListener("contextmenu", openGearPopup);
+  div.addEventListener("mouseup", openGearPopup);
 
   render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div);
 
@@ -211,7 +211,7 @@ function createHShaft(div: DraggableComponentElement): void {
   div.shouldLockCells = false;;
   div.classList.add("hShaft");
 
-  div.addEventListener("contextmenu", openShaftPopup);
+  div.addEventListener("mouseup", openShaftPopup);
 
   render(html`<shaft-component style="width: 100%;height:100%" horizontal></shaft-component>`, div);
 
@@ -248,7 +248,7 @@ function createIntegrator(div: DraggableComponentElement): void {
 
   render(html`<integrator-component></integrator-component>`, div);
 
-  div.addEventListener("contextmenu", openIntegratorPopup);
+  div.addEventListener("mouseup", openIntegratorPopup);
 
   type ExportedData = {
     top: number,
@@ -463,7 +463,7 @@ function createMotor(div: DraggableComponentElement): void {
 
   render(html`<motor-component style="width:100%;height:100%"></motor-component>`, div);
 
-  div.addEventListener("contextmenu", openMotorPopup);
+  div.addEventListener("mouseup", openMotorPopup);
 
   type ExportedData = {
     top: number,
@@ -493,7 +493,7 @@ function createMultiplier(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("multiplier");
 
-  div.addEventListener("contextmenu", openMultiplierPopup);
+  div.addEventListener("mouseup", openMultiplierPopup);
 
   render(html`<multiplier-component style="width:100%;height:100%"></multiplier-component>`, div);
 
