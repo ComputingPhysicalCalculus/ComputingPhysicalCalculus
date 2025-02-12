@@ -54,7 +54,10 @@ export class Lifecycle {
   motor_speed_input!: HTMLInputElement;
 
   @query("#content")
-  content!: Node;
+  content!: HTMLElement;
+
+  @query("#machine")
+  machine!: HTMLElement;
 
   private history: {
     _type: ComponentType,
@@ -147,17 +150,24 @@ export class Lifecycle {
 
     loadConfig(config);
 
-    let x = 0;
-    let y = 0;
-    for (let components of this.placedComponents) {
-      x += components.left + components.width / 2;
-      y += components.top + components.height / 2;
+    if (this.placedComponents.length > 0) {
+      let top = Number.POSITIVE_INFINITY;
+      let left = Number.POSITIVE_INFINITY;
+      let bottom = Number.NEGATIVE_INFINITY;
+      let right = Number.NEGATIVE_INFINITY;
+
+      for (let component of this.placedComponents) {
+        top = Math.min(top, component.top);
+        left = Math.min(left, component.left);
+        bottom = Math.max(bottom, component.top + component.height);
+        right = Math.max(right, component.left + component.width);
+      }
+
+      let x = this.machine.offsetWidth / 2 - GRID_SIZE * (left + right) / 2;
+      let y = this.machine.offsetHeight / 2 - GRID_SIZE * (top + bottom) / 2;
+
+      setScreenOffset(new Vector2(x, y));
     }
-
-    x *= GRID_SIZE / this.placedComponents.length;
-    y *= GRID_SIZE / this.placedComponents.length;
-
-    setScreenOffset(new Vector2(x, y));
   }
 
   public exportState(): Config {
