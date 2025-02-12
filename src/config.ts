@@ -15,7 +15,7 @@ export type ShaftConfig = {
   end: [number, number];
 };
 
-export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig;
+export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig | LabelConfig;
 
 export type IntegratorConfig = {
   type: "integrator";
@@ -79,6 +79,15 @@ export type GearConfig = {
   position: [number, number];
 };
 
+export type LabelConfig = {
+  type: "label";
+  compID: number;
+  position: [number, number];
+  size: [number, number];
+  align: "left" | "right" | "center";
+  _comment: string,
+};
+
 const type_name_dict = {
   "gear": "Gear",
   "integrator": "Integrator",
@@ -87,6 +96,7 @@ const type_name_dict = {
   "outputTable": "OutputTable",
   "motor": "Motor",
   "multiplier": "Multiplier",
+  "label": "Label",
 };
 
 export function loadConfig(config: Config): void {
@@ -106,6 +116,14 @@ export function loadConfig(config: Config): void {
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
+    if (components.type === "label") {
+      let [width, height] = components.size;
+      item.width = width;
+      item.height = height;
+      let p = item.querySelector("p")!;
+      p.style.textAlign = components.align;
+      p.textContent = components._comment;
+    }
 
     setCells(new Vector2(left, top), item.getSize(), true);
 

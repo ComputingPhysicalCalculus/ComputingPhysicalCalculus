@@ -1,7 +1,7 @@
 import { DraggableComponentElement } from "./DraggableElement";
 import Vector2 from "./Vector2";
 
-export var GRID_SIZE: number = 100;
+export let GRID_SIZE: number = 50;
 
 const HIGHLIGHT_CELL: string = "highlighted-cell";
 
@@ -19,7 +19,7 @@ let previousY: number;
 
 const draggingStartLimit: number = 10.;
 const sensitivity: number = 1.0;
-const scroll_sensitivity: number = 0.1;
+const scroll_sensitivity: number = 0.01;
 
 function createCell(col: number, row: number): HTMLDivElement {
   const comp = document.createElement("div");
@@ -68,7 +68,18 @@ export function setupScreenHooks(): void {
   });
 
   document.addEventListener("wheel", e => {
-    resizeScreen(e.deltaY * scroll_sensitivity);
+    let offset_x = e.clientX - screenOffset.x;
+    let offset_y = e.clientY - screenOffset.y;
+    let start_grid_size = GRID_SIZE;
+
+    GRID_SIZE += e.deltaY * scroll_sensitivity;
+    GRID_SIZE = Math.min(Math.max(GRID_SIZE, 15), 150);
+
+    let scale = GRID_SIZE / start_grid_size;
+    offset_x *= scale;
+    offset_y *= scale;
+
+    setScreenOffset(new Vector2(e.clientX - offset_x, e.clientY - offset_y));
   })
 
   document.addEventListener("touchstart", e => {
@@ -77,13 +88,19 @@ export function setupScreenHooks(): void {
         initialDragLocation = new Vector2(e.touches[0].clientX, e.touches[0].clientY);
         canStartDragging = true;
         break;
+      case 2:
+        break;
     }
   })
 
   document.addEventListener("touchmove", e => {
     switch (e.touches.length) {
-      case 1:
+      case 1: // Move
         dragScreen(e.touches[0].clientX, e.touches[0].clientY);
+        e.preventDefault();
+        break;
+      case 2: // Resize
+        console.log(e.changedTouches);
         e.preventDefault();
         break;
     }
@@ -154,11 +171,6 @@ function dragScreen(x: number, y: number): void {
     previousX = x;
     previousY = y;
   }
-}
-
-function resizeScreen(scale: number): void {
-  GRID_SIZE += scale;
-  updateComponentPositions();
 }
 
 function updateComponentPositions(): void {
