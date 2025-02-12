@@ -17,7 +17,7 @@ export class DifferentialCopmonentElement extends LitElement {
           stroke="black"
           stroke-width="2"
           stroke-linecap="round"
-          points="35,116 15,116 25,103 15,90 35,90"
+          points="35,88 15,88 25,75 15,62 35,62"
         />
       </svg>
     `;

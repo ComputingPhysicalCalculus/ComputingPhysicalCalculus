@@ -1,0 +1,423 @@
+{
+  "shafts": [
+    {
+      "id": 27,
+      "start": [
+        4,
+        1
+      ],
+      "end": [
+        25,
+        1
+      ]
+    },
+    {
+      "id": 28,
+      "start": [
+        4,
+        2
+      ],
+      "end": [
+        25,
+        2
+      ]
+    },
+    {
+      "id": 29,
+      "start": [
+        4,
+        3
+      ],
+      "end": [
+        25,
+        3
+      ]
+    },
+    {
+      "id": 30,
+      "start": [
+        4,
+        4
+      ],
+      "end": [
+        25,
+        4
+      ]
+    },
+    {
+      "id": 31,
+      "start": [
+        4,
+        5
+      ],
+      "end": [
+        25,
+        5
+      ]
+    },
+    {
+      "id": 32,
+      "start": [
+        4,
+        6
+      ],
+      "end": [
+        25,
+        6
+      ]
+    },
+    {
+      "id": 40,
+      "start": [
+        9,
+        5
+      ],
+      "end": [
+        9,
+        8
+      ]
+    },
+    {
+      "id": 42,
+      "start": [
+        8,
+        1
+      ],
+      "end": [
+        8,
+        8
+      ]
+    },
+    {
+      "id": 44,
+      "start": [
+        7,
+        3
+      ],
+      "end": [
+        7,
+        8
+      ]
+    },
+    {
+      "id": 47,
+      "start": [
+        12,
+        0
+      ],
+      "end": [
+        12,
+        4
+      ]
+    },
+    {
+      "id": 48,
+      "start": [
+        11,
+        0
+      ],
+      "end": [
+        11,
+        5
+      ]
+    },
+    {
+      "id": 51,
+      "start": [
+        14,
+        2
+      ],
+      "end": [
+        14,
+        8
+      ]
+    },
+    {
+      "id": 52,
+      "start": [
+        15,
+        1
+      ],
+      "end": [
+        15,
+        8
+      ]
+    },
+    {
+      "id": 53,
+      "start": [
+        16,
+        3
+      ],
+      "end": [
+        16,
+        8
+      ]
+    },
+    {
+      "id": 58,
+      "start": [
+        20,
+        0
+      ],
+      "end": [
+        20,
+        3
+      ]
+    },
+    {
+      "id": 59,
+      "start": [
+        23,
+        2
+      ],
+      "end": [
+        23,
+        8
+      ]
+    },
+    {
+      "id": 62,
+      "start": [
+        22,
+        6
+      ],
+      "end": [
+        22,
+        8
+      ]
+    },
+    {
+      "id": 63,
+      "start": [
+        19,
+        0
+      ],
+      "end": [
+        19,
+        2
+      ]
+    },
+    {
+      "id": 64,
+      "start": [
+        18,
+        0
+      ],
+      "end": [
+        18,
+        4
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "motor",
+      "id": 33,
+      "position": [
+        2,
+        1
+      ]
+    },
+    {
+      "type": "differential",
+      "id": 34,
+      "position": [
+        5,
+        4
+      ]
+    },
+    {
+      "type": "integrator",
+      "id": 35,
+      "position": [
+        6,
+        8
+      ]
+    },
+    {
+      "type": "integrator",
+      "id": 36,
+      "position": [
+        13,
+        8
+      ]
+    },
+    {
+      "type": "multiplier",
+      "id": 37,
+      "position": [
+        21,
+        8
+      ]
+    },
+    {
+      "type": "functionTable",
+      "id": 38,
+      "position": [
+        9,
+        -4
+      ]
+    },
+    {
+      "type": "outputTable",
+      "id": 39,
+      "position": [
+        17,
+        -4
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 41,
+      "position": [
+        9,
+        5
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 43,
+      "position": [
+        8,
+        1
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 45,
+      "position": [
+        7,
+        3
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 49,
+      "position": [
+        11,
+        4
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 50,
+      "position": [
+        12,
+        3
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 54,
+      "position": [
+        14,
+        2
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 55,
+      "position": [
+        15,
+        1
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 56,
+      "position": [
+        16,
+        3
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 60,
+      "position": [
+        19,
+        1
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 61,
+      "position": [
+        20,
+        2
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 65,
+      "position": [
+        18,
+        3
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 66,
+      "position": [
+        22,
+        6
+      ]
+    },
+    {
+      "type": "gear",
+      "id": 67,
+      "position": [
+        23,
+        2
+      ]
+    },
+    {
+      "type": "label",
+      "id": 69,
+      "position": [26, 1],
+      "align": "left",
+      "size": [1, 1],
+      "_comment": "t"
+    },
+    {
+      "type": "label",
+      "id": 70,
+      "position": [26, 2],
+      "align": "left",
+      "size": [1, 1],
+      "_comment": "x"
+    },
+    {
+      "type": "label",
+      "id": 71,
+      "position": [26, 3],
+      "align": "left",
+      "size": [3, 1],
+      "_comment": "dx/dt"
+    },
+    {
+      "type": "label",
+      "id": 72,
+      "position": [26, 4],
+      "align": "left",
+      "size": [4, 1],
+      "_comment": "f(dx/dt)"
+    },
+    {
+      "type": "label",
+      "id": 73,
+      "position": [26, 5],
+      "align": "left",
+      "size": [6, 1],
+      "_comment": "f(dx/dt)+kx/m"
+    },
+    {
+      "type": "label",
+      "id": 74,
+      "position": [26, 6],
+      "align": "left",
+      "size": [3, 1],
+      "_comment": "kx/m"
+    }
+  ]
+}
