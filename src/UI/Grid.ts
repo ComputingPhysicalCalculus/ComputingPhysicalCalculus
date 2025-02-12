@@ -21,8 +21,6 @@ const draggingStartLimit: number = 10.;
 const sensitivity: number = 1.0;
 const scroll_sensitivity: number = 0.01;
 
-var touchInitial = Map<number, Vector2>;
-
 function createCell(col: number, row: number): HTMLDivElement {
   const comp = document.createElement("div");
 
@@ -64,7 +62,6 @@ export function setupScreenHooks(): void {
   })
 
   screenOffset = new Vector2(0, 0);
-  touchInitial = new Map<any, Vector2>();
 
   document.addEventListener("mousemove", e => {
     dragScreen(e.clientX, e.clientY);
@@ -75,9 +72,6 @@ export function setupScreenHooks(): void {
   })
 
   document.addEventListener("touchstart", e => {
-    for (let i = 0; i < e.touches.length; i++) {
-      touchInitial.set(Number(e.touches[i].identifier), new Vector2(e.touches[i].clientX, e.touches[i].clientY));
-    }
     switch (e.touches.length) {
       case 1:
         initialDragLocation = new Vector2(e.touches[0].clientX, e.touches[0].clientY);
