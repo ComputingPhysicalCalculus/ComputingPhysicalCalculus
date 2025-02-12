@@ -1,4 +1,6 @@
 import { Config, loadConfig } from "./config";
+import { toConfig } from "./GenerateConfigFromUI";
+import { OutputTable } from "./core/OutputTable";
 import { query, queryAll } from "./decorators";
 import { INTEGRATING_LINEAR } from "./examples";
 import { export_simulator } from "./run";
@@ -170,7 +172,7 @@ export class Lifecycle {
   }
 
   public exportState(): Config {
-    return INTEGRATING_LINEAR;
+    return toConfig();
   }
 
   public pushHistory(): void {
