@@ -81,7 +81,13 @@
 
                 <label for="simulation-step-period">Step period</label>
                 <input id="simulation-step-period" type="number" value="0.05"/>
-                <button id="run-button">Run</button>
+
+                <div>
+                    <button id="run-button">Run</button>
+                    <button id="stop-button" hidden>Stop</button>
+                    <button id="pause-button" hidden>Pause</button>
+                    <button id="unpause-button" hidden>Unpause</button>
+                </div>
 
                 <label for="motor-speed">Motor speed</label>
                 <input id="motor-speed" type="range" min="0.0" max="0.1" step="0.001" value="0.1" />

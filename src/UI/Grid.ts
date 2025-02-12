@@ -18,7 +18,7 @@ let previousX: number;
 let previousY: number;
 
 const draggingStartLimit: number = 10.;
-const sensitivity: number = 1.0;
+const sensitivity: number = 2.0;
 const scroll_sensitivity: number = 0.01;
 
 function createCell(col: number, row: number): HTMLDivElement {
@@ -72,7 +72,7 @@ export function setupScreenHooks(): void {
     let offset_y = e.clientY - screenOffset.y;
     let start_grid_size = GRID_SIZE;
 
-    GRID_SIZE += e.deltaY * scroll_sensitivity;
+    GRID_SIZE -= e.deltaY * scroll_sensitivity;
     GRID_SIZE = Math.min(Math.max(GRID_SIZE, 15), 150);
 
     let scale = GRID_SIZE / start_grid_size;

@@ -45,6 +45,15 @@ export class Lifecycle {
   @query("#run-button")
   run_button!: HTMLButtonElement
 
+  @query("#stop-button")
+  stop_button!: HTMLButtonElement
+
+  @query("#pause-button")
+  pause_button!: HTMLButtonElement
+
+  @query("#unpause-button")
+  unpause_button!: HTMLButtonElement
+
   @query("#config-file-upload")
   config_file_input!: HTMLInputElement;
 
@@ -289,12 +298,52 @@ export class Lifecycle {
   }
 
   private _run_simulator(): void {
-    this.run_button.disabled = true;
-    this.step_period_input.disabled = true;
-    this.import_button.disabled = true;
+    enum State {
+      Paused,
+      Running,
+      Stopped,
+    }
+    
+    let state: State = State.Running;
+
+    const unpause = () => {
+      state = State.Running;
+      this.pause_button.hidden = false;
+      this.unpause_button.hidden = true;
+    };
+    const pause = () => {
+      state = State.Paused;
+      this.pause_button.hidden = true;
+      this.unpause_button.hidden = false;
+    };
+    const stop = () => {
+      state = State.Stopped;
+      this.run_button.disabled = false;
+      this.run_button.hidden = false;
+      this.step_period_input.disabled = false;
+      this.import_button.disabled = false;
+      this.stop_button.hidden = true;
+      this.pause_button.hidden = true;
+      this.unpause_button.hidden = true;
+
+      this.stop_button.removeEventListener("click", stop);
+      this.pause_button.removeEventListener("click", pause);
+      this.unpause_button.removeEventListener("click", unpause);
+    };
 
     const step_period = Number(this.step_period_input.value);
     const get_motor_speed = () => Number(this.motor_speed_input.value);
+
+    this.run_button.disabled = true;
+    this.run_button.hidden = true;
+    this.step_period_input.disabled = true;
+    this.import_button.disabled = true;
+    this.stop_button.hidden = false;
+    this.pause_button.hidden = false;
+
+    this.stop_button.addEventListener("click", stop);
+    this.pause_button.addEventListener("click", pause);
+    this.unpause_button.addEventListener("click", unpause);
 
     const simulator = export_simulator(this.exportState(), get_motor_speed());
 
@@ -304,23 +353,26 @@ export class Lifecycle {
     output_table.set_data_set("a", []);
     output_table.set_data_set("b", [], "red", true);
 
-    let resolve_simulation_finished: (value: void | PromiseLike<void>) => void;
-    let simulation_finished_promise = new Promise<void>((resolve) => {
-      resolve_simulation_finished = resolve;
-    });
-    let start: number;
     let steps_taken = 0;
-    let quit = false;
-
-    this.clear_button.addEventListener("click", _e => {
-      quit = true;
-    });
+    let elapsed = 0;
+    let last_timestamp = 0;
 
     function frame(timestamp: number) {
-      if (start === undefined) {
-        start = timestamp;
+      if (state === State.Stopped) {
+        return;
       }
-      const elapsed = (timestamp - start) / 1000;
+      window.requestAnimationFrame(frame);
+      if (state === State.Paused) {
+        last_timestamp = timestamp;
+        return;
+      }
+      
+      if (last_timestamp === undefined) {
+        last_timestamp = timestamp;
+      }
+      elapsed += (timestamp - last_timestamp) / 1000.0;
+      last_timestamp = timestamp;
+      
       const next_steps = Math.floor(elapsed / step_period);
 
       simulator.motor?.changeRotation(get_motor_speed());
@@ -348,19 +400,11 @@ export class Lifecycle {
       output_table.gantry_x = x[next_steps - 1];
       function_table.gantry_x = x[next_steps - 1];
 
-      if (!quit && (next_steps == 0 || x[next_steps - 1] < output_table.x_max)) {
-        window.requestAnimationFrame(frame);
-      } else {
-        resolve_simulation_finished();
+      if (next_steps != 0 && x[next_steps - 1] >= output_table.x_max) {
+        stop();
       }
     }
 
     window.requestAnimationFrame(frame);
-
-    simulation_finished_promise.then(() => {
-      this.run_button.disabled = false;
-      this.step_period_input.disabled = false;
-      this.import_button.disabled = false;
-    });
   }
 }
