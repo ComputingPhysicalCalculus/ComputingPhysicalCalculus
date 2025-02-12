@@ -4,6 +4,7 @@ import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
 import { openShaftPopup, openGearPopup, openMultiplierPopup, openMotorPopup, openIntegratorPopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
+import { GRID_SIZE } from "./Grid.ts";
 
 export enum ComponentType {
   VShaft,
@@ -130,7 +131,10 @@ function createLabel(div: DraggableComponentElement): void {
 
   div.addEventListener("contextmenu", openShaftPopup);
 
-  render(html`<p style="color:black;font-size:2rem;width:100%;padding:0.5rem">This is a label</p>`, div);
+  let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
+
+  document.addEventListener("wheel", render_p);
+  render_p();
 
   type ExportedData = {
     top: number,
