@@ -76,7 +76,7 @@
       "outputShaft": 5,
       "integrandShaft": 7,
       "variableOfIntegrationShaft": 6,
-      "position": [6, 10]
+      "position": [5, 10]
     },
     {
       "type": "outputTable",

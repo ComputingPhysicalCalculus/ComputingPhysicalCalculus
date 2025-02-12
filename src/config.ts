@@ -117,6 +117,7 @@ export function loadConfig(config: Config): void {
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
     if (components.type === "label") {
+      console.log("label");
       let [width, height] = components.size;
       item.width = width;
       item.height = height;
