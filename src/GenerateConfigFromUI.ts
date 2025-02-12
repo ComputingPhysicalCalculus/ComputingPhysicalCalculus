@@ -11,7 +11,7 @@ import { Config } from "./config";
 // take a component, get it's name, location/position, 
 export function toConfig(): Config {
     //  iterate through
-    console.log("hello");
+    // console.log("hello");
     const elements = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
     console.log(elements);
     const shaftElements = Array.from(elements).filter(element => element.componentType.endsWith("Shaft"));
@@ -22,19 +22,21 @@ export function toConfig(): Config {
             // id
             const id = thisComponent.componentID;
             // position
-            const position : Vector2 = {x : Number(thisComponent.left), y : Number(thisComponent.top)};
+            const start = [Number(thisComponent.left), Number(thisComponent.top)];
 
-            const shaft : any = {id, position};
+            const shaft : any = {id, start};
 
             // if vertical
             if (thisComponent.componentType === "vShaft") {
                 // height
-                shaft.height = thisComponent.height;
+                // shaft.height = thisComponent.height;
+                shaft.end = [Number(thisComponent.left),Number(thisComponent.top)+thisComponent.height];
             }
             // if horizontal
             else if (thisComponent.componentType === "hShaft") {
                 // width
-                shaft.width = thisComponent.width;
+                // shaft.width = thisComponent.width;
+                shaft.end = [Number(thisComponent.left)+thisComponent.width,Number(thisComponent.top)];
             }
             // remove this shaft from the list of components
             // elements.remove(thisComponent); 
@@ -51,10 +53,9 @@ export function toConfig(): Config {
         // id
         const id = thisComponent.componentID;
         // position
-        const position : Vector2 = {x : Number(thisComponent.left), y : Number(thisComponent.top)};
+        const position = [Number(thisComponent.left),Number(thisComponent.top)];
 
         const component : any = {type, id, position};
-
         /*
         if (thisComponent.componentType === "multiplier") {
             // output 

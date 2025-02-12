@@ -90,7 +90,10 @@ const type_name_dict = {
 };
 
 export function loadConfig(config: Config): void {
+  console.log(config.components);
   for (let components of config.components) {
+    console.log(components);
+    console.log(components.position);
     let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
     if (componentType === null || componentType === undefined) {
@@ -113,6 +116,10 @@ export function loadConfig(config: Config): void {
   }
 
   for (let shaft of config.shafts) {
+    console.log(config.shafts);
+    console.log(shaft);
+    console.log(shaft.start);
+    console.log(shaft.end);
     let [left, top] = shaft.start;
     let [right, bottom] = shaft.end;
 
