@@ -52,8 +52,9 @@
     user-select: none;
 }
 
-.component-render {
-    width: 100%;
+.component>img {
+    width: 70%;
+    aspect-ratio: 1;
 }
 
 
