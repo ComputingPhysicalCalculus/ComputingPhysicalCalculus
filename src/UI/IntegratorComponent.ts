@@ -15,7 +15,7 @@ export class IntegratorComponentElement extends LitElement {
         width="90" height="60"
         viewBox="0 0 150 100"
       >
-        <rect x="1" y="1" width="148" height="98" fill="none" stroke="black" stroke-width="2" rx="5" />
+        <rect x="1" y="1" width="148" height="98" fill="white" stroke="black" stroke-width="2" rx="5" />
         <rect x="65" y="30" width="20" height="40" fill="none" stroke="black" stroke-width="2" rx="2" />
         <circle cx="35" cy="50" r="30" fill="none" stroke="black" stroke-width="2" />
         <line x1="20" y1="50" x2="50" y2="50" stroke="black" stroke-width="2" stroke-linecap="round" />
