@@ -7,7 +7,7 @@ import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GraphElement } from "./UI/GraphElement";
-import { resetScreenOffset, setCells, setupScreenDrag } from "./UI/Grid";
+import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenDrag } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 import Vector2 from "./UI/Vector2";
 
@@ -146,6 +146,18 @@ export class Lifecycle {
     resetScreenOffset();
 
     loadConfig(config);
+
+    let x = 0;
+    let y = 0;
+    for (let components of this.placedComponents) {
+      x += components.left + components.width / 2;
+      y += components.top + components.height / 2;
+    }
+
+    x *= GRID_SIZE / this.placedComponents.length;
+    y *= GRID_SIZE / this.placedComponents.length;
+
+    setScreenOffset(new Vector2(x, y));
   }
 
   public exportState(): Config {
@@ -287,6 +299,11 @@ export class Lifecycle {
     });
     let start: number;
     let steps_taken = 0;
+    let quit = false;
+
+    this.clear_button.addEventListener("click", _e => {
+      quit = true;
+    });
 
     function frame(timestamp: number) {
       if (start === undefined) {
@@ -320,7 +337,7 @@ export class Lifecycle {
       output_table.gantry_x = x[next_steps - 1];
       function_table.gantry_x = x[next_steps - 1];
 
-      if (next_steps == 0 || x[next_steps - 1] < output_table.x_max) {
+      if (!quit && (next_steps == 0 || x[next_steps - 1] < output_table.x_max)) {
         window.requestAnimationFrame(frame);
       } else {
         resolve_simulation_finished();
