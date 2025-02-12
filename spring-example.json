@@ -1,227 +1,228 @@
 {
   "shafts": [
     {
-      "id": 27,
-      "start": [
-        4,
-        1
-      ],
-      "end": [
-        25,
-        1
-      ]
-    },
-    {
-      "id": 28,
-      "start": [
-        4,
-        2
-      ],
-      "end": [
-        25,
-        2
-      ]
-    },
-    {
-      "id": 29,
-      "start": [
-        4,
-        3
-      ],
-      "end": [
-        25,
-        3
-      ]
-    },
-    {
-      "id": 30,
-      "start": [
-        4,
-        4
-      ],
-      "end": [
-        25,
-        4
-      ]
-    },
-    {
-      "id": 31,
-      "start": [
-        4,
-        5
-      ],
-      "end": [
-        25,
-        5
-      ]
-    },
-    {
-      "id": 32,
-      "start": [
-        4,
-        6
-      ],
-      "end": [
-        25,
-        6
-      ]
-    },
-    {
-      "id": 40,
-      "start": [
-        9,
-        5
-      ],
-      "end": [
-        9,
-        8
-      ]
-    },
-    {
-      "id": 42,
-      "start": [
-        8,
-        1
-      ],
-      "end": [
-        8,
-        8
-      ]
-    },
-    {
-      "id": 44,
-      "start": [
-        7,
-        3
-      ],
-      "end": [
-        7,
-        8
-      ]
-    },
-    {
-      "id": 47,
-      "start": [
-        12,
-        0
-      ],
-      "end": [
-        12,
-        4
-      ]
-    },
-    {
-      "id": 48,
-      "start": [
-        11,
-        0
-      ],
-      "end": [
-        11,
-        5
-      ]
-    },
-    {
-      "id": 51,
-      "start": [
-        14,
-        2
-      ],
-      "end": [
-        14,
-        8
-      ]
-    },
-    {
-      "id": 52,
-      "start": [
-        15,
-        1
-      ],
-      "end": [
-        15,
-        8
-      ]
-    },
-    {
       "id": 53,
       "start": [
-        16,
+        4,
+        1
+      ],
+      "end": [
+        24,
+        1
+      ]
+    },
+    {
+      "id": 54,
+      "start": [
+        4,
+        2
+      ],
+      "end": [
+        24,
+        2
+      ]
+    },
+    {
+      "id": 55,
+      "start": [
+        4,
         3
       ],
       "end": [
-        16,
-        8
+        24,
+        3
+      ]
+    },
+    {
+      "id": 56,
+      "start": [
+        4,
+        4
+      ],
+      "end": [
+        24,
+        4
+      ]
+    },
+    {
+      "id": 57,
+      "start": [
+        4,
+        5
+      ],
+      "end": [
+        24,
+        5
       ]
     },
     {
       "id": 58,
       "start": [
+        4,
+        6
+      ],
+      "end": [
+        24,
+        6
+      ]
+    },
+    {
+      "id": 59,
+      "start": [
+        9,
+        5
+      ],
+      "end": [
+        9,
+        7
+      ]
+    },
+    {
+      "id": 60,
+      "start": [
+        8,
+        1
+      ],
+      "end": [
+        8,
+        7
+      ]
+    },
+    {
+      "id": 61,
+      "start": [
+        7,
+        3
+      ],
+      "end": [
+        7,
+        7
+      ]
+    },
+    {
+      "id": 62,
+      "start": [
+        12,
+        0
+      ],
+      "end": [
+        12,
+        3
+      ]
+    },
+    {
+      "id": 63,
+      "start": [
+        11,
+        0
+      ],
+      "end": [
+        11,
+        4
+      ]
+    },
+    {
+      "id": 64,
+      "start": [
+        14,
+        2
+      ],
+      "end": [
+        14,
+        7
+      ]
+    },
+    {
+      "id": 65,
+      "start": [
+        15,
+        1
+      ],
+      "end": [
+        15,
+        7
+      ]
+    },
+    {
+      "id": 66,
+      "start": [
+        16,
+        3
+      ],
+      "end": [
+        16,
+        7
+      ]
+    },
+    {
+      "id": 67,
+      "start": [
         20,
         0
       ],
       "end": [
         20,
-        3
+        2
       ]
     },
     {
-      "id": 59,
+      "id": 68,
       "start": [
         23,
         2
       ],
       "end": [
         23,
-        8
+        7
       ]
     },
     {
-      "id": 62,
+      "id": 69,
       "start": [
         22,
         6
       ],
       "end": [
         22,
-        8
+        7
       ]
     },
     {
-      "id": 63,
+      "id": 70,
       "start": [
         19,
         0
       ],
       "end": [
         19,
-        2
+        1
       ]
     },
     {
-      "id": 64,
+      "id": 71,
       "start": [
         18,
         0
       ],
       "end": [
         18,
-        4
+        3
       ]
     }
   ],
   "components": [
     {
       "type": "motor",
-      "id": 33,
+      "compID": 27,
       "position": [
         2,
         1
-      ]
+      ],
+      "reversed": false
     },
     {
       "type": "differential",
-      "id": 34,
+      "compID": 28,
       "position": [
         5,
         4
@@ -229,7 +230,7 @@
     },
     {
       "type": "integrator",
-      "id": 35,
+      "compID": 29,
       "position": [
         6,
         8
@@ -237,7 +238,7 @@
     },
     {
       "type": "integrator",
-      "id": 36,
+      "compID": 30,
       "position": [
         13,
         8
@@ -245,178 +246,249 @@
     },
     {
       "type": "multiplier",
-      "id": 37,
+      "compID": 31,
       "position": [
         21,
         8
-      ]
+      ],
+      "factor": 1
     },
     {
       "type": "functionTable",
-      "id": 38,
+      "compID": 32,
       "position": [
         9,
         -4
-      ]
+      ],
+      "x_min": 0,
+      "x_max": 10,
+      "y_min": -1.5,
+      "y_max": 1.5
     },
     {
       "type": "outputTable",
-      "id": 39,
+      "compID": 33,
       "position": [
         17,
         -4
-      ]
+      ],
+      "x_min": 0,
+      "x_max": 10,
+      "y_min": -1.5,
+      "y_max": 1.5
     },
     {
       "type": "gear",
-      "id": 41,
+      "compID": 34,
       "position": [
         9,
         5
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 43,
+      "compID": 35,
       "position": [
         8,
         1
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 45,
+      "compID": 36,
       "position": [
         7,
         3
-      ]
+      ],
+      "inputRatio": -1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 49,
+      "compID": 37,
       "position": [
         11,
         4
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 50,
+      "compID": 38,
       "position": [
         12,
         3
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 54,
+      "compID": 39,
       "position": [
         14,
         2
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 55,
+      "compID": 40,
       "position": [
         15,
         1
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 56,
+      "compID": 41,
       "position": [
         16,
         3
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 60,
+      "compID": 42,
       "position": [
         19,
         1
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 61,
+      "compID": 43,
       "position": [
         20,
         2
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 65,
+      "compID": 44,
       "position": [
         18,
         3
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 66,
+      "compID": 45,
       "position": [
         22,
         6
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "gear",
-      "id": 67,
+      "compID": 46,
       "position": [
         23,
         2
-      ]
+      ],
+      "inputRatio": 1,
+      "outputRatio": 1
     },
     {
       "type": "label",
-      "id": 69,
-      "position": [26, 1],
-      "align": "left",
-      "size": [1, 1],
+      "compID": 47,
+      "position": [
+        26,
+        1
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
       "_comment": "t"
     },
     {
       "type": "label",
-      "id": 70,
-      "position": [26, 2],
-      "align": "left",
-      "size": [1, 1],
+      "compID": 48,
+      "position": [
+        26,
+        2
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
       "_comment": "x"
     },
     {
       "type": "label",
-      "id": 71,
-      "position": [26, 3],
-      "align": "left",
-      "size": [3, 1],
+      "compID": 49,
+      "position": [
+        26,
+        3
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
       "_comment": "dx/dt"
     },
     {
       "type": "label",
-      "id": 72,
-      "position": [26, 4],
-      "align": "left",
-      "size": [4, 1],
+      "compID": 50,
+      "position": [
+        26,
+        4
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "",
       "_comment": "f(dx/dt)"
     },
     {
       "type": "label",
-      "id": 73,
-      "position": [26, 5],
-      "align": "left",
-      "size": [6, 1],
+      "compID": 51,
+      "position": [
+        26,
+        5
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "",
       "_comment": "f(dx/dt)+kx/m"
     },
     {
       "type": "label",
-      "id": 74,
-      "position": [26, 6],
-      "align": "left",
-      "size": [3, 1],
+      "compID": 52,
+      "position": [
+        26,
+        6
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
       "_comment": "kx/m"
     }
   ]

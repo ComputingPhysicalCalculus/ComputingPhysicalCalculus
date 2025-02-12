@@ -186,6 +186,8 @@ function createGear(div: DraggableComponentElement): void {
   type ExportedData = {
     top: number,
     left: number,
+    inputRatio: number;
+    outputRatio: number;
   };
 
   div.export_fn = (_this) => {
@@ -194,6 +196,8 @@ function createGear(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
+        inputRatio: _this.inputRatio,
+        outputRatio: _this.outputRatio,
       },
     };
   };
@@ -201,6 +205,8 @@ function createGear(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
+    _this.inputRatio = (!data.inputRatio) ? 1 : data.inputRatio;
+    _this.outputRatio = (!data.outputRatio) ? 1 : data.outputRatio;
   };
 }
 
@@ -468,6 +474,7 @@ function createMotor(div: DraggableComponentElement): void {
   type ExportedData = {
     top: number,
     left: number,
+    reversed: boolean;
   };
 
   div.export_fn = (_this) => {
@@ -476,6 +483,7 @@ function createMotor(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
+        reversed: _this.outputRatio < 0,
       },
     };
   };
@@ -483,6 +491,7 @@ function createMotor(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
+    _this.outputRatio = (!data.reversed) ? 1 : (data.reversed ? -1 : 1);
   };
 }
 
@@ -500,6 +509,7 @@ function createMultiplier(div: DraggableComponentElement): void {
   type ExportedData = {
     top: number,
     left: number,
+    factor: number,
   };
 
   div.export_fn = (_this) => {
@@ -508,6 +518,7 @@ function createMultiplier(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
+        factor: _this.outputRatio,
       },
     };
   };
@@ -515,5 +526,6 @@ function createMultiplier(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
+    _this.outputRatio = (!data.factor) ? 1 : data.factor;
   };
 }

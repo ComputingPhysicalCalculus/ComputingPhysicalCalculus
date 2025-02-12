@@ -57,6 +57,7 @@ export function openGearPopup(e: MouseEvent): void {
 
   openPopup(e, gearPopup);
 
+
   const target = e.currentTarget as DraggableComponentElement;
   const inputs = gearPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
