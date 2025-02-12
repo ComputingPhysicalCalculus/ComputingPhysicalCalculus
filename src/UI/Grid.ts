@@ -68,7 +68,17 @@ export function setupScreenHooks(): void {
   });
 
   document.addEventListener("wheel", e => {
-    resizeScreen(e.deltaY * scroll_sensitivity);
+    let offset_x = e.clientX - screenOffset.x;
+    let offset_y = e.clientY - screenOffset.y;
+    let start_grid_size = GRID_SIZE;
+
+    GRID_SIZE += e.deltaY * scroll_sensitivity;
+
+    let scale = GRID_SIZE / start_grid_size;
+    offset_x *= scale;
+    offset_y *= scale;
+
+    setScreenOffset(new Vector2(e.clientX - offset_x, e.clientY - offset_y));
   })
 
   document.addEventListener("touchstart", e => {
@@ -160,11 +170,6 @@ function dragScreen(x: number, y: number): void {
     previousX = x;
     previousY = y;
   }
-}
-
-function resizeScreen(scale: number): void {
-  GRID_SIZE += scale;
-  updateComponentPositions();
 }
 
 function updateComponentPositions(): void {
