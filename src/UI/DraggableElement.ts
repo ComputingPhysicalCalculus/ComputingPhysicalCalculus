@@ -88,7 +88,7 @@ export class DraggableComponentElement extends LitElement {
 
   updated(changedProperties: PropertyValues) {
     if (changedProperties !== undefined) {
-      if (changedProperties.has("top") || changedProperties.has("left")) {
+      if ((changedProperties.has("top") || changedProperties.has("left")) && !(changedProperties.has("renderLeft") || changedProperties.has("renderRight"))) {
         let pos = worldToScreenPosition(new Vector2(this.left * GRID_SIZE, this.top * GRID_SIZE));
         this.renderLeft = pos.x;
         this.renderTop = pos.y;
