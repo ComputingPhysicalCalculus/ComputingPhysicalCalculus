@@ -103,6 +103,11 @@ export function resetScreenOffset(): void {
   updateComponentPositions();
 }
 
+export function setScreenOffset(v: Vector2): void {
+  console.log(v.x, v.y);
+  screenOffset = v;
+}
+
 export function screenToWorldPosition(pos: Vector2): Vector2 {
   let ret = new Vector2(0, 0);
   ret.x = pos.x - screenOffset.x;
