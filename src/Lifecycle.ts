@@ -53,6 +53,9 @@ export class Lifecycle {
   @query("#simulation-step-period")
   step_period_input!: HTMLInputElement;
 
+  @query("#motor-speed")
+  motor_speed_input!: HTMLInputElement;
+
   @query("#content")
   content!: Node;
 
@@ -267,23 +270,15 @@ export class Lifecycle {
 
   private _run_simulator(): void {
     this.run_button.disabled = true;
+    this.step_counter_input.disabled = true;
+    this.step_period_input.disabled = true;
+    this.import_button.disabled = true;
     
     const steps = Number(this.step_counter_input.value);
     const step_period = Number(this.step_period_input.value);
+    const get_motor_speed = () => Number(this.motor_speed_input.value);
 
-    console.log(steps, step_period);
-    
-    const simulator = export_simulator(this.exportState(), 10 / steps);
-
-    for (let i = 0; i < steps; i++) {
-      simulator.step();
-    }
-
-    let x = simulator.outputTables[0].xHistory;
-    let y1 =  simulator.outputTables[0].y1History;
-    let y2 =  simulator.outputTables[0].y2History!;
-
-    let i = 0;
+    const simulator = export_simulator(this.exportState(), get_motor_speed());
 
     const output_table = document.querySelector(".outputTable > graph-table")! as GraphElement;
     const function_table = document.querySelector(".functionTable > graph-table")! as GraphElement;
@@ -291,26 +286,59 @@ export class Lifecycle {
     output_table.set_data_set("a", []);
     output_table.set_data_set("b", [], "red", true);
 
-    let interval_id = window.setInterval(() => {
-      if (i >= x.length) {
-        window.clearInterval(interval_id);
-        this.run_button.disabled = false;
-        return;
+    let resolve_simulation_finished: (value: void | PromiseLike<void>) => void;
+    let simulation_finished_promise = new Promise<void>((resolve) => {
+      resolve_simulation_finished = resolve;
+    });
+    let start: number;
+    let steps_taken = 0;
+
+    function frame(timestamp: number) {
+      if (start === undefined) {
+        start = timestamp;
+      }
+      const elapsed = (timestamp - start) / 1000;
+      const next_steps = Math.floor(elapsed / step_period);
+
+      simulator.motor?.changeRotation(get_motor_speed());
+
+      for (steps_taken; steps_taken < next_steps; steps_taken++) {
+        simulator.step();
       }
 
+      let x = simulator.outputTables[0].xHistory;
+      let y1 =  simulator.outputTables[0].y1History;
+      let y2 =  simulator.outputTables[0].y2History!;
+
       output_table.mutate_data_set("a", points => {
-        points.push(new Vector2(x[i], y1[i]));
+        for (let i = points.length; i < x.length; i++) {
+          points.push(new Vector2(x[i], y1[i]));
+        }
       });
 
       output_table.mutate_data_set("b", points => {
-        points.push(new Vector2(x[i], (y2[i] - 1) / 2));
+        for (let i = points.length; i < x.length; i++) {
+          points.push(new Vector2(x[i], (y2[i] - 1) / 2));
+        }
       });
 
-      output_table.gantry_x = x[i];
-      function_table.gantry_x = x[i];
-      
-      i += 1
-    }, step_period * 1000);
+      output_table.gantry_x = x[next_steps - 1];
+      function_table.gantry_x = x[next_steps - 1];
 
+      if (next_steps == 0 || x[next_steps - 1] < output_table.x_max) {
+        window.requestAnimationFrame(frame);
+      } else {
+        resolve_simulation_finished();
+      }
+    }
+
+    window.requestAnimationFrame(frame);
+
+    simulation_finished_promise.then(() => {
+      this.run_button.disabled = false;
+      this.step_counter_input.disabled = false;
+      this.step_period_input.disabled = false;
+      this.import_button.disabled = false;
+    });
   }
 }
