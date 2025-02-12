@@ -80,7 +80,7 @@ function createUniqueID(): number {
 
 function setID(div: DraggableComponentElement): void {
   const v = createUniqueID();
-  div.setAttribute("componentID", v + "");
+  div.componentID = v
   div.id = "component-" + v;
 }
 
