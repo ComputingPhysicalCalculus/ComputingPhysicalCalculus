@@ -8,11 +8,12 @@
     --colour-highlight2: #D48C35;
     --colour-highlight3: #364D1A;
     --text-colour: #F0F0F0;
-    --text-size: 1vw;
-    --text-button-size: 0.8vw;
-    --text-header-size: 2vw;
-    --border-radius: 0.5vw;
-    --gap-size: 0.5vw;
+    --unit: calc(max(1vw, 1vh));
+    --text-size: calc(var(--unit));
+    --text-button-size: calc(0.8 * var(--unit));
+    --text-header-size: calc(2 * var(--unit));
+    --border-radius: calc(0.5 * var(--unit));
+    --gap-size: calc(0.5 * var(--unit));
 
     font-family: monospace;
     color: var(--text-colour);
@@ -81,7 +82,7 @@ html {
     text-align: center;
     font-weight: bold;
     font-size: var(--text-header-size);
-    margin: var(--gap-size) 0;
+    margin: calc(0.5 * var(--unit)) 0;
     text-decoration: underline;
     color: var(--text-colour);
 }
@@ -98,6 +99,10 @@ html {
     padding: var(--gap-size) 0 var(--gap-size) 0;
 }
 
+#configuration>input {
+    font-size: var(--text-button-size);
+}
+
 #configuration>div>button {
     font-size: var(--text-button-size);
     width: 45%;
@@ -105,7 +110,7 @@ html {
 
 #configuration button {
     font-size: var(--text-button-size);
-    margin: 0.25vh 0 0 0;
+    margin: calc(0.25 * var(--unit)) 0 0 0;
 }
 
 integrator-component {

@@ -13,7 +13,7 @@
     font-weight: bold;
     font-size: var(--text-header-size);
     text-decoration: underline;
-    margin: 0.5vw 0;
+    margin: calc(0.5 * var(--unit)) 0;
     color: var(--text-colour);
 }
 
@@ -62,7 +62,6 @@
     -ms-user-select: none;
     pointer-events: none;
 }
-
 
 .component.dragged {
     opacity: 95%;
