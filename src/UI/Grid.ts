@@ -13,10 +13,11 @@ let canStartDragging: boolean = false;
 let screenDragging: boolean = false;
 
 let screenOffset: Vector2;
+let initialDragLocation: Vector2;
 let previousX: number;
 let previousY: number;
 
-const draggingStartLimit: number = 20.;
+const draggingStartLimit: number = 10.;
 const sensitivity: number = 1.0;
 
 function createCell(col: number, row: number): HTMLDivElement {
@@ -47,6 +48,7 @@ export function setupScreenDrag(): void {
 
   document.addEventListener("mousedown", e => {
     if (e.button == 2) {
+      initialDragLocation = new Vector2(e.clientX, e.clientY);
       canStartDragging = true;
     }
   })
@@ -67,6 +69,7 @@ export function setupScreenDrag(): void {
   document.addEventListener("touchstart", e => {
     switch (e.touches.length) {
       case 1:
+        initialDragLocation = new Vector2(e.touches[0].clientX, e.touches[0].clientY);
         canStartDragging = true;
         break;
     }
@@ -120,6 +123,9 @@ function dragScreen(x: number, y: number): void {
   if (!canStartDragging) return;
 
   if (!screenDragging) {
+    let dragDistance = Math.pow(x - initialDragLocation.x, 2.) + Math.pow(y - initialDragLocation.y, 2.);
+    if (dragDistance < Math.pow(draggingStartLimit, 2.)) return;
+
     screenDragging = true;
 
     previousX = x;
