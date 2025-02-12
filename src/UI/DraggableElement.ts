@@ -5,7 +5,7 @@ import { pickup } from "./Drag";
 import Vector2 from "./Vector2.ts"
 
 import styles from "../../styles/DraggableElement.css?inline";
-import { GRID_SIZE, screenToWorldPosition, worldToScreenPosition } from "./Grid";
+import { GRID_SIZE, worldToScreenPosition } from "./Grid";
 import { ComponentType } from "./Components.ts";
 
 @customElement("draggable-component")

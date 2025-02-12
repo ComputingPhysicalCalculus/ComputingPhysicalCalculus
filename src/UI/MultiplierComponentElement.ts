@@ -11,7 +11,7 @@ export class MultiplierComponentElement extends LitElement {
         viewBox="0 0 150 100"
         style="width:100%;height:100%"
       >
-        <rect x="1" y="1" width="148" height="98" fill="none" stroke="black" stroke-width="2" rx=5 />
+        <rect x="1" y="1" width="148" height="98" fill="white" stroke="black" stroke-width="2" rx=5 />
         <circle cx="50" cy="50" r="40" fill="none" stroke="black" stroke-width="2" />
         <line
           x1="${50 - Math.SQRT2 * 40 / 2}"

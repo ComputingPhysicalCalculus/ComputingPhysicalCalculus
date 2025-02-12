@@ -11,7 +11,7 @@ export class DifferentialCopmonentElement extends LitElement {
         viewBox="0 0 50 150"
         style="width:100%;height:100%"
       >
-        <rect x="1" y="1" width="48" height="148" fill="none" stroke="black" stroke-width="2" rx=5 />
+        <rect x="5" y="5" width="40" height="140" fill="white" stroke="black" stroke-width="2" rx=5 />
         <polyline
           fill="none"
           stroke="black"
