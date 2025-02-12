@@ -92,7 +92,6 @@ export function setupScreenDrag(): void {
         break;
     }
   })
-
 }
 
 export function getScreenOffset(): Vector2 {
@@ -101,6 +100,7 @@ export function getScreenOffset(): Vector2 {
 
 export function resetScreenOffset(): void {
   screenOffset = new Vector2(0, 0);
+  updateComponentPositions();
 }
 
 export function screenToWorldPosition(pos: Vector2): Vector2 {
@@ -139,15 +139,20 @@ function dragScreen(x: number, y: number): void {
     screenOffset.x += diffX
     screenOffset.y += diffY;
 
-    let components = document.getElementsByClassName("placed-component");
-    for (let i = 0; i < components.length; i++) {
-      const component = components[i] as DraggableComponentElement;
-      component.renderLeft += diffX;
-      component.renderTop += diffY;
-    }
+    updateComponentPositions();
 
     previousX = x;
     previousY = y;
+  }
+}
+
+function updateComponentPositions(): void {
+  let components = document.getElementsByClassName("placed-component");
+  for (let i = 0; i < components.length; i++) {
+    const component = components[i] as DraggableComponentElement;
+    let componentPos = component.getPosition();
+    component.renderLeft = componentPos.x * GRID_SIZE + screenOffset.x;
+    component.renderTop = componentPos.y * GRID_SIZE + screenOffset.y;
   }
 }
 
