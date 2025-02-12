@@ -73,6 +73,7 @@ export function setupScreenHooks(): void {
     let start_grid_size = GRID_SIZE;
 
     GRID_SIZE += e.deltaY * scroll_sensitivity;
+    GRID_SIZE = Math.min(Math.max(GRID_SIZE, 15), 150);
 
     let scale = GRID_SIZE / start_grid_size;
     offset_x *= scale;

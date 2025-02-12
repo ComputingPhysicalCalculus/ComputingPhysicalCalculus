@@ -1,11 +1,11 @@
-import { css, html, LitElement, unsafeCSS } from "lit";
+import { css, html, LitElement, unsafeCSS, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { pickup } from "./Drag";
 
 import Vector2 from "./Vector2.ts"
 
 import styles from "../../styles/DraggableElement.css?inline";
-import { GRID_SIZE } from "./Grid";
+import { GRID_SIZE, screenToWorldPosition, worldToScreenPosition } from "./Grid";
 import { ComponentType } from "./Components.ts";
 
 @customElement("draggable-component")
@@ -86,7 +86,15 @@ export class DraggableComponentElement extends LitElement {
     return new Vector2(this.renderLeft, this.renderTop);
   }
 
-  updated() {
+  updated(changedProperties: PropertyValues) {
+    if (changedProperties !== undefined) {
+      if (changedProperties.has("top") || changedProperties.has("left")) {
+        let pos = worldToScreenPosition(new Vector2(this.left * GRID_SIZE, this.top * GRID_SIZE));
+        this.renderLeft = pos.x;
+        this.renderTop = pos.y;
+      }
+    }
+
     this.style.width = `${this.width * GRID_SIZE}px`;
     this.style.height = `${this.height * GRID_SIZE}px`;
 

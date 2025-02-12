@@ -4,7 +4,7 @@ import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
 import { openShaftPopup, openGearPopup, openMultiplierPopup, openMotorPopup, openIntegratorPopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
-import { GRID_SIZE } from "./Grid.ts";
+import { GRID_SIZE, screenToWorldPosition } from "./Grid.ts";
 
 export enum ComponentType {
   VShaft,
