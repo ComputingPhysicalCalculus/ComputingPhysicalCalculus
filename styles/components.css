@@ -22,7 +22,7 @@
     background: var(--colour-accent3);
 
     grid-template-rows: auto;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 
     gap: calc(var(--gap-size));
     padding: calc(var(--gap-size) * 1.2);
@@ -81,6 +81,8 @@
 .differential,
 .outputTable,
 .motor,
-.multiplier {
+.multiplier,
+.gearPair,
+.dial {
     z-index: 3;
 }

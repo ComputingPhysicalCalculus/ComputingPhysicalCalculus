@@ -17,10 +17,11 @@ export enum ComponentType {
   Motor,
   Multiplier,
   Label,
+  GearPair,
+  Dial,
 };
 
 let CURRENT_ID: number = 0;
-
 
 export function stringToComponent(componentName: string): ComponentType | null {
   return ComponentType[componentName as keyof typeof ComponentType];
@@ -65,6 +66,12 @@ export function createComponent(component: ComponentType): DraggableComponentEle
       break;
     case ComponentType.Label:
       createLabel(comp);
+      break;
+    case ComponentType.GearPair:
+      createGearPair(comp);
+      break;
+    case ComponentType.Dial:
+      createDial(comp);
       break;
     default:
       console.error("No function defined for component: ", component);
@@ -121,57 +128,6 @@ function createVShaft(div: DraggableComponentElement): void {
   }
 }
 
-function createLabel(div: DraggableComponentElement): void {
-  div.width = 3;
-  div.height = 1;
-  div.componentType = "label";
-  div.shouldLockCells = false;
-
-  div.classList.add("label");
-
-  div.addEventListener("mouseup", openShaftPopup);
-
-  let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
-
-  document.addEventListener("wheel", render_p);
-  render_p();
-
-  type ExportedData = {
-    top: number,
-    left: number,
-    width: number,
-    height: number,
-    align: string,
-    _comment: string,
-  };
-
-  div.export_fn = (_this) => {
-    let p = _this.querySelector("p")!;
-    return {
-      _type: ComponentType.Label,
-      data: {
-        top: _this.top,
-        left: _this.left,
-        height: _this.height,
-        width: _this.width,
-        align: p.style.textAlign,
-        _comment: p.textContent,
-      }
-    };
-  };
-
-  div.import_fn = (_this, data: ExportedData) => {
-    _this.top = data.top;
-    _this.left = data.left;
-    _this.height = data.height;
-    _this.width = data.width;
-
-    let p = _this.querySelector("p")!;
-    p.style.textAlign = data.align;
-    p.textContent = data._comment;
-  };
-}
-
 function createGear(div: DraggableComponentElement): void {
   div.width = 1;
   div.height = 1;
@@ -186,8 +142,7 @@ function createGear(div: DraggableComponentElement): void {
   type ExportedData = {
     top: number,
     left: number,
-    inputRatio: number;
-    outputRatio: number;
+    reversed: boolean;
   };
 
   div.export_fn = (_this) => {
@@ -196,8 +151,7 @@ function createGear(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
-        inputRatio: _this.inputRatio,
-        outputRatio: _this.outputRatio,
+        reversed: _this.outputRatio < 0,
       },
     };
   };
@@ -205,8 +159,7 @@ function createGear(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
-    _this.inputRatio = (!data.inputRatio) ? 1 : data.inputRatio;
-    _this.outputRatio = (!data.outputRatio) ? 1 : data.outputRatio;
+    _this.outputRatio = (!data.reversed) ? 1 : (data.reversed ? -1 : 1);
   };
 }
 
@@ -529,3 +482,123 @@ function createMultiplier(div: DraggableComponentElement): void {
     _this.outputRatio = (!data.factor) ? 1 : data.factor;
   };
 }
+
+function createLabel(div: DraggableComponentElement): void {
+  div.width = 3;
+  div.height = 1;
+  div.componentType = "label";
+  div.shouldLockCells = false;
+
+  div.classList.add("label");
+
+  let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
+
+  document.addEventListener("wheel", render_p);
+  render_p();
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    width: number,
+    height: number,
+    align: string,
+    _comment: string,
+  };
+
+  div.export_fn = (_this) => {
+    let p = _this.querySelector("p")!;
+    return {
+      _type: ComponentType.Label,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        height: _this.height,
+        width: _this.width,
+        align: p.style.textAlign,
+        _comment: p.textContent,
+      }
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+    _this.height = data.height;
+    _this.width = data.width;
+
+    let p = _this.querySelector("p")!;
+    p.style.textAlign = data.align;
+    p.textContent = data._comment;
+  };
+}
+
+function createGearPair(div: DraggableComponentElement): void {
+  div.width = 1;
+  div.height = 2;
+  div.componentType = "gearPair";
+  div.shouldLockCells = true;
+  div.classList.add("gearPair");
+
+  div.addEventListener("mouseup", openGearPopup);
+
+  render(html`<gear-pair-component style="width:100%;height:100%"></gear-pair-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    inputRatio: number;
+    outputRatio: number;
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type: ComponentType.Gear,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        inputRatio: _this.inputRatio,
+        outputRatio: _this.outputRatio,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+    _this.inputRatio = (!data.inputRatio) ? 1 : data.inputRatio;
+    _this.outputRatio = (!data.outputRatio) ? 1 : data.outputRatio;
+  };
+}
+
+function createDial(div: DraggableComponentElement): void {
+  div.width = 2;
+  div.height = 1;
+  div.componentType = "dial";
+  div.shouldLockCells = true;
+  div.classList.add("dial");
+
+  // div.addEventListener("mouseup", openGearPopup);
+
+  render(html`<dial-component style="width:100%;height:100%"></dial-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type: ComponentType.Gear,
+      data: {
+        top: _this.top,
+        left: _this.left,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+  };
+}
+
