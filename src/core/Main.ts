@@ -12,17 +12,32 @@ import { Motor } from "./Motor";
 import { Multiplier } from "./Multiplier";
 import { OutputTable } from "./OutputTable";
 import { Shaft } from "./Shaft";
-import { EXAMPLE_CONFIG } from "../examples";
 import { Config } from "../config";
-import { Gear } from "./Gear.js";
 
 export class Simulator {
     shafts: Shaft[] = [];
     motor: Motor | undefined;
     outputTables: OutputTable[] = [];
     components: Device[] = [];
+    private rotation: number = 1; // rotation of the motor
+    private initial_x_position: number = 0; // initial x position of the function table
+    private initialY1: number = 0; // initial y1 position of the output table
+    private initialY2: number = 0; // initial y2 position of the output table
+    private inputFunction: (n: number) => number = Math.sin;
 
-    constructor(config?: Config) {
+    constructor(
+        config?: Config,
+        rotation: number = 1,
+        initial_x_position: number = 0,
+        initialY1: number = 0,
+        initialY2: number = 0,
+        inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
+    ) {
+        this.rotation = rotation;
+        this.initial_x_position = initial_x_position;
+        this.initialY1 = initialY1;
+        this.initialY2 = initialY2;
+        this.inputFunction = inputFunction;
         if (config !== undefined)
             this.parse_config(config);
     }
@@ -87,12 +102,6 @@ export class Simulator {
         let outputTables = [];
         let motor = undefined;
 
-        const rotation: number = 1; // rotation of the motor
-        const initial_x_position: number = 0; // initial x position of the function table
-        const initialY1: number = 0; // initial y1 position of the output table
-        const initialY2: number = 0; // initial y2 position of the output table
-        const inputFunction: (n: number) => number = Math.sin;
-
         // create the shafts
         for (const shaft of config.shafts) {
             shafts.push(new Shaft(shaft.id, []));
@@ -110,7 +119,6 @@ export class Simulator {
                     );
                     shafts[component.inputShaft1].outputs.push(new_component);
                     shafts[component.inputShaft2].outputs.push(new_component);
-                    shafts[component.outputShaft].outputs.push(new_component);
                     components.push(new_component);
                     break;
 
@@ -151,8 +159,8 @@ export class Simulator {
                     new_component = new FunctionTable(
                         shafts[component.inputShaft],
                         shafts[component.outputShaft],
-                        initial_x_position,
-                        inputFunction // TODO: hardcoded for now to test the engine
+                        this.initial_x_position,
+                        this.inputFunction // TODO: hardcoded for now to test the engine
                     );
                     shafts[component.inputShaft].outputs.push(new_component);
                     components.push(new_component);
@@ -162,7 +170,7 @@ export class Simulator {
                     if (this.motor)
                         throw new Error('Only one motor is allowed.');
                     motor = new Motor(
-                        rotation,
+                        this.rotation,
                         shafts[component.outputShaft]
                     );
                     components.push(motor);
@@ -170,19 +178,19 @@ export class Simulator {
 
                 case 'outputTable':
                     let outputTable: OutputTable;
-                    if (component.outputShaft2 && initialY2) {
+                    if (component.outputShaft2 && this.initialY2) {
                         outputTable = new OutputTable(
                             shafts[component.inputShaft],
                             shafts[component.outputShaft1],
-                            initialY1,
+                            this.initialY1,
                             shafts[component.outputShaft2],
-                            initialY2
+                            this.initialY2
                         );
                     } else {
                         outputTable = new OutputTable(
                             shafts[component.inputShaft],
                             shafts[component.outputShaft1],
-                            initialY1,
+                            this.initialY1,
                         );
                     }
 
