@@ -218,7 +218,8 @@
         2,
         1
       ],
-      "reversed": false
+      "reversed": false,
+      "outputShaft": -1
     },
     {
       "type": "differential",
@@ -226,7 +227,10 @@
       "position": [
         5,
         4
-      ]
+      ],
+      "diffShaft1": 56,
+      "sumShaft": 57,
+      "diffShaft2": 58
     },
     {
       "type": "integrator",
@@ -234,7 +238,10 @@
       "position": [
         6,
         8
-      ]
+      ],
+      "outputShaft": 61,
+      "variableOfIntegrationShaft": 60,
+      "integrandShaft": 59
     },
     {
       "type": "integrator",
@@ -242,7 +249,10 @@
       "position": [
         13,
         8
-      ]
+      ],
+      "outputShaft": 64,
+      "variableOfIntegrationShaft": 65,
+      "integrandShaft": 66
     },
     {
       "type": "multiplier",
@@ -251,19 +261,23 @@
         21,
         8
       ],
-      "factor": 1
+      "factor": 1,
+      "inputShaft": 68,
+      "outputShaft": 69
     },
     {
       "type": "functionTable",
       "compID": 32,
       "position": [
-        9,
+        10,
         -4
       ],
       "x_min": 0,
       "x_max": 10,
       "y_min": -1.5,
-      "y_max": 1.5
+      "y_max": 1.5,
+      "inputShaft": 62,
+      "outputShaft": 63
     },
     {
       "type": "outputTable",
@@ -275,7 +289,10 @@
       "x_min": 0,
       "x_max": 10,
       "y_min": -1.5,
-      "y_max": 1.5
+      "y_max": 1.5,
+      "inputShaft": 70,
+      "outputShaft1": 67,
+      "outputShaft2": 71
     },
     {
       "type": "gear",
@@ -284,7 +301,9 @@
         9,
         5
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 59,
+      "horizontal": 57
     },
     {
       "type": "gear",
@@ -293,7 +312,9 @@
         8,
         1
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 60,
+      "horizontal": 53
     },
     {
       "type": "gear",
@@ -302,7 +323,9 @@
         7,
         3
       ],
-      "reversed": true
+      "reversed": true,
+      "vertical": 61,
+      "horizontal": 55
     },
     {
       "type": "gear",
@@ -311,7 +334,9 @@
         11,
         4
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 63,
+      "horizontal": 56
     },
     {
       "type": "gear",
@@ -320,7 +345,9 @@
         12,
         3
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 62,
+      "horizontal": 55
     },
     {
       "type": "gear",
@@ -329,7 +356,9 @@
         14,
         2
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 64,
+      "horizontal": 54
     },
     {
       "type": "gear",
@@ -338,7 +367,9 @@
         15,
         1
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 65,
+      "horizontal": 53
     },
     {
       "type": "gear",
@@ -347,7 +378,9 @@
         16,
         3
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 66,
+      "horizontal": 55
     },
     {
       "type": "gear",
@@ -356,7 +389,9 @@
         19,
         1
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 70,
+      "horizontal": 53
     },
     {
       "type": "gear",
@@ -365,7 +400,9 @@
         20,
         2
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 67,
+      "horizontal": 54
     },
     {
       "type": "gear",
@@ -374,7 +411,9 @@
         18,
         3
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 71,
+      "horizontal": 55
     },
     {
       "type": "gear",
@@ -383,7 +422,9 @@
         22,
         6
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 69,
+      "horizontal": 58
     },
     {
       "type": "gear",
@@ -392,7 +433,9 @@
         23,
         2
       ],
-      "reversed": false
+      "reversed": false,
+      "vertical": 68,
+      "horizontal": 54
     },
     {
       "type": "label",

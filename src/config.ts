@@ -32,9 +32,9 @@ export type IntegratorConfig = {
 export type DifferentialConfig = {
   type: "differential";
   compID: number;
-  inputShaft1: ShaftID;
-  inputShaft2: ShaftID;
-  outputShaft: ShaftID;
+  diffShaft1: ShaftID;
+  diffShaft2: ShaftID;
+  sumShaft: ShaftID;
   position: [number, number];
 };
 
@@ -95,6 +95,8 @@ export type GearPairConfig = {
   position: [number, number];
   inputRatio: number;
   outputRatio: number;
+  shaft1: number;
+  shaft2: number;
 };
 
 export type DialConfig = {

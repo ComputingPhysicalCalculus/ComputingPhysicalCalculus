@@ -112,12 +112,12 @@ export class Simulator {
             switch (component.type) {
                 case 'differential':
                     new_component = new Differential(
-                        shafts[component.inputShaft1],
-                        shafts[component.inputShaft2],
-                        shafts[component.outputShaft]
+                        shafts[component.diffShaft1],
+                        shafts[component.diffShaft2],
+                        shafts[component.sumShaft]
                     );
-                    shafts[component.inputShaft1].outputs.push(new_component);
-                    shafts[component.inputShaft2].outputs.push(new_component);
+                    shafts[component.diffShaft1].outputs.push(new_component);
+                    shafts[component.diffShaft2].outputs.push(new_component);
                     components.push(new_component);
                     break;
 
