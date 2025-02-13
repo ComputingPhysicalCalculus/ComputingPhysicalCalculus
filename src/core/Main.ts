@@ -1,7 +1,7 @@
 /**
  * @file Main.ts
  * @description This file contains functions to simulate the differential analyzer
- * @author Andy Zhu, Hanzhang Shen
+ * @author Simon Solca, Andy Zhu, Hanzhang Shen
  */
 
 import { Device } from "./Device";
@@ -23,8 +23,10 @@ export class Simulator {
     components: Device[] = [];
 
     constructor(config ? : Config) {
-        if (config !== undefined)
+        if (config !== undefined){
             this.parse_config(config);
+            this.setup();
+        }
     }
 
     /**
@@ -33,18 +35,20 @@ export class Simulator {
      * @return void
      * @author Andy Zhu
      */
-    simulate_one_cycle(): void {
+    setup(): void {
         if (this.motor === undefined) {
             throw new Error("The configuration must have at least one motor");
         }
-        let stack: Shaft[] = [this.motor.getOutput()];
+        let stack: Shaft[] = [this.motor.determine_output()];
         let visited: Set<number> = new Set<number>();
         visited.add(stack[0].id);
         while (stack.length > 0) {
             let shaft = stack.pop()!;
-            for (const device of shaft.outputs) {
-                let output = device.getOutput();
-                if (!output) continue;
+            shaft.ready_flag = true;
+            for (let device of shaft.outputs) {
+                let output = device.determine_output();
+                if (output === undefined) continue;
+                // device.update()
                 if (!visited.has(output.id)) {
                     stack.push(output);
                     visited.add(output.id);
@@ -53,24 +57,20 @@ export class Simulator {
         }
     }
 
-    /**
-     * @function update
-     * @description update the value of all shafts and call addPlot on all outputTable
-     * @return void
-     * @author Andy Zhu
-     */
-    update(): void {
+    step(){
+        // update motor - effectively set independant shaft
+        // to be the motors speed
+        this.motor!.update();
+
+        // update the components 
+        for (const device of this.components){
+            device.update();
+        }
+
+        // update the shafts
         for (const shaft of this.shafts) {
             shaft.update();
         }
-        for (const outputTable of this.outputTables) {
-            outputTable.addPlot();
-        }
-    }
-
-    step() {
-        this.simulate_one_cycle();
-        this.update();
     }
 
     /**

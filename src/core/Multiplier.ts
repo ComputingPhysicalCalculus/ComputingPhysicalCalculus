@@ -1,7 +1,7 @@
 /**
  * @file Multiplier.ts
  * @description This file contains the definition of the Multiplier class.
- * @author Andy Zhu
+ * @author Simon Solca, Andy Zhu
  */
 
 import { Device } from "./Device";
@@ -35,16 +35,18 @@ export class Multiplier implements Device {
      * @method getOutput
      * @description This method calculates the nextRotation of output shaft
      * @returns The output shaft that represents the output of the Multiplier
-     */
-    getOutput(): Shaft | undefined {
-        if(this.output.resultReady) {
-            return this.output;
-        } else if(!this.input.resultReady) {
-            return undefined;
-        } else {
-            this.output.nextRotation = this.input.nextRotation * this.factor;
-            this.output.resultReady = true;
-        }
+    */
+
+    determine_output(): Shaft | undefined {
         return this.output;
+    }
+
+    /**
+     * @method update
+     * @description This method directly updates the rotation rate of its output
+     * to be factor * (input's rotation rate)
+    */
+    update(): void {
+        this.output.set_rotation_rate(this.input.get_rotation_rate() * this.factor);
     }
 }

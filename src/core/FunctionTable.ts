@@ -1,7 +1,7 @@
 /**
  * @file FunctionTable.ts
  * @description This file contains the definition of the FunctionTable class.
- * @author Andy Zhu
+ * @author Simon Solca, Andy Zhu
  */
 
 import { Device } from "./Device";
@@ -15,6 +15,7 @@ import { Shaft } from "./Shaft";
 export class FunctionTable implements Device {
     private output: Shaft;
     private x_position: number;
+    private f_n: number;
     private fun: (n: number) => number;
     private input: Shaft;
 
@@ -31,6 +32,7 @@ export class FunctionTable implements Device {
         this.output = output;
         this.fun = fun;
         this.x_position = initial_x_position;
+        this.f_n = fun(initial_x_position);
     }
 
     /**
@@ -38,15 +40,24 @@ export class FunctionTable implements Device {
      * @description This method calculates the nextRotation of output shaft
      * @returns The output shaft that represents the output of the FunctionTable
      */
-    getOutput(): Shaft | undefined {
-        if(!this.input.resultReady) {
-            return undefined;
-        }
-        if(!this.output.resultReady) {
-            this.x_position += this.input.nextRotation;
-            this.output.resultReady = true;
-            this.output.nextRotation = this.fun(this.x_position) - this.fun(this.x_position - this.input.nextRotation);
-        }
+    determine_output(): Shaft | undefined {
         return this.output;
+    }
+
+
+    /**
+     * @method update
+     * @description This method directly updates the rotation rate of its output
+     * as the change in the functions value
+    */
+    update(){
+        // calculate new x position and new f(x) position
+        this.x_position += this.input.get_rotation_rate();
+        let f_np1 = this.fun(this.x_position);
+
+        // set the rotation of the output to be Delta f(x)
+        this.output.set_rotation_rate(f_np1 - this.f_n);
+        // update the current f(x) value
+        this.f_n = f_np1;
     }
 }

@@ -1,7 +1,7 @@
 /**
  * @file OutputTable.ts
  * @description This file contains the definition of the OutputTable class.
- * @author Andy Zhu
+ * @author Simon Solca, Andy Zhu
  */
 
 import { Shaft } from "./Shaft";
@@ -33,7 +33,7 @@ export class OutputTable implements Device {
      */
     constructor(x: Shaft, y1: Shaft, initialY1: number, y2?: Shaft, initialY2?: number) {
         this.x = x;
-        this.xHistory = [x.currentRotation];
+        this.xHistory = [x.get_rotation_rate()];
         this.y1 = y1;
         this.y1History = [initialY1];
         if(y2 != undefined && initialY2 != undefined) {
@@ -47,32 +47,29 @@ export class OutputTable implements Device {
      * @description This method is here to solve inheritiance issues
      * @returns undefined
      */
-    getOutput(): Shaft | undefined {
+    determine_output(): Shaft | undefined {
         return undefined;
     }
 
     /**
-     * @method addPlot
+     * @method update
      * @description Add the current position to history array for UI
-     * @returns void
      */
-    addPlot(): void {
-        // console.log(this.xHistory.length);
-
+    update(): void {
         // push the new x value on
         let x_length = this.xHistory.length;
-        let new_x = this.xHistory[x_length - 1] + this.x.currentRotation;
+        let new_x = this.xHistory[x_length - 1] + this.x.get_rotation_rate();
         this.xHistory.push(new_x);
 
         // push the new y value on
         let y1_length = this.y1History.length;
-        let new_y1 = this.y1History[y1_length - 1] + this.y1.currentRotation;
+        let new_y1 = this.y1History[y1_length - 1] + this.y1.get_rotation_rate();
         this.y1History.push(new_y1);
 
         // check if y2 exists and push if needed
         if(this.y2 != undefined && this.y2History != undefined) {
             let y2_length = this.y2History.length;
-            let new_y2 = this.y2History[y2_length - 1] + this.y2.currentRotation;
+            let new_y2 = this.y2History[y2_length - 1] + this.y2.get_rotation_rate();
             this.y2History.push(new_y2);
         }
     }

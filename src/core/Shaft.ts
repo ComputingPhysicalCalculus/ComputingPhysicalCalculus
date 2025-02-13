@@ -1,7 +1,7 @@
 /**
  * @file Shaft.ts
  * @description This file contains the definition of the Shaft class.
- * @author Andy Zhu
+ * @author Simon Solca, Andy Zhu
  */
 
 import { Device } from "./Device";
@@ -11,11 +11,12 @@ import { Device } from "./Device";
  * @description the Shaft class which simulates the Shafts in differential analyzer
  */
 export class Shaft {
-    currentRotation: number;
-    nextRotation: number;
-    resultReady: boolean;
+    private rotation_rate: number;
+    rotation: number;
     outputs: Device[];
     id: number;
+    // used in the setup of the sim only
+    ready_flag: boolean = false;
 
     /**
      * @constructor
@@ -23,20 +24,27 @@ export class Shaft {
      * @param outputs An array of Devices the shaft output to
      */
     constructor(id: number, outputs: Device[]) {
-        this.currentRotation = 0;
-        this.nextRotation = 0;
-        this.resultReady = false;
+        this.rotation_rate = 0;
+        this.rotation = 0;
         this.outputs = outputs;
         this.id = id;
     }
 
     /**
      * @method update
-     * @description This method updates the currentRotation with nextRotation and sets resultReady to false
-     * @returns void
-     */
+     * @description adds the rotation rate to the current rotation
+    */
     update(): void {
-        this.currentRotation = this.nextRotation;
-        this.resultReady = false;
+        this.rotation += this.rotation_rate;
+    }
+
+
+    
+    set_rotation_rate(rate: number): void{
+        this.rotation_rate = rate;
+    }
+
+    get_rotation_rate(): number{
+        return this.rotation_rate;
     }
 }

@@ -50,3 +50,13 @@ export function PPMC(x: number[], y: number[]){
     }
     return numerator / Math.sqrt(denominator_lhs * denominator_rhs);
 }
+
+export function MSE(x: number[], y: number[]){
+    let n = x.length;
+    let sum = 0;
+    for (let i = 0; i < n; i++){
+        let d = (y[i] - x[i]);
+        sum += d * d;
+    }
+    return sum / n;
+}
