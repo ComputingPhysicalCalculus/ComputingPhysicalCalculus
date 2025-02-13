@@ -1,11 +1,8 @@
-UI:
-    - Add remaining components
-    - Add correct context menus to components that need them
-    - Render components in list
-    - Create components list for CORE
-    FUTURE:
-    - Connect horizontal shafts
-    - Loading from JSON
-    - Offsetting vertical shafts to align with components
+List of examples
+Saving settings to config file
+Sound
 
-    - 3D
+Graph: Xmin-max YMin-max
+Add Labels to component list
+
+Calculate Shaft ID for components for I/O

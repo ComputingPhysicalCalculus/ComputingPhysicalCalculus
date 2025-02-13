@@ -20,15 +20,51 @@
             <div id="components-area">
                 <p>Components List</p>
                 <div id="components-list">
-                    <div data-type="VShaft" class="component">V</div>
-                    <div data-type="HShaft" class="component">H</div>
-                    <div data-type="Gear" class="component">G</div>
-                    <div data-type="Integrator" class="component">I</div>
-                    <div data-type="FunctionTable" class="component">F</div>
-                    <div data-type="Differential" class="component">D</div>
-                    <div data-type="OutputTable" class="component">O</div>
-                    <div data-type="Motor" class="component">Mo</div>
-                    <div data-type="Multiplier" class="component">M</div>
+                    <div data-type="VShaft" class="component">
+                        <div>Vertical</div>
+                        <img src="icons/Line.svg" alt="Gear" style="rotate: 90deg"/>
+                    </div>
+
+                    <div data-type="HShaft" class="component">
+                        <div>Horizontal</div>
+                        <img src="icons/Line.svg" alt="Gear"/>
+                    </div>
+
+                    <div data-type="Gear" class="component">
+                        <div>Gear</div>
+                        <img src="icons/Gear.svg" alt="Gear"/>
+                    </div>
+
+                    <div data-type="Integrator" class="component">
+                        <div>Integrator</div>
+                        <img src="icons/Integrator.svg" alt="Gear"/>
+                    </div>
+
+                    <div data-type="FunctionTable" class="component">
+                        <div>Func. Table</div>
+                        <img src="icons/FunctionTable.svg" alt="Gear"/>
+                    </div>
+
+                    <div data-type="Differential" class="component">
+                        <div>Differential</div>
+                        <img src="icons/Differential.svg" alt="Gear"/>
+                    </div>
+
+                    <div data-type="OutputTable" class="component">
+                        <div>Out. Table</div>
+
+                        <img src="icons/OutputTable.svg" alt="Gear"/>
+                    </div>
+
+                    <div data-type="Motor" class="component">
+                        <div>Motor</div>
+                        <img src="icons/Motor.svg" alt="Gear"/>
+                    </div>
+
+                    <div data-type="Multiplier" class="component">
+                        <div>Multiplier</div>
+                        <img src="icons/Multiplier.svg" alt="Gear"/>
+                    </div>
                 </div>
             </div>
 
@@ -43,12 +79,18 @@
                     <button id="clear-button">Clear</button>
                 </div>
 
-                <label for="simulation-step-counter">Steps</label>
-                <input id="simulation-step-counter" type="number" value="0"/>
-
                 <label for="simulation-step-period">Step period</label>
                 <input id="simulation-step-period" type="number" value="0.05"/>
-                <button id="run-simulation">Run</button>
+
+                <div>
+                    <button id="run-button">Run</button>
+                    <button id="stop-button" hidden>Stop</button>
+                    <button id="pause-button" hidden>Pause</button>
+                    <button id="unpause-button" hidden>Unpause</button>
+                </div>
+
+                <label for="motor-speed">Motor speed</label>
+                <input id="motor-speed" type="range" min="0.0" max="0.1" step="0.001" value="0.1" />
             </div>
         </div>
 
@@ -79,6 +121,16 @@
             <div class="popup" id="multiplier-popup" position="absolute" >
                 <label>Factor</label>
                 <input id="multiplier-input-factor" type="number" min="1" value="1">
+            </div>
+
+            <div class="popup" id="motor-popup" position="absolute" >
+                <label>Reverse</label>
+                <input id="motor-reverse" type="checkbox">
+            </div>
+
+            <div class="popup" id="integrator-popup" position="absolute" >
+                <label>Initial offset</label>
+                <input id="integrator-initial-offset" type="number" value="0">
             </div>
         </div>
     </div>

@@ -8,21 +8,16 @@
     --colour-highlight2: #D48C35;
     --colour-highlight3: #364D1A;
     --text-colour: #F0F0F0;
-    --text-size: 1vw;
-    --text-button-size: 0.8vw;
-    --text-header-size: 2vw;
+    --unit: calc(max(1vw, 1vh));
+    --text-size: calc(var(--unit));
+    --text-button-size: calc(0.8 * var(--unit));
+    --text-header-size: calc(2 * var(--unit));
+    --border-radius: calc(0.5 * var(--unit));
+    --gap-size: calc(0.5 * var(--unit));
 
     font-family: monospace;
     color: var(--text-colour);
     background: var(--colour-background);
-}
-
-.center {
-    width: 50%;
-    border: 3px solid green;
-    padding: 10px;
-    margin: auto;
-    text-align: center;
 }
 
 body,
@@ -44,8 +39,8 @@ html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-
     background: var(--colour-background);
+    user-select: none;
 }
 
 #machine {
@@ -60,80 +55,26 @@ html {
     display: flex;
     flex-direction: column;
 
-    resize: horizontal;
     width: 30vw;
     height: 100%;
     overflow: hidden;
 
     background: var(--colour-accent1);
-    border-radius: 5px;
 
-    padding: 15px;
+    padding: var(--gap-size);
     box-sizing: border-box;
-    gap: 20px;
+    gap: var(--gap-size);
 
     z-index: 6;
-}
-
-#components-area {
-    display: flex;
-    flex-direction: column;
-    background: var(--colour-accent2);
-
-    padding: 10px;
-    border-radius: 5px;
-}
-
-#components-area p {
-    display: block;
-    text-align: center;
-    font-weight: bold;
-    font-size: var(--text-header-size);
-    text-decoration: underline;
-    margin: 10px 0;
-    color: var(--text-colour);
-}
-
-#components-list {
-    display: grid;
-    background: var(--colour-highlight1);
-
-    grid-template-rows: auto;
-    grid-template-columns: 1fr 1fr 1fr;
-
-    gap: 7px;
-
-    grid-column-start: 1;
-    grid-column-end: 3;
-
-    border-radius: 5px;
-    max-width: 100%;
-    overflow: none;
-    padding: 7px;
-    max-height: 100%;
-}
-
-.component {
-    background: var(--colour-accent2);
-    border-radius: 5px;
-    position: relative;
-    aspect-ratio: 1;
-    height: 100%;
-
-    font-size: var(--text-size);
-    font-weight: bold;
-    text-align: center;
-    justify-content: center;
-    user-select: none;
 }
 
 #configuration {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: var(--gap-size);
+    padding: var(--gap-size);
     background: var(--colour-accent2);
-    padding: 10px;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     font-size: var(--text-size);
 }
 
@@ -142,7 +83,7 @@ html {
     text-align: center;
     font-weight: bold;
     font-size: var(--text-header-size);
-    margin: 10px 0;
+    margin: calc(0.5 * var(--unit)) 0;
     text-decoration: underline;
     color: var(--text-colour);
 }
@@ -156,7 +97,11 @@ html {
     flex-direction: row;
     justify-content: center;
     gap: 10%;
-    padding: 5px 0 5px 0;
+    padding: var(--gap-size) 0 var(--gap-size) 0;
+}
+
+#configuration>input {
+    font-size: var(--text-button-size);
 }
 
 #configuration>div>button {
@@ -164,9 +109,9 @@ html {
     width: 45%;
 }
 
-#configuration>button {
+#configuration button {
     font-size: var(--text-button-size);
-    margin: 5px 0 0 0;
+    margin: calc(0.25 * var(--unit)) 0 0 0;
 }
 
 integrator-component {

@@ -1,6 +1,7 @@
+import { DraggableComponentElement } from "./DraggableElement";
 import Vector2 from "./Vector2";
 
-export const GRID_SIZE: number = 50;
+export let GRID_SIZE: number = 50;
 
 const HIGHLIGHT_CELL: string = "highlighted-cell";
 
@@ -8,14 +9,27 @@ const HIGHLIGHT_CELL: string = "highlighted-cell";
 let lockedCells: Set<string> = new Set<string>;
 let currentCells: Map<string, HTMLDivElement> = new Map<string, HTMLDivElement>;
 
+let canStartDragging: boolean = false;
+let screenDragging: boolean = false;
+
+let screenOffset: Vector2;
+let initialDragLocation: Vector2;
+let previousX: number;
+let previousY: number;
+
+const draggingStartLimit: number = 10.;
+const sensitivity: number = 2.0;
+const scroll_sensitivity: number = 0.01;
+
 function createCell(col: number, row: number): HTMLDivElement {
   const comp = document.createElement("div");
 
   comp.classList.add("grid-cell");
   comp.id = new Vector2(col, row).toString();
 
-  comp.style.left = (col * GRID_SIZE) + "px";
-  comp.style.top = (row * GRID_SIZE) + "px";
+  let top_left = worldToScreenPosition(new Vector2(col * GRID_SIZE, row * GRID_SIZE));
+  comp.style.left = top_left.x + "px";
+  comp.style.top = top_left.y + "px";
 
   comp.style.width = GRID_SIZE + "px";
   comp.style.aspectRatio = "1";
@@ -25,6 +39,148 @@ function createCell(col: number, row: number): HTMLDivElement {
   comp.dataset.filled = "0";
 
   return comp;
+}
+
+export function setupScreenHooks(): void {
+  document.addEventListener("contextmenu", e => {
+    // Disable screen wide context menu
+    e.preventDefault();
+  })
+
+  document.addEventListener("mousedown", e => {
+    if (e.button == 2) {
+      initialDragLocation = new Vector2(e.clientX, e.clientY);
+      canStartDragging = true;
+    }
+  })
+
+  document.addEventListener("mouseup", e => {
+    if (e.button == 2) {
+      canStartDragging = false;
+      screenDragging = false;
+    }
+  })
+
+  screenOffset = new Vector2(0, 0);
+
+  document.addEventListener("mousemove", e => {
+    dragScreen(e.clientX, e.clientY);
+  });
+
+  document.addEventListener("wheel", e => {
+    let offset_x = e.clientX - screenOffset.x;
+    let offset_y = e.clientY - screenOffset.y;
+    let start_grid_size = GRID_SIZE;
+
+    GRID_SIZE -= e.deltaY * scroll_sensitivity;
+    GRID_SIZE = Math.min(Math.max(GRID_SIZE, 15), 150);
+
+    let scale = GRID_SIZE / start_grid_size;
+    offset_x *= scale;
+    offset_y *= scale;
+
+    setScreenOffset(new Vector2(e.clientX - offset_x, e.clientY - offset_y));
+  })
+
+  document.addEventListener("touchstart", e => {
+    switch (e.touches.length) {
+      case 1:
+        initialDragLocation = new Vector2(e.touches[0].clientX, e.touches[0].clientY);
+        canStartDragging = true;
+        break;
+      case 2:
+        break;
+    }
+  })
+
+  document.addEventListener("touchmove", e => {
+    switch (e.touches.length) {
+      case 1: // Move
+        dragScreen(e.touches[0].clientX, e.touches[0].clientY);
+        e.preventDefault();
+        break;
+      case 2: // Resize
+        console.log(e.changedTouches);
+        e.preventDefault();
+        break;
+    }
+  }, { passive: false });
+
+  document.addEventListener("touchend", e => {
+    switch (e.touches.length) {
+      case 0:
+        canStartDragging = false;
+        screenDragging = false;
+        break;
+    }
+  })
+}
+
+export function getScreenOffset(): Vector2 {
+  return screenOffset;
+}
+
+export function resetScreenOffset(): void {
+  screenOffset = new Vector2(0, 0);
+  updateComponentPositions();
+}
+
+export function setScreenOffset(v: Vector2): void {
+  screenOffset = v;
+  updateComponentPositions();
+}
+
+export function screenToWorldPosition(pos: Vector2): Vector2 {
+  let ret = new Vector2(0, 0);
+  ret.x = pos.x - screenOffset.x;
+  ret.y = pos.y - screenOffset.y;
+
+  return ret;
+}
+
+export function worldToScreenPosition(pos: Vector2): Vector2 {
+  let ret = new Vector2(0, 0);
+  ret.x = pos.x + screenOffset.x;
+  ret.y = pos.y + screenOffset.y;
+
+  return ret;
+}
+
+function dragScreen(x: number, y: number): void {
+  if (!canStartDragging) return;
+
+  if (!screenDragging) {
+    let dragDistance = Math.pow(x - initialDragLocation.x, 2.) + Math.pow(y - initialDragLocation.y, 2.);
+    if (dragDistance < Math.pow(draggingStartLimit, 2.)) return;
+
+    screenDragging = true;
+
+    previousX = x;
+    previousY = y;
+  }
+
+  if (screenDragging) {
+    let diffX = (x - previousX) * sensitivity;
+    let diffY = (y - previousY) * sensitivity;
+
+    screenOffset.x += diffX
+    screenOffset.y += diffY;
+
+    updateComponentPositions();
+
+    previousX = x;
+    previousY = y;
+  }
+}
+
+function updateComponentPositions(): void {
+  let components = document.getElementsByClassName("placed-component");
+  for (let i = 0; i < components.length; i++) {
+    const component = components[i] as DraggableComponentElement;
+    let componentPos = component.getPosition();
+    component.renderLeft = componentPos.x * GRID_SIZE + screenOffset.x;
+    component.renderTop = componentPos.y * GRID_SIZE + screenOffset.y;
+  }
 }
 
 function mapCells(topLeft: Vector2, size: Vector2, func: (e: Vector2) => void): void {
@@ -37,11 +193,13 @@ function mapCells(topLeft: Vector2, size: Vector2, func: (e: Vector2) => void): 
   }
 }
 
+export function currentlyDragging() { return screenDragging; }
+
 export function allValid(topLeft: Vector2, size: Vector2): boolean {
 
   let valid: boolean = true;
   const func = (pos: Vector2) => {
-    if (lockedCells.has(pos.toString())) {
+    if (lockedCells.has(JSON.stringify(pos))) {
       valid = false;
     }
   }
@@ -53,7 +211,7 @@ export function allValid(topLeft: Vector2, size: Vector2): boolean {
 
 export function setCells(topLeft: Vector2, size: Vector2, fill: boolean): void {
   const func = (pos: Vector2) => {
-    const posStr = pos.toString();
+    const posStr = JSON.stringify(pos);
     if (fill) {
       if (!lockedCells.has(posStr)) {
         lockedCells.add(posStr);
@@ -70,7 +228,7 @@ export function setCells(topLeft: Vector2, size: Vector2, fill: boolean): void {
 
 export function highlightHoveredCells(topLeft: Vector2, size: Vector2, highlight: boolean): void {
   mapCells(topLeft, size, (pos: Vector2) => {
-    const posStr = pos.toString();
+    const posStr = JSON.stringify(pos);
     if (highlight) {
       const cell = createCell(pos.x, pos.y);
       cell.classList.add(HIGHLIGHT_CELL);

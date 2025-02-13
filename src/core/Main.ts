@@ -4,28 +4,42 @@
  * @author Andy Zhu, Hanzhang Shen
  */
 
-import { Device } from "./Device.js";
-import { Differential } from "./Differential.js";
-import { FunctionTable } from "./FunctionTable.js";
-import { Integrator } from "./Integrator.js";
-import { Motor } from "./Motor.js";
-import { Multiplier } from "./Multiplier.js";
-import { OutputTable } from "./OutputTable.js";
-import { Shaft } from "./Shaft.js";
-// import config from "../../ExampleConfig.json";
-import { Config } from "../config.js";
+import { Device } from "./Device";
+import { Differential } from "./Differential";
+import { FunctionTable } from "./FunctionTable";
+import { Integrator } from "./Integrator";
+import { Motor } from "./Motor";
+import { Multiplier } from "./Multiplier";
+import { OutputTable } from "./OutputTable";
+import { Shaft } from "./Shaft";
+import { Config } from "../config";
 
 export class Simulator {
     shafts: Shaft[] = [];
-    motor: Motor;
+    motor: Motor | undefined;
     outputTables: OutputTable[] = [];
     components: Device[] = [];
+    private rotation: number = 1; // rotation of the motor
+    private initial_x_position: number = 0; // initial x position of the function table
+    private initialY1: number = 0; // initial y1 position of the output table
+    private initialY2: number = 0; // initial y2 position of the output table
+    private inputFunction: (n: number) => number = Math.sin;
 
-    constructor(shafts: Shaft[], motor: Motor, outputTables: OutputTable[], components: Device[]) {
-        this.shafts = shafts;
-        this.motor = motor;
-        this.outputTables = outputTables;
-        this.components = components;
+    constructor(
+        config?: Config,
+        rotation: number = 1,
+        initial_x_position: number = 0,
+        initialY1: number = 0,
+        initialY2: number = 0,
+        inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
+    ) {
+        this.rotation = rotation;
+        this.initial_x_position = initial_x_position;
+        this.initialY1 = initialY1;
+        this.initialY2 = initialY2;
+        this.inputFunction = inputFunction;
+        if (config !== undefined)
+            this.parse_config(config);
     }
 
     /**
@@ -35,6 +49,9 @@ export class Simulator {
      * @author Andy Zhu
      */
     simulate_one_cycle(): void {
+        if (this.motor === undefined) {
+            throw new Error("The configuration must have at least one motor");
+        }
         let stack: Shaft[] = [this.motor.getOutput()];
         let visited: Set<number> = new Set<number>();
         visited.add(stack[0].id);
@@ -71,21 +88,6 @@ export class Simulator {
         this.update();
     }
 
-    // /**
-    //  * @function init
-    //  * @description used to pass in global variable from UI
-    //  * @param shafts list of shafts we are working with
-    //  * @param motor the motor object from UI
-    //  * @param outputTables list of outputTable from UI
-    //  * @return void
-    //  * @author Andy Zhu
-    //  */
-    // init(shafts: Shaft[], motor: Motor, outputTables: OutputTable[]): void {
-    //     (globalThis as any).shafts = shafts;
-    //     (globalThis as any).motor = motor;
-    //     (globalThis as any).outputTables = outputTables;
-    // }
-
     /**
      * @function parse_config
      * @description parse the config file and create the corresponding shafts and devices
@@ -93,16 +95,12 @@ export class Simulator {
      * @return void
      * @author Hanzhang Shen
      */
-    static parse_config(config: Config): Simulator {
+    parse_config(config: Config): void {
+        console.log("Parsing the configurationf file and instantiating shafts and components.")
         let shafts = [];
         let components = [];
         let outputTables = [];
         let motor = undefined;
-
-        const rotation: number = 1; // rotation of the motor
-        const initial_x_position: number = 0; // initial x position of the function table
-        const initialY1: number = 0; // initial y1 position of the output table
-        const initialY2: number = 0; // initial y2 position of the output table
 
         // create the shafts
         for (const shaft of config.shafts) {
@@ -121,7 +119,6 @@ export class Simulator {
                     );
                     shafts[component.inputShaft1].outputs.push(new_component);
                     shafts[component.inputShaft2].outputs.push(new_component);
-                    shafts[component.outputShaft].outputs.push(new_component);
                     components.push(new_component);
                     break;
 
@@ -129,7 +126,9 @@ export class Simulator {
                     new_component = new Integrator(
                         shafts[component.variableOfIntegrationShaft],
                         shafts[component.integrandShaft],
-                        shafts[component.outputShaft]
+                        shafts[component.outputShaft],
+                        component.reverse,
+                        component.initialPosition
                     );
                     shafts[component.variableOfIntegrationShaft].outputs.push(new_component);
                     shafts[component.integrandShaft].outputs.push(new_component);
@@ -160,18 +159,18 @@ export class Simulator {
                     new_component = new FunctionTable(
                         shafts[component.inputShaft],
                         shafts[component.outputShaft],
-                        initial_x_position,
-                        Math.sin // TODO: hardcoded for now to test the engine
+                        this.initial_x_position,
+                        this.inputFunction // TODO: hardcoded for now to test the engine
                     );
                     shafts[component.inputShaft].outputs.push(new_component);
                     components.push(new_component);
                     break;
 
                 case 'motor':
-                    if (motor)
+                    if (this.motor)
                         throw new Error('Only one motor is allowed.');
                     motor = new Motor(
-                        rotation,
+                        this.rotation,
                         shafts[component.outputShaft]
                     );
                     components.push(motor);
@@ -179,19 +178,19 @@ export class Simulator {
 
                 case 'outputTable':
                     let outputTable: OutputTable;
-                    if (component.outputShaft2 && initialY2) {
+                    if (component.outputShaft2 && this.initialY2) {
                         outputTable = new OutputTable(
                             shafts[component.inputShaft],
                             shafts[component.outputShaft1],
-                            initialY1,
+                            this.initialY1,
                             shafts[component.outputShaft2],
-                            initialY2
+                            this.initialY2
                         );
                     } else {
                         outputTable = new OutputTable(
                             shafts[component.inputShaft],
                             shafts[component.outputShaft1],
-                            initialY1,
+                            this.initialY1,
                         );
                     }
 
@@ -209,11 +208,11 @@ export class Simulator {
             }
         }
 
-        if (motor === undefined) {
-            throw new Error("The configuration must have at least one motor");
-        }
-
-        return new Simulator(shafts, motor, outputTables, components);
+        this.motor = motor;
+        this.shafts = shafts;
+        this.outputTables = outputTables;
+        this.components = components
+        console.log("Finished parsing the configuration file and instantiating the objects.")
     }
 }
 

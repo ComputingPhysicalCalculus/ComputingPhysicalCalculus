@@ -1,65 +1,35 @@
-// function setup(): void {
-//     let run_button = document.getElementById("run-simulation") as HTMLButtonElement;
+import { Config } from "./config";
+import { FunctionTable } from "./core/FunctionTable";
+import { Integrator } from "./core/Integrator";
+import { Simulator } from "./core/Main";
+import { Motor } from "./core/Motor";
+import { OutputTable } from "./core/OutputTable";
+import { Shaft } from "./core/Shaft";
 
-//     run_button.addEventListener("click", _ => {
-//         // Generate config
+export function export_simulator(_config: Config, motor_speed: number): Simulator {
+  let shaft_t = new Shaft(0, []);
+  let shaft_sint = new Shaft(1, []);
+  let shaft_intt = new Shaft(2, []);
 
-//         let steps = Number(steps_input.value);
-//         let step_period = Number(step_period_input.value);
+  let function_table = new FunctionTable(shaft_t, shaft_sint, 0, Math.sin);
+  let integrator = new Integrator(shaft_t, shaft_sint, shaft_intt, false, 0);
+  let output_table = new OutputTable(shaft_t, shaft_sint, 0, shaft_intt, -1);
+  
+  let motor = new Motor(motor_speed, shaft_t);
 
-//         if (steps <= 0 || step_period < 0 || current_config === null) {
-//             return;
-//         }
+  shaft_t.outputs = [function_table, integrator, output_table];
+  shaft_sint.outputs = [integrator, output_table];
+  shaft_intt.outputs = [output_table];
 
-//         let simulator = Simulator.parse_config(current_config);
-//         simulator.motor.changeRotation(step_period);
+  let shafts = [shaft_t, shaft_sint, shaft_intt];
+  let devices = [function_table, integrator, output_table];
+  let simulator = new Simulator()
+  simulator.shafts = shafts;
+  simulator.motor = motor;
+  simulator.outputTables = [output_table];
+  simulator.components = devices;
 
-//         // for (let i = 0; i < steps; i++) {
-//         //     simulator.step();
-//         // }
-//         let i = 0;
-//         const step_function = () => {
-//             if (i >= steps) {
-//                 return;
-//             }
+  return simulator;
+}
 
-//             simulator.step();
 
-//             if (simulator.outputTables.length > 0) {
-//                 let output_graph = document.querySelector(".outputTable > graph-table") as GraphElement | null;
-//                 if (output_graph !== null && output_graph !== undefined) {
-//                     let table = simulator.outputTables[0];
-
-//                     output_graph.mutate_data_set("1", points => {
-//                         let set_1 = [];
-//                         for (let i = 0; i < table.xHistory.length; i++) {
-//                             set_1.push(new Vector2(table.xHistory[i], table.y1History[i]));
-//                         }
-
-//                         output_graph.gantry_x = table.xHistory[table.xHistory.length - 1];
-
-//                         points.splice(0, points.length, ...set_1)
-//                     });
-
-//                     output_graph.mutate_data_set("2", points => {
-//                         if (table.y2History === undefined) {
-//                             return;
-//                         }
-//                         let set_2 = []
-//                         for (let i = 0; i < table.xHistory.length; i++) {
-//                             set_2.push(new Vector2(table.xHistory[i], table.y2History[i]));
-//                         }
-
-//                         points.splice(0, points.length, ...set_2);
-//                     })
-//                 }
-//             }
-
-//             i += 1;
-
-//             window.setTimeout(step_function, step_period * 1000.0);
-//         }
-
-//         step_function();
-//     });
-// }

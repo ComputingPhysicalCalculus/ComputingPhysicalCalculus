@@ -1,6 +1,6 @@
 import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
 import Vector2 from "./Vector2.ts"
-import { GRID_SIZE, allValid, setCells, highlightHoveredCells } from "./Grid.ts";
+import { GRID_SIZE, allValid, setCells, highlightHoveredCells, getScreenOffset, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 
 type DragItem = {
@@ -19,7 +19,6 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
   const item = createComponent(componentType);
 
-  item.dontUpdatePosition = true;
   item.updated();
 
   curDragItem.item = item;
@@ -28,16 +27,13 @@ function createNewObject(x: number, y: number, typeString: string): void {
   item.offsetX = -(Math.floor((cellSize.x + 1) / 2)) * GRID_SIZE + (GRID_SIZE / 2);
   item.offsetY = -(Math.floor((cellSize.y + 1) / 2)) * GRID_SIZE + (GRID_SIZE / 2);
 
-  // item.offsetX = -size.x / 2;
-  // item.offsetY = -size.y / 2;
-
   const posX: number = x + item.offsetX;
   const posY: number = y + item.offsetY;
 
   item.classList.add("dragged");
 
-  item.style.top = `${posY}px`;
-  item.style.left = `${posX}px`;
+  item.renderLeft = posX;
+  item.renderTop = posY;
 
   document.getElementById("content")!.appendChild(item);
 }
@@ -53,7 +49,7 @@ export function setupDragHooks(): void {
 }
 
 function creation(event: MouseEvent): void {
-  const target = event.target as HTMLDivElement;
+  const target = event.currentTarget as HTMLDivElement;
   const type: string = target.dataset.type as string;
   createNewObject(event.clientX, event.clientY, type);
 }
@@ -62,6 +58,8 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
   if (curDragItem.item == null) {
     return null;
   }
+
+  mousePos = screenToWorldPosition(mousePos);
 
   let currentMouseCol = Math.floor(mousePos.x / GRID_SIZE);
   let currentMouseRow = Math.floor(mousePos.y / GRID_SIZE);
@@ -110,10 +108,9 @@ export function pickup(event: MouseEvent): void {
 
   currentTarget.offsetX = diffX;
   currentTarget.offsetY = diffY;
-  currentTarget.dontUpdatePosition = true;
+
   curDragItem.mouseX = event.clientX;
   curDragItem.mouseY = event.clientY;
-
 }
 
 function move(event: MouseEvent): void {
@@ -128,8 +125,8 @@ function move(event: MouseEvent): void {
 
   highlightHoveredCells(previousPos, size, false);
 
-  curDragItem.item.style.left = (event.clientX + curDragItem.item.offsetX) + "px";
-  curDragItem.item.style.top = (event.clientY + curDragItem.item.offsetY) + "px";
+  curDragItem.item.renderLeft = event.clientX + curDragItem.item.offsetX;
+  curDragItem.item.renderTop = event.clientY + curDragItem.item.offsetY;
   curDragItem.mouseX = event.clientX;
   curDragItem.mouseY = event.clientY;
 
@@ -169,28 +166,36 @@ function drop(event: MouseEvent): void {
       topLeft.y = Number(item.previousTop);
     }
 
+
+
     if (item.shouldLockCells) {
       setCells(topLeft, size, true);
     }
   }
 
   const grid = document.getElementById("grid") as HTMLDivElement;
-  // Delete element because it is out of bounds
-  if ((topLeft.x + size.x) * GRID_SIZE > grid.clientWidth || topLeft.x < 0 ||
-    (topLeft.y + size.y) * GRID_SIZE > grid.clientHeight || topLeft.y < 0) {
 
-    item.remove();
-    curDragItem.item = null;
-    if (item.shouldLockCells) {
-      setCells(topLeft, size, false);
+  // Delete element because it is out of bounds
+  {
+    let worldTopLeft = worldToScreenPosition(new Vector2(topLeft.x * GRID_SIZE, topLeft.y * GRID_SIZE));
+    // let worldBottomRight = worldToScreenPosition(new Vector2((topLeft.x + size.x) * GRID_SIZE, (topLeft.y + size.y) * GRID_SIZE));
+
+    if (worldTopLeft.x > grid.clientWidth) {
+      item.remove();
+      curDragItem.item = null;
+      if (item.shouldLockCells) {
+        setCells(topLeft, size, false);
+      }
+      return;
     }
-    return;
   }
 
   item.hasBeenPlaced = true;
   item.left = topLeft.x;
   item.top = topLeft.y;
-  item.dontUpdatePosition = false;
+  let converted = worldToScreenPosition(new Vector2(topLeft.x * GRID_SIZE, topLeft.y * GRID_SIZE));
+  item.renderLeft = converted.x;
+  item.renderTop = converted.y;
 
   item.updated();
 

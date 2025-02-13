@@ -123,7 +123,7 @@ export class GraphElement extends LitElement {
       let last_x = 0.0, last_y = 0.0;
       let x = 0.0, y = 0.0;
       for ({ x, y } of data.points) {
-        if (x > this.gantry_x) {
+        if (x >= this.gantry_x) {
           break;
         }
 

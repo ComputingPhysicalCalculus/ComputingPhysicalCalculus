@@ -3,7 +3,6 @@
 
 import "./decorators";
 import { Lifecycle } from "./Lifecycle.ts";
-import { Config } from "./config.ts";
 
 // Register custom elements
 import "./UI/IntegratorComponent";
@@ -14,10 +13,11 @@ import "./UI/ShaftElement";
 import "./UI/MotorComponent";
 import "./UI/GearComponentElement";
 import "./UI/DifferentialComponentElement";
+import "./UI/MultiplierComponentElement";
+
+import "./run.ts";
 
 // Give the example configuration a type
-import _example_config from "../integrating-linear.json";
-export const EXAMPLE_CONFIG: Config = _example_config as any;
 
 /**
  * Generates n data points of a function in a specified range
@@ -29,10 +29,10 @@ export const generator = function*(n: number, min: number, max: number, f: (x: n
 }
 
 // Start the application
-const lifecycle = new Lifecycle();
-
-window.lifecycle = lifecycle;
-
-window.onload = () => lifecycle.setup();
+window.onload = () => {
+    const lifecycle = new Lifecycle();
+    window.lifecycle = lifecycle;
+    lifecycle.setup();
+}
 
 
