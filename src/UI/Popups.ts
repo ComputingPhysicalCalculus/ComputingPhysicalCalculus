@@ -5,16 +5,18 @@ import Vector2 from "./Vector2.ts";
 
 let shaftPopup: HTMLDivElement;
 let gearPopup: HTMLDivElement;
-let multiplierPopup: HTMLDivElement;
-let motorPopup: HTMLDivElement;
 let integratorPopup: HTMLDivElement;
+let motorPopup: HTMLDivElement;
+let multiplierPopup: HTMLDivElement;
+let gearPairPopup: HTMLDivElement;
 
 export function setupPopups(): void {
   setupShaftPopup();
   setupGearPopup();
-  setupMultiplierPopup();
-  setupMotorPopup();
   setupIntegratorPopup();
+  setupMotorPopup();
+  setupMultiplierPopup();
+  setupGearPairPopup();
 
   document.addEventListener("click", documentClick);
 }
@@ -57,29 +59,21 @@ export function openGearPopup(e: MouseEvent): void {
 
   openPopup(e, gearPopup);
 
-
   const target = e.currentTarget as DraggableComponentElement;
-  const inputs = gearPopup.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    const input = inputs[i] as HTMLInputElement;
-    if (input.id == "gear-input-ratio") {
-      input.value = String(target.inputRatio);
-    }
-    else if (input.id == "gear-output-ratio") {
-      input.value = String(target.outputRatio);
-    }
-  }
+  const checkbox = gearPopup.querySelector("input") as HTMLInputElement;
+  checkbox.checked = target.outputRatio < 0;
 
   e.preventDefault();
 }
 
-export function openMultiplierPopup(e: MouseEvent): void {
+export function openIntegratorPopup(e: MouseEvent): void {
   if (currentlyDragging()) return;
 
-  openPopup(e, multiplierPopup);
+  openPopup(e, integratorPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
-  multiplierPopup.getElementsByTagName("input")[0].value = String(target.outputRatio);
+
+  integratorPopup.getElementsByTagName("input")[0].value = String(target.inputRatio);
 
   e.preventDefault();
 }
@@ -100,17 +94,37 @@ export function openMotorPopup(e: MouseEvent): void {
   e.preventDefault();
 }
 
-export function openIntegratorPopup(e: MouseEvent): void {
+export function openMultiplierPopup(e: MouseEvent): void {
   if (currentlyDragging()) return;
 
-  openPopup(e, integratorPopup);
+  openPopup(e, multiplierPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
-
-  integratorPopup.getElementsByTagName("input")[0].value = String(target.inputRatio);
+  multiplierPopup.getElementsByTagName("input")[0].value = String(target.outputRatio);
 
   e.preventDefault();
 }
+
+export function openGearPairPopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
+  openPopup(e, gearPairPopup);
+
+  const target = e.currentTarget as DraggableComponentElement;
+  const inputs = gearPairPopup.getElementsByTagName("input");
+  for (let i = 0; i < inputs.length; i++) {
+    const input = inputs[i] as HTMLInputElement;
+    if (input.id == "gear-pair-input-ratio") {
+      input.value = String(target.inputRatio);
+    }
+    else if (input.id == "gear-pair-output-ratio") {
+      input.value = String(target.outputRatio);
+    }
+  }
+
+  e.preventDefault();
+}
+
 
 function closePopup(e: MouseEvent) {
   (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
@@ -133,7 +147,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
 }
 
 function documentClick(e: MouseEvent) {
-  let popups = [shaftPopup, gearPopup, multiplierPopup, motorPopup, integratorPopup];
+  let popups = [shaftPopup, gearPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup,];
   popups.forEach(popup => {
     if (!mouseWithin(popup, e)) {
       popup.style.visibility = "hidden";
@@ -164,7 +178,6 @@ function setupShaftPopup(): void {
   }
 }
 
-
 function setupGearPopup(): void {
   gearPopup = document.getElementById("gear-popup") as HTMLDivElement;
   gearPopup.addEventListener("mouseleave", closePopup);
@@ -173,28 +186,29 @@ function setupGearPopup(): void {
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
+      const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
-      if (input.id == "gear-input-ratio") {
-        component.inputRatio = Number(input.value);
-      } else if (input.id == "gear-output-ratio") {
-        component.outputRatio = Number(input.value);
-      }
-    })
+      if (input.checked)
+        component.outputRatio = -1;
+      else
+        component.outputRatio = 1;
+
+      component.querySelector("gear-component")!.inverted = input.checked;
+    });
   }
 }
 
-function setupMultiplierPopup(): void {
-  multiplierPopup = document.getElementById("multiplier-popup") as HTMLDivElement;
-  multiplierPopup.addEventListener("mouseleave", closePopup);
+function setupIntegratorPopup(): void {
+  integratorPopup = document.getElementById("integrator-popup") as HTMLDivElement;
+  integratorPopup.addEventListener("mouseleave", closePopup);
 
-  const inputs = multiplierPopup.getElementsByTagName("input");
+  const inputs = integratorPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
       const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
-      component.outputRatio = Number(input.value);
+      component.inputRatio = Number(input.value);
     })
   }
 }
@@ -217,20 +231,42 @@ function setupMotorPopup(): void {
   }
 }
 
-function setupIntegratorPopup(): void {
-  integratorPopup = document.getElementById("integrator-popup") as HTMLDivElement;
-  integratorPopup.addEventListener("mouseleave", closePopup);
+function setupMultiplierPopup(): void {
+  multiplierPopup = document.getElementById("multiplier-popup") as HTMLDivElement;
+  multiplierPopup.addEventListener("mouseleave", closePopup);
 
-  const inputs = integratorPopup.getElementsByTagName("input");
+  const inputs = multiplierPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
       const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
-      component.inputRatio = Number(input.value);
+      component.outputRatio = Number(input.value);
     })
   }
 }
+
+function setupGearPairPopup(): void {
+  gearPairPopup = document.getElementById("gear-pair-popup") as HTMLDivElement;
+  gearPairPopup.addEventListener("mouseleave", closePopup);
+
+  const inputs = gearPairPopup.getElementsByTagName("input");
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener("change", (e) => {
+      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
+
+      if (input.id == "gear-pair-input-ratio") {
+        component.inputRatio = Math.min(Math.max(Number(input.value), 1), 10);
+        input.value = String(component.inputRatio);
+      } else if (input.id == "gear-pair-output-ratio") {
+        component.outputRatio = Math.min(Math.max(Number(input.value), 1), 10);
+        input.value = String(component.outputRatio);
+      }
+    })
+  }
+}
+
 
 function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";

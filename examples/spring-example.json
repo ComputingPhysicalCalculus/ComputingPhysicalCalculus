@@ -284,8 +284,7 @@
         9,
         5
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -294,8 +293,7 @@
         8,
         1
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -304,8 +302,7 @@
         7,
         3
       ],
-      "inputRatio": -1,
-      "outputRatio": 1
+      "reversed": true
     },
     {
       "type": "gear",
@@ -314,8 +311,7 @@
         11,
         4
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -324,8 +320,7 @@
         12,
         3
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -334,8 +329,7 @@
         14,
         2
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -344,8 +338,7 @@
         15,
         1
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -354,8 +347,7 @@
         16,
         3
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -364,8 +356,7 @@
         19,
         1
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -374,8 +365,7 @@
         20,
         2
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -384,8 +374,7 @@
         18,
         3
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -394,8 +383,7 @@
         22,
         6
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "gear",
@@ -404,8 +392,7 @@
         23,
         2
       ],
-      "inputRatio": 1,
-      "outputRatio": 1
+      "reversed": false
     },
     {
       "type": "label",

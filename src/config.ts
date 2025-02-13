@@ -16,7 +16,7 @@ export type ShaftConfig = {
   end: [number, number];
 };
 
-export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig | LabelConfig;
+export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig | LabelConfig | GearPairConfig | DialConfig;
 
 export type IntegratorConfig = {
   type: "integrator";
@@ -76,7 +76,7 @@ export type GearConfig = {
   compID: number;
   horizontal: ShaftID;
   vertical: ShaftID;
-  ratio: number;
+  reversed: boolean;
   position: [number, number];
 };
 
@@ -89,6 +89,20 @@ export type LabelConfig = {
   _comment: string,
 };
 
+export type GearPairConfig = {
+  type: "gearPair";
+  compID: number;
+  position: [number, number];
+  inputRatio: number;
+  outputRatio: number;
+};
+
+export type DialConfig = {
+  type: "dial";
+  compID: number;
+  position: [number, number];
+};
+
 const type_name_dict = {
   "gear": "Gear",
   "integrator": "Integrator",
@@ -98,6 +112,8 @@ const type_name_dict = {
   "motor": "Motor",
   "multiplier": "Multiplier",
   "label": "Label",
+  "gearPair": "GearPair",
+  "dial": "Dial",
 };
 
 export function loadConfig(config: Config): void {
@@ -119,6 +135,8 @@ export function loadConfig(config: Config): void {
       case "differential":
       case "motor":
       case "multiplier":
+      case "gearPair":
+      case "dial":
         {
           item.import_fn(item, components);
           break;

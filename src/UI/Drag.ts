@@ -19,8 +19,6 @@ function createNewObject(x: number, y: number, typeString: string): void {
 
   const item = createComponent(componentType);
 
-  item.updated();
-
   curDragItem.item = item;
 
   const cellSize = item.getSize();

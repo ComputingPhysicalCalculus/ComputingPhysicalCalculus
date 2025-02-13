@@ -14,6 +14,8 @@ import "./UI/MotorComponent";
 import "./UI/GearComponentElement";
 import "./UI/DifferentialComponentElement";
 import "./UI/MultiplierComponentElement";
+import "./UI/GearPairComponentElement.ts";
+import "./UI/DialComponentElement.ts";
 
 import "./run.ts";
 

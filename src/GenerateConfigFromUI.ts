@@ -56,17 +56,10 @@ export function toConfig(): Config {
         const position = [Number(thisComponent.left), Number(thisComponent.top)];
 
         switch (thisComponent.componentType) {
-            case "label": {
-
-                const { _type, data: { top, left, width, height, align, _comment } } = thisComponent.export_fn(thisComponent);
-
-                const size = [Number(width), Number(height)];
-                return { type, compID, position, size, align, _comment };
-            }
             case 'gear':
                 {
-                    const { _type, data: { _top, _left, inputRatio, outputRatio } } = thisComponent.export_fn(thisComponent);
-                    return { type, compID, position, inputRatio, outputRatio }
+                    const { _type, data: { _top, _left, reversed } } = thisComponent.export_fn(thisComponent);
+                    return { type, compID, position, reversed }
                 }
             case 'integrator':
                 {
@@ -100,7 +93,25 @@ export function toConfig(): Config {
                     const { _type, data: { _top, _left, factor } } = thisComponent.export_fn(thisComponent);
                     return { type, compID, position, factor }
                 }
+            case "label":
+                {
+                    const { _type, data: { top, left, width, height, align, _comment } } = thisComponent.export_fn(thisComponent);
 
+                    const size = [Number(width), Number(height)];
+                    return { type, compID, position, size, align, _comment };
+                }
+            case "gearPair":
+                {
+                    const { _type, data: { top, left, inputRatio, outputRatio, } } = thisComponent.export_fn(thisComponent);
+
+                    return { type, compID, position, inputRatio, outputRatio };
+                }
+            case "dial":
+                {
+                    const { _type, data: { top, left } } = thisComponent.export_fn(thisComponent);
+
+                    return { type, compID, position };
+                }
         }
     });
 
