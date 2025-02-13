@@ -1,4 +1,4 @@
-import { css, LitElement, svg, unsafeCSS } from "lit";
+import { LitElement, svg } from "lit";
 import { customElement } from "lit/decorators.js";
 
 @customElement("gear-pair-component")
@@ -11,7 +11,7 @@ export class GearPairComponentElement extends LitElement {
         viewBox="0 0 50 100"
         style="width:100%;height:100%"
       >
-        <rect x="1" y="1" width="48" height="98" fill="white" stroke="black" stroke-width="2" rx=5 />
+        <rect x="5" y="5" width="40" height="90" fill="white" stroke="black" stroke-width="2" rx=5 />
       </svg>
     `;
   }

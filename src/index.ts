@@ -33,7 +33,6 @@ export const generator = function*(n: number, min: number, max: number, f: (x: n
 // Start the application
 window.onload = () => {
     const lifecycle = new Lifecycle();
-    window.lifecycle = lifecycle;
     lifecycle.setup();
 }
 

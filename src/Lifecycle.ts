@@ -1,18 +1,16 @@
 import { Config, loadConfig } from "./config";
 import { toConfig } from "./GenerateConfigFromUI";
-import { OutputTable } from "./core/OutputTable";
 import { query, queryAll } from "./decorators";
 import { INTEGRATING_LINEAR } from "./examples";
 import { export_simulator } from "./run";
-import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GraphElement } from "./UI/GraphElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 import Vector2 from "./UI/Vector2";
+import { UNDO_SINGLETON } from "./Undo";
 
-const MAX_HISTORY_LENGTH = 32;
 
 /**
  * represents the lifecycle of the application and when certain code should be called.
@@ -69,16 +67,6 @@ export class Lifecycle {
   @query("#machine")
   machine!: HTMLElement;
 
-  private history: {
-    _type: ComponentType,
-    data: any,
-  }[][] = [];
-
-  private future: {
-    _type: ComponentType,
-    data: any,
-  }[][] = [];
-
   /**
    * Sets up the internal lifecycle state
    */
@@ -118,9 +106,9 @@ export class Lifecycle {
           e.preventDefault();
           if (e.ctrlKey) {
             if (e.shiftKey) {
-              this.popFuture();
+              UNDO_SINGLETON.pop_future();
             } else {
-              this.popHistory();
+              UNDO_SINGLETON.pop_history();
             }
           }
           break;
@@ -142,7 +130,7 @@ export class Lifecycle {
    */
   public initialLoad(): void {
     this.loadState(INTEGRATING_LINEAR);
-    this.history.pop();
+    UNDO_SINGLETON.remove();
   }
 
   /**
@@ -150,7 +138,7 @@ export class Lifecycle {
    * or an example program.
    */
   public loadState(config: Config): void {
-    this.pushHistory();
+    UNDO_SINGLETON.push();
 
     // Remove any components placed in the scene.
     this._clear_components();
@@ -182,78 +170,6 @@ export class Lifecycle {
 
   public exportState(): Config {
     return toConfig();
-  }
-
-  public pushHistory(): void {
-    // Clear future
-    this.future.splice(0, this.future.length);
-
-    // Add to history
-    this._pushHistory();
-  }
-
-  private _pushHistory(): void {
-    // Copy nodes
-    let saved_data = [];
-    for (let node of this.placedComponents) {
-      saved_data.push(node.export());
-    }
-
-    // Append to history, truncating it if it is too long
-    this.history.splice(0, Math.max(this.history.length - MAX_HISTORY_LENGTH, 0));
-    this.history.push(saved_data);
-  }
-
-  public popHistory(): void {
-    if (this.history.length < 1) {
-      return;
-    }
-
-    // Copy nodes
-    let saved_data = [];
-    for (let node of this.placedComponents) {
-      saved_data.push(node.export());
-    }
-
-    this.future.push(saved_data);
-
-    // Remove current components
-    this._clear_components();
-
-    // Restore state
-    let newNodes = this.history.pop()!;
-    for (let node of newNodes) {
-      let component = createComponent(node._type);
-      component.import(node.data)
-
-      this.content.appendChild(component);
-    }
-  }
-
-  public popFuture(): void {
-    if (this.future.length < 1) {
-      return;
-    }
-
-    // Copy nodes
-    let saved_data = [];
-    for (let node of this.placedComponents) {
-      saved_data.push(node.export());
-    }
-
-    this.history.push(saved_data);
-
-    // Remove current components
-    this._clear_components();
-
-    // Restore state
-    let newNodes = this.future.pop()!;
-    for (let node of newNodes) {
-      let component = createComponent(node._type);
-      component.import(node.data)
-
-      this.content.appendChild(component);
-    }
   }
 
   private _clear_components(): void {

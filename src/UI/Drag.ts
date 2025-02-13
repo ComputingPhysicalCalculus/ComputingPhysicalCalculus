@@ -2,6 +2,7 @@ import { ComponentType, createComponent, stringToComponent } from "./Components.
 import Vector2 from "./Vector2.ts"
 import { GRID_SIZE, allValid, setCells, highlightHoveredCells, getScreenOffset, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
+import { UNDO_SINGLETON } from "@src/Undo.ts";
 
 type DragItem = {
   item: DraggableComponentElement | null,
@@ -75,7 +76,7 @@ export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
   // Will come up with a better solution
-  (window as any).lifecycle.pushHistory();
+  UNDO_SINGLETON.push();
 
   const currentTarget = event.currentTarget as DraggableComponentElement;
   currentTarget.classList.add("dragged");
