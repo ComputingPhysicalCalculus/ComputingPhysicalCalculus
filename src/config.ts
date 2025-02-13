@@ -1,4 +1,5 @@
 import { ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { setCells, GRID_SIZE } from "./UI/Grid";
 import Vector2 from "./UI/Vector2.ts";
 
@@ -15,7 +16,7 @@ export type ShaftConfig = {
   end: [number, number];
 };
 
-export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig;
+export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig | LabelConfig | GearPairConfig | DialConfig;
 
 export type IntegratorConfig = {
   type: "integrator";
@@ -75,7 +76,30 @@ export type GearConfig = {
   compID: number;
   horizontal: ShaftID;
   vertical: ShaftID;
-  ratio: number;
+  reversed: boolean;
+  position: [number, number];
+};
+
+export type LabelConfig = {
+  type: "label";
+  compID: number;
+  position: [number, number];
+  size: [number, number];
+  align: "left" | "right" | "center";
+  _comment: string,
+};
+
+export type GearPairConfig = {
+  type: "gearPair";
+  compID: number;
+  position: [number, number];
+  inputRatio: number;
+  outputRatio: number;
+};
+
+export type DialConfig = {
+  type: "dial";
+  compID: number;
   position: [number, number];
 };
 
@@ -87,24 +111,59 @@ const type_name_dict = {
   "outputTable": "OutputTable",
   "motor": "Motor",
   "multiplier": "Multiplier",
+  "label": "Label",
+  "gearPair": "GearPair",
+  "dial": "Dial",
 };
 
 export function loadConfig(config: Config): void {
+  // console.log(config.components);
   for (let components of config.components) {
+    // console.log(components);
+    // console.log(components.position);
     let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
     if (componentType === null || componentType === undefined) {
       return;
     }
 
-    let item = createComponent(stringToComponent(componentType) as ComponentType);
+    let item = createComponent(stringToComponent(componentType) as ComponentType) as DraggableComponentElement;
+
+    switch (components.type) {
+      case "gear":
+      case "integrator":
+      case "differential":
+      case "motor":
+      case "multiplier":
+      case "gearPair":
+      case "dial":
+        {
+          item.import_fn(item, components);
+          break;
+        }
+
+      case "label": {
+        let [width, height] = components.size;
+        item.width = width;
+        item.height = height;
+        let p = item.querySelector("p")!;
+        p.style.textAlign = components.align;
+        p.textContent = components._comment;
+        break;
+      }
+
+      case "functionTable":
+      case "outputTable":
+        // Not sure if data should be parsed through
+        break;
+    }
     item.top = top;
     item.left = left;
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
 
-    setCells(new Vector2(top, left), item.getSize(), true);
+    setCells(new Vector2(left, top), item.getSize(), true);
 
     item.hasBeenPlaced = true;
     item.requestUpdate();
@@ -113,6 +172,10 @@ export function loadConfig(config: Config): void {
   }
 
   for (let shaft of config.shafts) {
+    // console.log(config.shafts);
+    // console.log(shaft);
+    // console.log(shaft.start);
+    // console.log(shaft.end);
     let [left, top] = shaft.start;
     let [right, bottom] = shaft.end;
 

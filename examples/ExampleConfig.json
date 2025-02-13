@@ -60,6 +60,7 @@
       "variableOfIntegrationShaft": 0,
       "integrandShaft": 4,
       "outputShaft": 2,
+      "initialPosition": 0,
       "reverse": "true",
       "position": [6, 6],
       "_comment": "variable of integration is t; integrand is F(dx/dt) + kx/m; output is -(dx/dt)"
@@ -88,7 +89,7 @@
       "compID": 5,
       "inputShaft": 1,
       "outputShaft": 5,
-      "factor": 2,
+      "factor": 9,
       "position": [6, 6],
       "_comment": "input is x; output is kx/m"
     },

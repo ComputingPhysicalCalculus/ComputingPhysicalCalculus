@@ -9,6 +9,7 @@
   padding: var(--gap-size);
   font-size: calc(var(--text-size) * 1.2);
   text-decoration: bold;
+  z-index: 10;
 
   box-sizing: border;
 }
@@ -31,7 +32,37 @@
   width: 100%;
 }
 
+#integrator-popup {
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+}
+
 #gear-popup {
+  display: flex;
+  flex-direction: row;
+  visibility: hidden;
+}
+
+#motor-popup {
+  visibility: hidden;
+}
+
+#multiplier-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  max-width: 8vw;
+  visibility: hidden;
+}
+
+#multiplier-popup>label {
+  font-weight: bold;
+}
+
+
+#gear-pair-popup {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,32 +72,18 @@
   visibility: hidden;
 }
 
-#gear-popup>div {
+#gear-pair-popup>div {
   display: flex;
   justify-content: center;
   flex-direction: row;
 }
 
-#gear-popup>div>input {
+#gear-pair-popup>div>input {
   max-width: 35%;
 }
 
-#gear-popup>div>label {
+#gear-pair-popup>div>label {
   font-weight: bold;
   margin: 0 var(--gap-size);
   max-width: 40%;
-}
-
-#multiplier-popup {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  max-width: 8vw;
-
-  visibility: visible;
-}
-
-#multiplier-popup>label {
-  font-weight: bold;
 }

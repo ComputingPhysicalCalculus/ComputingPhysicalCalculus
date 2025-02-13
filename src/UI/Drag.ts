@@ -2,6 +2,7 @@ import { ComponentType, createComponent, stringToComponent } from "./Components.
 import Vector2 from "./Vector2.ts"
 import { GRID_SIZE, allValid, setCells, highlightHoveredCells, getScreenOffset, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
+import { UNDO_SINGLETON } from "@src/Undo.ts";
 
 type DragItem = {
   item: DraggableComponentElement | null,
@@ -18,8 +19,6 @@ function createNewObject(x: number, y: number, typeString: string): void {
     return;
 
   const item = createComponent(componentType);
-
-  item.updated();
 
   curDragItem.item = item;
 
@@ -49,7 +48,7 @@ export function setupDragHooks(): void {
 }
 
 function creation(event: MouseEvent): void {
-  const target = event.target as HTMLDivElement;
+  const target = event.currentTarget as HTMLDivElement;
   const type: string = target.dataset.type as string;
   createNewObject(event.clientX, event.clientY, type);
 }
@@ -77,7 +76,7 @@ export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
   // Will come up with a better solution
-  (window as any).lifecycle.pushHistory();
+  UNDO_SINGLETON.push();
 
   const currentTarget = event.currentTarget as DraggableComponentElement;
   currentTarget.classList.add("dragged");

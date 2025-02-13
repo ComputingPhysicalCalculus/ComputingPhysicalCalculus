@@ -2,8 +2,9 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openGearPopup, openMultiplierPopup } from "./Popups.ts"
+import { openShaftPopup, openGearPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
+import { GRID_SIZE } from "./Grid.ts";
 
 export enum ComponentType {
   VShaft,
@@ -14,11 +15,13 @@ export enum ComponentType {
   Differential,
   OutputTable,
   Motor,
-  Multiplier
+  Multiplier,
+  Label,
+  GearPair,
+  Dial,
 };
 
 let CURRENT_ID: number = 0;
-
 
 export function stringToComponent(componentName: string): ComponentType | null {
   return ComponentType[componentName as keyof typeof ComponentType];
@@ -61,6 +64,15 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     case ComponentType.Multiplier:
       createMultiplier(comp);
       break;
+    case ComponentType.Label:
+      createLabel(comp);
+      break;
+    case ComponentType.GearPair:
+      createGearPair(comp);
+      break;
+    case ComponentType.Dial:
+      createDial(comp);
+      break;
     default:
       console.error("No function defined for component: ", component);
   }
@@ -76,7 +88,7 @@ function createUniqueID(): number {
 
 function setID(div: DraggableComponentElement): void {
   const v = createUniqueID();
-  div.setAttribute("componentID", v + "");
+  div.componentID = v
   div.id = "component-" + v;
 }
 
@@ -88,7 +100,7 @@ function createVShaft(div: DraggableComponentElement): void {
 
   div.classList.add("vShaft");
 
-  div.addEventListener("contextmenu", openShaftPopup);
+  div.addEventListener("mouseup", openShaftPopup);
 
   render(html`<shaft-component style="width:100%;height:100%"></shaft-component>`, div);
 
@@ -123,13 +135,14 @@ function createGear(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("gear");
 
-  div.addEventListener("contextmenu", openGearPopup);
+  div.addEventListener("mouseup", openGearPopup);
 
   render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div);
 
   type ExportedData = {
     top: number,
     left: number,
+    reversed: boolean;
   };
 
   div.export_fn = (_this) => {
@@ -138,6 +151,7 @@ function createGear(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
+        reversed: _this.outputRatio < 0,
       },
     };
   };
@@ -145,6 +159,9 @@ function createGear(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
+    _this.outputRatio = (!data.reversed) ? 1 : (data.reversed ? -1 : 1);
+
+    _this.querySelector("gear-component")!.inverted = _this.outputRatio < 0;
   };
 }
 
@@ -155,7 +172,7 @@ function createHShaft(div: DraggableComponentElement): void {
   div.shouldLockCells = false;;
   div.classList.add("hShaft");
 
-  div.addEventListener("contextmenu", openShaftPopup);
+  div.addEventListener("mouseup", openShaftPopup);
 
   render(html`<shaft-component style="width: 100%;height:100%" horizontal></shaft-component>`, div);
 
@@ -184,13 +201,15 @@ function createHShaft(div: DraggableComponentElement): void {
 }
 
 function createIntegrator(div: DraggableComponentElement): void {
-  div.width = 3;
+  div.width = 4;
   div.height = 2;
   div.componentType = "integrator";
   div.shouldLockCells = true;
   div.classList.add("integrator");
 
   render(html`<integrator-component></integrator-component>`, div);
+
+  div.addEventListener("mouseup", openIntegratorPopup);
 
   type ExportedData = {
     top: number,
@@ -216,7 +235,7 @@ function createIntegrator(div: DraggableComponentElement): void {
 function createFunctionTable(div: DraggableComponentElement): void {
   div.style.background = "white";
   div.style.border = "2px solid black";
-  div.style["border-radius"] = "5px";
+  div.style.borderRadius = "5px";
   div.width = 4;
   div.height = 4;
   div.componentType = "functionTable";
@@ -294,7 +313,7 @@ function createDifferential(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("differential");
 
-  render(html`<differential-component></differential-component>`, div);
+  render(html`<differential-component style="width:100%;height:100%"></differential-component>`, div);
 
   type ExportedData = {
     top: number,
@@ -320,7 +339,7 @@ function createDifferential(div: DraggableComponentElement): void {
 function createOutputTable(div: DraggableComponentElement): void {
   div.style.background = "white";
   div.style.border = "2px solid black";
-  div.style["border-radius"] = "5px";
+  div.style.borderRadius = "5px";
   div.width = 4;
   div.height = 4;
   div.componentType = "outputTable";
@@ -401,11 +420,16 @@ function createMotor(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("motor");
 
+  div.outputRatio = 1;
+
   render(html`<motor-component style="width:100%;height:100%"></motor-component>`, div);
+
+  div.addEventListener("mouseup", openMotorPopup);
 
   type ExportedData = {
     top: number,
     left: number,
+    reversed: boolean;
   };
 
   div.export_fn = (_this) => {
@@ -414,6 +438,7 @@ function createMotor(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
+        reversed: _this.outputRatio < 0,
       },
     };
   };
@@ -421,6 +446,7 @@ function createMotor(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
+    _this.outputRatio = (!data.reversed) ? 1 : (data.reversed ? -1 : 1);
   };
 }
 
@@ -431,7 +457,131 @@ function createMultiplier(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("multiplier");
 
-  div.addEventListener("contextmenu", openMultiplierPopup);
+  div.addEventListener("mouseup", openMultiplierPopup);
+
+  render(html`<multiplier-component style="width:100%;height:100%"></multiplier-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    factor: number,
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type: ComponentType.Multiplier,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        factor: _this.outputRatio,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+    _this.outputRatio = (!data.factor) ? 1 : data.factor;
+  };
+}
+
+function createLabel(div: DraggableComponentElement): void {
+  div.width = 3;
+  div.height = 1;
+  div.componentType = "label";
+  div.shouldLockCells = false;
+
+  div.classList.add("label");
+
+  let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
+
+  document.addEventListener("wheel", render_p);
+  render_p();
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    width: number,
+    height: number,
+    align: string,
+    _comment: string,
+  };
+
+  div.export_fn = (_this) => {
+    let p = _this.querySelector("p")!;
+    return {
+      _type: ComponentType.Label,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        height: _this.height,
+        width: _this.width,
+        align: p.style.textAlign,
+        _comment: p.textContent,
+      }
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+    _this.height = data.height;
+    _this.width = data.width;
+
+    let p = _this.querySelector("p")!;
+    p.style.textAlign = data.align;
+    p.textContent = data._comment;
+  };
+}
+
+function createGearPair(div: DraggableComponentElement): void {
+  div.width = 1;
+  div.height = 2;
+  div.componentType = "gearPair";
+  div.shouldLockCells = true;
+  div.classList.add("gearPair");
+
+  div.addEventListener("mouseup", openGearPairPopup);
+
+  render(html`<gear-pair-component style="width:100%;height:100%"></gear-pair-component>`, div);
+
+  type ExportedData = {
+    top: number,
+    left: number,
+    inputRatio: number;
+    outputRatio: number;
+  };
+
+  div.export_fn = (_this) => {
+    return {
+      _type: ComponentType.Gear,
+      data: {
+        top: _this.top,
+        left: _this.left,
+        inputRatio: _this.inputRatio,
+        outputRatio: _this.outputRatio,
+      },
+    };
+  };
+
+  div.import_fn = (_this, data: ExportedData) => {
+    _this.top = data.top;
+    _this.left = data.left;
+    _this.inputRatio = (!data.inputRatio) ? 1 : data.inputRatio;
+    _this.outputRatio = (!data.outputRatio) ? 1 : data.outputRatio;
+  };
+}
+
+function createDial(div: DraggableComponentElement): void {
+  div.width = 2;
+  div.height = 1;
+  div.componentType = "dial";
+  div.shouldLockCells = true;
+  div.classList.add("dial");
+
+  // div.addEventListener("mouseup", openGearPopup);
+
+  render(html`<dial-component style="width:100%;height:100%"></dial-component>`, div);
 
   type ExportedData = {
     top: number,
@@ -440,7 +590,7 @@ function createMultiplier(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type: ComponentType.Multiplier,
+      _type: ComponentType.Gear,
       data: {
         top: _this.top,
         left: _this.left,
@@ -453,5 +603,4 @@ function createMultiplier(div: DraggableComponentElement): void {
     _this.left = data.left;
   };
 }
-
 
