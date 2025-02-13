@@ -2,15 +2,20 @@ import { Config, loadConfig } from "./config";
 import { toConfig } from "./GenerateConfigFromUI";
 import { query, queryAll } from "./decorators";
 import { INTEGRATING_LINEAR } from "./examples";
-import { export_simulator } from "./run";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
-import { GraphElement } from "./UI/GraphElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 import Vector2 from "./UI/Vector2";
 import { UNDO_SINGLETON } from "./Undo";
+import { export_simulator } from "./run";
+import { GraphElement } from "./UI/GraphElement";
 
+enum State {
+  Paused,
+  Running,
+  Stopped,
+}
 
 /**
  * represents the lifecycle of the application and when certain code should be called.
@@ -67,6 +72,10 @@ export class Lifecycle {
   @query("#machine")
   machine!: HTMLElement;
 
+  state: State = State.Stopped;
+
+  private _on_frame: undefined | ((delta: number) => void);
+
   /**
    * Sets up the internal lifecycle state
    */
@@ -93,35 +102,56 @@ export class Lifecycle {
     this.import_button.addEventListener("click", _ => this._handle_import_file());
     this.export_button.addEventListener("click", _ => this._handle_export_file());
     this.clear_button.addEventListener("click", _ => this._clear_components());
-    this.run_button.addEventListener("click", _ => this._run_simulator());
+
+    this.run_button.addEventListener("click", _ => this.run());
+    this.stop_button.addEventListener("click", _ => this.stop());
+    this.pause_button.addEventListener("click", _ => this.pause());
+    this.unpause_button.addEventListener("click", _ => this.unpause());
 
     window.addEventListener("keydown", e => {
       if (e.defaultPrevented) {
         return;
       }
 
-      switch (e.key) {
-        case 'Z':
-        case 'z':
-          e.preventDefault();
-          if (e.ctrlKey) {
-            if (e.shiftKey) {
-              UNDO_SINGLETON.pop_future();
-            } else {
-              UNDO_SINGLETON.pop_history();
-            }
-          }
-          break;
-        case 'S':
-        case 's':
-          e.preventDefault();
-          this._handle_export_file();
-          break;
-      }
+      this._handle_keydown(e);
     }, true);
+
+    let last_frame = 0;
+
+    const frame = (elapsed: number) => {
+      window.requestAnimationFrame(frame);
+
+      const delta = (elapsed - last_frame) / 1000.0;
+      last_frame = elapsed;
+      this._frame(delta);
+    };
+    window.requestAnimationFrame(frame);
 
     // KEEP THIS AT THE END OF THIS FUNCTION.
     this.resolveSetupCompleted();
+  }
+
+  private _handle_keydown(e: KeyboardEvent) {
+    switch (e.key) {
+      case 'Z':
+      case 'z':
+        if (e.ctrlKey) {
+          if (e.shiftKey) {
+            UNDO_SINGLETON.pop_future();
+          } else {
+            UNDO_SINGLETON.pop_history();
+          }
+          e.preventDefault();
+        }
+        break;
+      case 'S':
+      case 's':
+        if (e.ctrlKey) {
+          this._handle_export_file();
+          e.preventDefault();
+        }
+        break;
+    }
   }
 
   /**
@@ -213,55 +243,62 @@ export class Lifecycle {
     }
   }
 
-  private _run_simulator(): void {
-    enum State {
-      Paused,
-      Running,
-      Stopped,
+  stop(): void {
+    this.state = State.Stopped;
+
+    this.step_period_input.disabled = false;
+    this.import_button.disabled = false;
+    this.clear_button.disabled = false;
+
+    this.run_button.hidden = false;
+    this.stop_button.hidden = true;
+    this.pause_button.hidden = true;
+    this.unpause_button.hidden = true;
+  }
+
+  pause(): void {
+    if (this.state !== State.Running) {
+      console.warn(`Tried to pause application when it was not running.\nState was ${this.state}`);
+      return;
     }
-    
-    let state: State = State.Running;
+    this.state = State.Paused;
 
-    const unpause = () => {
-      state = State.Running;
-      this.pause_button.hidden = false;
-      this.unpause_button.hidden = true;
-    };
-    const pause = () => {
-      state = State.Paused;
-      this.pause_button.hidden = true;
-      this.unpause_button.hidden = false;
-    };
-    const stop = () => {
-      state = State.Stopped;
-      this.run_button.disabled = false;
-      this.run_button.hidden = false;
-      this.step_period_input.disabled = false;
-      this.import_button.disabled = false;
-      this.stop_button.hidden = true;
-      this.pause_button.hidden = true;
-      this.unpause_button.hidden = true;
-
-      this.stop_button.removeEventListener("click", stop);
-      this.pause_button.removeEventListener("click", pause);
-      this.unpause_button.removeEventListener("click", unpause);
-    };
-
-    const step_period = Number(this.step_period_input.value);
-    const get_motor_speed = () => Number(this.motor_speed_input.value);
-
-    this.run_button.disabled = true;
     this.run_button.hidden = true;
+    this.stop_button.hidden = false;
+    this.pause_button.hidden = true;
+    this.unpause_button.hidden = false;
+  }
+
+  unpause(): void {
+    if (this.state !== State.Paused) {
+      console.warn(`Tried to unpause application when it was not paused.\nState was ${this.state}`);
+    }
+    this.state = State.Running;
+
+    this.run_button.hidden = true;
+    this.stop_button.hidden = true;
+    this.pause_button.hidden = false;
+    this.unpause_button.hidden = true;
+  }
+
+  run(): void {
+    if (this.state !== State.Stopped) {
+      console.warn(`Tried to run application when it was not stopped.\nState was ${this.state}`);
+    }
+    this.state = State.Running;
+
     this.step_period_input.disabled = true;
     this.import_button.disabled = true;
-    this.stop_button.hidden = false;
+    this.clear_button.disabled = true;
+
+    this.run_button.hidden = true;
+    this.stop_button.hidden = true;
     this.pause_button.hidden = false;
+    this.unpause_button.hidden = true;
 
-    this.stop_button.addEventListener("click", stop);
-    this.pause_button.addEventListener("click", pause);
-    this.unpause_button.addEventListener("click", unpause);
-
-    const simulator = export_simulator(this.exportState(), get_motor_speed());
+    const simulator = export_simulator(this.exportState(), Number(this.motor_speed_input.value));
+    const step_period = Number(this.step_period_input.value);
+    const get_motor_speed = () => Number(this.motor_speed_input.value);
 
     const output_table = document.querySelector(".outputTable > graph-table")! as GraphElement;
     const function_table = document.querySelector(".functionTable > graph-table")! as GraphElement;
@@ -269,31 +306,17 @@ export class Lifecycle {
     output_table.set_data_set("a", []);
     output_table.set_data_set("b", [], "red", true);
 
-    let steps_taken = 0;
     let elapsed = 0;
-    let last_timestamp: number | undefined;
+    let steps_taken = 0;
 
-    function frame(timestamp: number) {
-      if (state === State.Stopped) {
-        return;
-      }
-      window.requestAnimationFrame(frame);
-      if (state === State.Paused) {
-        last_timestamp = timestamp;
-        return;
-      }
-      
-      if (last_timestamp === undefined) {
-        last_timestamp = timestamp;
-      }
-      elapsed += (timestamp - last_timestamp) / 1000.0;
-      last_timestamp = timestamp;
-      
+    this._on_frame = (delta: number) => {
+      elapsed += delta;
+
       const next_steps = Math.floor(elapsed / step_period);
 
       simulator.motor?.changeRotation(get_motor_speed());
 
-      for (steps_taken; steps_taken < next_steps; steps_taken++) {
+      for (; steps_taken < next_steps; steps_taken++) {
         simulator.step();
       }
 
@@ -316,11 +339,22 @@ export class Lifecycle {
       output_table.gantry_x = x[next_steps - 1];
       function_table.gantry_x = x[next_steps - 1];
 
-      if (next_steps != 0 && x[next_steps - 1] >= output_table.x_max) {
-        stop();
+      console.log(next_steps, x[steps_taken - 1]);
+
+      if (next_steps != 0 && x[steps_taken - 1] >= output_table.x_max) {
+        this.pause();
+        this.stop();
       }
+    };
+  }
+
+  private _frame(delta: number): void {
+    if (this.state !== State.Running) {
+      return;
     }
 
-    window.requestAnimationFrame(frame);
+    if (this._on_frame !== undefined) {
+      this._on_frame(delta);
+    }
   }
 }
