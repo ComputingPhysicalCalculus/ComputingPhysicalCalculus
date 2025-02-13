@@ -355,7 +355,7 @@ export class Lifecycle {
 
     let steps_taken = 0;
     let elapsed = 0;
-    let last_timestamp = 0;
+    let last_timestamp: number | undefined;
 
     function frame(timestamp: number) {
       if (state === State.Stopped) {
