@@ -48,9 +48,9 @@
     {
       "type": "differential",
       "compID": 1,
-      "inputShaft1": 3,
-      "inputShaft2": 5,
-      "outputShaft": 4,
+      "diffShaft1": 3,
+      "diffShaft2": 5,
+      "sumShaft": 4,
       "position": [6, 6],
       "_comment": "input1 is F(dx/dt); input 2 is kx/m; output is F(dx/dt) + kx/m"
     },
