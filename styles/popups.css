@@ -32,30 +32,20 @@
   width: 100%;
 }
 
-#gear-popup {
+#integrator-popup {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-
-  max-width: 10vw;
-
   visibility: hidden;
 }
 
-#gear-popup>div {
+#gear-popup {
   display: flex;
-  justify-content: center;
   flex-direction: row;
+  visibility: hidden;
 }
 
-#gear-popup>div>input {
-  max-width: 35%;
-}
-
-#gear-popup>div>label {
-  font-weight: bold;
-  margin: 0 var(--gap-size);
-  max-width: 40%;
+#motor-popup {
+  visibility: hidden;
 }
 
 #multiplier-popup {
@@ -71,12 +61,29 @@
   font-weight: bold;
 }
 
-#motor-popup {
+
+#gear-pair-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  max-width: 10vw;
+
   visibility: hidden;
 }
 
-#integrator-popup {
+#gear-pair-popup>div {
   display: flex;
-  flex-direction: column;
-  visibility: hidden;
+  justify-content: center;
+  flex-direction: row;
+}
+
+#gear-pair-popup>div>input {
+  max-width: 35%;
+}
+
+#gear-pair-popup>div>label {
+  font-weight: bold;
+  margin: 0 var(--gap-size);
+  max-width: 40%;
 }

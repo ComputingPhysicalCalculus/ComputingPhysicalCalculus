@@ -126,17 +126,13 @@
             </div>
 
             <div class="popup" id="gear-popup" position="absolute" >
-                <label>Gear ratio</label>
-                <div>
-                    <input id="gear-input-ratio" type="number" min="1" value="1">
-                    <label>:</label>
-                    <input id="gear-output-ratio" type="number" min="1" value="1">
-                </div>
+                <label>Reverse</label>
+                <input id="gear-reversed" type="checkbox">
             </div>
 
-            <div class="popup" id="multiplier-popup" position="absolute" >
-                <label>Factor</label>
-                <input id="multiplier-input-factor" type="number" min="1" value="1">
+            <div class="popup" id="integrator-popup" position="absolute" >
+                <label>Initial offset</label>
+                <input id="integrator-initial-offset" type="number" value="0">
             </div>
 
             <div class="popup" id="motor-popup" position="absolute" >
@@ -144,10 +140,20 @@
                 <input id="motor-reverse" type="checkbox">
             </div>
 
-            <div class="popup" id="integrator-popup" position="absolute" >
-                <label>Initial offset</label>
-                <input id="integrator-initial-offset" type="number" value="0">
+            <div class="popup" id="multiplier-popup" position="absolute" >
+                <label>Factor</label>
+                <input id="multiplier-input-factor" type="number" min="1" value="1">
             </div>
+
+            <div class="popup" id="gear-pair-popup" position="absolute" >
+                <label>Gear ratio</label>
+                <div>
+                    <input id="gear-pair-input-ratio" type="number" min="1" value="1">
+                    <label>:</label>
+                    <input id="gear-pair-output-ratio" type="number" min="1" value="1">
+                </div>
+            </div>
+
         </div>
     </div>
 </body>

@@ -2,7 +2,7 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openGearPopup, openMultiplierPopup, openMotorPopup, openIntegratorPopup } from "./Popups.ts"
+import { openShaftPopup, openGearPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
 
@@ -160,6 +160,8 @@ function createGear(div: DraggableComponentElement): void {
     _this.top = data.top;
     _this.left = data.left;
     _this.outputRatio = (!data.reversed) ? 1 : (data.reversed ? -1 : 1);
+
+    _this.querySelector("gear-component")!.inverted = _this.outputRatio < 0;
   };
 }
 
@@ -539,7 +541,7 @@ function createGearPair(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("gearPair");
 
-  div.addEventListener("mouseup", openGearPopup);
+  div.addEventListener("mouseup", openGearPairPopup);
 
   render(html`<gear-pair-component style="width:100%;height:100%"></gear-pair-component>`, div);
 
