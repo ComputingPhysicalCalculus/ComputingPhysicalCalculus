@@ -332,7 +332,7 @@ export class Lifecycle {
 
       output_table.mutate_data_set("b", points => {
         for (let i = points.length; i < x.length; i++) {
-          points.push(new Vector2(x[i], (y2[i] - 1) / 2));
+          points.push(new Vector2(x[i], y2[i]));
         }
       });
 
