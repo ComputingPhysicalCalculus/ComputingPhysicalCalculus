@@ -288,7 +288,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         y_min: graph_element.y_min,
         y_max: graph_element.y_max,
         gantry_x: graph_element.gantry_x,
-        fn: graph_element.data_sets["1"]?.fn ?? "",
+        fn: graph_element.data_sets["d1"]?.fn ?? "",
       }
     };
   };
@@ -307,8 +307,8 @@ function createFunctionTable(div: DraggableComponentElement): void {
     if (data.fn !== undefined && data.fn != "") {
       let compiled_expr = Expression.compile(data.fn);
       let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
-      graph_element.set_data_set("1", Array.from([...generator_exp]));
-      graph_element.data_sets["1"].fn = data.fn;
+      graph_element.set_data_set("d1", Array.from([...generator_exp]));
+      graph_element.data_sets["d1"].fn = data.fn;
     }
   }
 }
@@ -373,8 +373,8 @@ function createOutputTable(div: DraggableComponentElement): void {
 
   let graph = div.querySelector("graph-table") as GraphElement;
 
-  graph.set_data_set("1", [{ x: 0, y: 0 }], "blue");
-  graph.set_data_set("2", [{ x: 0, y: 0 }], "red", true);
+  graph.set_data_set("d1", [{ x: 0, y: 0 }], "blue");
+  graph.set_data_set("d2", [{ x: 0, y: 0 }], "red", true);
   graph.isAnOutput = true;
 
   type ExportedData = {

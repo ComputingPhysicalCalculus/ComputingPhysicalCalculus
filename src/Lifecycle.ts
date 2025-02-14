@@ -309,13 +309,13 @@ export class Lifecycle {
     simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
       const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
       
-      let compiled_expr = Expression.compile(function_table_element.data_sets["1"]?.fn ?? "");
+      let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
       x.fun = x => compiled_expr({ x });
     });
 
     output_tables.forEach(x => {
-      x.set_data_set("1", []);
-      x.set_data_set("2", [], "red", true);
+      x.set_data_set("d1", []);
+      x.set_data_set("d2", [], "red", true);
     })
 
     let elapsed = 0;
@@ -339,14 +339,14 @@ export class Lifecycle {
 
         const output_table = document.querySelector(`#component-${out.id} > graph-table`)! as GraphElement;
 
-        output_table.mutate_data_set("1", points => {
+        output_table.mutate_data_set("d1", points => {
           for (let i = points.length; i < x.length; i++) {
             points.push(new Vector2(x[i], y1[i]));
           }
         });
 
         if (y2 !== undefined) {
-          output_table.mutate_data_set("2", points => {
+          output_table.mutate_data_set("d2", points => {
             for (let i = points.length; i < x.length; i++) {
               points.push(new Vector2(x[i], y2[i]));
             }
