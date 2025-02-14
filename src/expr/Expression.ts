@@ -27,18 +27,29 @@ export default class Expression {
       case "/":
       case "*":
       case "^":
+      case ">":
+      case "<":
+      case ">=":
+      case "<=":
+      case "=":
+      case "!=":
         const lhs = ("left" in expr) ? this.eval_expr(expr.left, ctx) : 0;
         const rhs = this.eval_expr(expr.right, ctx);
-        return BUITLIN_FUNCTIONS[expr._type].call(lhs, rhs);
+
+        if (expr._type == "/" && rhs == 0) {
+          throw new Error("Division by zero");
+        }
+
+        return BUITLIN_FUNCTIONS[expr._type](lhs, rhs);
       case "fn":
         if (!(expr.ident in BUITLIN_FUNCTIONS)) {
           throw new Error(`Tried to call builtin function '${expr.ident}', but it does not exist.`);
         }
         let fn = BUITLIN_FUNCTIONS[expr.ident];
-        if (fn.num_params !== expr.params.length) {
-          throw new Error(`Tried to call builtin function '${expr.ident}', with ${expr.params.length} parameters, but it takes ${fn.num_params}`);
+        if (fn.length !== expr.params.length) {
+          throw new Error(`Tried to call builtin function '${expr.ident}', with ${expr.params.length} parameters, but it takes ${fn.length}`);
         }
-        return fn.call(...expr.params.map(expr => this.eval_expr(expr, ctx)));
+        return fn(...expr.params.map(expr => this.eval_expr(expr, ctx)));
       case "var":
         if (!(expr.ident in ctx)) {
           throw new Error(`Referenced undefined variable ${expr.ident}`);

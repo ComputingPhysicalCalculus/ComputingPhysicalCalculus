@@ -40,6 +40,12 @@ describe("expression lexing", _ => {
     [","],
     ["("],
     [")"],
+    [">"],
+    ["<"],
+    [">="],
+    ["<="],
+    ["="],
+    ["!="],
   ])("lex '%s' as punctuation", (s) => {
     const [tk, rest] = next_token(s);
 
@@ -62,7 +68,7 @@ describe("expression lexing", _ => {
       ]
     ],
     [
-      "5+6*7/x^sin(45)",
+      "5+6*7/x^sin(45)><,=>=<=!=",
       [
         TokenType.Literal,
         TokenType.Add,
@@ -76,6 +82,13 @@ describe("expression lexing", _ => {
         TokenType.LBracket,
         TokenType.Literal,
         TokenType.RBracket,
+        TokenType.Gt,
+        TokenType.Lt,
+        TokenType.Comma,
+        TokenType.Eq,
+        TokenType.GtEq,
+        TokenType.LtEq,
+        TokenType.Neq,
       ],
     ]
   ])("lex '%s' -> %j", (s, expected) => {
@@ -191,6 +204,14 @@ describe("expression parsing", () => {
       "x(y(6, 7), 8)",
       fn("x", [fn("y", [lit(6), lit(7)]), lit(8)]),
     ],
+    [
+      "5 + 6 = 6 * 7",
+      bin(bin(lit(5), "+", lit(6)), "=", bin(lit(6), "*", lit(7))),
+    ],
+    [
+      "5 + 6 >= 6 ^ 7",
+      bin(bin(lit(5), "+", lit(6)), ">=", bin(lit(6), "^", lit(7))),
+    ],
   ])("parse '%s' -> %j", (s, expected) => {
     expect(Expression.parse(s)).toStrictEqual(expected);
   })
@@ -209,7 +230,83 @@ describe("expression evaluation", () => {
     ["sin(pi / 2)", Math.sin(Math.PI / 2)],
     ["cos(pi)", Math.cos(Math.PI)],
     ["tan(2)", Math.tan(2)],
+    ["1 = 1", 1],
+    ["1 = 0", 0],
+    ["1 != 1", 0],
+    ["1 != 2", 1],
+    ["1 > 1", 0],
+    ["1 > 0", 1],
+    ["1 < 0", 0],
+    ["1 < 2", 1],
+    ["1 >= 1", 1],
+    ["1 >= 0", 1],
+    ["1 >= 2", 0],
+    ["1 <= 0", 0],
+    ["1 <= 1", 1],
+    ["1 <= 2", 1],
   ])("eval '%s' -> %d", (s, expected) => {
     expect(Expression.eval(s)).toBeCloseTo(expected, 8);
+  });
+
+  test.each([
+    ["x", {x: 5}, 5],
+    ["sin(x)", {x: Math.PI / 2}, Math.sin(Math.PI / 2)],
+    ["x + y", {x: 6, y: 7}, 13],
+    ["theta", {theta: Math.PI}, Math.PI],
+  ])("eval '%s' with context %j -> %d", (s, ctx, expected) => {
+    expect(Expression.eval(s, ctx)).toBeCloseTo(expected, 8);
+  });
+
+  test.each([
+    ["abs(x)", Math.abs],
+    ["acos(x)", Math.acos],
+    ["acosh(x)", Math.acosh],
+    ["asin(x)", Math.asin],
+    ["asinh(x)", Math.asinh],
+    ["atan(x)", Math.atan],
+    ["atanh(x)", Math.atanh],
+    ["ceil(x)", Math.ceil],
+    ["cos(x)", Math.cos],
+    ["cosh(x)", Math.cosh],
+    ["deg(x)", x => x / (Math.PI / 180)],
+    ["exp(x)", Math.exp],
+    ["floor(x)", Math.floor],
+    ["ln(x)", Math.log],
+    ["rad(x)", x => x * (Math.PI / 180)],
+    ["sign(x)", Math.sign],
+    ["sin(x)", Math.sin],
+    ["sinh(x)", Math.sinh],
+    ["tan(x)", Math.tan],
+    ["tanh(x)", Math.tanh],
+    ["trunc(x)", Math.trunc],
+  ])("test builtin function '%s'", (s, fn) => {
+    let compiled = Expression.compile(s);
+    for (let x = -Math.PI; x < Math.PI; x += 0.01) {
+      let fn_result = fn(x);
+      if (Number.isNaN(fn_result)) {
+        expect(compiled({ x })).toBe(Number.NaN);
+      } else {
+        expect(compiled({ x })).toBeCloseTo(fn_result, 8);
+      }
+    }
+  });
+
+  test.each([
+    ["atan2(x, y)", Math.atan2],
+    ["log(x, y)", (lhs: number, rhs: number) => Math.log(rhs) / Math.log(lhs)],
+    ["min(x, y)", Math.min],
+    ["max(x, y)", Math.max],
+  ])("test builtin function '%s'", (s, fn) => {
+    let compiled = Expression.compile(s);
+    for (let x = -Math.PI; x < Math.PI; x += 0.1) {
+      for (let y = -Math.PI; y < Math.PI; y += 0.1) {
+        let fn_result = fn(x, y);
+        if (Number.isNaN(fn_result)) {
+          expect(compiled({ x, y })).toBe(Number.NaN);
+        } else {
+          expect(compiled({ x, y })).toBeCloseTo(fn_result, 8);
+        }
+      }
+    }
   })
 });
