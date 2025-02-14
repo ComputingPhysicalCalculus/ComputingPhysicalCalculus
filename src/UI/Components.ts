@@ -302,10 +302,12 @@ function createFunctionTable(div: DraggableComponentElement): void {
     graph_element.y_max = data.y_max;
     graph_element.gantry_x = data.gantry_x;
 
-    let compiled_expr = Expression.compile(data.fn);
-    let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
-    graph_element.set_data_set("a", Array.from([...generator_exp]));
-    graph_element.data_sets["a"].fn = data.fn;
+    if (data.fn !== undefined) {
+      let compiled_expr = Expression.compile(data.fn);
+      let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
+      graph_element.set_data_set("a", Array.from([...generator_exp]));
+      graph_element.data_sets["a"].fn = data.fn;
+    }
   }
 }
 

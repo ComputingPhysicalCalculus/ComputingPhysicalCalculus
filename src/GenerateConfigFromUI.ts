@@ -207,6 +207,5 @@ export function toConfig(): Config {
     const shafts = config1;
     const components: any = config2;
     const config: Config = { shafts, components };
-    console.log(JSON.stringify(config));
     return config;
 }

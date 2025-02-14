@@ -10,6 +10,9 @@ import Vector2 from "./UI/Vector2";
 import { UNDO_SINGLETON } from "./Undo";
 import { export_simulator } from "./run";
 import { GraphElement } from "./UI/GraphElement";
+import { Simulator } from "./core/Main";
+import { FunctionTable } from "./core/FunctionTable";
+import Expression from "./expr/Expression";
 
 enum State {
   Paused,
@@ -296,12 +299,18 @@ export class Lifecycle {
     this.pause_button.hidden = false;
     this.unpause_button.hidden = true;
 
-    const simulator = export_simulator(this.exportState(), Number(this.motor_speed_input.value));
+    const simulator = new Simulator(this.exportState())
     const step_period = Number(this.step_period_input.value);
     const get_motor_speed = () => Number(this.motor_speed_input.value);
 
     const output_table = document.querySelector(".outputTable > graph-table")! as GraphElement;
     const function_table = document.querySelector(".functionTable > graph-table")! as GraphElement;
+
+    simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
+      x.fun = x => Expression.compile(function_table.data_sets["a"].fn ?? "")({ x });
+    });
+
+    simulator.outputTables[0].y2History = [-1];
 
     output_table.set_data_set("a", []);
     output_table.set_data_set("b", [], "red", true);
@@ -338,8 +347,6 @@ export class Lifecycle {
 
       output_table.gantry_x = x[next_steps - 1];
       function_table.gantry_x = x[next_steps - 1];
-
-      console.log(next_steps, x[steps_taken - 1]);
 
       if (next_steps != 0 && x[steps_taken - 1] >= output_table.x_max) {
         this.pause();

@@ -16,7 +16,7 @@ export class FunctionTable implements Device {
     private output: Shaft;
     private x_position: number;
     private f_n: number;
-    private fun: (n: number) => number;
+    fun: (n: number) => number;
     private input: Shaft;
 
     /**
