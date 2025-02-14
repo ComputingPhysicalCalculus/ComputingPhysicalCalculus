@@ -60,7 +60,7 @@ export class DraggableComponentElement extends LitElement {
   @property({ type: Number })
   outputRatio: number = 1;
 
-  export_fn: (_this: DraggableComponentElement) => { _type: ComponentType, data: any } = () => ({ _type: ComponentType.Gear, data: {} });
+  export_fn: (_this: DraggableComponentElement) => { _type: ComponentType, data: any } = () => ({ _type: ComponentType.HShaft, data: {} });
 
   import_fn: (_this: DraggableComponentElement, obj: any) => void = (_obj) => { };
 

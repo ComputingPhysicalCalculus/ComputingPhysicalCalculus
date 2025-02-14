@@ -71,8 +71,8 @@ export type OutputTableConfig = {
   position: [number, number];
 };
 
-export type GearConfig = {
-  type: "gear";
+export type CrossConnectConfig = {
+  type: "crossConnect";
   compID: number;
   horizontal: ShaftID;
   vertical: ShaftID;
@@ -106,7 +106,7 @@ export type DialConfig = {
 };
 
 const type_name_dict = {
-  "gear": "Gear",
+  "crossConnect": "CrossConnect",
   "integrator": "Integrator",
   "functionTable": "FunctionTable",
   "differential": "Differential",
@@ -132,7 +132,7 @@ export function loadConfig(config: Config): void {
     let item = createComponent(stringToComponent(componentType) as ComponentType) as DraggableComponentElement;
 
     switch (components.type) {
-      case "gear":
+      case "crossConnect":
       case "integrator":
       case "differential":
       case "motor":

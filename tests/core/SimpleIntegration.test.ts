@@ -13,9 +13,9 @@ import { OutputTable } from "../../src/core/OutputTable";
 import { Motor } from "../../src/core/Motor";
 import { Simulator } from "../../src/core/Main";
 import { Shaft } from "../../src/core/Shaft";
-import { Gear } from "../../src/core/Gear";
+import { CrossConnect } from "../../src/core/CrossConnect";
 import { assert, test, describe, expect, it } from 'vitest'
-import { PPMC, binary_search, MSE} from "./TestingUtil.ts";
+import { PPMC, binary_search, MSE } from "./TestingUtil.ts";
 import fs from 'fs';
 
 const WRITE_TO_FILE = false;
@@ -26,14 +26,14 @@ const WRITE_TO_FILE = false;
  * @return x value
  * @author Simon Solca
 */
-function test_simple_integral(){
+function test_simple_integral() {
     // number of cycles
     const N = 1000;
     // test statistic
     const PPMC_THRESHOLD = 0.9999;
     const MSE_THRESHOLD = 0.001;
 
-    let rotation_rate = 6/N;
+    let rotation_rate = 6 / N;
 
 
     // initialise shafts
@@ -52,18 +52,18 @@ function test_simple_integral(){
     let diff = new Differential(shaft_two_sint, shaft_t, shaft_two_sint_plus_t);
     let integrator = new Integrator(shaft_t_into_integrator, shaft_two_sint_plus_t, shaft_intt, false, 0);
     let output_table = new OutputTable(shaft_t, shaft_two_sint_plus_t, 0, shaft_intt, -2);
-    let gear_sin = new Gear(shaft_t, shaft_t_into_sin);
-    let gear_int = new Gear(shaft_t, shaft_t_into_integrator);
-    let gear_f_to_sin = new Gear(shaft_f_to_shaft_sint, shaft_sint);
-    
+    let cross_connect_sin = new CrossConnect(shaft_t, shaft_t_into_sin);
+    let cross_connect_int = new CrossConnect(shaft_t, shaft_t_into_integrator);
+    let cross_connect_f_to_sin = new CrossConnect(shaft_f_to_shaft_sint, shaft_sint);
+
     // initialise motor
     let motor = new Motor(rotation_rate, shaft_t);
 
     // set the outputs
-    shaft_t.outputs = [gear_sin, gear_int, output_table, diff];
+    shaft_t.outputs = [cross_connect_sin, cross_connect_int, output_table, diff];
     shaft_t_into_sin.outputs = [function_table];
     shaft_t_into_integrator.outputs = [integrator];
-    shaft_f_to_shaft_sint.outputs = [gear_f_to_sin];
+    shaft_f_to_shaft_sint.outputs = [cross_connect_f_to_sin];
     shaft_sint.outputs = [multi];
     shaft_intt.outputs = [output_table];
     shaft_two_sint.outputs = [diff];
@@ -72,7 +72,7 @@ function test_simple_integral(){
     // add all the attributes to the simulator
     let simulator = new Simulator()
     let shafts = [shaft_intt, shaft_two_sint_plus_t, shaft_t, shaft_sint, shaft_two_sint, shaft_t_into_integrator, shaft_t_into_sin];
-    let devices = [multi, diff, function_table, integrator, output_table, gear_int, gear_sin, gear_f_to_sin];
+    let devices = [multi, diff, function_table, integrator, output_table, cross_connect_int, cross_connect_sin, cross_connect_f_to_sin];
     simulator.shafts = shafts;
     simulator.motor = motor;
     simulator.outputTables = [output_table];
@@ -82,21 +82,21 @@ function test_simple_integral(){
     simulator.setup();
 
     // step through N times
-    for(let i = 0; i < N; i++) {
+    for (let i = 0; i < N; i++) {
         simulator.step();
-    }    
+    }
 
     // t values and x values
     let t = simulator.outputTables[0].xHistory;
     let x = simulator.outputTables[0].y2History!;
 
     // integrated function
-    let F = (v :number) => -2*Math.cos(v) + 0.5 * v * v;
+    let F = (v: number) => -2 * Math.cos(v) + 0.5 * v * v;
     // true values for comparision
-    let true_values = Array.from({length: N+1}, (_, i) => F(t[i]));
+    let true_values = Array.from({ length: N + 1 }, (_, i) => F(t[i]));
 
 
-    if (WRITE_TO_FILE){
+    if (WRITE_TO_FILE) {
         const lines: string[] = [];
         for (let i = 0; i < x.length; i++) {
             const line = `${t[i]}, ${x[i]}, ${true_values[i]}`;
@@ -111,7 +111,7 @@ function test_simple_integral(){
     let m = MSE(x, true_values);
 
     // console.log(r,m);
-    
+
     expect(r).toBeGreaterThan(PPMC_THRESHOLD);
     expect(m).toBeLessThan(MSE_THRESHOLD);
 };

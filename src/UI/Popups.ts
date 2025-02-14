@@ -8,7 +8,7 @@ import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
 
 let shaftPopup: HTMLDivElement;
-let gearPopup: HTMLDivElement;
+let crossConnectPopup: HTMLDivElement;
 let integratorPopup: HTMLDivElement;
 let motorPopup: HTMLDivElement;
 let multiplierPopup: HTMLDivElement;
@@ -17,7 +17,7 @@ let functionTablePopup: HTMLDivElement;
 
 export function setupPopups(): void {
   setupShaftPopup();
-  setupGearPopup();
+  setupCrossConnectPopup();
   setupIntegratorPopup();
   setupMotorPopup();
   setupMultiplierPopup();
@@ -60,13 +60,13 @@ export function openShaftPopup(e: MouseEvent): void {
   e.preventDefault();
 }
 
-export function openGearPopup(e: MouseEvent): void {
+export function openCrossConnectPopup(e: MouseEvent): void {
   if (currentlyDragging()) return;
 
-  openPopup(e, gearPopup);
+  openPopup(e, crossConnectPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
-  const checkbox = gearPopup.querySelector("input") as HTMLInputElement;
+  const checkbox = crossConnectPopup.querySelector("input") as HTMLInputElement;
   checkbox.checked = target.outputRatio < 0;
 
   e.preventDefault();
@@ -166,7 +166,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
 }
 
 function documentClick(e: MouseEvent) {
-  let popups = [shaftPopup, gearPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup,];
+  let popups = [shaftPopup, crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup,];
   popups.forEach(popup => {
     if (!mouseWithin(popup, e)) {
       popup.style.visibility = "hidden";
@@ -197,11 +197,11 @@ function setupShaftPopup(): void {
   }
 }
 
-function setupGearPopup(): void {
-  gearPopup = document.getElementById("gear-popup") as HTMLDivElement;
-  gearPopup.addEventListener("mouseleave", closePopup);
+function setupCrossConnectPopup(): void {
+  crossConnectPopup = document.getElementById("cross-connect-popup") as HTMLDivElement;
+  crossConnectPopup.addEventListener("mouseleave", closePopup);
 
-  const inputs = gearPopup.getElementsByTagName("input");
+  const inputs = crossConnectPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
@@ -212,7 +212,7 @@ function setupGearPopup(): void {
       else
         component.outputRatio = 1;
 
-      component.querySelector("gear-component")!.inverted = input.checked;
+      component.querySelector("cross-connect-component")!.inverted = input.checked;
     });
   }
 }

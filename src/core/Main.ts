@@ -11,7 +11,7 @@ import { Integrator } from "./Integrator";
 import { Motor } from "./Motor";
 import { Multiplier } from "./Multiplier";
 import { OutputTable } from "./OutputTable";
-import { Gear } from "./Gear";
+import { CrossConnect } from "./CrossConnect";
 import { Shaft } from "./Shaft";
 import { Config } from "../config";
 
@@ -32,13 +32,13 @@ export class Simulator {
         initialY1: number = 0,
         initialY2: number = 0,
         inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
-    ){
+    ) {
         this.rotation = rotation;
         this.initial_x_position = initial_x_position;
         this.initialY1 = initialY1;
         this.initialY2 = initialY2;
         this.inputFunction = inputFunction;
-        if (config !== undefined){
+        if (config !== undefined) {
             this.parse_config(config);
             this.setup();
         }
@@ -72,13 +72,13 @@ export class Simulator {
         }
     }
 
-    step(){
+    step() {
         // update motor - effectively set independant shaft
         // to be the motors speed
         this.motor!.update();
 
         // update the components 
-        for (const device of this.components){
+        for (const device of this.components) {
             device.update();
         }
 
@@ -146,8 +146,8 @@ export class Simulator {
                     components.push(new_component);
                     break;
 
-                case 'gear':
-                    new_component = new Gear(
+                case 'crossConnect':
+                    new_component = new CrossConnect(
                         shafts.get(component.horizontal)!,
                         shafts.get(component.vertical)!
                     );

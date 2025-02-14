@@ -11,7 +11,7 @@ import "./UI/DraggableElement";
 import "./UI/GraphElement";
 import "./UI/ShaftElement";
 import "./UI/MotorComponent";
-import "./UI/GearComponentElement";
+import "./UI/CrossConnectComponentElement";
 import "./UI/DifferentialComponentElement";
 import "./UI/MultiplierComponentElement";
 import "./UI/GearPairComponentElement.ts";

@@ -1,5 +1,5 @@
 /**
- * @file Gear.ts
+ * @file CrossConnect.ts
  * @description This file contains the definition of the Gear class.
  * @author Andy Zhu
  */
@@ -8,18 +8,18 @@ import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
 /**
- * @class Gear
- * @description the Gear class which simulates the Gear connecting a vertical and a horizontal shaft
+ * @class Cross COnnect
+ * @description the Cross connnect class which simulates the Cross connect connecting a vertical and a horizontal shaft
  * @implements Device
  */
-export class Gear implements Device {
+export class CrossConnect implements Device {
     private shafts: Shaft[];
     private output: Shaft | undefined;
     private input: Shaft | undefined;
 
     /**
      * @constructor
-     * @description The constructor of the Gear class.
+     * @description The constructor of the Cross Connect class.
      * @param shaft1 The shaft that represents one of the connected shaft
      * @param shaft2 The shaft that represents one of the connected shaft
      */
@@ -33,14 +33,14 @@ export class Gear implements Device {
      * @returns The output shaft that represents the output of the Gear given the input
      */
     determine_output(): Shaft | undefined {
-        if(!this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
+        if (!this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
             return undefined;
         }
-        if(this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
+        if (this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
             this.output = this.shafts[1];
             this.input = this.shafts[0]
         }
-        if(this.shafts[1].ready_flag && !this.shafts[0].ready_flag) {
+        if (this.shafts[1].ready_flag && !this.shafts[0].ready_flag) {
             this.output = this.shafts[0];
             this.input = this.shafts[1]
         }

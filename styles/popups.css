@@ -38,7 +38,7 @@
   visibility: hidden;
 }
 
-#gear-popup {
+#cross-connect-popup {
   display: flex;
   flex-direction: row;
   visibility: hidden;

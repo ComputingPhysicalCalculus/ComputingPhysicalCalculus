@@ -2,17 +2,17 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openGearPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup } from "./Popups.ts"
+import { openShaftPopup, openCrossConnectPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
 import { GearPairComponentElement } from "./GearPairComponentElement.ts";
-import { GearComponentElement } from "./GearComponentElement.ts";
+import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import Expression from "@src/expr/Expression.ts";
 
 export enum ComponentType {
   VShaft,
   HShaft,
-  Gear,
+  CrossConnect,
   Integrator,
   FunctionTable,
   Differential,
@@ -43,8 +43,8 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     case ComponentType.VShaft:
       createVShaft(comp);
       break;
-    case ComponentType.Gear:
-      createGear(comp);
+    case ComponentType.CrossConnect:
+      createCrossConnect(comp);
       break;
     case ComponentType.HShaft:
       createHShaft(comp);
@@ -131,16 +131,16 @@ function createVShaft(div: DraggableComponentElement): void {
   }
 }
 
-function createGear(div: DraggableComponentElement): void {
+function createCrossConnect(div: DraggableComponentElement): void {
   div.width = 1;
   div.height = 1;
-  div.componentType = "gear";
+  div.componentType = "crossConnect";
   div.shouldLockCells = true;
-  div.classList.add("gear");
+  div.classList.add("crossConnect");
 
-  div.addEventListener("mouseup", openGearPopup);
+  div.addEventListener("mouseup", openCrossConnectPopup);
 
-  render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div);
+  render(html`<cross-connect-component teeth="6" style="width:100%;height:100%"></cross-connect-component>`, div);
 
   type ExportedData = {
     top: number,
@@ -149,23 +149,23 @@ function createGear(div: DraggableComponentElement): void {
   };
 
   div.export_fn = (_this) => {
-    const gear = _this.querySelector("gear-component") as GearComponentElement;
+    const connect = _this.querySelector("cross-connect-component") as CrossConnectComponentElement;
     return {
-      _type: ComponentType.Gear,
+      _type: ComponentType.CrossConnect,
       data: {
         top: _this.top,
         left: _this.left,
-        reversed: gear.inverted,
+        reversed: connect.inverted,
       },
     };
   };
 
   div.import_fn = (_this, data: ExportedData) => {
-    const gear = _this.querySelector("gear-component") as GearComponentElement;
+    const connect = _this.querySelector("cross-connect-component") as CrossConnectComponentElement;
     _this.top = data.top;
     _this.left = data.left;
 
-    gear.inverted = data.reversed;
+    connect.inverted = data.reversed;
   };
 }
 
@@ -561,7 +561,7 @@ function createGearPair(div: DraggableComponentElement): void {
   div.export_fn = (_this) => {
     const gear_pair = _this.querySelector("gear-pair-component") as GearPairComponentElement;
     return {
-      _type: ComponentType.Gear,
+      _type: ComponentType.GearPair,
       data: {
         top: _this.top,
         left: _this.left,
@@ -587,8 +587,6 @@ function createDial(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("dial");
 
-  // div.addEventListener("mouseup", openGearPopup);
-
   render(html`<dial-component style="width:100%;height:100%"></dial-component>`, div);
 
   type ExportedData = {
@@ -598,7 +596,7 @@ function createDial(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type: ComponentType.Gear,
+      _type: ComponentType.Dial,
       data: {
         top: _this.top,
         left: _this.left,

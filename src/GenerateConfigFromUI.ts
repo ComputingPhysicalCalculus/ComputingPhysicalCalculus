@@ -75,7 +75,7 @@ export function toConfig(): Config {
         const position = [Number(thisComponent.left), Number(thisComponent.top)];
 
         switch (thisComponent.componentType) {
-            case 'gear':
+            case 'crossConnect':
                 {
                     const { _type, data: { _top, _left, reversed } } = thisComponent.export_fn(thisComponent);
 
