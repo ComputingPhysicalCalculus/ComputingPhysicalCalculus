@@ -61,6 +61,7 @@ export function openShaftPopup(e: MouseEvent): void {
 }
 
 export function openCrossConnectPopup(e: MouseEvent): void {
+  if (e.button != 2) return;
   if (currentlyDragging()) return;
 
   openPopup(e, crossConnectPopup);
@@ -73,6 +74,7 @@ export function openCrossConnectPopup(e: MouseEvent): void {
 }
 
 export function openIntegratorPopup(e: MouseEvent): void {
+  if (e.button != 2) return;
   if (currentlyDragging()) return;
 
   openPopup(e, integratorPopup);
@@ -85,6 +87,7 @@ export function openIntegratorPopup(e: MouseEvent): void {
 }
 
 export function openFunctionTablePopup(e: MouseEvent): void {
+  if (e.button != 2) return;
   if (currentlyDragging()) return;
 
   openPopup(e, functionTablePopup);
@@ -98,6 +101,7 @@ export function openFunctionTablePopup(e: MouseEvent): void {
 }
 
 export function openMotorPopup(e: MouseEvent): void {
+  if (e.button != 2) return;
   if (currentlyDragging()) return;
 
   openPopup(e, motorPopup);
@@ -114,6 +118,7 @@ export function openMotorPopup(e: MouseEvent): void {
 }
 
 export function openMultiplierPopup(e: MouseEvent): void {
+  if (e.button != 2) return;
   if (currentlyDragging()) return;
 
   openPopup(e, multiplierPopup);
@@ -125,6 +130,7 @@ export function openMultiplierPopup(e: MouseEvent): void {
 }
 
 export function openGearPairPopup(e: MouseEvent): void {
+  if (e.button != 2) return;
   if (currentlyDragging()) return;
 
   openPopup(e, gearPairPopup);
