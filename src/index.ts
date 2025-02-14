@@ -16,6 +16,7 @@ import "./UI/DifferentialComponentElement";
 import "./UI/MultiplierComponentElement";
 import "./UI/GearPairComponentElement.ts";
 import "./UI/DialComponentElement.ts";
+import "./expr/Expression.ts";
 
 import "./run.ts";
 
