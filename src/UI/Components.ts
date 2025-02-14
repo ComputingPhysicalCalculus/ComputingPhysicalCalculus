@@ -260,6 +260,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
   function_table.setAttribute("y-max", "1.5");
   function_table.setAttribute("gantry-x", "0.0");
   function_table.setAttribute("padding", "5");
+  function_table.isAnOutput = false;
 
   div.appendChild(function_table);
 
@@ -303,7 +304,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
     graph_element.y_max = data.y_max;
     graph_element.gantry_x = data.gantry_x;
 
-    if (data.fn !== undefined) {
+    if (data.fn !== undefined && data.fn != "") {
       let compiled_expr = Expression.compile(data.fn);
       let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
       graph_element.set_data_set("1", Array.from([...generator_exp]));
@@ -374,6 +375,7 @@ function createOutputTable(div: DraggableComponentElement): void {
 
   graph.set_data_set("1", [{ x: 0, y: 0 }], "blue");
   graph.set_data_set("2", [{ x: 0, y: 0 }], "red", true);
+  graph.isAnOutput = true;
 
   type ExportedData = {
     top: number,

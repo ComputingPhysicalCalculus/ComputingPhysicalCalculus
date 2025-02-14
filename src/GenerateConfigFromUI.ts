@@ -99,7 +99,7 @@ export function toConfig(): Config {
                     const { _type, data: { _top, _left, x_min, x_max, y_min, y_max, fn } } = thisComponent.export_fn(thisComponent);
 
                     const inputShaft = getVShaftID(position[0] + 2, position[1] + 4);
-                    const outputShaft = getVShaftID(position[0] + 1, position[1] + 4);
+                    const outputShaft = getVShaftID(position[0] + 3, position[1] + 4);
 
                     return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft, fn }
                 }
@@ -117,9 +117,9 @@ export function toConfig(): Config {
                 {
                     const { _type, data: { _top, _left, x_min, x_max, y_min, y_max, initialY1, initialY2 } } = thisComponent.export_fn(thisComponent);
 
-                    const inputShaft = getVShaftID(position[0] + 2, position[1] + 4);
-                    const outputShaft1 = getVShaftID(position[0] + 3, position[1] + 4);
-                    const outputShaft2 = getVShaftID(position[0] + 1, position[1] + 4);
+                    const inputShaft = getVShaftID(position[0] + 1, position[1] + 4);
+                    const outputShaft1 = getVShaftID(position[0] + 2, position[1] + 4);
+                    const outputShaft2 = getVShaftID(position[0] + 3, position[1] + 4);
 
                     return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft1, outputShaft2, initialY1, initialY2 }
                 }

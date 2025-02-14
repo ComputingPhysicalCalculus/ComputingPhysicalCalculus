@@ -1,4 +1,4 @@
-import { css, html, LitElement, PropertyValues, unsafeCSS } from "lit";
+import { css, html, LitElement, PropertyValues, unsafeCSS, svg } from "lit";
 import { customElement, property, query, queryAsync } from "lit/decorators.js";
 
 import styles from "../../styles/GraphElement.css?inline";
@@ -9,7 +9,7 @@ const SQRT_3_2 = Math.sqrt(3) / 2;
 @customElement("graph-table")
 export class GraphElement extends LitElement {
   static styles = css`${unsafeCSS(styles)}`;
-  
+
   @query("canvas")
   _canvas!: HTMLCanvasElement;
 
@@ -33,6 +33,9 @@ export class GraphElement extends LitElement {
 
   @property({ type: Number })
   padding: number = 10;
+
+  @property({ type: Boolean })
+  isAnOutput: boolean = false;
 
   data_sets: {
     [key: string]: {
@@ -60,12 +63,12 @@ export class GraphElement extends LitElement {
   }
 
   map_x_graph_to_screen(x: number): number {
-    
-      return (x - this.x_min) / (this.x_max - this.x_min) * (this.offsetWidth - this.padding * 2) + this.padding;
+
+    return (x - this.x_min) / (this.x_max - this.x_min) * (this.offsetWidth - this.padding * 2) + this.padding;
   }
 
   map_y_graph_to_screen(y: number): number {
-      return this.offsetHeight - this.padding - (y - this.y_min) / (this.y_max - this.y_min) * (this.offsetHeight - this.padding * 2);
+    return this.offsetHeight - this.padding - (y - this.y_min) / (this.y_max - this.y_min) * (this.offsetHeight - this.padding * 2);
   }
 
   set_data_set(key: string, points: { x: number, y: number }[], style: string = "blue", invert_head: boolean = false) {
@@ -79,7 +82,7 @@ export class GraphElement extends LitElement {
     }
 
     callback(this.data_sets[key].points);
-    
+
     this.requestUpdate();
     return true;
   }
@@ -87,9 +90,67 @@ export class GraphElement extends LitElement {
   protected updated(_changedProperties: PropertyValues): void {
     this._draw();
   }
-  
+
   render() {
+    let content = svg``;
+    if (!this.isAnOutput) {
+      content = svg`
+        <polygon points=" 118 191
+                          126 191
+                          125 188
+                          131 193
+                          125 198
+                          126 195
+                          118 195"
+                          fill="black"/>
+        <polygon points=" 173 198
+                          173 190
+                          170 190.5
+                          175 184
+                          180 190.5
+                          177 190
+                          177 198"
+                          fill="blue"/>
+      `;
+    } else {
+      content = svg`
+        <polygon points=" 68 191
+                          76 191
+                          75 188
+                          81 193
+                          75 198
+                          76 195
+                          68 195"
+                          fill="black"/>
+        <polygon points=" 122 198
+                          122 190
+                          119 190.5
+                          124 184
+                          129 190.5
+                          126 190
+                          126 198"
+                          fill="blue"/>
+        <polygon points=" 172 198
+                          172 190
+                          169 190.5
+                          174 184
+                          179 190.5
+                          176 190
+                          176 198"
+                          fill="red"/>
+      `;
+    }
+    // console.log(content);
+    // <rect x="125" y="175" width="200" height="200" fill="black">
     return html`
+    <svg
+        xmlns="https://www.w3.org/2000/svg"
+        width="200" height="200"
+        viewBox="0 0 200 200"
+        style="width:100%;height:100%;position:absolute;z-index:5" 
+        >
+        ${content}
+       </svg>
       <canvas />
     `;
   }
@@ -113,7 +174,7 @@ export class GraphElement extends LitElement {
 
     ctx.lineWidth = 1;
     for (let data of Object.values(this.data_sets)) {
-      
+
       ctx.strokeStyle = data.style;
       this._draw_points(ctx, data.points);
 
@@ -147,7 +208,7 @@ export class GraphElement extends LitElement {
     if (this.y_max < 0.0) {
       y = this.padding;
     } else if (this.y_min < 0.0) {
-      y +=  this.y_min / (this.y_max - this.y_min)
+      y += this.y_min / (this.y_max - this.y_min)
         * (this._canvas.height - this.padding * 2);
     }
 
@@ -183,7 +244,7 @@ export class GraphElement extends LitElement {
     if (this.gantry_x === undefined) {
       return;
     }
-    
+
     // Gantry vertical bar
     ctx.beginPath();
 
@@ -221,7 +282,7 @@ export class GraphElement extends LitElement {
     if (this.gantry_x === undefined) {
       return;
     }
-    
+
     if (this.gantry_x < this.x_min || this.gantry_x > this.x_max) {
       return;
     }
@@ -231,7 +292,7 @@ export class GraphElement extends LitElement {
     } else if (y > this.y_max) {
       y = this.y_max;
     }
-    
+
     const gantry_x_screen = this.map_x_graph_to_screen(this.gantry_x);
     let gantry_y_screen = this.map_y_graph_to_screen(y);
 
