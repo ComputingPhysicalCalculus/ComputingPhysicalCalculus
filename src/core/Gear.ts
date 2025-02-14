@@ -30,19 +30,23 @@ export class Gear implements Device {
      * @description This method calculates the nextRotation of output shaft
      * @returns The output shaft that represents the output of the Gear given the input
      */
-    getOutput(): Shaft | undefined {
-        if(!this.shafts[0].resultReady && !this.shafts[1].resultReady) {
+    determine_output(): Shaft | undefined {
+        if(!this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
             return undefined;
         }
-        if(this.shafts[0].resultReady) {
-            this.shafts[1].nextRotation = this.shafts[0].nextRotation;
-            this.shafts[1].resultReady = true;
+        if(this.shafts[0].ready_flag) {
             return this.shafts[1];
         }
-        if(this.shafts[1].resultReady) {
-            this.shafts[0].nextRotation = this.shafts[1].nextRotation;
-            this.shafts[0].resultReady = true;
+        if(this.shafts[1].ready_flag) {
             return this.shafts[0];
+        }
+    }
+    update(): void {
+        let output: Shaft | undefined = this.determine_output();
+        if(output == this.shafts[0]) {
+            output?.set_rotation_rate(this.shafts[1].get_rotation_rate())
+        } else if(output == this.shafts[1]) {
+            output?.set_rotation_rate(this.shafts[0].get_rotation_rate())
         }
     }
 }
