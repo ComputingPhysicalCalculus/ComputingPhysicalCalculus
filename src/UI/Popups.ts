@@ -15,6 +15,7 @@ let multiplierPopup: HTMLDivElement;
 let gearPairPopup: HTMLDivElement;
 let functionTablePopup: HTMLDivElement;
 let outputTablePopup: HTMLDivElement;
+let labelPopup: HTMLDivElement;
 
 export function setupPopups(): void {
   setupShaftPopup();
@@ -25,6 +26,7 @@ export function setupPopups(): void {
   setupGearPairPopup();
   setupFunctionTablePopup();
   setupOutputTablePopup();
+  setupLabelPopup();
 
   document.addEventListener("click", documentClick);
 }
@@ -172,6 +174,24 @@ export function openGearPairPopup(e: MouseEvent): void {
       input.value = String(target.ratio_bottom);
     }
   }
+
+  e.preventDefault();
+}
+
+export function openLabelPopup(e: MouseEvent): void {
+  if (e.button != 2) return;
+  if (currentlyDragging()) return;
+
+  openPopup(e, labelPopup);
+
+  const target = (e.currentTarget as DraggableComponentElement);
+  {
+    const paragraph = target.querySelector("p")!;
+    (labelPopup.querySelector("#label-popup-text") as HTMLInputElement)!.value = paragraph.textContent!;
+  }
+
+  (labelPopup.querySelector("#label-popup-width") as HTMLInputElement)!.value = String(target.width);
+  (labelPopup.querySelector("#label-popup-height") as HTMLInputElement)!.value = String(target.height);
 
   e.preventDefault();
 }
@@ -359,7 +379,7 @@ function setupFunctionTablePopup(): void {
 
 function setupOutputTablePopup(): void {
   outputTablePopup = document.getElementById("output-table-popup") as HTMLDivElement;
-  outputTablePopup .addEventListener("mouseleave", closePopup);
+  outputTablePopup.addEventListener("mouseleave", closePopup);
 
   const inputs = outputTablePopup.querySelectorAll("* > input");
   console.log(inputs);
@@ -391,6 +411,29 @@ function setupOutputTablePopup(): void {
       }
     })
   }
+}
+
+function setupLabelPopup(): void {
+  labelPopup = document.getElementById("label-popup") as HTMLDivElement;
+  labelPopup.addEventListener("mouseleave", closePopup);
+
+  labelPopup.querySelector("#label-popup-text")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
+    component.textContent = input.value;
+  });
+
+  labelPopup.querySelector("#label-popup-width")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!}`) as DraggableComponentElement;
+    component.width = input.valueAsNumber;
+  });
+
+  labelPopup.querySelector("#label-popup-height")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!}`) as DraggableComponentElement;
+    component.height = input.valueAsNumber;
+  });
 }
 
 function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {

@@ -211,10 +211,12 @@ export function allValid(topLeft: Vector2, size: Vector2): boolean {
 
 export function validShaft(topLeft: Vector2, shaft: DraggableComponentElement): boolean {
   const size = shaft.getSize();
-  if (size.x == 1) {
+  if (shaft.componentType == "vShaft") {
     return !rangeContainsVShaft(topLeft, size, shaft);
-  } else {
+  } else if (shaft.componentType == "hShaft") {
     return !rangeContainsHShaft(topLeft, size, shaft);
+  } else { // Label
+    return true;
   }
 }
 

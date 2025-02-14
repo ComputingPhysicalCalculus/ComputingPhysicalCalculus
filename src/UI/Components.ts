@@ -2,7 +2,7 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup } from "./Popups.ts"
+import { openShaftPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup, openLabelPopup } from "./Popups.ts"
 
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
@@ -509,6 +509,8 @@ function createLabel(div: DraggableComponentElement): void {
   div.shouldLockCells = false;
 
   div.classList.add("label");
+
+  div.addEventListener("mouseup", openLabelPopup);
 
   let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
 

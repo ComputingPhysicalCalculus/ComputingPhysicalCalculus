@@ -16,7 +16,7 @@ export type ShaftConfig = {
   end: [number, number];
 };
 
-export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig | LabelConfig | GearPairConfig | DialConfig;
+export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | CrossConnectConfig | LabelConfig | GearPairConfig | DialConfig;
 
 export type IntegratorConfig = {
   type: "integrator";
@@ -171,7 +171,9 @@ export function loadConfig(config: Config): void {
     item.id = `component-${components.compID}`;
     item.componentID = components.compID;
 
-    setCells(new Vector2(left, top), item.getSize(), true);
+    if (item.componentType != "label") {
+      setCells(new Vector2(left, top), item.getSize(), true);
+    }
 
     item.hasBeenPlaced = true;
     item.requestUpdate();
