@@ -8,3 +8,6 @@ dist/*
 
 # Npm
 node_modules/*
+
+
+tests/core/*.txt
