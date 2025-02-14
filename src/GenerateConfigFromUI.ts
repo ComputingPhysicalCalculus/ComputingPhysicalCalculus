@@ -1,14 +1,11 @@
-import { isTemplateResult } from "lit/directive-helpers.js";
-import { ComponentType } from "./UI/Components.ts";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
-import Vector2 from "./UI/Vector2.ts";
 import { Config } from "./config";
 // used to configure parameters and initial setings
 // go from UI to config which can be saved and loaded 
 
 // asumming valid config is checked as we build
 
-function getShaft(className: stshaftTypering, predicate: (x: number, y: number, w: number, h: number) => boolean): number {
+function getShaft(className: string, predicate: (x: number, y: number, w: number, h: number) => boolean): number {
     const shafts = document.querySelectorAll(`.${className}`) as NodeListOf<DraggableComponentElement>;
     for (let i = 0; i < shafts.length; i++) {
         const vShaft = shafts[i] as DraggableComponentElement;
@@ -89,13 +86,13 @@ export function toConfig(): Config {
                 }
             case 'integrator':
                 {
-                    const { _type, data: { _top, _left } } = thisComponent.export_fn(thisComponent);
+                    const { _type, data: { _top, _left, initialPosition } } = thisComponent.export_fn(thisComponent);
 
                     const outputShaft = getVShaftID(position[0] + 1, position[1] - 1);
                     const variableOfIntegrationShaft = getVShaftID(position[0] + 2, position[1] - 1);
                     const integrandShaft = getVShaftID(position[0] + 3, position[1] - 1);
 
-                    return { type, compID, position, outputShaft, variableOfIntegrationShaft, integrandShaft };
+                    return { type, compID, position, outputShaft, variableOfIntegrationShaft, integrandShaft, initialPosition };
                 }
             case 'functionTable':
                 {

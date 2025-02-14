@@ -217,6 +217,7 @@ function createIntegrator(div: DraggableComponentElement): void {
   type ExportedData = {
     top: number,
     left: number,
+    initialPosition: number,
   };
 
   div.export_fn = (_this) => {
@@ -225,6 +226,7 @@ function createIntegrator(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
+        initialPosition: _this.inputRatio,
       },
     };
   };
@@ -232,6 +234,7 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
+    _this.inputRatio = data.initialPosition;
   };
 }
 
