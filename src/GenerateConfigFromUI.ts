@@ -130,7 +130,7 @@ export function toConfig(): Config {
                 {
                     const { _type, data: { _top, _left, reversed } } = thisComponent.export_fn(thisComponent);
 
-                    const outputShaft = getHShaftID(position[0] + 1, position[1]);
+                    const outputShaft = getHShaftID(position[0] + 2, position[1]);
 
                     return { type, compID, position, reversed, outputShaft }
                 }
@@ -155,8 +155,8 @@ export function toConfig(): Config {
                 {
                     const { _type, data: { top, left, inputRatio, outputRatio, } } = thisComponent.export_fn(thisComponent);
 
-                    const shaft1 = getVShaftID(position[0], position[1]);
-                    const shaft2 = getVShaftID(position[0], position[1] + 1);
+                    const shaft1 = getHShaftID(position[0], position[1]);
+                    const shaft2 = getHShaftID(position[0], position[1] + 1);
 
                     return { type, compID, position, inputRatio, outputRatio, shaft1, shaft2 };
                 }
