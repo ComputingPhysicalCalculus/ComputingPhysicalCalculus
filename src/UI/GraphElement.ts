@@ -39,6 +39,7 @@ export class GraphElement extends LitElement {
       points: Vector2[];
       style: string;
       invert_head: boolean;
+      fn?: string,
     }
   } = {};
 

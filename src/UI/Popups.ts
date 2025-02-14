@@ -1,8 +1,11 @@
-import { M } from "vitest/dist/chunks/reporters.6vxQttCV.js";
 import { DraggableComponentElement } from "./DraggableElement.ts";
-import { currentlyDragging, GRID_SIZE, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
+import { currentlyDragging, GRID_SIZE, worldToScreenPosition } from "./Grid.ts";
 import Vector2 from "./Vector2.ts";
 import { GearPairComponentElement } from "./GearPairComponentElement.ts";
+import Expression from "@src/expr/Expression.ts";
+import { GraphElement } from "./GraphElement.ts";
+
+import { generator } from "../index.ts";
 
 let shaftPopup: HTMLDivElement;
 let gearPopup: HTMLDivElement;
@@ -10,6 +13,7 @@ let integratorPopup: HTMLDivElement;
 let motorPopup: HTMLDivElement;
 let multiplierPopup: HTMLDivElement;
 let gearPairPopup: HTMLDivElement;
+let functionTablePopup: HTMLDivElement;
 
 export function setupPopups(): void {
   setupShaftPopup();
@@ -18,6 +22,7 @@ export function setupPopups(): void {
   setupMotorPopup();
   setupMultiplierPopup();
   setupGearPairPopup();
+  setupFunctionTablePopup();
 
   document.addEventListener("click", documentClick);
 }
@@ -75,6 +80,19 @@ export function openIntegratorPopup(e: MouseEvent): void {
   const target = e.currentTarget as DraggableComponentElement;
 
   integratorPopup.getElementsByTagName("input")[0].value = String(target.inputRatio);
+
+  e.preventDefault();
+}
+
+export function openFunctionTablePopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
+  openPopup(e, functionTablePopup);
+
+  const target = e.currentTarget as DraggableComponentElement;
+  const graph_element = target.querySelector("graph-table") as GraphElement;
+
+  functionTablePopup.getElementsByTagName("input")[0].value = graph_element.data_sets["a"].fn ?? "";
 
   e.preventDefault();
 }
@@ -269,6 +287,26 @@ function setupGearPairPopup(): void {
   }
 }
 
+function setupFunctionTablePopup(): void {
+  functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
+  functionTablePopup.addEventListener("mouseleave", closePopup);
+
+  const inputs = functionTablePopup.getElementsByTagName("input");
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener("change", (e) => {
+      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.querySelector(`#${input.parentElement!.dataset.id!} > graph-table`) as GraphElement;
+
+      if (input.id == "function-table-fn") {
+        let compiled_expr = Expression.compile(input.value);
+        let generator_exp = generator(500, component.x_min, component.x_max, x => compiled_expr({ x }));
+        component.set_data_set("a", Array.from([...generator_exp]));
+        component.data_sets["a"].fn = input.value;
+      }
+      console.log("hi")
+    })
+  }
+}
 
 function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";

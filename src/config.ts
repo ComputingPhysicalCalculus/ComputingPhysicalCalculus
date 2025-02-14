@@ -155,6 +155,10 @@ export function loadConfig(config: Config): void {
       }
 
       case "functionTable":
+        {
+          item.import_fn(item, components);
+        }
+        break;
       case "outputTable":
         // Not sure if data should be parsed through
         break;

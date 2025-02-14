@@ -2,11 +2,12 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openGearPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup } from "./Popups.ts"
+import { openShaftPopup, openGearPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
 import { GearPairComponentElement } from "./GearPairComponentElement.ts";
 import { GearComponentElement } from "./GearComponentElement.ts";
+import Expression from "@src/expr/Expression.ts";
 
 export enum ComponentType {
   VShaft,
@@ -248,6 +249,8 @@ function createFunctionTable(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("functionTable");
 
+  div.addEventListener("mouseup", openFunctionTablePopup);
+
   let function_table = document.createElement("graph-table") as GraphElement;
   function_table.setAttribute("style", "width:100%;height:100%");
   function_table.setAttribute("x-min", "0.0");
@@ -257,9 +260,6 @@ function createFunctionTable(div: DraggableComponentElement): void {
   function_table.setAttribute("gantry-x", "0.0");
   function_table.setAttribute("padding", "5");
 
-  let generator_exp = generator(100, function_table.x_min, function_table.x_max, Math.sin);
-
-  function_table.set_data_set("a", Array.from([...generator_exp]));
   div.appendChild(function_table);
 
   type ExportedData = {
@@ -270,13 +270,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
     y_min: number,
     y_max: number,
     gantry_x?: number,
-    data_sets: {
-      [key: string]: {
-        points: Vector2[],
-        style: string,
-        invert_head: boolean,
-      },
-    },
+    fn: string,
   };
 
   div.export_fn = (_this) => {
@@ -292,7 +286,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         y_min: graph_element.y_min,
         y_max: graph_element.y_max,
         gantry_x: graph_element.gantry_x,
-        data_sets: graph_element.data_sets,
+        fn: graph_element.data_sets["a"].fn,
       }
     };
   };
@@ -300,14 +294,18 @@ function createFunctionTable(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
 
-    _this.top = data.top,
-      _this.left = data.left,
-      graph_element.x_min = data.x_min;
+    _this.top = data.top;
+    _this.left = data.left;
+    graph_element.x_min = data.x_min;
     graph_element.x_max = data.x_max;
     graph_element.y_min = data.y_min;
     graph_element.y_max = data.y_max;
     graph_element.gantry_x = data.gantry_x;
-    graph_element.data_sets = data.data_sets;
+
+    let compiled_expr = Expression.compile(data.fn);
+    let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
+    graph_element.set_data_set("a", Array.from([...generator_exp]));
+    graph_element.data_sets["a"].fn = data.fn;
   }
 }
 
