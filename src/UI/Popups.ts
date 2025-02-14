@@ -97,7 +97,12 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   const target = e.currentTarget as DraggableComponentElement;
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
-  functionTablePopup.getElementsByTagName("input")[0].value = graph_element.data_sets["1"]?.fn ?? "";
+  let inputs = functionTablePopup.getElementsByTagName("input");
+  inputs[0].value = graph_element.data_sets["d1"].fn ?? "";
+  inputs[1].value = String(graph_element.x_min);
+  inputs[2].value = String(graph_element.x_max);
+  inputs[3].value = String(graph_element.y_min);
+  inputs[4].value = String(graph_element.y_max);
 
   e.preventDefault();
 }
@@ -318,18 +323,36 @@ function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
-  const inputs = functionTablePopup.getElementsByTagName("input");
+  const inputs = functionTablePopup.querySelectorAll("* > input");
+  console.log(inputs);
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.querySelector(`#${input.parentElement!.dataset.id!} > graph-table`) as GraphElement;
+      const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
 
-      if (input.id == "function-table-fn") {
-        let compiled_expr = Expression.compile(input.value);
-        let generator_exp = generator(500, component.x_min, component.x_max, x => compiled_expr({ x }));
-        component.set_data_set("1", Array.from([...generator_exp]));
-        component.data_sets["1"].fn = input.value;
+      switch (input.id) {
+        case "function-table-fn":
+          component_graph.data_sets["d1"].fn = String(input.value);
+          break;
+        case "function-table-x-min":
+          component_graph.x_min = Number(input.value);
+          break;
+        case "function-table-x-max":
+          component_graph.x_max = Number(input.value);
+          break;
+        case "function-table-y-min":
+          component_graph.y_min = Number(input.value);
+          break;
+        case "function-table-y-max":
+          component_graph.y_max = Number(input.value);
+          break;
       }
+
+      let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
+      let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
+      component_graph.mutate_data_set("d1", points => {
+        points.splice(0, points.length, ...Array.from(generator_exp));
+      });
     })
   }
 }
