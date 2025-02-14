@@ -5,6 +5,8 @@ import { generator } from "../index.ts";
 import { openShaftPopup, openGearPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup } from "./Popups.ts"
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
+import { GearPairComponentElement } from "./GearPairComponentElement.ts";
+import { GearComponentElement } from "./GearComponentElement.ts";
 
 export enum ComponentType {
   VShaft,
@@ -146,22 +148,23 @@ function createGear(div: DraggableComponentElement): void {
   };
 
   div.export_fn = (_this) => {
+    const gear = _this.querySelector("gear-component") as GearComponentElement;
     return {
       _type: ComponentType.Gear,
       data: {
         top: _this.top,
         left: _this.left,
-        reversed: _this.outputRatio < 0,
+        reversed: gear.inverted,
       },
     };
   };
 
   div.import_fn = (_this, data: ExportedData) => {
+    const gear = _this.querySelector("gear-component") as GearComponentElement;
     _this.top = data.top;
     _this.left = data.left;
-    _this.outputRatio = (!data.reversed) ? 1 : (data.reversed ? -1 : 1);
 
-    _this.querySelector("gear-component")!.inverted = _this.outputRatio < 0;
+    gear.inverted = data.reversed;
   };
 }
 
@@ -553,22 +556,24 @@ function createGearPair(div: DraggableComponentElement): void {
   };
 
   div.export_fn = (_this) => {
+    const gear_pair = _this.querySelector("gear-pair-component") as GearPairComponentElement;
     return {
       _type: ComponentType.Gear,
       data: {
         top: _this.top,
         left: _this.left,
-        inputRatio: _this.inputRatio,
-        outputRatio: _this.outputRatio,
+        inputRatio: gear_pair.ratio_top,
+        outputRatio: gear_pair.ratio_bottom,
       },
     };
   };
 
   div.import_fn = (_this, data: ExportedData) => {
+    const gear_pair = _this.querySelector("gear-pair-component") as GearPairComponentElement;
     _this.top = data.top;
     _this.left = data.left;
-    _this.inputRatio = (!data.inputRatio) ? 1 : data.inputRatio;
-    _this.outputRatio = (!data.outputRatio) ? 1 : data.outputRatio;
+    gear_pair.ratio_top = (!data.inputRatio) ? 1 : data.inputRatio;
+    gear_pair.ratio_bottom = (!data.outputRatio) ? 1 : data.outputRatio;
   };
 }
 

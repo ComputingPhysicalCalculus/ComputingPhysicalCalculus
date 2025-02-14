@@ -2,6 +2,7 @@ import { M } from "vitest/dist/chunks/reporters.6vxQttCV.js";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { currentlyDragging, GRID_SIZE, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
 import Vector2 from "./Vector2.ts";
+import { GearPairComponentElement } from "./GearPairComponentElement.ts";
 
 let shaftPopup: HTMLDivElement;
 let gearPopup: HTMLDivElement;
@@ -110,15 +111,15 @@ export function openGearPairPopup(e: MouseEvent): void {
 
   openPopup(e, gearPairPopup);
 
-  const target = e.currentTarget as DraggableComponentElement;
+  const target = (e.currentTarget as HTMLElement).querySelector("gear-pair-component") as GearPairComponentElement;
   const inputs = gearPairPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
     const input = inputs[i] as HTMLInputElement;
     if (input.id == "gear-pair-input-ratio") {
-      input.value = String(target.inputRatio);
+      input.value = String(target.ratio_top);
     }
     else if (input.id == "gear-pair-output-ratio") {
-      input.value = String(target.outputRatio);
+      input.value = String(target.ratio_bottom);
     }
   }
 
@@ -254,14 +255,15 @@ function setupGearPairPopup(): void {
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
+      // const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
+      const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > gear-pair-component`) as GearPairComponentElement;
 
       if (input.id == "gear-pair-input-ratio") {
-        component.inputRatio = Math.min(Math.max(Number(input.value), 1), 10);
-        input.value = String(component.inputRatio);
+        component.ratio_top = Math.min(Math.max(Number(input.value), 1), 9);
+        input.value = String(component.ratio_top);
       } else if (input.id == "gear-pair-output-ratio") {
-        component.outputRatio = Math.min(Math.max(Number(input.value), 1), 10);
-        input.value = String(component.outputRatio);
+        component.ratio_bottom = Math.min(Math.max(Number(input.value), 1), 9);
+        input.value = String(component.ratio_bottom );
       }
     })
   }

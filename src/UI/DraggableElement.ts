@@ -121,6 +121,6 @@ export class DraggableComponentElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "draggable": DraggableComponentElement;
+    "draggable-component": DraggableComponentElement;
   }
 }
