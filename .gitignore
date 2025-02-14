@@ -1,6 +1,7 @@
 # Dev environment files
 .envrc
 .direnv/*
+.vscode/*
 
 # Build files output
 dist/*
