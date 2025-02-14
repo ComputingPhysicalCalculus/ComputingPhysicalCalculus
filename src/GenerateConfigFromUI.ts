@@ -8,7 +8,7 @@ import { Config } from "./config";
 
 // asumming valid config is checked as we build
 
-function getShaft(className: stshaftTypering, predicate: (x: number, y: number, w: number, h: number) => boolean): number {
+function getShaft(className: string, predicate: (x: number, y: number, w: number, h: number) => boolean): number {
     const shafts = document.querySelectorAll(`.${className}`) as NodeListOf<DraggableComponentElement>;
     for (let i = 0; i < shafts.length; i++) {
         const vShaft = shafts[i] as DraggableComponentElement;

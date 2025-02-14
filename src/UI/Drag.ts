@@ -1,6 +1,6 @@
 import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
 import Vector2 from "./Vector2.ts"
-import { GRID_SIZE, allValid, setCells, highlightHoveredCells, getScreenOffset, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
+import { GRID_SIZE, allValid, setCells, highlightHoveredCells, screenToWorldPosition, worldToScreenPosition, validShaft } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { UNDO_SINGLETON } from "@src/Undo.ts";
 
@@ -154,7 +154,7 @@ function drop(event: MouseEvent): void {
 
   // Check whether or not the item being dragged can be placed
   {
-    if (item.shouldLockCells && !allValid(topLeft, size)) {
+    if ((item.shouldLockCells && !allValid(topLeft, size)) || (!item.shouldLockCells && !validShaft(topLeft, item))) {
       if (!item.hasBeenPlaced) {
         item.remove();
         curDragItem.item = null;

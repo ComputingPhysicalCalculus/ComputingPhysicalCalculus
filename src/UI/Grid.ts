@@ -209,6 +209,15 @@ export function allValid(topLeft: Vector2, size: Vector2): boolean {
   return valid;
 }
 
+export function validShaft(topLeft: Vector2, shaft: DraggableComponentElement): boolean {
+  const size = shaft.getSize();
+  if (size.x == 1) {
+    return !rangeContainsVShaft(topLeft, size, shaft);
+  } else {
+    return !rangeContainsHShaft(topLeft, size, shaft);
+  }
+}
+
 export function setCells(topLeft: Vector2, size: Vector2, fill: boolean): void {
   const func = (pos: Vector2) => {
     const posStr = JSON.stringify(pos);
@@ -240,5 +249,33 @@ export function highlightHoveredCells(topLeft: Vector2, size: Vector2, highlight
         currentCells.delete(posStr);
       }
     }
+  });
+}
+
+function rangeContainsShaft(shaftClass: string, checkingShaft: DraggableComponentElement, predicate: (pos: Vector2, size: Vector2) => boolean): boolean {
+  const shafts = document.querySelectorAll(`.${shaftClass}`);
+
+  for (let i = 0; i < shafts.length; i++) {
+    const shaft = shafts[i] as DraggableComponentElement;
+    if (checkingShaft != shaft && predicate(shaft.getPosition(), shaft.getSize())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function rangeContainsHShaft(pos: Vector2, size: Vector2, shaft: DraggableComponentElement): boolean {
+  return rangeContainsShaft("hShaft", shaft, (sP, sS) => {
+    return (sP.y == pos.y) && (
+      (pos.x <= sP.x + sS.x - 1 && pos.x + size.x - 1 >= sP.x)
+    );
+  });
+}
+
+export function rangeContainsVShaft(pos: Vector2, size: Vector2, shaft: DraggableComponentElement): boolean {
+  return rangeContainsShaft("vShaft", shaft, (sP, sS) => {
+    return (sP.x == pos.x) && (
+      (pos.y <= sP.y + sS.y - 1 && pos.y + size.y - 1 >= sP.y)
+    );
   });
 }
