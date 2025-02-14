@@ -12,7 +12,6 @@ export const BUITLIN_FUNCTIONS: { [ident: string]: (...params: number[]) => numb
   "=": (lhs, rhs) => Math.abs(lhs - rhs) < 1e-8 ? 1.0 : 0.0,
   "!=": (lhs, rhs) => Math.abs(lhs - rhs) > 1e-8 ? 1.0 : 0.0,
 
-  // Trigonometric functions
   "abs": Math.abs,
   "acos": Math.acos,
   "acosh": Math.acosh,
