@@ -34,9 +34,6 @@ export const generator = function*(n: number, min: number, max: number, f: (x: n
 
 // Start the application
 window.onload = () => {
-    // let parsed_expression = Expression.parse("5 + x + 5 * y");
-    console.log(Expression.eval("5 + x + z + y * 6", { x: 6 }));
-    
     const lifecycle = new Lifecycle();
     lifecycle.setup();
 }
