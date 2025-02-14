@@ -115,10 +115,10 @@ export function openGearPairPopup(e: MouseEvent): void {
   const inputs = gearPairPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
     const input = inputs[i] as HTMLInputElement;
-    if (input.id == "gear-pair-input-ratio") {
+    if (input.id == "gear-pair-top-ratio") {
       input.value = String(target.ratio_top);
     }
-    else if (input.id == "gear-pair-output-ratio") {
+    else if (input.id == "gear-pair-bottom-ratio") {
       input.value = String(target.ratio_bottom);
     }
   }
@@ -256,14 +256,14 @@ function setupGearPairPopup(): void {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
       // const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
-      const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > gear-pair-component`) as GearPairComponentElement;
+      const component = document.querySelector(`#${input.parentElement!.dataset.id!} > gear-pair-component`) as GearPairComponentElement;
 
-      if (input.id == "gear-pair-input-ratio") {
+      if (input.id == "gear-pair-top-ratio") {
         component.ratio_top = Math.min(Math.max(Number(input.value), 1), 9);
         input.value = String(component.ratio_top);
-      } else if (input.id == "gear-pair-output-ratio") {
+      } else if (input.id == "gear-pair-bottom-ratio") {
         component.ratio_bottom = Math.min(Math.max(Number(input.value), 1), 9);
-        input.value = String(component.ratio_bottom );
+        input.value = String(component.ratio_bottom);
       }
     })
   }

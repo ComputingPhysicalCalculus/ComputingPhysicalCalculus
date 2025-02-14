@@ -78,12 +78,10 @@
   flex-direction: row;
 }
 
-#gear-pair-popup>div>input {
-  max-width: 35%;
+#gear-pair-popup>input {
+  max-width: 100%;
 }
 
-#gear-pair-popup>div>label {
+#gear-pair-popup>label {
   font-weight: bold;
-  margin: 0 var(--gap-size);
-  max-width: 40%;
 }
