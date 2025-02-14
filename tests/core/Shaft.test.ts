@@ -21,19 +21,16 @@ describe("Shaft Class Testing", () =>{
 
     // test constructor
     test("Checking initial values", () => {
-        expect(shaft.currentRotation).toBe(0)
-        expect(shaft.nextRotation).toBe(0)
-        expect(shaft.resultReady).toBe(false)
+        expect(shaft.get_rotation_rate()).toBe(0)
+        expect(shaft.ready_flag).toBe(false)
         expect(shaft.outputs).toEqual([output_device_1, output_device_2])
     });
 
     // check update function works
     test("Checking update function", () => {
         let next_rotation_value = 0.75;
-        shaft.nextRotation = next_rotation_value;
-        shaft.resultReady = true
+        shaft.set_rotation_rate(next_rotation_value);
         shaft.update();
-        expect(shaft.currentRotation).toBe(next_rotation_value);
-        expect(shaft.resultReady).toBe(false);
+        expect(shaft.rotation).toBe(next_rotation_value);
     });
 })

@@ -75,7 +75,7 @@ export class Differential implements Device {
         }
         // case when output shaft is one of the other two
         else{
-            new_rotation = this.shafts[0].get_rotation_rate() - this.shafts[2-this.output_index].get_rotation_rate();
+            new_rotation = this.shafts[1].get_rotation_rate() - this.shafts[2-this.output_index].get_rotation_rate();
         }
         this.output?.set_rotation_rate(new_rotation);
     }

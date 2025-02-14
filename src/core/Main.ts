@@ -95,7 +95,7 @@ export class Simulator {
      * @author Hanzhang Shen
      */
     parse_config(config: Config): void {
-        console.log("Parsing the configurationf file and instantiating shafts and components.")
+        console.log("Parsing the configuration file and instantiating shafts and components.")
         let shafts = [];
         let components = [];
         let outputTables = [];
