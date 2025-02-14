@@ -13,6 +13,7 @@ import { Device } from "./Device";
  * @implements Device
  */
 export class OutputTable implements Device {
+    id: number = 0;
     private x: Shaft;
     private y1: Shaft;
     private y2: Shaft | undefined;

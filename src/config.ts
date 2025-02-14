@@ -53,6 +53,11 @@ export type FunctionTableConfig = {
   inputShaft: ShaftID;
   outputShaft: ShaftID;
   position: [number, number];
+  fn: string,
+  x_min: number,
+  x_max: number,
+  y_min: number,
+  y_max: number,
 };
 
 export type MotorConfig = {
@@ -69,6 +74,12 @@ export type OutputTableConfig = {
   outputShaft1: ShaftID;
   outputShaft2: ShaftID;
   position: [number, number];
+  initialY1: number,
+  initialY2: number,
+  x_min: number,
+  x_max: number,
+  y_min: number,
+  y_max: number,
 };
 
 export type CrossConnectConfig = {
@@ -139,35 +150,26 @@ export function loadConfig(config: Config): void {
       case "multiplier":
       case "gearPair":
       case "dial":
-        {
-          item.import_fn(item, components);
-          break;
-        }
+      case "functionTable":
+      case "outputTable":
+        item.import(components);
+        break;
 
       case "label": {
         let [width, height] = components.size;
-        item.width = width;
-        item.height = height;
-        let p = item.querySelector("p")!;
-        p.style.textAlign = components.align;
-        p.textContent = components._comment;
-        break;
+        item.import({
+          ...components,
+          width,
+          height,
+        })
       }
-
-      case "functionTable":
-        {
-          item.import_fn(item, components);
-        }
-        break;
-      case "outputTable":
-        // Not sure if data should be parsed through
-        break;
     }
     item.top = top;
     item.left = left;
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
+    item.componentID = components.compID;
 
     setCells(new Vector2(left, top), item.getSize(), true);
 
@@ -178,10 +180,6 @@ export function loadConfig(config: Config): void {
   }
 
   for (let shaft of config.shafts) {
-    // console.log(config.shafts);
-    // console.log(shaft);
-    // console.log(shaft.start);
-    // console.log(shaft.end);
     let [left, top] = shaft.start;
     let [right, bottom] = shaft.end;
 

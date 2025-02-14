@@ -14,6 +14,7 @@ let motorPopup: HTMLDivElement;
 let multiplierPopup: HTMLDivElement;
 let gearPairPopup: HTMLDivElement;
 let functionTablePopup: HTMLDivElement;
+let outputTablePopup: HTMLDivElement;
 
 export function setupPopups(): void {
   setupShaftPopup();
@@ -23,6 +24,7 @@ export function setupPopups(): void {
   setupMultiplierPopup();
   setupGearPairPopup();
   setupFunctionTablePopup();
+  setupOutputTablePopup();
 
   document.addEventListener("click", documentClick);
 }
@@ -95,7 +97,26 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   const target = e.currentTarget as DraggableComponentElement;
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
-  functionTablePopup.getElementsByTagName("input")[0].value = graph_element.data_sets["a"].fn ?? "";
+  functionTablePopup.getElementsByTagName("input")[0].value = graph_element.data_sets["1"]?.fn ?? "";
+
+  e.preventDefault();
+}
+
+export function openOutputTablePopup(e: MouseEvent): void {
+  if (currentlyDragging()) return;
+
+  openPopup(e, outputTablePopup);
+
+  const target = e.currentTarget as DraggableComponentElement;
+  const graph_element = target.querySelector("graph-table") as GraphElement;
+
+  let inputs = outputTablePopup.getElementsByTagName("input");
+  inputs[0].value = String(target.inputRatio);
+  inputs[1].value = String(target.outputRatio);
+  inputs[2].value = String(graph_element.x_min);
+  inputs[3].value = String(graph_element.x_max);
+  inputs[4].value = String(graph_element.y_min);
+  inputs[5].value = String(graph_element.y_max);
 
   e.preventDefault();
 }
@@ -306,8 +327,44 @@ function setupFunctionTablePopup(): void {
       if (input.id == "function-table-fn") {
         let compiled_expr = Expression.compile(input.value);
         let generator_exp = generator(500, component.x_min, component.x_max, x => compiled_expr({ x }));
-        component.set_data_set("a", Array.from([...generator_exp]));
-        component.data_sets["a"].fn = input.value;
+        component.set_data_set("1", Array.from([...generator_exp]));
+        component.data_sets["1"].fn = input.value;
+      }
+    })
+  }
+}
+
+function setupOutputTablePopup(): void {
+  outputTablePopup = document.getElementById("output-table-popup") as HTMLDivElement;
+  outputTablePopup .addEventListener("mouseleave", closePopup);
+
+  const inputs = outputTablePopup.querySelectorAll("* > input");
+  console.log(inputs);
+  for (let i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener("change", (e) => {
+      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!}`) as DraggableComponentElement;
+      const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
+
+      switch (input.id) {
+        case "output-table-initial-1":
+          component.inputRatio = Number(input.value);
+          break;
+        case "output-table-initial-2":
+          component.outputRatio = Number(input.value);
+          break;
+        case "output-table-x-min":
+          component_graph.x_min = Number(input.value);
+          break;
+        case "output-table-x-max":
+          component_graph.x_max = Number(input.value);
+          break;
+        case "output-table-y-min":
+          component_graph.y_min = Number(input.value);
+          break;
+        case "output-table-y-max":
+          component_graph.y_max = Number(input.value);
+          break;
       }
     })
   }

@@ -13,8 +13,9 @@ import { Shaft } from "./Shaft";
  * @implements Device
  */
 export class FunctionTable implements Device {
+    id: number = 0;
     private output: Shaft;
-    private x_position: number;
+    x_position: number;
     private f_n: number;
     fun: (n: number) => number;
     private input: Shaft;

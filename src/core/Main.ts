@@ -163,6 +163,7 @@ export class Simulator {
                         this.initial_x_position,
                         this.inputFunction // TODO: hardcoded for now to test the engine
                     );
+                    (new_component as FunctionTable).id = component.compID;
                     shafts.get(component.inputShaft)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
@@ -183,10 +184,11 @@ export class Simulator {
                         outputTable = new OutputTable(
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
-                            this.initialY1,
+                            component.initialY1,
                             shafts.get(component.outputShaft2)!,
-                            this.initialY2
+                            component.initialY2,
                         );
+                        outputTable.id = component.compID;
                         shafts.get(component.outputShaft2)!.outputs.push(outputTable);
                     }
                     else {

@@ -2,7 +2,8 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openCrossConnectPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup } from "./Popups.ts"
+import { openShaftPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup } from "./Popups.ts"
+
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
 import { GearPairComponentElement } from "./GearPairComponentElement.ts";
@@ -286,7 +287,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         y_min: graph_element.y_min,
         y_max: graph_element.y_max,
         gantry_x: graph_element.gantry_x,
-        fn: graph_element.data_sets["a"].fn,
+        fn: graph_element.data_sets["1"]?.fn ?? "",
       }
     };
   };
@@ -305,8 +306,8 @@ function createFunctionTable(div: DraggableComponentElement): void {
     if (data.fn !== undefined) {
       let compiled_expr = Expression.compile(data.fn);
       let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
-      graph_element.set_data_set("a", Array.from([...generator_exp]));
-      graph_element.data_sets["a"].fn = data.fn;
+      graph_element.set_data_set("1", Array.from([...generator_exp]));
+      graph_element.data_sets["1"].fn = data.fn;
     }
   }
 }
@@ -351,6 +352,10 @@ function createOutputTable(div: DraggableComponentElement): void {
   div.componentType = "outputTable";
   div.shouldLockCells = true;
   div.classList.add("outputTable");
+  div.inputRatio = 0;
+  div.outputRatio = 0;
+
+  div.addEventListener("mouseup", openOutputTablePopup);
 
   render(html`
     <graph-table
@@ -377,6 +382,8 @@ function createOutputTable(div: DraggableComponentElement): void {
     x_max: number,
     y_min: number,
     y_max: number,
+    initialY1: number,
+    initialY2: number,
     gantry_x?: number,
     data_sets: {
       [key: string]: {
@@ -400,7 +407,8 @@ function createOutputTable(div: DraggableComponentElement): void {
         y_min: graph_element.y_min,
         y_max: graph_element.y_max,
         gantry_x: graph_element.gantry_x,
-        data_sets: graph_element.data_sets,
+        initialY1: _this.inputRatio,
+        initialY2: _this.outputRatio,
       }
     };
   };
@@ -408,14 +416,15 @@ function createOutputTable(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
 
-    _this.top = data.top,
-      _this.left = data.left,
-      graph_element.x_min = data.x_min;
+    _this.top = data.top;
+    _this.left = data.left;
+    graph_element.x_min = data.x_min;
     graph_element.x_max = data.x_max;
     graph_element.y_min = data.y_min;
     graph_element.y_max = data.y_max;
     graph_element.gantry_x = data.gantry_x;
-    graph_element.data_sets = data.data_sets;
+    _this.inputRatio = data.initialY1;
+    _this.outputRatio = data.initialY2;
   }
 }
 

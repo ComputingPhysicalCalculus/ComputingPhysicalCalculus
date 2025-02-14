@@ -303,17 +303,20 @@ export class Lifecycle {
     const step_period = Number(this.step_period_input.value);
     const get_motor_speed = () => Number(this.motor_speed_input.value);
 
-    const output_table = document.querySelector(".outputTable > graph-table")! as GraphElement;
-    const function_table = document.querySelector(".functionTable > graph-table")! as GraphElement;
+    const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
+    const function_tables = document.querySelectorAll(".functionTable > graph-table")! as NodeListOf<GraphElement>;
 
     simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
-      x.fun = x => Expression.compile(function_table.data_sets["a"].fn ?? "")({ x });
+      const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
+      
+      let compiled_expr = Expression.compile(function_table_element.data_sets["1"]?.fn ?? "");
+      x.fun = x => compiled_expr({ x });
     });
 
-    simulator.outputTables[0].y2History = [-1];
-
-    output_table.set_data_set("a", []);
-    output_table.set_data_set("b", [], "red", true);
+    output_tables.forEach(x => {
+      x.set_data_set("1", []);
+      x.set_data_set("2", [], "red", true);
+    })
 
     let elapsed = 0;
     let steps_taken = 0;
@@ -329,28 +332,39 @@ export class Lifecycle {
         simulator.step();
       }
 
-      let x = simulator.outputTables[0].xHistory;
-      let y1 = simulator.outputTables[0].y1History;
-      let y2 = simulator.outputTables[0].y2History!;
+      for (let out of simulator.outputTables) {
+        let x = out.xHistory;
+        let y1 = out.y1History;
+        let y2 = out.y2History;
 
-      output_table.mutate_data_set("a", points => {
-        for (let i = points.length; i < x.length; i++) {
-          points.push(new Vector2(x[i], y1[i]));
+        const output_table = document.querySelector(`#component-${out.id} > graph-table`)! as GraphElement;
+
+        output_table.mutate_data_set("1", points => {
+          for (let i = points.length; i < x.length; i++) {
+            points.push(new Vector2(x[i], y1[i]));
+          }
+        });
+
+        if (y2 !== undefined) {
+          output_table.mutate_data_set("2", points => {
+            for (let i = points.length; i < x.length; i++) {
+              points.push(new Vector2(x[i], y2[i]));
+            }
+          });
         }
-      });
 
-      output_table.mutate_data_set("b", points => {
-        for (let i = points.length; i < x.length; i++) {
-          points.push(new Vector2(x[i], y2[i]));
+        output_table.gantry_x = x[next_steps - 1];
+
+        if (next_steps != 0 && x[steps_taken - 1] >= output_table.x_max) {
+          this.pause();
+          this.stop();
+          return
         }
-      });
+      }
 
-      output_table.gantry_x = x[next_steps - 1];
-      function_table.gantry_x = x[next_steps - 1];
-
-      if (next_steps != 0 && x[steps_taken - 1] >= output_table.x_max) {
-        this.pause();
-        this.stop();
+      for (let comp of simulator.components.filter(x => x instanceof FunctionTable)) {
+        const table = document.querySelector(`#component-${comp.id} > graph-table`)! as GraphElement;
+        table.gantry_x = comp.x_position;
       }
     };
   }
