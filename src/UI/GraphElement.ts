@@ -103,13 +103,13 @@ export class GraphElement extends LitElement {
                           126 195
                           118 195"
                           fill="black"/>
-        <polygon points=" 173 198
-                          173 190
-                          170 190.5
-                          175 184
-                          180 190.5
-                          177 190
-                          177 198"
+        <polygon points=" 173 184
+                          173 192
+                          170 192.5
+                          175 198
+                          180 192.5
+                          177 192
+                          177 184"
                           fill="blue"/>
       `;
     } else {
