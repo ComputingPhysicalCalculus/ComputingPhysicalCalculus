@@ -36,10 +36,6 @@ export default class Expression {
         const lhs = ("left" in expr) ? this.eval_expr(expr.left, ctx) : 0;
         const rhs = this.eval_expr(expr.right, ctx);
 
-        if (expr._type == "/" && rhs == 0) {
-          throw new Error("Division by zero");
-        }
-
         return BUITLIN_FUNCTIONS[expr._type](lhs, rhs);
       case "fn":
         if (!(expr.ident in BUITLIN_FUNCTIONS)) {
