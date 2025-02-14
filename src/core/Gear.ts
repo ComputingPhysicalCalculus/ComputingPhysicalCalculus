@@ -14,6 +14,8 @@ import { Shaft } from "./Shaft";
  */
 export class Gear implements Device {
     private shafts: Shaft[];
+    private output: Shaft | undefined;
+    private input: Shaft | undefined;
 
     /**
      * @constructor
@@ -34,19 +36,17 @@ export class Gear implements Device {
         if(!this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
             return undefined;
         }
-        if(this.shafts[0].ready_flag) {
-            return this.shafts[1];
+        if(this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
+            this.output = this.shafts[1];
+            this.input = this.shafts[0]
         }
-        if(this.shafts[1].ready_flag) {
-            return this.shafts[0];
+        if(this.shafts[1].ready_flag && !this.shafts[0].ready_flag) {
+            this.output = this.shafts[0];
+            this.input = this.shafts[1]
         }
+        return this.output;
     }
     update(): void {
-        let output: Shaft | undefined = this.determine_output();
-        if(output == this.shafts[0]) {
-            output?.set_rotation_rate(this.shafts[1].get_rotation_rate())
-        } else if(output == this.shafts[1]) {
-            output?.set_rotation_rate(this.shafts[0].get_rotation_rate())
-        }
+        this.output?.set_rotation_rate(this.input?.get_rotation_rate()!);
     }
 }

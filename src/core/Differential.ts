@@ -56,6 +56,9 @@ export class Differential implements Device {
             this.output = this.shafts[this.output_index];
             return this.output;
         }
+        else if (count == 3){
+            return this.output;
+        }
         else{
             return undefined;
         }
