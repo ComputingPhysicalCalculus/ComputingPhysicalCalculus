@@ -303,7 +303,6 @@ function setupFunctionTablePopup(): void {
         component.set_data_set("a", Array.from([...generator_exp]));
         component.data_sets["a"].fn = input.value;
       }
-      console.log("hi")
     })
   }
 }
