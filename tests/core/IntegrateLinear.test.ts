@@ -7,7 +7,7 @@ import fs from 'fs';
 import util from 'node:util';
 
 
-const WRITE_TO_FILE = false;
+const WRITE_TO_FILE = true;
 
 
 // F is the function to be integrated
@@ -21,6 +21,10 @@ function test_linear(F: (v:number) => number, I: (v:number) => number, x_init: n
 
     // create simulator with the initial conditions based on F and I
     let simulator = new Simulator(INTEGRATING_LINEAR, 6/N, x_init, F(x_init), I(x_init), F);
+
+    // manually override the histories
+    simulator.outputTables[0].y1History = [F(x_init)];
+    simulator.outputTables[0].y2History = [I(x_init)];
     
     // manually set the disk position as its set to 0 in the config file
     for (const device of simulator.components){
