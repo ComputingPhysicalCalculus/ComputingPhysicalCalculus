@@ -9,7 +9,7 @@ import { clearSelect } from "./SelectShaft.ts"
 import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 
-let shaftPopup: HTMLDivElement;
+// let shaftPopup: HTMLDivElement;
 let crossConnectPopup: HTMLDivElement;
 let integratorPopup: HTMLDivElement;
 let motorPopup: HTMLDivElement;
@@ -20,7 +20,7 @@ let outputTablePopup: HTMLDivElement;
 let labelPopup: HTMLDivElement;
 
 export function setupPopups(): void {
-  setupShaftPopup();
+  // setupShaftPopup();
   setupCrossConnectPopup();
   setupIntegratorPopup();
   setupMotorPopup();
@@ -45,28 +45,28 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
   clearSelect();
 }
 
-export function openShaftPopup(e: MouseEvent): void {
-  if (e.button != 2) return;
-  if (currentlyDragging()) return;
-
-  openPopup(e, shaftPopup);
-
-  const target = e.currentTarget as DraggableComponentElement;
-  const isVertical = target.componentType == "vShaft";
-
-  const labels = shaftPopup.getElementsByTagName("label");
-  for (let i = 0; i < labels.length; i++) {
-    const input = labels[i] as HTMLLabelElement;
-
-    if (input.id == "shaft-negative-label") {
-      input.innerText = (isVertical) ? "Top Length" : "Left Length";
-    } else if (input.id == "shaft-positive-label") {
-      input.innerText = (isVertical) ? "Bottom Length" : "Right Length";
-    }
-  }
-
-  e.preventDefault();
-}
+// export function openShaftPopup(e: MouseEvent): void {
+//   if (e.button != 2) return;
+//   if (currentlyDragging()) return;
+//
+//   openPopup(e, shaftPopup);
+//
+//   const target = e.currentTarget as DraggableComponentElement;
+//   const isVertical = target.componentType == "vShaft";
+//
+//   const labels = shaftPopup.getElementsByTagName("label");
+//   for (let i = 0; i < labels.length; i++) {
+//     const input = labels[i] as HTMLLabelElement;
+//
+//     if (input.id == "shaft-negative-label") {
+//       input.innerText = (isVertical) ? "Top Length" : "Left Length";
+//     } else if (input.id == "shaft-positive-label") {
+//       input.innerText = (isVertical) ? "Bottom Length" : "Right Length";
+//     }
+//   }
+//
+//   e.preventDefault();
+// }
 
 export function openCrossConnectPopup(e: MouseEvent): void {
   if (e.button != 2) return;
@@ -229,7 +229,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
 }
 
 function documentClick(e: MouseEvent) {
-  let popups = [shaftPopup, crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
+  let popups = [crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
   popups.forEach(popup => {
     if (!mouseWithin(popup, e)) {
       popup.style.visibility = "hidden";
@@ -237,28 +237,28 @@ function documentClick(e: MouseEvent) {
   });
 }
 
-function setupShaftPopup(): void {
-  shaftPopup = document.getElementById("shaft-popup") as HTMLDivElement;
-  shaftPopup.addEventListener("mouseleave", closePopup);
-
-  const buttons = shaftPopup.getElementsByTagName("button");
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("click", (e) => {
-      const button: HTMLButtonElement = e.currentTarget as HTMLButtonElement;
-      const component = document.getElementById(button.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
-
-      let negativeLength = 0;
-      if (button.id == "shaft-popup-negative-increase") negativeLength = 1;
-      if (button.id == "shaft-popup-negative-decrease") negativeLength = -1;
-
-      let positiveLength = 0;
-      if (button.id == "shaft-popup-positive-increase") positiveLength = 1;
-      if (button.id == "shaft-popup-positive-decrease") positiveLength = -1;
-
-      updateShaftLength(component, negativeLength, positiveLength);
-    });
-  }
-}
+// function setupShaftPopup(): void {
+//   shaftPopup = document.getElementById("shaft-popup") as HTMLDivElement;
+//   shaftPopup.addEventListener("mouseleave", closePopup);
+//
+//   const buttons = shaftPopup.getElementsByTagName("button");
+//   for (let i = 0; i < buttons.length; i++) {
+//     buttons[i].addEventListener("click", (e) => {
+//       const button: HTMLButtonElement = e.currentTarget as HTMLButtonElement;
+//       const component = document.getElementById(button.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
+//
+//       let negativeLength = 0;
+//       if (button.id == "shaft-popup-negative-increase") negativeLength = 1;
+//       if (button.id == "shaft-popup-negative-decrease") negativeLength = -1;
+//
+//       let positiveLength = 0;
+//       if (button.id == "shaft-popup-positive-increase") positiveLength = 1;
+//       if (button.id == "shaft-popup-positive-decrease") positiveLength = -1;
+//
+//       updateShaftLength(component, negativeLength, positiveLength);
+//     });
+//   }
+// }
 
 function setupCrossConnectPopup(): void {
   crossConnectPopup = document.getElementById("cross-connect-popup") as HTMLDivElement;
