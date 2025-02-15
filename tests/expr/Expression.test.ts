@@ -353,5 +353,16 @@ describe("expression evaluation", () => {
         }
       }
     }
+  });
+  
+  test.each([
+    ["x+y", ["x", "y"]],
+    ["z=0;z+x-y", ["x", "y"]],
+    ["sum(n=z,g,g=8;u=5;x+y+u+n+g)", ["z", "g", "x", "y"]]
+  ])("partial eval '%s' with undefined %j", (s, expected) => {
+    const parsed = Expression.parse(s);
+    const [_, vars] = Expression.partial_eval_expr(parsed);
+
+    expect(Array.from(vars.keys())).toStrictEqual(expected)
   })
 });
