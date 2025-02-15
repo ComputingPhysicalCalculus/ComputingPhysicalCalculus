@@ -149,7 +149,8 @@ export class Simulator {
                 case 'crossConnect':
                     new_component = new CrossConnect(
                         shafts.get(component.horizontal)!,
-                        shafts.get(component.vertical)!
+                        shafts.get(component.vertical)!,
+                        component.reversed
                     );
                     shafts.get(component.horizontal)!.outputs.push(new_component);
                     shafts.get(component.vertical)!.outputs.push(new_component);

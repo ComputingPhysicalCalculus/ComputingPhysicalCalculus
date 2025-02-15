@@ -16,15 +16,18 @@ export class CrossConnect implements Device {
     private shafts: Shaft[];
     private output: Shaft | undefined;
     private input: Shaft | undefined;
+    private reversed: Boolean;
 
     /**
      * @constructor
      * @description The constructor of the Cross Connect class.
      * @param shaft1 The shaft that represents one of the connected shaft
      * @param shaft2 The shaft that represents one of the connected shaft
+     * @param reversed A flag representing whether or not the output should be reversed
      */
-    constructor(shaft1: Shaft, shaft2: Shaft) {
+    constructor(shaft1: Shaft, shaft2: Shaft, reversed: Boolean) {
         this.shafts = [shaft1, shaft2];
+        this.reversed = reversed;
     }
 
     /**
@@ -47,6 +50,7 @@ export class CrossConnect implements Device {
         return this.output;
     }
     update(): void {
-        this.output?.set_rotation_rate(this.input?.get_rotation_rate()!);
+        const rotation_rate = this.input?.get_rotation_rate()!;
+        this.output?.set_rotation_rate(this.reversed ? -rotation_rate : rotation_rate);
     }
 }

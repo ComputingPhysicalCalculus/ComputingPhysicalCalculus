@@ -6,6 +6,7 @@ import Expression from "@src/expr/Expression.ts";
 import { GraphElement } from "./GraphElement.ts";
 
 import { generator } from "../index.ts";
+import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 
 let shaftPopup: HTMLDivElement;
 let crossConnectPopup: HTMLDivElement;
@@ -70,9 +71,9 @@ export function openCrossConnectPopup(e: MouseEvent): void {
 
   openPopup(e, crossConnectPopup);
 
-  const target = e.currentTarget as DraggableComponentElement;
+  const target = (e.currentTarget as DraggableComponentElement).querySelector("cross-connect-component") as CrossConnectComponentElement;
   const checkbox = crossConnectPopup.querySelector("input") as HTMLInputElement;
-  checkbox.checked = target.outputRatio < 0;
+  checkbox.checked = target.inverted;
 
   e.preventDefault();
 }
@@ -225,7 +226,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
 }
 
 function documentClick(e: MouseEvent) {
-  let popups = [shaftPopup, crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup,];
+  let popups = [shaftPopup, crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
   popups.forEach(popup => {
     if (!mouseWithin(popup, e)) {
       popup.style.visibility = "hidden";
@@ -265,12 +266,6 @@ function setupCrossConnectPopup(): void {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
       const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
-
-      if (input.checked)
-        component.outputRatio = -1;
-      else
-        component.outputRatio = 1;
-
       component.querySelector("cross-connect-component")!.inverted = input.checked;
     });
   }
