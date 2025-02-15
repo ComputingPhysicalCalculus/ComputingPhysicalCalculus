@@ -85,3 +85,61 @@
 #gear-pair-popup>label {
   font-weight: bold;
 }
+
+#label-popup {
+  display: flex;
+  flex-direction: column;
+}
+
+#label-popup-alignment {
+  display: inline-flex;
+  flex-direction: column;
+  text-align: center;
+
+  background-color: var(--colour-accent3);
+  border-radius: var(--border-radius);
+
+  justify-content: center;
+  margin: var(--gap-size) auto 0 auto;
+  width: 100%;
+
+  /* margin: var(--gap-size) 1% 0 1%; */
+  padding: calc(var(--gap-size) / 2) 0;
+  gap: calc(var(--gap-size));
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#label-popup-buttons {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  margin: 0 auto;
+  gap: calc(var(--gap-size) * 2);
+}
+
+.label-popup-align {
+  content: '';
+  appearance: none;
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.label-popup-align~label {
+  /* width: 100%; */
+  padding: 0 var(--gap-size);
+  text-align: center;
+  border-radius: var(--border-radius);
+}
+
+.label-popup-align:checked~label {
+  background-color: var(--colour-highlight3);
+}
+
+.label-popup-align:not(:checked)~label {
+  background-color: var(--colour-accent4);
+}

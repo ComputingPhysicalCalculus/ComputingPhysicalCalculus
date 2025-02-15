@@ -185,13 +185,20 @@ export function openLabelPopup(e: MouseEvent): void {
   openPopup(e, labelPopup);
 
   const target = (e.currentTarget as DraggableComponentElement);
-  {
-    const paragraph = target.querySelector("p")!;
-    (labelPopup.querySelector("#label-popup-text") as HTMLInputElement)!.value = paragraph.textContent!;
-  }
+  const paragraph = target.querySelector("p")!;
+  (labelPopup.querySelector("#label-popup-text") as HTMLInputElement)!.value = paragraph.textContent!;
 
   (labelPopup.querySelector("#label-popup-width") as HTMLInputElement)!.value = String(target.width);
   (labelPopup.querySelector("#label-popup-height") as HTMLInputElement)!.value = String(target.height);
+
+  if (paragraph.style.textAlign == "left" || paragraph.style.textAlign == "") {
+    (labelPopup.querySelector("#label-popup-align-left") as HTMLInputElement)!.checked = true;
+  } else if (paragraph.style.textAlign == "center") {
+    (labelPopup.querySelector("#label-popup-align-center") as HTMLInputElement)!.checked = true;
+  } else if (paragraph.style.textAlign == "right") {
+    (labelPopup.querySelector("#label-popup-align-right") as HTMLInputElement)!.checked = true;
+  }
+
 
   e.preventDefault();
 }
@@ -433,6 +440,30 @@ function setupLabelPopup(): void {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
     const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!}`) as DraggableComponentElement;
     component.height = input.valueAsNumber;
+  });
+
+  labelPopup.querySelector("#label-popup-align-left")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
+    if (input.checked) {
+      component.style.textAlign = "left";
+    }
+  });
+
+  labelPopup.querySelector("#label-popup-align-right")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
+    if (input.checked) {
+      component.style.textAlign = "right";
+    }
+  });
+
+  labelPopup.querySelector("#label-popup-align-center")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
+    if (input.checked) {
+      component.style.textAlign = "center";
+    }
   });
 }
 
