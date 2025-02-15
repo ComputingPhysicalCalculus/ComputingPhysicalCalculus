@@ -28,6 +28,13 @@ export class MockDevice implements Device{
         return null;
     }
 
+    determine_output() : Shaft | undefined{
+        return undefined;
+    }
+    update() : void{
+        
+    }
+
     /**
      * @method equals
      * @description Compares two MockDevices for testing purposes

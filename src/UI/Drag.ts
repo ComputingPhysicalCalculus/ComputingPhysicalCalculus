@@ -1,7 +1,8 @@
 import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
 import Vector2 from "./Vector2.ts"
-import { GRID_SIZE, allValid, setCells, highlightHoveredCells, getScreenOffset, screenToWorldPosition, worldToScreenPosition } from "./Grid.ts";
+import { GRID_SIZE, allValid, setCells, highlightHoveredCells, screenToWorldPosition, worldToScreenPosition, validShaft } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
+import { UNDO_SINGLETON } from "@src/Undo.ts";
 
 type DragItem = {
   item: DraggableComponentElement | null,
@@ -74,10 +75,11 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
 export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
-  // Will come up with a better solution
-  (window as any).lifecycle.pushHistory();
-
   const currentTarget = event.currentTarget as DraggableComponentElement;
+
+  // Will come up with a better solution
+  UNDO_SINGLETON.push();
+
   currentTarget.classList.add("dragged");
 
   curDragItem.item = currentTarget;
@@ -89,8 +91,6 @@ export function pickup(event: MouseEvent): void {
     let topLeft = new Vector2(0, 0);
     topLeft.x = Number(currentTarget.left);
     topLeft.y = Number(currentTarget.top);
-
-    if (size == null) return;
 
     if (curDragItem.item.shouldLockCells) setCells(topLeft, size, false);
 
@@ -153,7 +153,7 @@ function drop(event: MouseEvent): void {
 
   // Check whether or not the item being dragged can be placed
   {
-    if (item.shouldLockCells && !allValid(topLeft, size)) {
+    if ((item.shouldLockCells && !allValid(topLeft, size)) || (!item.shouldLockCells && !validShaft(topLeft, item))) {
       if (!item.hasBeenPlaced) {
         item.remove();
         curDragItem.item = null;

@@ -11,13 +11,15 @@ import "./UI/DraggableElement";
 import "./UI/GraphElement";
 import "./UI/ShaftElement";
 import "./UI/MotorComponent";
-import "./UI/GearComponentElement";
+import "./UI/CrossConnectComponentElement";
 import "./UI/DifferentialComponentElement";
 import "./UI/MultiplierComponentElement";
 import "./UI/GearPairComponentElement.ts";
 import "./UI/DialComponentElement.ts";
+import "./expr/Expression.ts";
 
 import "./run.ts";
+import Expression from "./expr/Expression.ts";
 
 // Give the example configuration a type
 
@@ -33,7 +35,6 @@ export const generator = function*(n: number, min: number, max: number, f: (x: n
 // Start the application
 window.onload = () => {
     const lifecycle = new Lifecycle();
-    window.lifecycle = lifecycle;
     lifecycle.setup();
 }
 

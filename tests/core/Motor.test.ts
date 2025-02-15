@@ -63,15 +63,11 @@ function test_getOutput(initial_rotation: number, new_rotation: number){
 
     test_initial_motor_values(motor, new_rotation, mock_output);
 
-    mock_output.resultReady = false;
-    mock_output.currentRotation = initial_rotation;
-    mock_output.nextRotation = NaN;
-
     // TODO: do more test based on result of the TODO: 5
 
-    expect(motor.getOutput()).toBe(mock_output);
-    expect(mock_output.resultReady).toBe(true);
-    expect(mock_output.nextRotation).toBe(new_rotation);
+    expect(motor.determine_output()).toBe(mock_output);
+    motor.update();
+    expect(mock_output.get_rotation_rate()).toBe(new_rotation);
 }
 
 // fuzz test_changeRotation

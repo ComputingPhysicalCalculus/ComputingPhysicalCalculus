@@ -30,9 +30,9 @@
                         <img src="icons/Line.svg" alt="Horizontal shaft"/>
                     </div>
 
-                    <div data-type="Gear" class="component">
-                        <div>Gear</div>
-                        <img src="icons/Gear.svg" alt="Gear"/>
+                    <div data-type="CrossConnect" class="component">
+                        <div>X-Conn.</div>
+                        <img scale="1.5" src="icons/CrossConnect.svg" alt="Cross connect"/>
                     </div>
 
                     <div data-type="Integrator" class="component">
@@ -46,7 +46,7 @@
                     </div>
 
                     <div data-type="Differential" class="component">
-                        <div>Diff</div>
+                        <div>Sum</div>
                         <div style="visibility: hidden">.</div>
                         <img src="icons/Differential.svg" alt="Differential"/>
                     </div>
@@ -125,9 +125,9 @@
                 </div>
             </div>
 
-            <div class="popup" id="gear-popup" position="absolute" >
+            <div class="popup" id="cross-connect-popup" position="absolute" >
                 <label>Reverse</label>
-                <input id="gear-reversed" type="checkbox">
+                <input id="cross-connect-reversed" type="checkbox">
             </div>
 
             <div class="popup" id="integrator-popup" position="absolute" >
@@ -146,14 +146,97 @@
             </div>
 
             <div class="popup" id="gear-pair-popup" position="absolute" >
-                <label>Gear ratio</label>
+                <label>Top Ratio</label>
+                <input id="gear-pair-top-ratio" type="number" min="1" max="9" value="1">
+                <label>Bottom Ratio</label>
+                <input id="gear-pair-bottom-ratio" type="number" min="1" max="9" value="1">
+            </div>
+
+            <div class="popup" id="function-table-popup" position="absolute" >
                 <div>
-                    <input id="gear-pair-input-ratio" type="number" min="1" value="1">
-                    <label>:</label>
-                    <input id="gear-pair-output-ratio" type="number" min="1" value="1">
+                    <label>f(x)=</label>
+                    <input type="text" id="function-table-fn" />
+                </div>
+                <div>
+                    <label>X Min</label>
+                    <input type="number" step="any" id="function-table-x-min" />
+                </div>
+                <div>
+                    <label>X Max</label>
+                    <input type="number" step="any" id="function-table-x-max" />
+                </div>
+                <div>
+                    <label>Y Min</label>
+                    <input type="number" step="any" id="function-table-y-min" />
+                </div>
+                <div>
+                    <label>Y Max</label>
+                    <input type="number" step="any" id="function-table-y-max" />
                 </div>
             </div>
 
+            <div class="popup" id="output-table-popup" position="absolute" >
+                <div>
+                    <label>Initial Y (blue)</label>
+                    <input type="number" step="any" id="output-table-initial-1" />
+                </div>
+                <div>
+                    <label>Initial Y (red)</label>
+                    <input type="number" step="any" id="output-table-initial-2" />
+                </div>
+                <div>
+                    <label>X Min</label>
+                    <input type="number" step="any" id="output-table-x-min" />
+                </div>
+                <div>
+                    <label>X Max</label>
+                    <input type="number" step="any" id="output-table-x-max" />
+                </div>
+                <div>
+                    <label>Y Min</label>
+                    <input type="number" step="any" id="output-table-y-min" />
+                </div>
+                <div>
+                    <label>Y Max</label>
+                    <input type="number" step="any" id="output-table-y-max" />
+                </div>
+            </div>
+
+            <div class="popup" id="label-popup" position = "absolute">
+                <div>
+                    <label>Text</label>
+                    <input type="Text" id="label-popup-text"/>
+                </div>
+
+                <div>
+                    <label>Width</label>
+                    <input type="number" value = "1" min="1" id="label-popup-width"/>
+                </div>
+                <div>
+                    <label>Height</label>
+                    <input type="number" value = "1" min="1" id="label-popup-height"/>
+                </div>
+
+                <div id="label-popup-alignment">
+                    <label>Text Alignment</label>
+                    <div id="label-popup-buttons">
+                        <div>
+                            <input type="radio" name="label-popup-button" id="label-popup-align-left" class="label-popup-align" checked/>
+                            <label for="label-popup-align-left">Left</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="label-popup-button" id="label-popup-align-center" class="label-popup-align"/>
+                            <label for="label-popup-align-center">Center</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="label-popup-button" id="label-popup-align-right" class="label-popup-align"/>
+                            <label for="label-popup-align-right">Right</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

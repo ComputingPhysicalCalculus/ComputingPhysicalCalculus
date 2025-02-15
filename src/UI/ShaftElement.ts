@@ -1,5 +1,6 @@
 import { LitElement, svg } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { GRID_SIZE } from "./Grid.ts";
 
 @customElement("shaft-component")
 export class ShaftElement extends LitElement {
@@ -20,16 +21,18 @@ export class ShaftElement extends LitElement {
   }
 
   render() {
-    let grid_size = Math.min(this.offsetHeight, this.offsetWidth);
-    
+    let grid_size = GRID_SIZE;
+
     let width = this.offsetWidth / grid_size;
     let height = this.offsetHeight / grid_size;
+
+    console.log(height);
 
     let top = this.horizontal ? height / 2 : 0;
     let left = this.horizontal ? 0 : width / 2;
     let bottom = this.horizontal ? height / 2 : height;
     let right = this.horizontal ? width : width / 2;
-    
+
     return svg`
       <svg
         xmlns="https://www.w3.org/2000/svg"

@@ -2,14 +2,18 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openShaftPopup, openGearPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup } from "./Popups.ts"
+import { openShaftPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup, openLabelPopup } from "./Popups.ts"
+
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
+import { GearPairComponentElement } from "./GearPairComponentElement.ts";
+import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
+import Expression from "@src/expr/Expression.ts";
 
 export enum ComponentType {
   VShaft,
   HShaft,
-  Gear,
+  CrossConnect,
   Integrator,
   FunctionTable,
   Differential,
@@ -22,6 +26,8 @@ export enum ComponentType {
 };
 
 let CURRENT_ID: number = 0;
+
+export function setIDCounter(id: number): void { CURRENT_ID = id; }
 
 export function stringToComponent(componentName: string): ComponentType | null {
   return ComponentType[componentName as keyof typeof ComponentType];
@@ -40,8 +46,8 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     case ComponentType.VShaft:
       createVShaft(comp);
       break;
-    case ComponentType.Gear:
-      createGear(comp);
+    case ComponentType.CrossConnect:
+      createCrossConnect(comp);
       break;
     case ComponentType.HShaft:
       createHShaft(comp);
@@ -128,16 +134,16 @@ function createVShaft(div: DraggableComponentElement): void {
   }
 }
 
-function createGear(div: DraggableComponentElement): void {
+function createCrossConnect(div: DraggableComponentElement): void {
   div.width = 1;
   div.height = 1;
-  div.componentType = "gear";
+  div.componentType = "crossConnect";
   div.shouldLockCells = true;
-  div.classList.add("gear");
+  div.classList.add("crossConnect");
 
-  div.addEventListener("mouseup", openGearPopup);
+  div.addEventListener("mouseup", openCrossConnectPopup);
 
-  render(html`<gear-component teeth="6" style="width:100%;height:100%"></gear-component>`, div);
+  render(html`<cross-connect-component teeth="6" style="width:100%;height:100%"></cross-connect-component>`, div);
 
   type ExportedData = {
     top: number,
@@ -146,22 +152,23 @@ function createGear(div: DraggableComponentElement): void {
   };
 
   div.export_fn = (_this) => {
+    const connect = _this.querySelector("cross-connect-component") as CrossConnectComponentElement;
     return {
-      _type: ComponentType.Gear,
+      _type: ComponentType.CrossConnect,
       data: {
         top: _this.top,
         left: _this.left,
-        reversed: _this.outputRatio < 0,
+        reversed: connect.inverted,
       },
     };
   };
 
   div.import_fn = (_this, data: ExportedData) => {
+    const connect = _this.querySelector("cross-connect-component") as CrossConnectComponentElement;
     _this.top = data.top;
     _this.left = data.left;
-    _this.outputRatio = (!data.reversed) ? 1 : (data.reversed ? -1 : 1);
 
-    _this.querySelector("gear-component")!.inverted = _this.outputRatio < 0;
+    connect.inverted = data.reversed;
   };
 }
 
@@ -207,13 +214,14 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("integrator");
 
-  render(html`<integrator-component></integrator-component>`, div);
+  render(html`<integrator-component style="width:100%;height:100%"></integrator-component>`, div);
 
   div.addEventListener("mouseup", openIntegratorPopup);
 
   type ExportedData = {
     top: number,
     left: number,
+    initialPosition: number,
   };
 
   div.export_fn = (_this) => {
@@ -222,6 +230,7 @@ function createIntegrator(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
+        initialPosition: _this.inputRatio,
       },
     };
   };
@@ -229,6 +238,7 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     _this.top = data.top;
     _this.left = data.left;
+    _this.inputRatio = data.initialPosition;
   };
 }
 
@@ -242,6 +252,8 @@ function createFunctionTable(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("functionTable");
 
+  div.addEventListener("mouseup", openFunctionTablePopup);
+
   let function_table = document.createElement("graph-table") as GraphElement;
   function_table.setAttribute("style", "width:100%;height:100%");
   function_table.setAttribute("x-min", "0.0");
@@ -250,10 +262,10 @@ function createFunctionTable(div: DraggableComponentElement): void {
   function_table.setAttribute("y-max", "1.5");
   function_table.setAttribute("gantry-x", "0.0");
   function_table.setAttribute("padding", "5");
+  function_table.isAnOutput = false;
 
-  let generator_exp = generator(100, function_table.x_min, function_table.x_max, Math.sin);
+  function_table.set_data_set("d1", []);
 
-  function_table.set_data_set("a", Array.from([...generator_exp]));
   div.appendChild(function_table);
 
   type ExportedData = {
@@ -264,13 +276,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
     y_min: number,
     y_max: number,
     gantry_x?: number,
-    data_sets: {
-      [key: string]: {
-        points: Vector2[],
-        style: string,
-        invert_head: boolean,
-      },
-    },
+    fn: string,
   };
 
   div.export_fn = (_this) => {
@@ -286,7 +292,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         y_min: graph_element.y_min,
         y_max: graph_element.y_max,
         gantry_x: graph_element.gantry_x,
-        data_sets: graph_element.data_sets,
+        fn: graph_element.data_sets["d1"]?.fn ?? "",
       }
     };
   };
@@ -294,14 +300,20 @@ function createFunctionTable(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
 
-    _this.top = data.top,
-      _this.left = data.left,
-      graph_element.x_min = data.x_min;
+    _this.top = data.top;
+    _this.left = data.left;
+    graph_element.x_min = data.x_min;
     graph_element.x_max = data.x_max;
     graph_element.y_min = data.y_min;
     graph_element.y_max = data.y_max;
     graph_element.gantry_x = data.gantry_x;
-    graph_element.data_sets = data.data_sets;
+
+    if (data.fn !== undefined && data.fn != "") {
+      let compiled_expr = Expression.compile(data.fn);
+      let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
+      graph_element.set_data_set("d1", Array.from([...generator_exp]));
+      graph_element.data_sets["d1"].fn = data.fn;
+    }
   }
 }
 
@@ -345,6 +357,10 @@ function createOutputTable(div: DraggableComponentElement): void {
   div.componentType = "outputTable";
   div.shouldLockCells = true;
   div.classList.add("outputTable");
+  div.inputRatio = 0;
+  div.outputRatio = 0;
+
+  div.addEventListener("mouseup", openOutputTablePopup);
 
   render(html`
     <graph-table
@@ -361,8 +377,9 @@ function createOutputTable(div: DraggableComponentElement): void {
 
   let graph = div.querySelector("graph-table") as GraphElement;
 
-  graph.set_data_set("1", [{ x: 0, y: 0 }], "blue");
-  graph.set_data_set("2", [{ x: 0, y: 0 }], "red", true);
+  graph.set_data_set("d1", [{ x: 0, y: 0 }], "blue");
+  graph.set_data_set("d2", [{ x: 0, y: 0 }], "red", true);
+  graph.isAnOutput = true;
 
   type ExportedData = {
     top: number,
@@ -371,6 +388,8 @@ function createOutputTable(div: DraggableComponentElement): void {
     x_max: number,
     y_min: number,
     y_max: number,
+    initialY1: number,
+    initialY2: number,
     gantry_x?: number,
     data_sets: {
       [key: string]: {
@@ -394,7 +413,8 @@ function createOutputTable(div: DraggableComponentElement): void {
         y_min: graph_element.y_min,
         y_max: graph_element.y_max,
         gantry_x: graph_element.gantry_x,
-        data_sets: graph_element.data_sets,
+        initialY1: _this.inputRatio,
+        initialY2: _this.outputRatio,
       }
     };
   };
@@ -402,14 +422,15 @@ function createOutputTable(div: DraggableComponentElement): void {
   div.import_fn = (_this, data: ExportedData) => {
     let graph_element = _this.querySelector("graph-table") as GraphElement;
 
-    _this.top = data.top,
-      _this.left = data.left,
-      graph_element.x_min = data.x_min;
+    _this.top = data.top;
+    _this.left = data.left;
+    graph_element.x_min = data.x_min;
     graph_element.x_max = data.x_max;
     graph_element.y_min = data.y_min;
     graph_element.y_max = data.y_max;
     graph_element.gantry_x = data.gantry_x;
-    graph_element.data_sets = data.data_sets;
+    _this.inputRatio = data.initialY1;
+    _this.outputRatio = data.initialY2;
   }
 }
 
@@ -493,6 +514,8 @@ function createLabel(div: DraggableComponentElement): void {
 
   div.classList.add("label");
 
+  div.addEventListener("mouseup", openLabelPopup);
+
   let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
 
   document.addEventListener("wheel", render_p);
@@ -553,22 +576,24 @@ function createGearPair(div: DraggableComponentElement): void {
   };
 
   div.export_fn = (_this) => {
+    const gear_pair = _this.querySelector("gear-pair-component") as GearPairComponentElement;
     return {
-      _type: ComponentType.Gear,
+      _type: ComponentType.GearPair,
       data: {
         top: _this.top,
         left: _this.left,
-        inputRatio: _this.inputRatio,
-        outputRatio: _this.outputRatio,
+        inputRatio: gear_pair.ratio_top,
+        outputRatio: gear_pair.ratio_bottom,
       },
     };
   };
 
   div.import_fn = (_this, data: ExportedData) => {
+    const gear_pair = _this.querySelector("gear-pair-component") as GearPairComponentElement;
     _this.top = data.top;
     _this.left = data.left;
-    _this.inputRatio = (!data.inputRatio) ? 1 : data.inputRatio;
-    _this.outputRatio = (!data.outputRatio) ? 1 : data.outputRatio;
+    gear_pair.ratio_top = (!data.inputRatio) ? 1 : data.inputRatio;
+    gear_pair.ratio_bottom = (!data.outputRatio) ? 1 : data.outputRatio;
   };
 }
 
@@ -579,8 +604,6 @@ function createDial(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("dial");
 
-  // div.addEventListener("mouseup", openGearPopup);
-
   render(html`<dial-component style="width:100%;height:100%"></dial-component>`, div);
 
   type ExportedData = {
@@ -590,7 +613,7 @@ function createDial(div: DraggableComponentElement): void {
 
   div.export_fn = (_this) => {
     return {
-      _type: ComponentType.Gear,
+      _type: ComponentType.Dial,
       data: {
         top: _this.top,
         left: _this.left,

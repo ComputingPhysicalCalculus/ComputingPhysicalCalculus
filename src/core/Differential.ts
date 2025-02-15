@@ -1,7 +1,7 @@
 /**
  * @file Differential.ts
  * @description This file contains the definition of the Differential class.
- * @author Andy Zhu
+ * @author Simon Solca, Andy Zhu
  */
 
 
@@ -17,6 +17,7 @@ export class Differential implements Device {
     private output: Shaft | undefined;
     // the sum shaft is always in the middle
     private shafts: Shaft[];
+    private output_index: number = -1;
 
     /**
      * @constructor
@@ -34,34 +35,51 @@ export class Differential implements Device {
      * @description This method calculates the nextRotation of output shaft
      * @returns The output shaft that represents the output of the Differential
      */
-    getOutput() : Shaft | undefined {
-        let count: number = 0
-        for(let shaft of this.shafts) {
-            if(shaft.resultReady) {
-                count += 1;
+    determine_output() : Shaft | undefined {
+        // determine how many shafts are ready
+        let count = 0
+        for(const shaft of this.shafts) {
+            if(shaft.ready_flag) {
+                count++;
             }
         }
+
+        // if theres 2 ready we can determine the output shaft
         if(count == 2) {
-            let idx: number = 0;
-            for(let i = 0;i<3;++i) {
-                if(!this.shafts[i].resultReady) {
-                    idx = i;
+            // find shaft that isnt ready
+            for(let i = 0; i < 3; i++) {
+                if(!this.shafts[i].ready_flag) {
+                    this.output_index = i;
+                    break;
                 }
             }
-            if(idx == 0) {
-                this.shafts[0].resultReady = true;
-                this.shafts[0].nextRotation = this.shafts[1].nextRotation - this.shafts[2].nextRotation;
-            } else if(idx == 1) {
-                this.shafts[1].resultReady = true;
-                this.shafts[1].nextRotation = this.shafts[0].nextRotation + this.shafts[2].nextRotation;
-            } else {
-                this.shafts[2].resultReady = true;
-                this.shafts[2].nextRotation = this.shafts[1].nextRotation - this.shafts[0].nextRotation;
-            }
-            this.output = this.shafts[idx];
+            this.output = this.shafts[this.output_index];
             return this.output;
-        } else {
+        }
+        else if (count == 3){
+            return this.output;
+        }
+        else{
             return undefined;
         }
+    }
+
+    /**
+     * @method update
+     * @description This method directly updates the rotation rate of its output 
+     * to be the combination of inputs shafts depending on which shafts were ready
+    */
+    update(){
+        let new_rotation = NaN;
+
+        // case where sum shaft is the output
+        if(this.output_index == 1){
+            new_rotation = this.shafts[0].get_rotation_rate() + this.shafts[2].get_rotation_rate();
+        }
+        // case when output shaft is one of the other two
+        else{
+            new_rotation = this.shafts[1].get_rotation_rate() - this.shafts[2-this.output_index].get_rotation_rate();
+        }
+        this.output?.set_rotation_rate(new_rotation);
     }
 }

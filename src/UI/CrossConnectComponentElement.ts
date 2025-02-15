@@ -3,16 +3,16 @@ import { customElement, property } from "lit/decorators.js";
 import Vector2 from "./Vector2";
 
 export const generator = function*(n: number, min: number, max: number, f: (x: number) => Vector2) {
-    for (let i = min; i < max; i += (max - min) / n) {
-        yield f(i);
-    }
+  for (let i = min; i < max; i += (max - min) / n) {
+    yield f(i);
+  }
 }
 
-@customElement("gear-component")
-export class GearComponentElement extends LitElement {
+@customElement("cross-connect-component")
+export class CrossConnectComponentElement extends LitElement {
   @property({ type: Boolean })
   inverted: boolean = false;
-  
+
   render() {
     // let points = generator(180, 0, Math.PI * 2, theta => {
     //   let a = -0.6;
@@ -27,17 +27,19 @@ export class GearComponentElement extends LitElement {
     // });
 
     // let points_string = Array.from(points).map(({ x, y }: Vector2) => `${x},${y}`).join(" ")
-    
+
     return svg`
       <svg
         xmlns="https://www.w3.org/2000/svg"
         width="50" height="50"
-        viewBox="-25 -25 50 50"
+        viewBox="-20 -20 40 40"
         style="width:100%;height:100%"
       >
-        <circle rx="0" ry="0" r="5" stroke="black" stroke-width="2" fill="black" />
+      <circle cx="0" cy="0" r="5" stroke="black" fill="black"/>
+      <rect x="-2" width="4" y="-8" height="16" stroke="black" fill="black" rx="0.2"/>
+      <rect x="-8" width="16" y="-2" height="4" stroke="black" fill="black" rx="0.2"/>
         ${this.inverted ?
-          svg`<circle rx="0" ry="0" r="10" stroke="black" stroke-width="2" fill="none" />`
+        svg`<circle rx="0" ry="0" r="10" stroke="black" stroke-width="2" fill="none" />`
         : ""}
       </svg>
     `;
@@ -46,6 +48,6 @@ export class GearComponentElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "gear-component": GearComponentElement;
+    "cross-connect-component": CrossConnectComponentElement;
   }
 }

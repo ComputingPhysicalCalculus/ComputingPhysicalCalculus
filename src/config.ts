@@ -1,4 +1,4 @@
-import { ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { setIDCounter, ComponentType, createComponent, stringToComponent } from "./UI/Components";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { setCells, GRID_SIZE } from "./UI/Grid";
 import Vector2 from "./UI/Vector2.ts";
@@ -16,7 +16,7 @@ export type ShaftConfig = {
   end: [number, number];
 };
 
-export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | GearConfig | LabelConfig | GearPairConfig | DialConfig;
+export type ComponentConfig = IntegratorConfig | DifferentialConfig | MultiplierConfig | FunctionTableConfig | MotorConfig | OutputTableConfig | CrossConnectConfig | LabelConfig | GearPairConfig | DialConfig;
 
 export type IntegratorConfig = {
   type: "integrator";
@@ -32,9 +32,9 @@ export type IntegratorConfig = {
 export type DifferentialConfig = {
   type: "differential";
   compID: number;
-  inputShaft1: ShaftID;
-  inputShaft2: ShaftID;
-  outputShaft: ShaftID;
+  diffShaft1: ShaftID;
+  diffShaft2: ShaftID;
+  sumShaft: ShaftID;
   position: [number, number];
 };
 
@@ -53,6 +53,11 @@ export type FunctionTableConfig = {
   inputShaft: ShaftID;
   outputShaft: ShaftID;
   position: [number, number];
+  fn: string,
+  x_min: number,
+  x_max: number,
+  y_min: number,
+  y_max: number,
 };
 
 export type MotorConfig = {
@@ -69,10 +74,16 @@ export type OutputTableConfig = {
   outputShaft1: ShaftID;
   outputShaft2: ShaftID;
   position: [number, number];
+  initialY1: number,
+  initialY2: number,
+  x_min: number,
+  x_max: number,
+  y_min: number,
+  y_max: number,
 };
 
-export type GearConfig = {
-  type: "gear";
+export type CrossConnectConfig = {
+  type: "crossConnect";
   compID: number;
   horizontal: ShaftID;
   vertical: ShaftID;
@@ -95,6 +106,8 @@ export type GearPairConfig = {
   position: [number, number];
   inputRatio: number;
   outputRatio: number;
+  shaft1: number;
+  shaft2: number;
 };
 
 export type DialConfig = {
@@ -104,7 +117,7 @@ export type DialConfig = {
 };
 
 const type_name_dict = {
-  "gear": "Gear",
+  "crossConnect": "CrossConnect",
   "integrator": "Integrator",
   "functionTable": "FunctionTable",
   "differential": "Differential",
@@ -118,6 +131,7 @@ const type_name_dict = {
 
 export function loadConfig(config: Config): void {
   // console.log(config.components);
+  let maxID = 0;
   for (let components of config.components) {
     // console.log(components);
     // console.log(components.position);
@@ -130,40 +144,38 @@ export function loadConfig(config: Config): void {
     let item = createComponent(stringToComponent(componentType) as ComponentType) as DraggableComponentElement;
 
     switch (components.type) {
-      case "gear":
+      case "crossConnect":
       case "integrator":
       case "differential":
       case "motor":
       case "multiplier":
       case "gearPair":
       case "dial":
-        {
-          item.import_fn(item, components);
-          break;
-        }
+      case "functionTable":
+      case "outputTable":
+        item.import(components);
+        break;
 
       case "label": {
         let [width, height] = components.size;
-        item.width = width;
-        item.height = height;
-        let p = item.querySelector("p")!;
-        p.style.textAlign = components.align;
-        p.textContent = components._comment;
-        break;
+        item.import({
+          ...components,
+          width,
+          height,
+        })
       }
-
-      case "functionTable":
-      case "outputTable":
-        // Not sure if data should be parsed through
-        break;
     }
     item.top = top;
     item.left = left;
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
+    item.componentID = components.compID;
+    maxID = Math.max(maxID, components.compID);
 
-    setCells(new Vector2(left, top), item.getSize(), true);
+    if (item.componentType != "label") {
+      setCells(new Vector2(left, top), item.getSize(), true);
+    }
 
     item.hasBeenPlaced = true;
     item.requestUpdate();
@@ -172,10 +184,6 @@ export function loadConfig(config: Config): void {
   }
 
   for (let shaft of config.shafts) {
-    // console.log(config.shafts);
-    // console.log(shaft);
-    // console.log(shaft.start);
-    // console.log(shaft.end);
     let [left, top] = shaft.start;
     let [right, bottom] = shaft.end;
 
@@ -206,4 +214,6 @@ export function loadConfig(config: Config): void {
 
     document.getElementById("content")!.appendChild(item);
   }
+
+  setIDCounter(maxID + 1);
 }

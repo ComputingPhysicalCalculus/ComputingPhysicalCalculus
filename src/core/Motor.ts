@@ -1,16 +1,17 @@
 /**
  * @file Motor.ts
  * @description This file contains the definition of the Motor class.
- * @author Andy Zhu
+ * @author Simon Solca, Andy Zhu
  */
 
 import { Shaft } from "./Shaft";
+import { Device } from "./Device";
 
 /**
  * @class Motor
  * @description the Motor class which simulates the motor driving the differential analyzer
  */
-export class Motor {
+export class Motor implements Device{
     private rotation: number;
     private output: Shaft;
 
@@ -39,12 +40,15 @@ export class Motor {
      * @description This method returns the output shaft
      * @returns The output shaft
      */
-    getOutput(): Shaft {
-        if(!this.output.resultReady) {
-            this.output.resultReady = true;
-            this.output.currentRotation = this.rotation;
-            this.output.nextRotation = this.rotation;
-        }
+    determine_output(){
         return this.output;
+    }
+
+    /**
+     * @method update
+     * @description Sets the outputs rotation rate to be the motors rotation rate
+    */
+    update(){
+        this.output.set_rotation_rate(this.rotation);
     }
 }

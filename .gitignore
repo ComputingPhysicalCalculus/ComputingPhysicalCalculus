@@ -1,9 +1,13 @@
 # Dev environment files
 .envrc
 .direnv/*
+.vscode/*
 
 # Build files output
 dist/*
 
 # Npm
 node_modules/*
+
+
+tests/core/*.txt

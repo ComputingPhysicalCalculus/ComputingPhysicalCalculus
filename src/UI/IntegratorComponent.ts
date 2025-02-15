@@ -12,8 +12,8 @@ export class IntegratorComponentElement extends LitElement {
     return svg`
       <svg
         xmlns="https://www.w3.org/2000/svg"
-        width="90" height="60"
-        viewBox="0 0 200 100"
+        width="105" height="60"
+        viewBox="26 0 172 100"
       >
         <rect x="24" y="1" width="175" height="98" fill="white" stroke="black" stroke-width="2" rx="5" />
         <rect x="115" y="30" width="20" height="40" fill="none" stroke="black" stroke-width="2" rx="2" />

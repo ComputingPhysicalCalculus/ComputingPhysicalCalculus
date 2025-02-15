@@ -6,3 +6,5 @@ Graph: Xmin-max YMin-max
 Add Labels to component list
 
 Calculate Shaft ID for components for I/O
+
+Stop Shafts being placed on top of eachother

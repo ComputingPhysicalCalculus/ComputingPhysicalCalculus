@@ -1,18 +1,24 @@
 import { Config, loadConfig } from "./config";
 import { toConfig } from "./GenerateConfigFromUI";
-import { OutputTable } from "./core/OutputTable";
 import { query, queryAll } from "./decorators";
 import { INTEGRATING_LINEAR } from "./examples";
-import { export_simulator } from "./run";
-import { ComponentType, createComponent } from "./UI/Components";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
-import { GraphElement } from "./UI/GraphElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
 import { setupPopups } from "./UI/Popups";
 import Vector2 from "./UI/Vector2";
+import { UNDO_SINGLETON } from "./Undo";
+import { export_simulator } from "./run";
+import { GraphElement } from "./UI/GraphElement";
+import { Simulator } from "./core/Main";
+import { FunctionTable } from "./core/FunctionTable";
+import Expression from "./expr/Expression";
 
-const MAX_HISTORY_LENGTH = 32;
+enum State {
+  Paused,
+  Running,
+  Stopped,
+}
 
 /**
  * represents the lifecycle of the application and when certain code should be called.
@@ -69,15 +75,9 @@ export class Lifecycle {
   @query("#machine")
   machine!: HTMLElement;
 
-  private history: {
-    _type: ComponentType,
-    data: any,
-  }[][] = [];
+  state: State = State.Stopped;
 
-  private future: {
-    _type: ComponentType,
-    data: any,
-  }[][] = [];
+  private _on_frame: undefined | ((delta: number) => void);
 
   /**
    * Sets up the internal lifecycle state
@@ -105,35 +105,56 @@ export class Lifecycle {
     this.import_button.addEventListener("click", _ => this._handle_import_file());
     this.export_button.addEventListener("click", _ => this._handle_export_file());
     this.clear_button.addEventListener("click", _ => this._clear_components());
-    this.run_button.addEventListener("click", _ => this._run_simulator());
+
+    this.run_button.addEventListener("click", _ => this.run());
+    this.stop_button.addEventListener("click", _ => this.stop());
+    this.pause_button.addEventListener("click", _ => this.pause());
+    this.unpause_button.addEventListener("click", _ => this.unpause());
 
     window.addEventListener("keydown", e => {
       if (e.defaultPrevented) {
         return;
       }
 
-      switch (e.key) {
-        case 'Z':
-        case 'z':
-          e.preventDefault();
-          if (e.ctrlKey) {
-            if (e.shiftKey) {
-              this.popFuture();
-            } else {
-              this.popHistory();
-            }
-          }
-          break;
-        case 'S':
-        case 's':
-          e.preventDefault();
-          this._handle_export_file();
-          break;
-      }
+      this._handle_keydown(e);
     }, true);
+
+    let last_frame = 0;
+
+    const frame = (elapsed: number) => {
+      window.requestAnimationFrame(frame);
+
+      const delta = (elapsed - last_frame) / 1000.0;
+      last_frame = elapsed;
+      this._frame(delta);
+    };
+    window.requestAnimationFrame(frame);
 
     // KEEP THIS AT THE END OF THIS FUNCTION.
     this.resolveSetupCompleted();
+  }
+
+  private _handle_keydown(e: KeyboardEvent) {
+    switch (e.key) {
+      case 'Z':
+      case 'z':
+        if (e.ctrlKey) {
+          if (e.shiftKey) {
+            UNDO_SINGLETON.pop_future();
+          } else {
+            UNDO_SINGLETON.pop_history();
+          }
+          e.preventDefault();
+        }
+        break;
+      case 'S':
+      case 's':
+        if (e.ctrlKey) {
+          this._handle_export_file();
+          e.preventDefault();
+        }
+        break;
+    }
   }
 
   /**
@@ -142,7 +163,7 @@ export class Lifecycle {
    */
   public initialLoad(): void {
     this.loadState(INTEGRATING_LINEAR);
-    this.history.pop();
+    UNDO_SINGLETON.remove();
   }
 
   /**
@@ -150,7 +171,7 @@ export class Lifecycle {
    * or an example program.
    */
   public loadState(config: Config): void {
-    this.pushHistory();
+    UNDO_SINGLETON.push();
 
     // Remove any components placed in the scene.
     this._clear_components();
@@ -182,78 +203,6 @@ export class Lifecycle {
 
   public exportState(): Config {
     return toConfig();
-  }
-
-  public pushHistory(): void {
-    // Clear future
-    this.future.splice(0, this.future.length);
-
-    // Add to history
-    this._pushHistory();
-  }
-
-  private _pushHistory(): void {
-    // Copy nodes
-    let saved_data = [];
-    for (let node of this.placedComponents) {
-      saved_data.push(node.export());
-    }
-
-    // Append to history, truncating it if it is too long
-    this.history.splice(0, Math.max(this.history.length - MAX_HISTORY_LENGTH, 0));
-    this.history.push(saved_data);
-  }
-
-  public popHistory(): void {
-    if (this.history.length < 1) {
-      return;
-    }
-
-    // Copy nodes
-    let saved_data = [];
-    for (let node of this.placedComponents) {
-      saved_data.push(node.export());
-    }
-
-    this.future.push(saved_data);
-
-    // Remove current components
-    this._clear_components();
-
-    // Restore state
-    let newNodes = this.history.pop()!;
-    for (let node of newNodes) {
-      let component = createComponent(node._type);
-      component.import(node.data)
-
-      this.content.appendChild(component);
-    }
-  }
-
-  public popFuture(): void {
-    if (this.future.length < 1) {
-      return;
-    }
-
-    // Copy nodes
-    let saved_data = [];
-    for (let node of this.placedComponents) {
-      saved_data.push(node.export());
-    }
-
-    this.history.push(saved_data);
-
-    // Remove current components
-    this._clear_components();
-
-    // Restore state
-    let newNodes = this.future.pop()!;
-    for (let node of newNodes) {
-      let component = createComponent(node._type);
-      component.import(node.data)
-
-      this.content.appendChild(component);
-    }
   }
 
   private _clear_components(): void {
@@ -297,114 +246,136 @@ export class Lifecycle {
     }
   }
 
-  private _run_simulator(): void {
-    enum State {
-      Paused,
-      Running,
-      Stopped,
+  stop(): void {
+    this.state = State.Stopped;
+
+    this.step_period_input.disabled = false;
+    this.import_button.disabled = false;
+    this.clear_button.disabled = false;
+
+    this.run_button.hidden = false;
+    this.stop_button.hidden = true;
+    this.pause_button.hidden = true;
+    this.unpause_button.hidden = true;
+  }
+
+  pause(): void {
+    if (this.state !== State.Running) {
+      console.warn(`Tried to pause application when it was not running.\nState was ${this.state}`);
+      return;
     }
-    
-    let state: State = State.Running;
+    this.state = State.Paused;
 
-    const unpause = () => {
-      state = State.Running;
-      this.pause_button.hidden = false;
-      this.unpause_button.hidden = true;
-    };
-    const pause = () => {
-      state = State.Paused;
-      this.pause_button.hidden = true;
-      this.unpause_button.hidden = false;
-    };
-    const stop = () => {
-      state = State.Stopped;
-      this.run_button.disabled = false;
-      this.run_button.hidden = false;
-      this.step_period_input.disabled = false;
-      this.import_button.disabled = false;
-      this.stop_button.hidden = true;
-      this.pause_button.hidden = true;
-      this.unpause_button.hidden = true;
+    this.run_button.hidden = true;
+    this.stop_button.hidden = false;
+    this.pause_button.hidden = true;
+    this.unpause_button.hidden = false;
+  }
 
-      this.stop_button.removeEventListener("click", stop);
-      this.pause_button.removeEventListener("click", pause);
-      this.unpause_button.removeEventListener("click", unpause);
-    };
+  unpause(): void {
+    if (this.state !== State.Paused) {
+      console.warn(`Tried to unpause application when it was not paused.\nState was ${this.state}`);
+    }
+    this.state = State.Running;
 
+    this.run_button.hidden = true;
+    this.stop_button.hidden = true;
+    this.pause_button.hidden = false;
+    this.unpause_button.hidden = true;
+  }
+
+  run(): void {
+    if (this.state !== State.Stopped) {
+      console.warn(`Tried to run application when it was not stopped.\nState was ${this.state}`);
+    }
+    this.state = State.Running;
+
+    this.step_period_input.disabled = true;
+    this.import_button.disabled = true;
+    this.clear_button.disabled = true;
+
+    this.run_button.hidden = true;
+    this.stop_button.hidden = true;
+    this.pause_button.hidden = false;
+    this.unpause_button.hidden = true;
+
+    const simulator = new Simulator(this.exportState())
     const step_period = Number(this.step_period_input.value);
     const get_motor_speed = () => Number(this.motor_speed_input.value);
 
-    this.run_button.disabled = true;
-    this.run_button.hidden = true;
-    this.step_period_input.disabled = true;
-    this.import_button.disabled = true;
-    this.stop_button.hidden = false;
-    this.pause_button.hidden = false;
+    const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
+    const function_tables = document.querySelectorAll(".functionTable > graph-table")! as NodeListOf<GraphElement>;
 
-    this.stop_button.addEventListener("click", stop);
-    this.pause_button.addEventListener("click", pause);
-    this.unpause_button.addEventListener("click", unpause);
+    simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
+      const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
 
-    const simulator = export_simulator(this.exportState(), get_motor_speed());
+      let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
+      x.fun = x => compiled_expr({ x });
+    });
 
-    const output_table = document.querySelector(".outputTable > graph-table")! as GraphElement;
-    const function_table = document.querySelector(".functionTable > graph-table")! as GraphElement;
+    output_tables.forEach(x => {
+      x.set_data_set("d1", []);
+      x.set_data_set("d2", [], "red", true);
+    })
 
-    output_table.set_data_set("a", []);
-    output_table.set_data_set("b", [], "red", true);
-
-    let steps_taken = 0;
     let elapsed = 0;
-    let last_timestamp: number | undefined;
+    let steps_taken = 0;
 
-    function frame(timestamp: number) {
-      if (state === State.Stopped) {
-        return;
-      }
-      window.requestAnimationFrame(frame);
-      if (state === State.Paused) {
-        last_timestamp = timestamp;
-        return;
-      }
-      
-      if (last_timestamp === undefined) {
-        last_timestamp = timestamp;
-      }
-      elapsed += (timestamp - last_timestamp) / 1000.0;
-      last_timestamp = timestamp;
-      
+    this._on_frame = (delta: number) => {
+      elapsed += delta;
+
       const next_steps = Math.floor(elapsed / step_period);
 
       simulator.motor?.changeRotation(get_motor_speed());
 
-      for (steps_taken; steps_taken < next_steps; steps_taken++) {
+      for (; steps_taken < next_steps; steps_taken++) {
         simulator.step();
       }
 
-      let x = simulator.outputTables[0].xHistory;
-      let y1 = simulator.outputTables[0].y1History;
-      let y2 = simulator.outputTables[0].y2History!;
+      for (let out of simulator.outputTables) {
+        let x = out.xHistory;
+        let y1 = out.y1History;
+        let y2 = out.y2History;
 
-      output_table.mutate_data_set("a", points => {
-        for (let i = points.length; i < x.length; i++) {
-          points.push(new Vector2(x[i], y1[i]));
+        const output_table = document.querySelector(`#component-${out.id} > graph-table`)! as GraphElement;
+
+        output_table.mutate_data_set("d1", points => {
+          for (let i = points.length; i < x.length; i++) {
+            points.push(new Vector2(x[i], y1[i]));
+          }
+        });
+
+        if (y2 !== undefined) {
+          output_table.mutate_data_set("d2", points => {
+            for (let i = points.length; i < x.length; i++) {
+              points.push(new Vector2(x[i], y2[i]));
+            }
+          });
         }
-      });
 
-      output_table.mutate_data_set("b", points => {
-        for (let i = points.length; i < x.length; i++) {
-          points.push(new Vector2(x[i], (y2[i] - 1) / 2));
+        output_table.gantry_x = x[next_steps - 1];
+
+        if (next_steps != 0 && x[steps_taken - 1] >= output_table.x_max) {
+          this.pause();
+          this.stop();
+          return
         }
-      });
-
-      output_table.gantry_x = x[next_steps - 1];
-      function_table.gantry_x = x[next_steps - 1];
-
-      if (next_steps != 0 && x[next_steps - 1] >= output_table.x_max) {
-        stop();
       }
+
+      for (let comp of simulator.components.filter(x => x instanceof FunctionTable)) {
+        const table = document.querySelector(`#component-${comp.id} > graph-table`)! as GraphElement;
+        table.gantry_x = comp.x_position;
+      }
+    };
+  }
+
+  private _frame(delta: number): void {
+    if (this.state !== State.Running) {
+      return;
     }
 
-    window.requestAnimationFrame(frame);
+    if (this._on_frame !== undefined) {
+      this._on_frame(delta);
+    }
   }
 }
