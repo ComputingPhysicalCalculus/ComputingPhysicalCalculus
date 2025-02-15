@@ -10,6 +10,7 @@ export enum TokenType {
   Sub = "-",
   Mul = "*",
   Div = "/",
+  Mod = "%",
   Pow = "^",
   Gt = ">",
   Lt = "<",
@@ -24,7 +25,7 @@ export type Token = {
   span: string,
 };
 
-const PUNCTUATION_REGEX = /^(>=|<=|!=|[+\-*/\^,.()><=])/;
+const PUNCTUATION_REGEX = /^(>=|<=|!=|[+\-*/\^,.()><=%])/;
 const NUMBER_REGEX = /^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/;
 const IDENTIFIER_REGEX = /^[a-zA-Z_][a-zA-Z0-9_]*/;
 
@@ -138,6 +139,7 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
       case TokenType.Lt:
       case TokenType.Eq:
       case TokenType.Neq:
+      case TokenType.Mod:
         break;
       case TokenType.RBracket:
       case TokenType.Comma:
@@ -177,6 +179,7 @@ const INFIX_BINDING_POWER: { [k: string]: [number, number] } = {
   "-": [2, 3],
   "*": [4, 5],
   "/": [4, 5],
+  "%": [4, 5],
   "^": [7, 6],
 }
 

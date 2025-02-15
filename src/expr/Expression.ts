@@ -47,6 +47,7 @@ export default class Expression {
       case "-":
       case "/":
       case "*":
+      case "%":
       case "^":
       case ">":
       case "<":

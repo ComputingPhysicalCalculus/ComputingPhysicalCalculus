@@ -36,6 +36,7 @@ describe("expression lexing", _ => {
     ["-"],
     ["*"],
     ["/"],
+    ["%"],
     ["^"],
     [","],
     ["("],
@@ -68,7 +69,7 @@ describe("expression lexing", _ => {
       ]
     ],
     [
-      "5+6*7/x^sin(45)><,=>=<=!=",
+      "5+6*7/x^sin(45)><,=>=<=!=%",
       [
         TokenType.Literal,
         TokenType.Add,
@@ -89,6 +90,7 @@ describe("expression lexing", _ => {
         TokenType.GtEq,
         TokenType.LtEq,
         TokenType.Neq,
+        TokenType.Mod,
       ],
     ]
   ])("lex '%s' -> %j", (s, expected) => {

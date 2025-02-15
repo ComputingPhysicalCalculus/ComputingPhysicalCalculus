@@ -4,6 +4,7 @@ export const BUITLIN_FUNCTIONS: { [ident: string]: (...params: number[]) => numb
   "-": (lhs, rhs) => lhs - rhs,
   "*": (lhs, rhs) => lhs * rhs,
   "/": (lhs, rhs) => lhs / rhs,
+  "%": (lhs, rhs) => lhs % rhs,
   "^": Math.pow,
   ">": (lhs, rhs) => lhs > rhs ? 1.0 : 0.0,
   "<": (lhs, rhs) => lhs < rhs ? 1.0 : 0.0,

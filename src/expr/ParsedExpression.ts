@@ -1,4 +1,4 @@
-export type BinaryOperator = "+" | "-" | "/" | "*" | "^" | "=" | "!=" | ">" | "<" | ">=" | "<=";
+export type BinaryOperator = "+" | "-" | "/" | "*" | "^" | "=" | "!=" | ">" | "<" | ">=" | "<=" | "%";
 
 export type BinaryOperation = {
   _type: BinaryOperator,
