@@ -61,12 +61,12 @@ export default class Expression {
         if (lhs._type === "lit" && rhs._type === "lit") {
           return [
             { _type: "lit", value: BUITLIN_FUNCTIONS[expr._type](lhs.value, rhs.value) },
-            lhs_vars.union(rhs_vars),
+            new Set([...lhs_vars, ...rhs_vars]),
           ]
         } else {
           return [
             { _type: expr._type, left: lhs, right: rhs },
-            lhs_vars.union(rhs_vars),
+            new Set([...lhs_vars, ...rhs_vars]),
           ]
         }
 
@@ -80,7 +80,7 @@ export default class Expression {
         }
 
         let evaled_params = expr.params.map(expr => this.partial_eval_expr(expr, ctx));
-        let vars = evaled_params.map(([_e, u]) => u).reduce((a, b) => a.union(b));
+        let vars = evaled_params.map(([_e, u]) => u).reduce((a, b) => new Set([...a, ...b]));
         let params = evaled_params.map(([e, _u]) => e);
 
         if (params.every(e => e._type === "lit")) {
