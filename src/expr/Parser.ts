@@ -3,6 +3,8 @@ import { BinaryOperator, ParsedExpression as ParsedExpression, UnaryOperator } f
 export enum TokenType {
   Ident = "ident",
   Literal = "lit",
+  Sum = "sum",
+  Prod = "prod",
   LBracket = "(",
   RBracket = ")",
   Comma = ",",
@@ -16,8 +18,9 @@ export enum TokenType {
   Lt = "<",
   GtEq = ">=",
   LtEq = "<=",
-  Eq = "=",
+  Eq = "==",
   Neq = "!=",
+  Assign = "=",
 }
 
 export type Token = {
@@ -25,8 +28,9 @@ export type Token = {
   span: string,
 };
 
-const PUNCTUATION_REGEX = /^(>=|<=|!=|[+\-*/\^,.()><=%])/;
+const PUNCTUATION_REGEX = /^(>=|<=|!=|==|[+\-*/\^,.()><=%])/;
 const NUMBER_REGEX = /^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/;
+const SUM_PROD_REGEX = /^(sum|product)/;
 const IDENTIFIER_REGEX = /^[a-zA-Z_][a-zA-Z0-9_]*/;
 
 export function next_token(s: string): [Token | null, string] {
@@ -35,6 +39,7 @@ export function next_token(s: string): [Token | null, string] {
   let regexes: { r: RegExp, _type: (match: string) => TokenType }[] = [
     { r: PUNCTUATION_REGEX, _type: match => match as TokenType, },
     { r: NUMBER_REGEX, _type: _ => TokenType.Literal },
+    { r: SUM_PROD_REGEX, _type: (match: string) => match.slice(0, Math.min(match.length, 4)) as TokenType },
     { r: IDENTIFIER_REGEX, _type: _ => TokenType.Ident },
   ]
 
@@ -63,13 +68,12 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
 
   let lhs: ParsedExpression;
   switch (lhs_tk._type) {
-    case TokenType.Ident:
+    case TokenType.Ident: {
       let peeked_tk = tokens[tokens.length - 1];
       if (peeked_tk === undefined || peeked_tk._type !== TokenType.LBracket) {
         lhs = { _type: "var", ident: lhs_tk.span };
         break;
       }
-
       tokens.pop();
 
       const params: ParsedExpression[] = [];
@@ -92,7 +96,7 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
       }
 
       lhs = { _type: "fn", ident: lhs_tk.span, params };
-      break;
+    } break;
     case TokenType.Literal:
       lhs = { _type: "lit", value: Number.parseFloat(lhs_tk.span) }
 
@@ -108,6 +112,40 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
         throw new Error("Unclosed left bracket");
       }
       break;
+
+    // Summation and product
+    case TokenType.Sum:
+    case TokenType.Prod: {
+      let peeked_tk = tokens[tokens.length - 1];
+      if (peeked_tk === undefined || peeked_tk._type !== TokenType.LBracket) {
+        lhs = { _type: "var", ident: lhs_tk.span };
+        break;
+      }
+      tokens.pop();
+
+      const expect = (tt: TokenType): Token => {
+        let tk = tokens.pop();
+        if (tk === undefined) {
+          throw new Error(`Unclosed left bracket`);
+        }
+        if (tk._type !== tt) {
+          throw new Error(`Unexpected token '${tk.span}' of type ${tk._type}`);
+        }
+
+        return tk;
+      }
+
+      let ident_tk = expect(TokenType.Ident);
+      expect(TokenType.Assign);
+      let start = parse_expr(tokens, 0);
+      expect(TokenType.Comma);
+      let end = parse_expr(tokens, 0);
+      expect(TokenType.Comma);
+      let value = parse_expr(tokens, 0);
+      expect(TokenType.RBracket);
+
+      lhs = { _type: lhs_tk._type, ident: ident_tk.span, start, end, value }
+    } break;
 
     // Unary operators
     case TokenType.Add:
@@ -173,7 +211,7 @@ const INFIX_BINDING_POWER: { [k: string]: [number, number] } = {
   ">": [0, 1],
   "<=": [0, 1],
   ">=": [0, 1],
-  "=": [0, 1],
+  "==": [0, 1],
   "!=": [0, 1],
   "+": [2, 3],
   "-": [2, 3],

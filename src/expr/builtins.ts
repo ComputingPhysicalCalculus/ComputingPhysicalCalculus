@@ -10,7 +10,7 @@ export const BUITLIN_FUNCTIONS: { [ident: string]: (...params: number[]) => numb
   "<": (lhs, rhs) => lhs < rhs ? 1.0 : 0.0,
   ">=": (lhs, rhs) => lhs >= rhs ? 1.0 : 0.0,
   "<=": (lhs, rhs) => lhs <= rhs ? 1.0 : 0.0,
-  "=": (lhs, rhs) => Math.abs(lhs - rhs) < 1e-8 ? 1.0 : 0.0,
+  "==": (lhs, rhs) => Math.abs(lhs - rhs) < 1e-8 ? 1.0 : 0.0,
   "!=": (lhs, rhs) => Math.abs(lhs - rhs) > 1e-8 ? 1.0 : 0.0,
 
   "abs": Math.abs,
