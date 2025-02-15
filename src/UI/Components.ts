@@ -27,6 +27,8 @@ export enum ComponentType {
 
 let CURRENT_ID: number = 0;
 
+export function setIDCounter(id: number): void { CURRENT_ID = id; }
+
 export function stringToComponent(componentName: string): ComponentType | null {
   return ComponentType[componentName as keyof typeof ComponentType];
 }
@@ -261,6 +263,8 @@ function createFunctionTable(div: DraggableComponentElement): void {
   function_table.setAttribute("gantry-x", "0.0");
   function_table.setAttribute("padding", "5");
   function_table.isAnOutput = false;
+
+  function_table.set_data_set("d1", []);
 
   div.appendChild(function_table);
 

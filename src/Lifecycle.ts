@@ -308,7 +308,7 @@ export class Lifecycle {
 
     simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
       const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
-      
+
       let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
       x.fun = x => compiled_expr({ x });
     });

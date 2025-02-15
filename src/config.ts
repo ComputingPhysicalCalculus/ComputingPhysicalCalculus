@@ -1,4 +1,4 @@
-import { ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { setIDCounter, ComponentType, createComponent, stringToComponent } from "./UI/Components";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { setCells, GRID_SIZE } from "./UI/Grid";
 import Vector2 from "./UI/Vector2.ts";
@@ -131,6 +131,7 @@ const type_name_dict = {
 
 export function loadConfig(config: Config): void {
   // console.log(config.components);
+  let maxID = 0;
   for (let components of config.components) {
     // console.log(components);
     // console.log(components.position);
@@ -170,6 +171,7 @@ export function loadConfig(config: Config): void {
     item.renderLeft = left * GRID_SIZE;
     item.id = `component-${components.compID}`;
     item.componentID = components.compID;
+    maxID = Math.max(maxID, components.compID);
 
     if (item.componentType != "label") {
       setCells(new Vector2(left, top), item.getSize(), true);
@@ -212,4 +214,6 @@ export function loadConfig(config: Config): void {
 
     document.getElementById("content")!.appendChild(item);
   }
+
+  setIDCounter(maxID + 1);
 }
