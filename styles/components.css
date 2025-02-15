@@ -90,3 +90,8 @@
 .dial {
     z-index: 3;
 }
+
+.placed-component.selected {
+    opacity: 100%;
+    background-color: var(--colour-accent2);
+}

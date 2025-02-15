@@ -3,6 +3,7 @@ import Vector2 from "./Vector2.ts"
 import { GRID_SIZE, allValid, setCells, highlightHoveredCells, screenToWorldPosition, worldToScreenPosition, validShaft } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { UNDO_SINGLETON } from "@src/Undo.ts";
+import { endSelect } from "./SelectShaft.ts";
 
 type DragItem = {
   item: DraggableComponentElement | null,
@@ -12,7 +13,7 @@ type DragItem = {
 
 let curDragItem: DragItem = { item: null, mouseX: 0, mouseY: 0 };
 let canStartDragging: boolean = false;
-let startedDragging: boolean = false;
+export let startedDragging: boolean = false;
 let startDraggingRadius: number = 5;
 
 function createNewObject(x: number, y: number, typeString: string): void {
@@ -75,15 +76,6 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
   return new Vector2(placementCol, placementRow);
 }
 
-export function selectShaft(event: MouseEvent): void {
-  if (event.button != 0) { return }
-  if (startedDragging) return;
-
-  const currentTarget = event.currentTarget as DraggableComponentElement;
-
-  console.log("Selected Shaft");
-}
-
 export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
@@ -130,6 +122,8 @@ function move(event: MouseEvent): void {
   if (curDragItem.item == null || !canStartDragging) {
     return;
   }
+
+  endSelect(event);
 
   if (!startedDragging) {
     let diffX = event.clientX - curDragItem.mouseX;

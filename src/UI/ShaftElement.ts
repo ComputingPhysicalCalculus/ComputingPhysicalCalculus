@@ -26,8 +26,6 @@ export class ShaftElement extends LitElement {
     let width = this.offsetWidth / grid_size;
     let height = this.offsetHeight / grid_size;
 
-    console.log(height);
-
     let top = this.horizontal ? height / 2 : 0;
     let left = this.horizontal ? 0 : width / 2;
     let bottom = this.horizontal ? height / 2 : height;

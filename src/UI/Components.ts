@@ -3,6 +3,7 @@ import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
 import { openShaftPopup, openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup, openLabelPopup } from "./Popups.ts"
+import { selectShaft } from "./SelectShaft.ts";
 
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts";
@@ -107,6 +108,7 @@ function createVShaft(div: DraggableComponentElement): void {
   div.classList.add("vShaft");
 
   div.addEventListener("mouseup", openShaftPopup);
+  div.addEventListener("click", selectShaft);
 
   render(html`<shaft-component style="width:100%;height:100%"></shaft-component>`, div);
 
@@ -180,6 +182,7 @@ function createHShaft(div: DraggableComponentElement): void {
   div.classList.add("hShaft");
 
   div.addEventListener("mouseup", openShaftPopup);
+  div.addEventListener("click", selectShaft);
 
   render(html`<shaft-component style="width: 100%;height:100%" horizontal></shaft-component>`, div);
 
