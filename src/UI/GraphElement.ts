@@ -140,8 +140,6 @@ export class GraphElement extends LitElement {
                           fill="red"/>
       `;
     }
-    // console.log(content);
-    // <rect x="125" y="175" width="200" height="200" fill="black">
     return html`
     <svg
         xmlns="https://www.w3.org/2000/svg"

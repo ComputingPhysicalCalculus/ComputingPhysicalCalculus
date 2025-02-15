@@ -117,3 +117,21 @@ html {
 #motor-speed {
     accent-color: var(--colour-highlight3);
 }
+
+.arrow {
+    visibility: hidden;
+    position: absolute;
+    width: calc(var(--unit) * 2);
+    aspect-ratio: 1;
+    color: var(--colour-highlight2);
+    z-index: 6;
+
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.arrow:hover {
+    cursor: pointer;
+}

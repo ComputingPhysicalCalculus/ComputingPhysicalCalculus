@@ -22,8 +22,7 @@ To preview the website use
 > npm preview
 ```
 
-
-### Team members
+## Team members
 - Aaron Danton:  agrd2@cam.ac.uk
 - Andy Zhu:      az453@cam.ac.uk
 - Hanzhang Shen: hs866@cam.ac.uk
@@ -32,3 +31,5 @@ To preview the website use
 - Simon Solca:   ss3075@cam.ac.uk
 
 Client: Richard Pawson
+
+## Expression reference

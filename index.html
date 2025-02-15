@@ -106,24 +106,29 @@
                 </div>
 
                 <label for="motor-speed">Motor speed</label>
-                <input id="motor-speed" type="range" min="0.0" max="0.1" step="0.001" value="0.1" />
+                <input id="motor-speed" type="range" min="0.0" max="1" step="0.01" value="0.1" />
             </div>
         </div>
 
-        <div id="popups">
-            <div class="popup" id="shaft-popup" position="absolute" >
-                <label id="shaft-negative-label">Negative Shaft Length</label>
-                <div>
-                    <button id="shaft-popup-negative-decrease">-</button>
-                    <button id="shaft-popup-negative-increase">+</button>
-                </div>
+        <div id="util">
+            <img id="negativeArrow" class="arrow" src="icons/Arrow.svg" alt="NegArrow"/>
+            <img id="positiveArrow" class="arrow" src="icons/Arrow.svg" alt="PosArrow"/>
+        </div>
 
-                <label id="shaft-positive-label">Positive Shaft Length</label>
-                <div>
-                    <button id="shaft-popup-positive-decrease">-</button>
-                    <button id="shaft-popup-positive-increase">+</button>
-                </div>
-            </div>
+        <div id="popups">
+            <!-- <div class="popup" id="shaft-popup" position="absolute" > -->
+            <!--     <label id="shaft-negative-label">Negative Shaft Length</label> -->
+            <!--     <div> -->
+            <!--         <button id="shaft-popup-negative-decrease">-</button> -->
+            <!--         <button id="shaft-popup-negative-increase">+</button> -->
+            <!--     </div> -->
+            <!---->
+            <!--     <label id="shaft-positive-label">Positive Shaft Length</label> -->
+            <!--     <div> -->
+            <!--         <button id="shaft-popup-positive-decrease">-</button> -->
+            <!--         <button id="shaft-popup-positive-increase">+</button> -->
+            <!--     </div> -->
+            <!-- </div> -->
 
             <div class="popup" id="cross-connect-popup" position="absolute" >
                 <label>Reverse</label>

@@ -17,6 +17,8 @@ let initialDragLocation: Vector2;
 let previousX: number;
 let previousY: number;
 
+let touches: { [key: number]: Touch } = {};
+
 const draggingStartLimit: number = 10.;
 const sensitivity: number = 1.0;
 const scroll_sensitivity: number = 0.02;
@@ -89,6 +91,8 @@ export function setupScreenHooks(): void {
         canStartDragging = true;
         break;
       case 2:
+        touches[e.touches[0].identifier] = e.touches[0];
+        touches[e.touches[1].identifier] = e.touches[1];
         break;
     }
   })
@@ -100,7 +104,47 @@ export function setupScreenHooks(): void {
         e.preventDefault();
         break;
       case 2: // Resize
-        console.log(e.changedTouches);
+        const prevTouch0 = touches[e.touches[0].identifier];
+        const prevTouch1 = touches[e.touches[1].identifier];
+        const touch0 = e.touches[0];
+        const touch1 = e.touches[1];
+        const centerX = (prevTouch0.clientX + touch0.clientX) / 2;
+        const centerY = (prevTouch1.clientY + touch1.clientY) / 2;
+
+        const dx0 = touch0.clientX - centerX;
+        const pdx0 = prevTouch0.clientX - centerX;
+        const dy0 = touch0.clientY - centerY;
+        const pdy0 = prevTouch0.clientY - centerY;
+
+        const dx1 = touch1.clientX - centerX;
+        const pdx1 = prevTouch1.clientX - centerX;
+        const dy1 = touch1.clientY - centerY;
+        const pdy1 = prevTouch1.clientY - centerY;
+
+        const mag0 = (dx0 * dx0) + (dy0 * dy0);
+        const prevmag0 = (pdx0 * pdx0) + (pdy0 * pdy0);
+
+        const mag1 = (dx1 * dx1) + (dy1 * dy1);
+        const prevmag1 = (pdx1 * pdx1) + (pdy1 * pdy1);
+
+        const delta = ((mag0 - prevmag0) + (mag1 - prevmag1)) * -scroll_sensitivity;
+
+        let offset_x = centerX - screenOffset.x;
+        let offset_y = centerY - screenOffset.y;
+        let start_grid_size = GRID_SIZE;
+
+        GRID_SIZE -= delta * scroll_sensitivity;
+        GRID_SIZE = Math.min(Math.max(GRID_SIZE, 15), 150);
+
+        let scale = GRID_SIZE / start_grid_size;
+        offset_x *= scale;
+        offset_y *= scale;
+
+        setScreenOffset(new Vector2(centerX - offset_x, centerY - offset_y));
+
+        touches[e.touches[0].identifier] = e.touches[0];
+        touches[e.touches[1].identifier] = e.touches[1];
+
         e.preventDefault();
         break;
     }
