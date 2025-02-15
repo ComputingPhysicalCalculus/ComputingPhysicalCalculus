@@ -126,7 +126,18 @@ export default class Expression {
         }
 
         return [{ _type: "lit", value: result }, new Set()];
-        break;
+      case "let": {
+        const [value_expr, value_vars] = this.partial_eval_expr(expr.value, ctx);
+        if (value_expr._type !== "lit") {
+          const [cons, cons_vars] = this.partial_eval_expr(expr.cons, ctx);
+          cons_vars.delete(expr.ident);
+          return [
+            { _type: "let", ident: expr.ident, value: value_expr, cons  },
+            new Set([...value_vars, ...cons_vars]),
+          ];
+        }
+        return this.partial_eval_expr(expr.cons, { ...ctx, [expr.ident]: value_expr.value });
+      }
       case "var":
         if (!(expr.ident in ctx)) {
           return [expr, new Set([expr.ident])];

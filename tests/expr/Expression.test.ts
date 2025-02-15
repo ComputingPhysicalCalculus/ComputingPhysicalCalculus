@@ -48,6 +48,7 @@ describe("expression lexing", _ => {
     ["=="],
     ["!="],
     ["="],
+    [";"]
   ])("lex '%s' as punctuation", (s) => {
     const [tk, rest] = next_token(s);
 
@@ -70,7 +71,7 @@ describe("expression lexing", _ => {
       ]
     ],
     [
-      "5+6*7/x^sin(45)><,=>=<=!=%==sum,product",
+      "5+6*7/x^sin(45)><,=>=<=!=%==sum;product",
       [
         TokenType.Literal,
         TokenType.Add,
@@ -94,7 +95,7 @@ describe("expression lexing", _ => {
         TokenType.Mod,
         TokenType.Eq,
         TokenType.Sum,
-        TokenType.Comma,
+        TokenType.SemiColon,
         TokenType.Prod,
       ],
     ]
@@ -140,8 +141,15 @@ describe("expression parsing", () => {
 
   const v = (ident: string): ParsedExpression => ({
     _type: "var",
-    ident
+    ident,
   });
+
+  const _let = (ident: string, value: ParsedExpression, cons: ParsedExpression): ParsedExpression => ({
+    _type: "let",
+    ident,
+    value,
+    cons,
+  })
   
   test.each([
     [
@@ -236,6 +244,14 @@ describe("expression parsing", () => {
       "product(n=0,8+5,n)",
       seq("prod", "n", lit(0), bin(lit(8), "+", lit(5)), v("n")),
     ],
+    [
+      "x=5;x",
+      _let("x", lit(5), v("x")),
+    ],
+    [
+      "x=y=z=5;z;y;(w=6;w)+w=6;x+w",
+      _let("x", _let("y", _let("z", lit(5), v("z")), v("y")), bin(_let("w", lit(6), v("w")), "+", _let("w", lit(6), bin(v("x"), "+", v("w"))))),
+    ],
   ])("parse '%s' -> %j", (s, expected) => {
     expect(Expression.parse(s)).toStrictEqual(expected);
   })
@@ -272,6 +288,7 @@ describe("expression evaluation", () => {
     ["product(n=0, 3, 2)", Math.pow(2, 4)],
     ["1+sum(i=0,16,1/product(j=0,i,j+1))", Math.E],
     ["abs(pi - 2*product(n=1,64,(n*2/(n*2-1))*(n*2/(n*2+1)))) < 0.05", 1],
+    ["x=y=z=5;z;y;(w=6;w)+w=6;x+w", 17],
   ])("eval '%s' -> %d", (s, expected) => {
     expect(Expression.eval(s)).toBeCloseTo(expected, 8);
   });

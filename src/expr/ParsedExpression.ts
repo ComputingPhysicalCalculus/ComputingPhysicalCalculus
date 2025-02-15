@@ -37,6 +37,13 @@ export type Sequence = {
   value: ParsedExpression,
 };
 
+export type Let = {
+  _type: "let",
+  ident: string,
+  value: ParsedExpression,
+  cons: ParsedExpression,
+};
+
 export type ParsedExpression =
   | BinaryOperation
   | UnaryOperation
@@ -44,4 +51,5 @@ export type ParsedExpression =
   | Variable
   | Literal
   | Sequence
+  | Let
   ;

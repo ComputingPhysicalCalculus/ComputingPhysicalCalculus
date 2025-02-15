@@ -21,6 +21,7 @@ export enum TokenType {
   Eq = "==",
   Neq = "!=",
   Assign = "=",
+  SemiColon = ";",
 }
 
 export type Token = {
@@ -28,7 +29,7 @@ export type Token = {
   span: string,
 };
 
-const PUNCTUATION_REGEX = /^(>=|<=|!=|==|[+\-*/\^,.()><=%])/;
+const PUNCTUATION_REGEX = /^(>=|<=|!=|==|[+\-*/\^,.()><=%;])/;
 const NUMBER_REGEX = /^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/;
 const SUM_PROD_REGEX = /^(sum|product)/;
 const IDENTIFIER_REGEX = /^[a-zA-Z_][a-zA-Z0-9_]*/;
@@ -67,35 +68,51 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
   }
 
   let lhs: ParsedExpression;
-  switch (lhs_tk._type) {
+  outer_switch: switch (lhs_tk._type) {
     case TokenType.Ident: {
       let peeked_tk = tokens[tokens.length - 1];
-      if (peeked_tk === undefined || peeked_tk._type !== TokenType.LBracket) {
-        lhs = { _type: "var", ident: lhs_tk.span };
-        break;
+      switch (peeked_tk?._type) {
+        case TokenType.LBracket:
+          tokens.pop();
+
+          const params: ParsedExpression[] = [];
+          outer_loop: while (true) {
+            let expr = parse_expr(tokens, 0);
+            params.push(expr);
+
+            let popped_tk = tokens.pop();
+            if (popped_tk === undefined) {
+              throw new Error("Unclosed left bracket");
+            }
+            switch (popped_tk._type) {
+              case ",":
+                break;
+              case ")":
+                break outer_loop;
+              default:
+                throw new Error(`Unexpected token '${popped_tk.span}' of type ${popped_tk._type}`);
+            }
+          }
+
+          lhs = { _type: "fn", ident: lhs_tk.span, params };
+          break;
+        case TokenType.Assign:
+          tokens.pop();
+          const value = parse_expr(tokens, 0);
+          let tk = tokens.pop();
+          if (tk === undefined) {
+            throw new Error(`Unfinished let expression`);
+          }
+          if (tk._type !== TokenType.SemiColon) {
+            throw new Error(`Unexpected token '${tk.span}' of type ${tk._type}`);
+          }
+          const cons = parse_expr(tokens, 0);
+          lhs = { _type: "let", ident: lhs_tk.span, value, cons }
+          break;
+        default:
+          lhs = { _type: "var", ident: lhs_tk.span };
+          break outer_switch;
       }
-      tokens.pop();
-
-      const params: ParsedExpression[] = [];
-      outer_loop: while (true) {
-        let expr = parse_expr(tokens, 0);
-        params.push(expr);
-
-        let popped_tk = tokens.pop();
-        if (popped_tk === undefined) {
-          throw new Error("Unclosed left bracket");
-        }
-        switch (popped_tk._type) {
-          case ",":
-            break;
-          case ")":
-            break outer_loop;
-          default:
-            throw new Error(`Unexpected token '${popped_tk.span}' of type ${popped_tk._type}`);
-        }
-      }
-
-      lhs = { _type: "fn", ident: lhs_tk.span, params };
     } break;
     case TokenType.Literal:
       lhs = { _type: "lit", value: Number.parseFloat(lhs_tk.span) }
@@ -181,6 +198,7 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
         break;
       case TokenType.RBracket:
       case TokenType.Comma:
+      case TokenType.SemiColon:
         break outer_loop;
       default:
         throw new Error(`Unexpected token '${operator.span}' of type ${operator._type}`);
