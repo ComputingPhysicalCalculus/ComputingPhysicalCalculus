@@ -117,8 +117,3 @@ html {
 #motor-speed {
     accent-color: var(--colour-highlight3);
 }
-
-integrator-component {
-    width: 100%;
-    height: 100%;
-}

@@ -32,7 +32,7 @@ export class CrossConnectComponentElement extends LitElement {
       <svg
         xmlns="https://www.w3.org/2000/svg"
         width="50" height="50"
-        viewBox="-25 -25 50 50"
+        viewBox="-20 -20 40 40"
         style="width:100%;height:100%"
       >
       <circle cx="0" cy="0" r="5" stroke="black" fill="black"/>

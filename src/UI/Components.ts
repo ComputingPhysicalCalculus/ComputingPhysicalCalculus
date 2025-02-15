@@ -214,7 +214,7 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.shouldLockCells = true;
   div.classList.add("integrator");
 
-  render(html`<integrator-component></integrator-component>`, div);
+  render(html`<integrator-component style="width:100%;height:100%"></integrator-component>`, div);
 
   div.addEventListener("mouseup", openIntegratorPopup);
 

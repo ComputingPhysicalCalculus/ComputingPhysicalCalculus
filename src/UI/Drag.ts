@@ -75,10 +75,11 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
 export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
+  const currentTarget = event.currentTarget as DraggableComponentElement;
+
   // Will come up with a better solution
   UNDO_SINGLETON.push();
 
-  const currentTarget = event.currentTarget as DraggableComponentElement;
   currentTarget.classList.add("dragged");
 
   curDragItem.item = currentTarget;
@@ -90,8 +91,6 @@ export function pickup(event: MouseEvent): void {
     let topLeft = new Vector2(0, 0);
     topLeft.x = Number(currentTarget.left);
     topLeft.y = Number(currentTarget.top);
-
-    if (size == null) return;
 
     if (curDragItem.item.shouldLockCells) setCells(topLeft, size, false);
 

@@ -63,7 +63,11 @@
     pointer-events: none;
 }
 
-.component.dragged {
+.placed-component {
+    pointer-events: all;
+}
+
+.placed-component.dragged {
     opacity: 95%;
 }
 

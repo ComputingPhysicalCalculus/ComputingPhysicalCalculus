@@ -8,6 +8,24 @@ import styles from "../../styles/DraggableElement.css?inline";
 import { GRID_SIZE, worldToScreenPosition } from "./Grid";
 import { ComponentType } from "./Components.ts";
 
+
+// X offset, Y Offset, Width multiplier, Height multiplier
+// X and Y offset are multiples of GRID_SIZE
+const lookupTable: { [key: string]: number[] } = {
+  "vShaft": [0.25, 0, 0.5, 1],
+  "hShaft": [0, 0.25, 1, 0.5],
+  "crossConnect": [0.125, 0.125, 0.75, 0.75],
+  "integrator": [0.44, 0, 0.90, 1],
+  "functionTable": [0, 0, 1, 1],
+  "differential": [0, 0, 1, 1],
+  "outputTable": [0, 0, 1, 1],
+  "motor": [0, 0, 1, 1],
+  "multiplier": [0, 0, 1, 1],
+  "label": [0, 0, 1, 1],
+  "gearPair": [0, 0, 1, 1],
+  "dial": [0, 0, 1, 1],
+};
+
 @customElement("draggable-component")
 export class DraggableComponentElement extends LitElement {
   static styles = css`${unsafeCSS(styles)}`;
@@ -100,6 +118,14 @@ export class DraggableComponentElement extends LitElement {
 
     this.style.top = `${this.renderTop}px`;
     this.style.left = `${this.renderLeft}px`;
+
+    const offset = lookupTable[this.componentType as string];
+    if (offset) {
+      this.style.left = `${this.renderLeft + offset[0] * GRID_SIZE}px`
+      this.style.top = `${this.renderTop + offset[1] * GRID_SIZE}px`
+      this.style.width = `${this.width * GRID_SIZE * offset[2]}px`
+      this.style.height = `${this.height * GRID_SIZE * offset[3]}px`
+    }
   }
 
   export(): { _type: ComponentType, data: any } {
