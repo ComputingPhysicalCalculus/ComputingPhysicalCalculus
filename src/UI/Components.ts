@@ -520,6 +520,7 @@ function createLabel(div: DraggableComponentElement): void {
   let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
 
   document.addEventListener("wheel", render_p);
+  document.addEventListener("touchmove", e => { if (e.touches.length == 2) render_p(); });
   render_p();
 
   type ExportedData = {
