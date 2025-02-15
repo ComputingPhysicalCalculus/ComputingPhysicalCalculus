@@ -38,6 +38,9 @@ function createNewObject(x: number, y: number, typeString: string): void {
   item.renderLeft = posX;
   item.renderTop = posY;
 
+  canStartDragging = true;
+  startedDragging = true;
+
   document.getElementById("content")!.appendChild(item);
 }
 

@@ -130,11 +130,8 @@ const type_name_dict = {
 };
 
 export function loadConfig(config: Config): void {
-  // console.log(config.components);
   let maxID = 0;
   for (let components of config.components) {
-    // console.log(components);
-    // console.log(components.position);
     let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
     if (componentType === null || componentType === undefined) {

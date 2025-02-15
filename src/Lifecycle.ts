@@ -5,7 +5,7 @@ import { INTEGRATING_LINEAR } from "./examples";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
-import { endSelect } from "./UI/SelectShaft.ts";
+import { endSelect, setupSelectHooks } from "./UI/SelectShaft.ts";
 import { setupPopups } from "./UI/Popups";
 import Vector2 from "./UI/Vector2";
 import { UNDO_SINGLETON } from "./Undo";
@@ -103,8 +103,7 @@ export class Lifecycle {
     setupScreenHooks();
 
     // Add event listener for when anywhere on the screen is clicked to clear selected item
-    (document.querySelector("#machine")! as HTMLDivElement).addEventListener("click", e => endSelect(e));
-
+    setupSelectHooks();
 
     // Setup click event listener
     this.import_button.addEventListener("click", _ => this._handle_import_file());

@@ -125,4 +125,13 @@ html {
     aspect-ratio: 1;
     color: var(--colour-highlight2);
     z-index: 6;
+
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.arrow:hover {
+    cursor: pointer;
 }

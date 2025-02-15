@@ -1,30 +1,101 @@
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { startedDragging } from "./Drag.ts";
+import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts"
+import { updateShaftLength } from "./Popups.ts";
 
 const SELECTED_SHAFT = "selected";
 const ARROW_PADDING = 5;
 
 let selectedItem: DraggableComponentElement | null = null;
+let currentArrow: HTMLImageElement | null = null;
 
-export function selectShaft(event: MouseEvent): void {
-  if (event.button != 0) { return }
-  if (startedDragging) return;
+let dragging = false;
+let startPos: Vector2;
 
-  clearSelect();
+let negativeArrow: HTMLImageElement;
+let positiveArrow: HTMLImageElement;
 
-  const currentTarget = event.currentTarget as DraggableComponentElement;
-  selectedItem = currentTarget;
+export function setupSelectHooks() {
+  (document.querySelector("#machine")! as HTMLDivElement).addEventListener("click", endSelect);
 
-  selectedItem.classList.add(SELECTED_SHAFT);
+  negativeArrow = document.querySelector("#negativeArrow")! as HTMLImageElement;
+  positiveArrow = document.querySelector("#positiveArrow")! as HTMLImageElement;
 
-  const negativeArrow = document.querySelector("#negativeArrow")! as HTMLImageElement;
-  const positiveArrow = document.querySelector("#positiveArrow")! as HTMLImageElement;
+  negativeArrow.addEventListener("mousedown", startDrag);
+  positiveArrow.addEventListener("mousedown", startDrag);
 
-  const pos = currentTarget.getScreenPosition();
-  const size = currentTarget.getScreenSize();
+  negativeArrow.addEventListener("dragstart", e => e.preventDefault());
+  positiveArrow.addEventListener("dragstart", e => e.preventDefault());
 
-  if (currentTarget.componentType == "hShaft") {
+  document.addEventListener("mousemove", moveDrag);
+  document.addEventListener("mouseup", endDrag);
+}
+
+function startDrag(e: MouseEvent): void {
+  if (!selectedItem) return;
+  currentArrow = e.currentTarget as HTMLImageElement;
+  dragging = true;
+
+  startPos = new Vector2(e.clientX, e.clientY);
+  document.body.style.cursor = "move";
+  currentArrow.style.cursor = "move";
+}
+
+function moveDrag(e: MouseEvent): void {
+  if (!dragging) return;
+  let negativeDistance = 0;
+  let positiveDistance = 0;
+  if (selectedItem!.componentType == "hShaft") {
+    if (Math.abs(e.clientX - startPos.x) >= GRID_SIZE * 0.6) {
+      negativeDistance = (currentArrow!.id == "negativeArrow") ? (startPos.x - e.clientX) : 0
+      positiveDistance = (currentArrow!.id == "positiveArrow") ? (e.clientX - startPos.x) : 0
+      if (!(selectedItem!.width == 1 && (negativeDistance < 0 || positiveDistance < 0))) {
+        if (positiveDistance < 0 || negativeDistance > 0) {
+          startPos.x -= GRID_SIZE;
+        } else {
+          startPos.x += GRID_SIZE;
+        }
+      }
+    }
+  } else {
+    if (Math.abs(e.clientY - startPos.y) >= GRID_SIZE * 0.6) {
+      negativeDistance = (currentArrow!.id == "negativeArrow") ? (startPos.y - e.clientY) : 0
+      positiveDistance = (currentArrow!.id == "positiveArrow") ? (e.clientY - startPos.y) : 0
+      if (!(selectedItem!.height == 1 && (negativeDistance < 0 || positiveDistance < 0))) {
+        if (positiveDistance < 0 || negativeDistance > 0) {
+          startPos.y -= GRID_SIZE;
+        } else {
+          startPos.y += GRID_SIZE;
+        }
+      }
+    }
+  }
+
+  if (negativeDistance != 0 || positiveDistance != 0) {
+    updateShaftLength(selectedItem!, Math.round(negativeDistance / GRID_SIZE), Math.round(positiveDistance / GRID_SIZE))
+    moveArrows();
+  }
+}
+
+function endDrag(_e: MouseEvent): void {
+  if (!dragging) return;
+
+  dragging = false;
+
+  document.body.style.cursor = "auto";
+  currentArrow!.style.cursor = "pointer";
+
+  currentArrow = null;
+}
+
+function moveArrows(): void {
+  if (!selectedItem) return;
+
+  const pos = selectedItem.getScreenPosition();
+  const size = selectedItem.getScreenSize();
+
+  if (selectedItem.componentType == "hShaft") {
     negativeArrow.style.rotate = "-90deg";
     positiveArrow.style.rotate = "90deg";
 
@@ -41,6 +112,20 @@ export function selectShaft(event: MouseEvent): void {
     positiveArrow.style.left = `${pos.x + size.x / 2 - positiveArrow.clientWidth / 2}px`;
     positiveArrow.style.top = `${pos.y + size.y + ARROW_PADDING}px`;
   }
+}
+
+export function selectShaft(event: MouseEvent): void {
+  if (event.button != 0) { return }
+  if (startedDragging) return;
+
+  clearSelect();
+
+  const currentTarget = event.currentTarget as DraggableComponentElement;
+  selectedItem = currentTarget;
+
+  selectedItem.classList.add(SELECTED_SHAFT);
+
+  moveArrows();
 
   negativeArrow.style.visibility = "visible";
   positiveArrow.style.visibility = "visible";
@@ -51,12 +136,7 @@ export function clearSelect(): void {
 
   selectedItem.classList.remove(SELECTED_SHAFT);
 
-  // Clear Selected Item;
-  console.log("Clear Selected");
   selectedItem = null;
-
-  const negativeArrow = document.querySelector("#negativeArrow")! as HTMLImageElement;
-  const positiveArrow = document.querySelector("#positiveArrow")! as HTMLImageElement;
 
   negativeArrow.style.visibility = "hidden";
   positiveArrow.style.visibility = "hidden";

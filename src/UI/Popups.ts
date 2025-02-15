@@ -349,7 +349,6 @@ function setupFunctionTablePopup(): void {
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
   const inputs = functionTablePopup.querySelectorAll("* > input");
-  console.log(inputs);
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
@@ -387,7 +386,6 @@ function setupOutputTablePopup(): void {
   outputTablePopup.addEventListener("mouseleave", closePopup);
 
   const inputs = outputTablePopup.querySelectorAll("* > input");
-  console.log(inputs);
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
@@ -465,7 +463,7 @@ function setupLabelPopup(): void {
   });
 }
 
-function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
+export function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";
 
   if (isVertical) {

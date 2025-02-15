@@ -13,10 +13,8 @@ for (let a = 10; a < 20; a++)
 
 test("Testing the example from slides", () => {
     let simulator = new Simulator(EXAMPLE_CONFIG, 1, 0, 1, 0, testFunction);
-    for (let i = 0; i < 30; i++){
+    for (let i = 0; i < 30; i++) {
         simulator.step();
         let y1_length = simulator.outputTables[0].y1History.length;
-        // console.log(y1_length);
-        // console.log(simulator.outputTables[0].y1History[y1_length - 1]);
     }
 });
