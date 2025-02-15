@@ -326,7 +326,7 @@ export class Lifecycle {
 
       const next_steps = Math.floor(elapsed / step_period);
 
-      simulator.motor?.changeRotation(get_motor_speed());
+      simulator.motor?.changeRotation(get_motor_speed() * step_period);
 
       for (; steps_taken < next_steps; steps_taken++) {
         simulator.step();
