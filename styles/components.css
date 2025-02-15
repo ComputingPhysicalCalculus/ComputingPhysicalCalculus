@@ -92,6 +92,6 @@
 }
 
 .placed-component.selected {
-    opacity: 100%;
+    opacity: 80%;
     background-color: var(--colour-accent2);
 }

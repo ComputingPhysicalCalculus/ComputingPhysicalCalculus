@@ -156,7 +156,8 @@ function move(event: MouseEvent): void {
 function drop(event: MouseEvent): void {
   if (event.button != 0) { return }
 
-  if (curDragItem.item == null) {
+  if (curDragItem.item == null || !startedDragging) {
+    canStartDragging = false;
     return
   }
 

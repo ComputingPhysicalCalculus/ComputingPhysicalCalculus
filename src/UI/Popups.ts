@@ -4,6 +4,7 @@ import Vector2 from "./Vector2.ts";
 import { GearPairComponentElement } from "./GearPairComponentElement.ts";
 import Expression from "@src/expr/Expression.ts";
 import { GraphElement } from "./GraphElement.ts";
+import { clearSelect } from "./SelectShaft.ts"
 
 import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
@@ -40,6 +41,8 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
 
   const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
   popup.dataset.id = target.id;
+
+  clearSelect();
 }
 
 export function openShaftPopup(e: MouseEvent): void {
