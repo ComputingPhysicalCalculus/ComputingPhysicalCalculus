@@ -4,18 +4,39 @@ import { next_token, parse_expr, Token } from "./Parser";
 
 export default class Expression {
   static eval(expr: string, ctx: { [ident: string]: number } = {}): number {
-    return this.eval_expr(this.parse(expr), ctx);
+    const [result, vars] = this.partial_eval_expr(this.parse(expr), ctx);
+
+    if (result._type !== "lit") {
+      throw new Error(`Referenced undefined variables: ${Array.from(vars).map(v => `'${v}'`).join(", ")}`);
+    }
+
+    return result.value
   }
 
-  static compile(expr: string): (ctx?: { [ident: string]: number }) => number {
-    let parsed_expr = this.parse(expr);
+  static compile(expr: string, ctx: { [ident: string]: number } = {}): (ctx?: { [ident: string]: number }) => number {
+    const result = this.compile_min(expr, ctx);
+    return (typeof result === "number") ? _ => result : result;
+  }
+
+  static compile_min(expr: string, ctx: { [ident: string]: number } = {}): number | ((ctx?: { [ident: string]: number}) => number) {
+    const parsed_expr = this.parse(expr);
+    const [partial_expr, _] = this.partial_eval_expr(parsed_expr, ctx);
+
+    if (partial_expr._type === "lit") {
+      return partial_expr.value;
+    }
 
     return (ctx: { [ident: string]: number } = {}) => {
-      return this.eval_expr(parsed_expr, ctx);
+      const [result, new_vars] = this.partial_eval_expr(partial_expr, ctx);
+      if (result._type !== "lit") {
+        throw new Error(`Referenced undefined variables: ${Array.from(new_vars).map(v => `'${v}'`).join(", ")}`);
+      }
+
+      return result.value
     };
   }
 
-  static eval_expr(expr: ParsedExpression, ctx: { [ident: string]: number } = {}): number {
+  static partial_eval_expr(expr: ParsedExpression, ctx: { [ident: string]: number } = {}): [ParsedExpression, Set<string>] {
     ctx = {
       ...BUILTIN_VARIABLES,
       ...ctx,
@@ -33,10 +54,21 @@ export default class Expression {
       case "<=":
       case "=":
       case "!=":
-        const lhs = ("left" in expr) ? this.eval_expr(expr.left, ctx) : 0;
-        const rhs = this.eval_expr(expr.right, ctx);
+        const [lhs, lhs_vars] = ("left" in expr) ? this.partial_eval_expr(expr.left, ctx) : [{ _type: "lit", value: 0 } as ParsedExpression, new Set<string>()];
+        const [rhs, rhs_vars] = this.partial_eval_expr(expr.right, ctx);
 
-        return BUITLIN_FUNCTIONS[expr._type](lhs, rhs);
+        if (lhs._type === "lit" && rhs._type === "lit") {
+          return [
+            { _type: "lit", value: BUITLIN_FUNCTIONS[expr._type](lhs.value, rhs.value) },
+            lhs_vars.union(rhs_vars),
+          ]
+        } else {
+          return [
+            { _type: expr._type, left: lhs, right: rhs },
+            lhs_vars.union(rhs_vars),
+          ]
+        }
+
       case "fn":
         if (!(expr.ident in BUITLIN_FUNCTIONS)) {
           throw new Error(`Tried to call builtin function '${expr.ident}', but it does not exist.`);
@@ -45,14 +77,29 @@ export default class Expression {
         if (fn.length !== expr.params.length) {
           throw new Error(`Tried to call builtin function '${expr.ident}', with ${expr.params.length} parameters, but it takes ${fn.length}`);
         }
-        return fn(...expr.params.map(expr => this.eval_expr(expr, ctx)));
+
+        let evaled_params = expr.params.map(expr => this.partial_eval_expr(expr, ctx));
+        let vars = evaled_params.map(([_e, u]) => u).reduce((a, b) => a.union(b));
+        let params = evaled_params.map(([e, _u]) => e);
+
+        if (params.every(e => e._type === "lit")) {
+          return [
+            { _type: "lit", value: fn(...params.map(e => e.value)) },
+            vars
+          ]
+        } else {
+          return [
+            { _type: "fn", ident: expr.ident, params },
+            vars,
+          ]
+        }
       case "var":
         if (!(expr.ident in ctx)) {
-          throw new Error(`Referenced undefined variable ${expr.ident}`);
+          return [expr, new Set([expr.ident])];
         }
-        return ctx[expr.ident];
+        return [{ _type: "lit", value: ctx[expr.ident] }, new Set()];
       case "lit":
-        return expr.value;
+        return [expr, new Set()];
     }
   }
 
