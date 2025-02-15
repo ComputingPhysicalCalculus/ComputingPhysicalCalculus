@@ -11,6 +11,9 @@ type DragItem = {
 };
 
 let curDragItem: DragItem = { item: null, mouseX: 0, mouseY: 0 };
+let canStartDragging: boolean = false;
+let startedDragging: boolean = false;
+let startDraggingRadius: number = 5;
 
 function createNewObject(x: number, y: number, typeString: string): void {
   const componentType: ComponentType | null = stringToComponent(typeString);
@@ -72,10 +75,20 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
   return new Vector2(placementCol, placementRow);
 }
 
+export function selectShaft(event: MouseEvent): void {
+  if (event.button != 0) { return }
+  if (startedDragging) return;
+
+  const currentTarget = event.currentTarget as DraggableComponentElement;
+
+  console.log("Selected Shaft");
+}
+
 export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
 
   const currentTarget = event.currentTarget as DraggableComponentElement;
+  canStartDragging = true;
 
   // Will come up with a better solution
   UNDO_SINGLETON.push();
@@ -83,22 +96,6 @@ export function pickup(event: MouseEvent): void {
   currentTarget.classList.add("dragged");
 
   curDragItem.item = currentTarget;
-
-  // Refree the cells below the item that has just started to be dragged
-  {
-    const size = curDragItem.item.getSize();
-
-    let topLeft = new Vector2(0, 0);
-    topLeft.x = Number(currentTarget.left);
-    topLeft.y = Number(currentTarget.top);
-
-    if (curDragItem.item.shouldLockCells) setCells(topLeft, size, false);
-
-    highlightHoveredCells(topLeft, size, true);
-
-    currentTarget.previousLeft = topLeft.x;
-    currentTarget.previousTop = topLeft.y;
-  }
 
   const pos = currentTarget.getScreenPosition();
   const diffX = pos.x - event.clientX;
@@ -111,9 +108,37 @@ export function pickup(event: MouseEvent): void {
   curDragItem.mouseY = event.clientY;
 }
 
+function startDragging(): void {
+  if (!curDragItem.item) return;
+
+  // Refree the cells below the item that has just started to be dragged
+  const size = curDragItem.item.getSize();
+
+  let topLeft = new Vector2(0, 0);
+  topLeft.x = Number(curDragItem.item.left);
+  topLeft.y = Number(curDragItem.item.top);
+
+  if (curDragItem.item.shouldLockCells) setCells(topLeft, size, false);
+
+  highlightHoveredCells(topLeft, size, true);
+
+  curDragItem.item.previousLeft = topLeft.x;
+  curDragItem.item.previousTop = topLeft.y;
+}
+
 function move(event: MouseEvent): void {
-  if (curDragItem.item == null) {
+  if (curDragItem.item == null || !canStartDragging) {
     return;
+  }
+
+  if (!startedDragging) {
+    let diffX = event.clientX - curDragItem.mouseX;
+    let diffY = event.clientY - curDragItem.mouseY;
+    if (diffX * diffX + diffY * diffY < startDraggingRadius * startDraggingRadius) {
+      return;
+    }
+    startedDragging = true;
+    startDragging();
   }
 
   const previousPos = calculateTopLeftCell(new Vector2(curDragItem.mouseX, curDragItem.mouseY));
@@ -140,6 +165,9 @@ function drop(event: MouseEvent): void {
   if (curDragItem.item == null) {
     return
   }
+
+  canStartDragging = false;
+  startedDragging = false;
 
   const item = curDragItem.item;
   item.classList.remove("dragged");
