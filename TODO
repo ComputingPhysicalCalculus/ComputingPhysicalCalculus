@@ -10,5 +10,3 @@ Text alignment breaks on resize
 Scrolling on user control area? To allow for weirder aspect ratios
 Undo/Redo broken. Render positions?
 Motor reverse doesnt do anything?
-Fast movement of resizing shafts breaks the alignment to mouse
-Arrows broken on resize. Need to be updated
