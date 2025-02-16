@@ -2,9 +2,13 @@ List of examples
 Saving settings to config file
 Sound
 
-Graph: Xmin-max YMin-max
-Add Labels to component list
-
-Calculate Shaft ID for components for I/O
-
-Stop Shafts being placed on top of eachother
+BUGS:
+Unconnected output graph shafts shouldn't matters
+Unconnected components break simulator
+Multiple Output graphs breaks simulator
+Text alignment breaks on resize
+Scrolling on user control area? To allow for weirder aspect ratios
+Undo/Redo broken. Render positions?
+Motor reverse doesnt do anything?
+Fast movement of resizing shafts breaks the alignment to mouse
+Arrows broken on resize. Need to be updated
