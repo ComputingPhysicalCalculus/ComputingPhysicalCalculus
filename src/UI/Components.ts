@@ -10,6 +10,7 @@ import { GRID_SIZE } from "./Grid.ts";
 import { GearPairComponentElement } from "./GearPairComponentElement.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import Expression from "@src/expr/Expression.ts";
+import { machine } from "./Constants.ts";
 
 export enum ComponentType {
     VShaft,
@@ -531,8 +532,8 @@ function createLabel(div: DraggableComponentElement): void {
         }
     }
 
-    document.addEventListener("wheel", render_p);
-    document.addEventListener("touchmove", e => { if (e.touches.length == 2) render_p(); });
+    machine.addEventListener("wheel", render_p);
+    machine.addEventListener("touchmove", e => { if (e.touches.length == 2) render_p(); });
     render_p();
 
     type ExportedData = {

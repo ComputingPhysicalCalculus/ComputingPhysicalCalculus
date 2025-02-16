@@ -4,6 +4,7 @@ import { GRID_SIZE, allValid, setCells, highlightHoveredCells, screenToWorldPosi
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { UNDO_SINGLETON } from "@src/Undo.ts";
 import { endSelect } from "./SelectShaft.ts";
+import { machine } from "./Constants.ts";
 
 type DragItem = {
   item: DraggableComponentElement | null,
@@ -41,7 +42,7 @@ function createNewObject(x: number, y: number, typeString: string): void {
   canStartDragging = true;
   startedDragging = true;
 
-  document.getElementById("content")!.appendChild(item);
+  machine.appendChild(item);
 }
 
 export function setupDragHooks(): void {
@@ -50,8 +51,8 @@ export function setupDragHooks(): void {
     (element as HTMLElement).addEventListener("mousedown", creation);
   });
 
-  document.addEventListener("mousemove", move);
-  document.addEventListener("mouseup", drop);
+  machine.addEventListener("mousemove", move);
+  machine.addEventListener("mouseup", drop);
 }
 
 function creation(event: MouseEvent): void {

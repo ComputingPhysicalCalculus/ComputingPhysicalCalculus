@@ -8,6 +8,7 @@ import { clearSelect } from "./SelectShaft.ts"
 
 import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
+import { machine } from "./Constants.ts";
 
 // let shaftPopup: HTMLDivElement;
 let crossConnectPopup: HTMLDivElement;
@@ -30,7 +31,7 @@ export function setupPopups(): void {
   setupOutputTablePopup();
   setupLabelPopup();
 
-  document.addEventListener("click", documentClick);
+  machine.addEventListener("click", documentClick);
 }
 
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {

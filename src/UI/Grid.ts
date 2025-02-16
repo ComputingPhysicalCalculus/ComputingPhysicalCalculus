@@ -1,5 +1,6 @@
 import { DraggableComponentElement } from "./DraggableElement";
 import { updateArrows } from "./SelectShaft";
+import { machine } from "./Constants.ts"
 import Vector2 from "./Vector2";
 
 export let GRID_SIZE: number = 50;
@@ -50,14 +51,14 @@ export function setupScreenHooks(): void {
         e.preventDefault();
     })
 
-    document.addEventListener("mousedown", e => {
+    machine.addEventListener("mousedown", e => {
         if (e.button == 2) {
             initialDragLocation = new Vector2(e.clientX, e.clientY);
             canStartDragging = true;
         }
     })
 
-    document.addEventListener("mouseup", e => {
+    machine.addEventListener("mouseup", e => {
         if (e.button == 2) {
             canStartDragging = false;
             screenDragging = false;
@@ -66,11 +67,11 @@ export function setupScreenHooks(): void {
 
     screenOffset = new Vector2(0, 0);
 
-    document.addEventListener("mousemove", e => {
+    machine.addEventListener("mousemove", e => {
         dragScreen(e.clientX, e.clientY);
     });
 
-    document.addEventListener("wheel", e => {
+    machine.addEventListener("wheel", e => {
         let offset_x = e.clientX - screenOffset.x;
         let offset_y = e.clientY - screenOffset.y;
         let start_grid_size = GRID_SIZE;
@@ -87,7 +88,7 @@ export function setupScreenHooks(): void {
         setScreenOffset(new Vector2(e.clientX - offset_x, e.clientY - offset_y));
     })
 
-    document.addEventListener("touchstart", e => {
+    machine.addEventListener("touchstart", e => {
         switch (e.touches.length) {
             case 1:
                 initialDragLocation = new Vector2(e.touches[0].clientX, e.touches[0].clientY);
@@ -100,7 +101,7 @@ export function setupScreenHooks(): void {
         }
     })
 
-    document.addEventListener("touchmove", e => {
+    machine.addEventListener("touchmove", e => {
         switch (e.touches.length) {
             case 1: // Move
                 dragScreen(e.touches[0].clientX, e.touches[0].clientY);
@@ -153,7 +154,7 @@ export function setupScreenHooks(): void {
         }
     }, { passive: false });
 
-    document.addEventListener("touchend", e => {
+    machine.addEventListener("touchend", e => {
         switch (e.touches.length) {
             case 0:
                 canStartDragging = false;

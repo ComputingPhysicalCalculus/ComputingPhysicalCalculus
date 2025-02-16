@@ -1,4 +1,5 @@
 import { setIDCounter, ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { machine } from "./UI/Constants.ts";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { setCells, GRID_SIZE } from "./UI/Grid";
 import Vector2 from "./UI/Vector2.ts";
@@ -177,7 +178,7 @@ export function loadConfig(config: Config): void {
     item.hasBeenPlaced = true;
     item.requestUpdate();
 
-    document.getElementById("content")!.appendChild(item);
+    machine.appendChild(item);
   }
 
   for (let shaft of config.shafts) {
@@ -209,7 +210,7 @@ export function loadConfig(config: Config): void {
     item.hasBeenPlaced = true;
     item.requestUpdate();
 
-    document.getElementById("content")!.appendChild(item);
+    machine.appendChild(item);
   }
 
   setIDCounter(maxID + 1);
