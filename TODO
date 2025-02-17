@@ -5,7 +5,7 @@ Sound
 BUGS:
 Unconnected output graph shafts shouldn't matters
 Unconnected components break simulator
-Multiple Output graphs breaks simulator
 Scrolling on user control area? To allow for weirder aspect ratios
 Undo/Redo broken. Render positions?
 Motor reverse doesnt do anything?
+Touchpad right click not triggering shaft drag
