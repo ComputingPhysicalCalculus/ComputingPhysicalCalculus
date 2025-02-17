@@ -197,9 +197,6 @@ export class GraphElement extends LitElement {
       if (last_x - x !== 0) {
         y = y + (last_y - y) * ((last_x - this.gantry_x) / (last_x - x));
       }
-      if (y === 0) {
-         console.log(x, last_x, y, last_y, data);
-      }
 
       ctx.fillStyle = data.style;
       this._draw_gantry_head(ctx, y, data.invert_head);
