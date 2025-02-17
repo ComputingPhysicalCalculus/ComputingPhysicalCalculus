@@ -189,7 +189,6 @@ export class Simulator {
                             shafts.get(component.outputShaft2)!,
                             component.initialY2,
                         );
-                        outputTable.id = component.compID;
                         shafts.get(component.outputShaft2)!.outputs.push(outputTable);
                     }
                     else {
@@ -199,6 +198,7 @@ export class Simulator {
                             this.initialY1,
                         );
                     }
+                    outputTable.id = component.compID;
 
                     shafts.get(component.inputShaft)!.outputs.push(outputTable);
                     shafts.get(component.outputShaft1)!.outputs.push(outputTable);

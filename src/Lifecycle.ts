@@ -40,8 +40,14 @@ export class Lifecycle {
     @queryAll(".placed-component")
     private placedComponents!: NodeListOf<DraggableComponentElement>;
 
+    // <<<<<<< HEAD
     @query("#demo-button")
     demo_button!: HTMLButtonElement
+    // =======
+    //       console.log(x.id);
+    //       x.xHistory[0] += output_table_element.x_min;
+    //     });
+    // >>>>>>> 3e6ea38fccb0200a317c72112589ec74d317b311
 
     @query("#examples-list")
     examples_select!: HTMLSelectElement;
