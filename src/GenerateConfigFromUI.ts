@@ -5,7 +5,7 @@ import { Config } from "./config";
 
 // asumming valid config is checked as we build
 
-function getShaft(className: string, predicate: (x: number, y: number, w: number, h: number) => boolean): number {
+function getShaft(className: string, predicate: (x: number, y: number, w: number, h: number) => boolean): number | null {
     const shafts = document.querySelectorAll(`.${className}`) as NodeListOf<DraggableComponentElement>;
     for (let i = 0; i < shafts.length; i++) {
         const vShaft = shafts[i] as DraggableComponentElement;
@@ -15,16 +15,16 @@ function getShaft(className: string, predicate: (x: number, y: number, w: number
         }
     }
 
-    return -1;
+    return null;
 }
 
-function getVShaftID(x: number, y: number): number {
+function getVShaftID(x: number, y: number): number | null {
     return getShaft("vShaft", (sX, sY, _, sH) => {
         return (sX == x) && (sY <= y && sY + sH - 1 >= y);
     });
 }
 
-function getHShaftID(x: number, y: number): number {
+function getHShaftID(x: number, y: number): number | null {
     return getShaft("hShaft", (sX, sY, sW) => {
         return (sY == y) && (sX <= x && sX + sW - 1 >= x);
     });
@@ -77,94 +77,122 @@ export function toConfig(): Config {
         switch (thisComponent.componentType) {
             case 'crossConnect':
                 {
-                    const { _type, data: { _top, _left, reversed } } = thisComponent.export_fn(thisComponent);
+                    const {  reversed } = thisComponent.export_fn(thisComponent).data;
 
                     const vertical = getVShaftID(position[0], position[1]);
                     const horizontal = getHShaftID(position[0], position[1]);
+
+                    if (vertical === null || horizontal == null) {
+                        return null;
+                    }
 
                     return { type, compID, position, reversed, vertical, horizontal }
                 }
             case 'integrator':
                 {
-                    const { _type, data: { _top, _left, initialPosition } } = thisComponent.export_fn(thisComponent);
+                    const { initialPosition } = thisComponent.export_fn(thisComponent).data;
 
                     const outputShaft = getVShaftID(position[0] + 1, position[1] - 1);
                     const variableOfIntegrationShaft = getVShaftID(position[0] + 2, position[1] - 1);
                     const integrandShaft = getVShaftID(position[0] + 3, position[1] - 1);
 
+                    if (outputShaft === null || variableOfIntegrationShaft === null || integrandShaft === null) {
+                        return  null;
+                    }
+
                     return { type, compID, position, outputShaft, variableOfIntegrationShaft, integrandShaft, initialPosition };
                 }
             case 'functionTable':
                 {
-                    const { _type, data: { _top, _left, x_min, x_max, y_min, y_max, fn } } = thisComponent.export_fn(thisComponent);
+                    const { x_min, x_max, y_min, y_max, fn } = thisComponent.export_fn(thisComponent).data;
 
                     const inputShaft = getVShaftID(position[0] + 2, position[1] + 4);
                     const outputShaft = getVShaftID(position[0] + 3, position[1] + 4);
+
+                    if (inputShaft === null || outputShaft === null) {
+                        return null;
+                    }
 
                     return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft, fn }
                 }
             case 'differential':
                 {
-                    const { _type, data: { _top, _left } } = thisComponent.export_fn(thisComponent);
-
                     const diffShaft1 = getHShaftID(position[0], position[1]);
                     const sumShaft = getHShaftID(position[0], position[1] + 1);
                     const diffShaft2 = getHShaftID(position[0], position[1] + 2);
+
+                    if (diffShaft1 === null || sumShaft === null || diffShaft2 === null) {
+                        return null;
+                    }
 
                     return { type, compID, position, diffShaft1, sumShaft, diffShaft2 }
                 }
             case 'outputTable':
                 {
-                    const { _type, data: { _top, _left, x_min, x_max, y_min, y_max, initialY1, initialY2 } } = thisComponent.export_fn(thisComponent);
+                    const { x_min, x_max, y_min, y_max, initialY1, initialY2 } = thisComponent.export_fn(thisComponent).data;
 
                     const inputShaft = getVShaftID(position[0] + 1, position[1] + 4);
                     const outputShaft1 = getVShaftID(position[0] + 2, position[1] + 4);
                     const outputShaft2 = getVShaftID(position[0] + 3, position[1] + 4);
 
+                    if (inputShaft === null || outputShaft1 === null) {
+                        return null;
+                    }
+
                     return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft1, outputShaft2, initialY1, initialY2 }
                 }
             case 'motor':
                 {
-                    const { _type, data: { _top, _left, reversed } } = thisComponent.export_fn(thisComponent);
+                    const { reversed } = thisComponent.export_fn(thisComponent).data;
 
                     const outputShaft = getHShaftID(position[0] + 2, position[1]);
+
+                    if (outputShaft === null) {
+                        return null
+                    }
 
                     return { type, compID, position, reversed, outputShaft }
                 }
 
             case 'multiplier':
                 {
-                    const { _type, data: { _top, _left, factor } } = thisComponent.export_fn(thisComponent);
+                    const { factor } = thisComponent.export_fn(thisComponent).data;
 
                     const inputShaft = getVShaftID(position[0] + 2, position[1] - 1);
                     const outputShaft = getVShaftID(position[0] + 1, position[1] - 1);
+
+                    if (inputShaft === null || outputShaft === null) {
+                        return null;
+                    }
 
                     return { type, compID, position, factor, inputShaft, outputShaft }
                 }
             case "label":
                 {
-                    const { _type, data: { top, left, width, height, align, _comment } } = thisComponent.export_fn(thisComponent);
+                    const { width, height, align, _comment } = thisComponent.export_fn(thisComponent).data;
 
                     const size = [Number(width), Number(height)];
                     return { type, compID, position, size, align, _comment };
                 }
             case "gearPair":
                 {
-                    const { _type, data: { top, left, inputRatio, outputRatio, } } = thisComponent.export_fn(thisComponent);
+                    const { inputRatio, outputRatio } = thisComponent.export_fn(thisComponent).data;
 
                     const shaft1 = getHShaftID(position[0], position[1]);
                     const shaft2 = getHShaftID(position[0], position[1] + 1);
+
+                    if (shaft1 === null || shaft2 === null) {
+                        return null;
+                    }
 
                     return { type, compID, position, inputRatio, outputRatio, shaft1, shaft2 };
                 }
             case "dial":
                 {
-                    const { _type, data: { top, left } } = thisComponent.export_fn(thisComponent);
-
                     return { type, compID, position };
                 }
         }
-    });
+    }).filter(x => x !== null);
 
     /*
     if (thisComponent.componentType === "multiplier") {
