@@ -1,10 +1,10 @@
 import { Config } from "./config";
 
-import _integrating_linear from "../examples/integrating-linear.json";
-import _example_config from "../examples/spring-example.json";
+import _linear_integration_example from "../examples/integrating-linear.json";
+import _spring_example from "../examples/spring-example.json";
 
-export const EXAMPLE_CONFIG: Config = _example_config as any;
-export const INTEGRATING_LINEAR: Config = _integrating_linear as any;
+export const SPRING_EXAMPLE: Config = _spring_example as any;
+export const LINEAR_INTEGRATION_EXAMPLE: Config = _linear_integration_example as any;
 
 import _dangling_shaft from "../examples/broken/dangling-shaft.json";
 
