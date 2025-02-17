@@ -20,7 +20,7 @@ function test_linear(F: (v: number) => number, I: (v: number) => number, x_init:
     const MSE_THRESHOLD = 1;
 
     // create simulator with the initial conditions based on F and I
-    let simulator = new Simulator(INTEGRATING_LINEAR, 6 / N, x_init, F(x_init), I(x_init), F);
+    let simulator = new Simulator(LINEAR_INTEGRATION_EXAMPLE, 6 / N, x_init, F(x_init), I(x_init), F);
 
     // manually override the histories
     simulator.outputTables[0].y1History = [F(x_init)];

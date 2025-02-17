@@ -272,6 +272,7 @@ export class Lifecycle {
             case "GammaFunction": this.loadState(GAMMA_FUNCTION_EXAMPLE); break;
             case "WeierstraussFunction": this.loadState(WEIERSTRAUSS_FUNCTION_EXAMPLE); break;
         }
+        this.stop();
     }
 
     // Put the simulation into a demo mode
