@@ -336,11 +336,16 @@ function setupGearPairPopup(): void {
       // const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
       const component = document.querySelector(`#${input.parentElement!.dataset.id!} > gear-pair-component`) as GearPairComponentElement;
 
+      const value = input.valueAsNumber;
       if (input.id == "gear-pair-top-ratio") {
-        component.ratio_top = Math.min(Math.max(Number(input.value), 1), 9);
+        if (value == 0) { input.value = String(component.ratio_top); return; }
+
+        component.ratio_top = ((value < 0) ? -1 : 1) * Math.min(Math.max(Math.abs(value), 1), 9);
         input.value = String(component.ratio_top);
       } else if (input.id == "gear-pair-bottom-ratio") {
-        component.ratio_bottom = Math.min(Math.max(Number(input.value), 1), 9);
+        if (value == 0) { input.value = String(component.ratio_bottom); return; }
+
+        component.ratio_bottom = ((value < 0) ? -1 : 1) * Math.min(Math.max(Math.abs(value), 1), 9);
         input.value = String(component.ratio_bottom);
       }
     })

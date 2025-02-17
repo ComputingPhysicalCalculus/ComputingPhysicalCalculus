@@ -1,7 +1,7 @@
 import { Config, loadConfig } from "./config";
 import { toConfig } from "./GenerateConfigFromUI";
 import { query, queryAll } from "./decorators";
-import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE } from "./examples";
+import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE } from "./examples";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
@@ -271,6 +271,7 @@ export class Lifecycle {
             case "Spring": this.loadState(SPRING_EXAMPLE); break;;
             case "GammaFunction": this.loadState(GAMMA_FUNCTION_EXAMPLE); break;
             case "WeierstraussFunction": this.loadState(WEIERSTRAUSS_FUNCTION_EXAMPLE); break;
+            case "GearPair": this.loadState(GEAR_PAIR_EXAMPLE); break;
         }
         this.stop();
     }

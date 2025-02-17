@@ -214,6 +214,5 @@ export function loadConfig(config: Config): void {
     machine.appendChild(item);
   }
 
-  console.log(maxID);
   setIDCounter(maxID + 1);
 }
