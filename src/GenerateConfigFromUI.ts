@@ -121,6 +121,8 @@ export function toConfig(): Config {
                     const sumShaft = getHShaftID(position[0], position[1] + 1);
                     const diffShaft2 = getHShaftID(position[0], position[1] + 2);
 
+                    console.log(diffShaft1, sumShaft, diffShaft2, config1);
+
                     if (diffShaft1 === null || sumShaft === null || diffShaft2 === null) {
                         return null;
                     }

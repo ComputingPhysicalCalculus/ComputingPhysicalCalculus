@@ -206,6 +206,7 @@ export function loadConfig(config: Config): void {
     item.width = width;
     item.height = height;
     item.id = `shaft-component-${shaft.id}`;
+    maxID = Math.max(maxID, shaft.id);
 
     item.hasBeenPlaced = true;
     item.requestUpdate();
@@ -213,5 +214,6 @@ export function loadConfig(config: Config): void {
     machine.appendChild(item);
   }
 
+  console.log(maxID);
   setIDCounter(maxID + 1);
 }
