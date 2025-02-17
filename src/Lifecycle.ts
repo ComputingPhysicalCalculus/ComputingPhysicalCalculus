@@ -382,7 +382,7 @@ export class Lifecycle {
         // simulator.components.filter(x => x instanceof OutputTable).forEach((x: OutputTable) => {
         //     const output_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
         //
-        //     // x.xHistory[0] += output_table_element.x_min;
+        //     x.xHistory[0] += output_table_element.x_min;
         // });
 
         let elapsed = 0;
