@@ -1,7 +1,7 @@
 import { Config, loadConfig } from "./config";
 import { toConfig } from "./GenerateConfigFromUI";
 import { query, queryAll } from "./decorators";
-import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE } from "./examples";
+import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE } from "./examples";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
@@ -40,14 +40,8 @@ export class Lifecycle {
     @queryAll(".placed-component")
     private placedComponents!: NodeListOf<DraggableComponentElement>;
 
-    // <<<<<<< HEAD
     @query("#demo-button")
     demo_button!: HTMLButtonElement
-    // =======
-    //       console.log(x.id);
-    //       x.xHistory[0] += output_table_element.x_min;
-    //     });
-    // >>>>>>> 3e6ea38fccb0200a317c72112589ec74d317b311
 
     @query("#examples-list")
     examples_select!: HTMLSelectElement;
@@ -275,6 +269,8 @@ export class Lifecycle {
         switch (option.value) {
             case "LinearIntegration": this.loadState(LINEAR_INTEGRATION_EXAMPLE); break;
             case "Spring": this.loadState(SPRING_EXAMPLE); break;;
+            case "GammaFunction": this.loadState(GAMMA_FUNCTION_EXAMPLE); break;
+            case "WeierstraussFunction": this.loadState(WEIERSTRAUSS_FUNCTION_EXAMPLE); break;
         }
     }
 
