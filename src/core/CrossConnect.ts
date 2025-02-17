@@ -1,6 +1,6 @@
 /**
  * @file CrossConnect.ts
- * @description This file contains the definition of the Gear class.
+ * @description This file contains the definition of the CrossConnect class.
  * @author Andy Zhu
  */
 
@@ -8,7 +8,7 @@ import { Device } from "./Device";
 import { Shaft } from "./Shaft";
 
 /**
- * @class Cross COnnect
+ * @class Cross Connect
  * @description the Cross connnect class which simulates the Cross connect connecting a vertical and a horizontal shaft
  * @implements Device
  */
@@ -41,11 +41,11 @@ export class CrossConnect implements Device {
         }
         if (this.shafts[0].ready_flag && !this.shafts[1].ready_flag) {
             this.output = this.shafts[1];
-            this.input = this.shafts[0]
+            this.input = this.shafts[0];
         }
         if (this.shafts[1].ready_flag && !this.shafts[0].ready_flag) {
             this.output = this.shafts[0];
-            this.input = this.shafts[1]
+            this.input = this.shafts[1];
         }
         return this.output;
     }
