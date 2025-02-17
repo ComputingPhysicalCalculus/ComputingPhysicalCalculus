@@ -14,6 +14,7 @@ import { GraphElement } from "./UI/GraphElement";
 import { Simulator } from "./core/Main";
 import { FunctionTable } from "./core/FunctionTable";
 import Expression from "./expr/Expression";
+import { OutputTable } from "./core/OutputTable";
 
 enum State {
   Paused,
@@ -308,19 +309,26 @@ export class Lifecycle {
     const get_motor_speed = () => Number(this.motor_speed_input.value);
 
     const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
-    const function_tables = document.querySelectorAll(".functionTable > graph-table")! as NodeListOf<GraphElement>;
+    // const function_tables = document.querySelectorAll(".functionTable > graph-table")! as NodeListOf<GraphElement>;
 
     simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
       const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
 
       let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
       x.fun = x => compiled_expr({ x });
+      x.x_position = function_table_element.x_min;
     });
 
     output_tables.forEach(x => {
       x.set_data_set("d1", []);
       x.set_data_set("d2", [], "red", true);
     })
+
+    simulator.components.filter(x => x instanceof OutputTable).forEach((x: OutputTable) => {
+      const output_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
+
+      x.xHistory[0] += output_table_element.x_min;
+    });
 
     let elapsed = 0;
     let steps_taken = 0;
