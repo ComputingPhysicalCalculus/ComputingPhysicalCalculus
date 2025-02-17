@@ -63,7 +63,6 @@ export class GraphElement extends LitElement {
   }
 
   map_x_graph_to_screen(x: number): number {
-
     return (x - this.x_min) / (this.x_max - this.x_min) * (this.offsetWidth - this.padding * 2) + this.padding;
   }
 
