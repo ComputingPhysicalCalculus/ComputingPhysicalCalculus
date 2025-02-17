@@ -4,16 +4,17 @@
  * @author Simon Solca, Andy Zhu, Hanzhang Shen
  */
 
+import { Config } from "../config";
+import { CrossConnect } from "./CrossConnect";
 import { Device } from "./Device";
 import { Differential } from "./Differential";
 import { FunctionTable } from "./FunctionTable";
+import { GearPair } from "./GearPair";
 import { Integrator } from "./Integrator";
 import { Motor } from "./Motor";
 import { Multiplier } from "./Multiplier";
 import { OutputTable } from "./OutputTable";
-import { CrossConnect } from "./CrossConnect";
 import { Shaft } from "./Shaft";
-import { Config } from "../config";
 
 export class Simulator {
     shafts: Shaft[] = [];
@@ -154,6 +155,17 @@ export class Simulator {
                     );
                     shafts.get(component.horizontal)!.outputs.push(new_component);
                     shafts.get(component.vertical)!.outputs.push(new_component);
+                    components.push(new_component);
+                    break;
+
+                case 'gearPair':
+                    new_component = new GearPair(
+                        shafts.get(component.shaft1)!,
+                        shafts.get(component.shaft2)!,
+                        component.outputRatio / component.inputRatio,
+                    )
+                    shafts.get(component.shaft1)!.outputs.push(new_component);
+                    shafts.get(component.shaft2)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
 
