@@ -58,7 +58,7 @@ export function setupScreenHooks(): void {
         }
     })
 
-    machine.addEventListener("mouseup", e => {
+    document.addEventListener("mouseup", e => {
         if (e.button == 2) {
             canStartDragging = false;
             screenDragging = false;
@@ -67,7 +67,7 @@ export function setupScreenHooks(): void {
 
     screenOffset = new Vector2(0, 0);
 
-    machine.addEventListener("mousemove", e => {
+    document.addEventListener("mousemove", e => {
         dragScreen(e.clientX, e.clientY);
     });
 
