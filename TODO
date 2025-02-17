@@ -1,11 +1,8 @@
-List of examples
 Saving settings to config file
+Open Larger text box for more complicated functions
+CSV output
 Sound
 
 BUGS:
-Unconnected output graph shafts shouldn't matters
-Unconnected components break simulator
-Scrolling on user control area? To allow for weirder aspect ratios
 Undo/Redo broken. Render positions?
 Motor reverse doesnt do anything?
-Touchpad right click not triggering shaft drag
