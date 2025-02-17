@@ -377,6 +377,11 @@ export class Lifecycle {
       for (let comp of simulator.components.filter(x => x instanceof FunctionTable)) {
         const table = document.querySelector(`#component-${comp.id} > graph-table`)! as GraphElement;
         table.gantry_x = comp.x_position;
+        if (next_steps !== 0 && comp.x_position >= table.x_max) {
+          this.pause();
+          this.stop();
+          return;
+        }
       }
     };
   }

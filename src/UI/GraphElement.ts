@@ -180,10 +180,13 @@ export class GraphElement extends LitElement {
         continue;
       }
 
-      let last_x = 0.0, last_y = 0.0;
-      let x = 0.0, y = 0.0;
-      for ({ x, y } of data.points) {
-        if (x >= this.gantry_x) {
+      let { x, y } = data.points[data.points.length - 1] ?? { x: 0, y: 0 };
+      let last_x = x, last_y = y;
+      for (let i = data.points.length; i > 0; i--) {
+        let point = data.points[i - 1];
+        x = point.x;
+        y = point.y;
+        if (x <= this.gantry_x) {
           break;
         }
 
@@ -191,7 +194,12 @@ export class GraphElement extends LitElement {
         last_y = y;
       }
 
-      y = last_y + (y - last_y) * ((this.gantry_x - last_x) / (x - last_x));
+      if (last_x - x !== 0) {
+        y = y + (last_y - y) * ((last_x - this.gantry_x) / (last_x - x));
+      }
+      if (y === 0) {
+         console.log(x, last_x, y, last_y, data);
+      }
 
       ctx.fillStyle = data.style;
       this._draw_gantry_head(ctx, y, data.invert_head);
