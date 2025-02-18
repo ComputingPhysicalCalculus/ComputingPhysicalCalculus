@@ -182,6 +182,7 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
       break;
     }
 
+    let error = false;
     switch (operator._type) {
       case TokenType.Add:
       case TokenType.Sub:
@@ -200,8 +201,31 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
       case TokenType.Comma:
       case TokenType.SemiColon:
         break outer_loop;
+      case TokenType.Ident: {
+        if (lhs._type === "var") {
+          error = true;
+          break;
+        }
+        tokens.pop();
+        let rhs = { _type: "var", ident: operator.span } as ParsedExpression;
+        lhs = { _type: "*", left: lhs, right: rhs };
+      } continue;
+      case TokenType.LBracket: {
+        if (lhs._type === "var") {
+          error = true;
+          break;
+        }
+        tokens.pop();
+        let rhs = parse_expr(tokens, 0);
+        lhs = { _type: "*", left: lhs, right: rhs };
+      } continue;
       default:
-        throw new Error(`Unexpected token '${operator.span}' of type ${operator._type}`);
+        error = true ;
+        break;
+    }
+
+    if (error) {
+      throw new Error(`Unexpected token '${operator.span}' of type ${operator._type}`);
     }
 
     let [left_binding_power, right_binding_power] = infix_binding_power(operator._type as BinaryOperator);
