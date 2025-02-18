@@ -193,7 +193,7 @@ export class Simulator {
 
                 case 'outputTable':
                     let outputTable: OutputTable;
-                    if (component.outputShaft2 && this.initialY2 !== undefined) {
+                    if (component.outputShaft2) {
                         outputTable = new OutputTable(
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
@@ -207,7 +207,7 @@ export class Simulator {
                         outputTable = new OutputTable(
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
-                            this.initialY1,
+                            component.initialY1,
                         );
                     }
                     outputTable.id = component.compID;

@@ -11,3 +11,5 @@ node_modules/*
 
 
 tests/core/*.txt
+
+.DS_Store
