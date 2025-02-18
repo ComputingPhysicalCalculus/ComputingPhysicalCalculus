@@ -62,6 +62,70 @@ export function next_token(s: string): [Token | null, string] {
 // Brilliant described in: https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html
 
 export function parse_expr(tokens: Token[], min_binding_power: number): ParsedExpression {
+  let lhs = parse_term(tokens);
+
+  outer_loop: while (true) {
+    let operator = tokens[tokens.length - 1];
+    if (operator === undefined) {
+      break;
+    }
+
+    let error = false;
+    switch (operator._type) {
+      case TokenType.Add:
+      case TokenType.Sub:
+      case TokenType.Mul:
+      case TokenType.Div:
+      case TokenType.Pow:
+      case TokenType.GtEq:
+      case TokenType.LtEq:
+      case TokenType.Gt:
+      case TokenType.Lt:
+      case TokenType.Eq:
+      case TokenType.Neq:
+      case TokenType.Mod:
+        break;
+      case TokenType.RBracket:
+      case TokenType.Comma:
+      case TokenType.SemiColon:
+        break outer_loop;
+      case TokenType.Ident:
+      case TokenType.LBracket: {
+        if (lhs._type === "var") {
+          error = true;
+          break;
+        }
+        let rhs = parse_term(tokens);
+        lhs = { _type: "*", left: lhs, right: rhs };
+      } continue;
+      default:
+        error = true ;
+        break;
+    }
+
+    if (error) {
+      throw new Error(`Unexpected token '${operator.span}' of type ${operator._type}`);
+    }
+
+    let [left_binding_power, right_binding_power] = infix_binding_power(operator._type as BinaryOperator);
+    if (left_binding_power < min_binding_power) {
+      break;
+    }
+
+    tokens.pop();
+    let rhs = parse_expr(tokens, right_binding_power);
+
+    lhs = {
+      _type: operator._type as BinaryOperator,
+      left: lhs,
+      right: rhs,
+    }
+  }
+
+  return lhs;
+}
+
+export function parse_term(tokens: Token[]): ParsedExpression {
   let lhs_tk = tokens.pop();
   if (lhs_tk === undefined) {
     throw new Error("Empty expression encountered");
@@ -174,73 +238,6 @@ export function parse_expr(tokens: Token[], min_binding_power: number): ParsedEx
       break;
     default:
       throw new Error(`Unexpected token '${lhs_tk.span}'' of type ${lhs_tk._type}`);
-  }
-
-  outer_loop: while (true) {
-    let operator = tokens[tokens.length - 1];
-    if (operator === undefined) {
-      break;
-    }
-
-    let error = false;
-    switch (operator._type) {
-      case TokenType.Add:
-      case TokenType.Sub:
-      case TokenType.Mul:
-      case TokenType.Div:
-      case TokenType.Pow:
-      case TokenType.GtEq:
-      case TokenType.LtEq:
-      case TokenType.Gt:
-      case TokenType.Lt:
-      case TokenType.Eq:
-      case TokenType.Neq:
-      case TokenType.Mod:
-        break;
-      case TokenType.RBracket:
-      case TokenType.Comma:
-      case TokenType.SemiColon:
-        break outer_loop;
-      case TokenType.Ident: {
-        if (lhs._type === "var") {
-          error = true;
-          break;
-        }
-        tokens.pop();
-        let rhs = { _type: "var", ident: operator.span } as ParsedExpression;
-        lhs = { _type: "*", left: lhs, right: rhs };
-      } continue;
-      case TokenType.LBracket: {
-        if (lhs._type === "var") {
-          error = true;
-          break;
-        }
-        tokens.pop();
-        let rhs = parse_expr(tokens, 0);
-        lhs = { _type: "*", left: lhs, right: rhs };
-      } continue;
-      default:
-        error = true ;
-        break;
-    }
-
-    if (error) {
-      throw new Error(`Unexpected token '${operator.span}' of type ${operator._type}`);
-    }
-
-    let [left_binding_power, right_binding_power] = infix_binding_power(operator._type as BinaryOperator);
-    if (left_binding_power < min_binding_power) {
-      break;
-    }
-
-    tokens.pop();
-    let rhs = parse_expr(tokens, right_binding_power);
-
-    lhs = {
-      _type: operator._type as BinaryOperator,
-      left: lhs,
-      right: rhs,
-    }
   }
 
   return lhs;

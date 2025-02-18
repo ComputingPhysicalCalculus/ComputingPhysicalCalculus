@@ -48,7 +48,7 @@ describe("expression lexing", _ => {
     ["=="],
     ["!="],
     ["="],
-    [";"]
+    [";"],
   ])("lex '%s' as punctuation", (s) => {
     const [tk, rest] = next_token(s);
 
@@ -267,7 +267,11 @@ describe("expression parsing", () => {
     [
       "e^5x",
       bin(v("e"), "^", bin(lit(5), "*", v("x"))),
-    ]
+    ],
+    [
+      "2sin(2x)",
+      bin(lit(2), "*", fn("sin", [bin(lit(2), "*", v("x"))])),
+    ],
   ])("parse '%s' -> %j", (s, expected) => {
     expect(Expression.parse(s)).toStrictEqual(expected);
   })
