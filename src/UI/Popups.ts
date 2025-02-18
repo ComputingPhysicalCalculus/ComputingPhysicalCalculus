@@ -21,6 +21,9 @@ let functionTablePopup: HTMLDivElement;
 let outputTablePopup: HTMLDivElement;
 let labelPopup: HTMLDivElement;
 
+// Sets up each type of popup
+// The setup involves adding event handlers for change events and correctly updating the 
+// correct component
 export function setupPopups(): void {
   setupCrossConnectPopup();
   setupIntegratorPopup();
@@ -34,10 +37,17 @@ export function setupPopups(): void {
   machine.addEventListener("click", documentClick);
 }
 
+// Default code for opening a popup near to the mouse
+// Opens above the mouse if the popup will be displayed outside the document
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
+  const gap = 8;
   popup.style.visibility = "visible";
-  popup.style.left = `${e.clientX + 10}px`;
-  popup.style.top = `${e.clientY + 10}px`;
+  popup.style.left = `${e.clientX + gap}px`;
+  let top = e.clientY + gap;
+  if (top + popup.clientHeight > document.body.clientHeight) {
+    top = e.clientY - popup.clientHeight - gap;
+  }
+  popup.style.top = `${top}px`;
   popup.style.zIndex = "10";
 
   const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
@@ -84,6 +94,8 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   const text_area = functionTablePopup.querySelector("textarea")!;
   text_area.value = graph_element.data_sets["d1"].fn ?? "";
 
+  // Count the number of newlines in the input text to set the correct height of the
+  // textarea
   const lines = text_area.value.split(/\r\n|\r|\n/).length;
   text_area.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
 
@@ -195,6 +207,7 @@ function closePopup(e: MouseEvent) {
   (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
 }
 
+// Check whether the mouse event occurs within a popup
 function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
   if (popup.style.visibility == "hidden") return false;
 
@@ -211,6 +224,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
   return false;
 }
 
+// Close all popups when a mouse click occurs and it is not contained within a popup
 function documentClick(e: MouseEvent) {
   let popups = [crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
   popups.forEach(popup => {
@@ -433,31 +447,32 @@ function setupLabelPopup(): void {
     component.height = input.valueAsNumber;
   });
 
-  labelPopup.querySelector("#label-popup-align-left")!.addEventListener("change", (e) => {
-    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+  const setAlignment = (input: HTMLInputElement, align: string) => {
     const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
     if (input.checked) {
-      component.style.textAlign = "left";
+      component.style.textAlign = align;
     }
+  }
+
+  labelPopup.querySelector("#label-popup-align-left")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    setAlignment(input, "left");
   });
 
   labelPopup.querySelector("#label-popup-align-right")!.addEventListener("change", (e) => {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-    const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
-    if (input.checked) {
-      component.style.textAlign = "right";
-    }
+    setAlignment(input, "right");
   });
 
   labelPopup.querySelector("#label-popup-align-center")!.addEventListener("change", (e) => {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-    const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
-    if (input.checked) {
-      component.style.textAlign = "center";
-    }
+    setAlignment(input, "center");
   });
 }
 
+// Update the length of a shaft depending on the values of negativeLength and positiveLength.
+// Negative length denotes the left/top amount to change, while positive length denotes the right/bottom
+// amount
 export function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";
 
