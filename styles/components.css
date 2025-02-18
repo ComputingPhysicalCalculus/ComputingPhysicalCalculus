@@ -32,9 +32,7 @@
 
     box-sizing: border-box;
     border-radius: var(--border-radius);
-    /* max-width: 100%; */
     overflow: hidden;
-    /* max-height: 100%; */
 }
 
 .component {
@@ -50,9 +48,11 @@
     align-items: center;
     justify-content: space-between;
     user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    pointer-events: none;
 }
-
-.component div {}
 
 .component img {
     width: 70%;

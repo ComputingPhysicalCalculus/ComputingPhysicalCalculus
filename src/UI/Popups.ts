@@ -10,7 +10,8 @@ import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import { machine } from "./Constants.ts";
 
-// let shaftPopup: HTMLDivElement;
+const MAX_TEXT_AREA_LINES = 10;
+
 let crossConnectPopup: HTMLDivElement;
 let integratorPopup: HTMLDivElement;
 let motorPopup: HTMLDivElement;
@@ -21,7 +22,6 @@ let outputTablePopup: HTMLDivElement;
 let labelPopup: HTMLDivElement;
 
 export function setupPopups(): void {
-  // setupShaftPopup();
   setupCrossConnectPopup();
   setupIntegratorPopup();
   setupMotorPopup();
@@ -45,29 +45,6 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
 
   clearSelect();
 }
-
-// export function openShaftPopup(e: MouseEvent): void {
-//   if (e.button != 2) return;
-//   if (currentlyDragging()) return;
-//
-//   openPopup(e, shaftPopup);
-//
-//   const target = e.currentTarget as DraggableComponentElement;
-//   const isVertical = target.componentType == "vShaft";
-//
-//   const labels = shaftPopup.getElementsByTagName("label");
-//   for (let i = 0; i < labels.length; i++) {
-//     const input = labels[i] as HTMLLabelElement;
-//
-//     if (input.id == "shaft-negative-label") {
-//       input.innerText = (isVertical) ? "Top Length" : "Left Length";
-//     } else if (input.id == "shaft-positive-label") {
-//       input.innerText = (isVertical) ? "Bottom Length" : "Right Length";
-//     }
-//   }
-//
-//   e.preventDefault();
-// }
 
 export function openCrossConnectPopup(e: MouseEvent): void {
   if (e.button != 2) return;
@@ -104,8 +81,11 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   const target = e.currentTarget as DraggableComponentElement;
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
-  functionTablePopup.querySelector("textarea")!.value =
-    graph_element.data_sets["d1"].fn ?? "";
+  const text_area = functionTablePopup.querySelector("textarea")!;
+  text_area.value = graph_element.data_sets["d1"].fn ?? "";
+
+  const lines = text_area.value.split(/\r\n|\r|\n/).length;
+  text_area.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
 
   let inputs = functionTablePopup.getElementsByTagName("input");
   inputs[0].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
@@ -240,29 +220,6 @@ function documentClick(e: MouseEvent) {
   });
 }
 
-// function setupShaftPopup(): void {
-//   shaftPopup = document.getElementById("shaft-popup") as HTMLDivElement;
-//   shaftPopup.addEventListener("mouseleave", closePopup);
-//
-//   const buttons = shaftPopup.getElementsByTagName("button");
-//   for (let i = 0; i < buttons.length; i++) {
-//     buttons[i].addEventListener("click", (e) => {
-//       const button: HTMLButtonElement = e.currentTarget as HTMLButtonElement;
-//       const component = document.getElementById(button.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
-//
-//       let negativeLength = 0;
-//       if (button.id == "shaft-popup-negative-increase") negativeLength = 1;
-//       if (button.id == "shaft-popup-negative-decrease") negativeLength = -1;
-//
-//       let positiveLength = 0;
-//       if (button.id == "shaft-popup-positive-increase") positiveLength = 1;
-//       if (button.id == "shaft-popup-positive-decrease") positiveLength = -1;
-//
-//       updateShaftLength(component, negativeLength, positiveLength);
-//     });
-//   }
-// }
-
 function setupCrossConnectPopup(): void {
   crossConnectPopup = document.getElementById("cross-connect-popup") as HTMLDivElement;
   crossConnectPopup.addEventListener("mouseleave", closePopup);
@@ -359,7 +316,7 @@ function setupFunctionTablePopup(): void {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
     if (e.key == "Enter") {
       const lines = input.value.split(/\r\n|\r|\n/).length;
-      input.rows = lines + 1;
+      input.rows = Math.min(lines + 1, MAX_TEXT_AREA_LINES);
     }
   });
 
@@ -369,7 +326,7 @@ function setupFunctionTablePopup(): void {
     component_graph.data_sets["d1"].fn = String(input.value);
 
     const lines = input.value.split(/\r\n|\r|\n/).length;
-    input.rows = lines;
+    input.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
 
     let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
     let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
