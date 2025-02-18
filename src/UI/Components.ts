@@ -214,6 +214,7 @@ function createIntegrator(div: DraggableComponentElement): void {
   div.componentType = "integrator";
   div.shouldLockCells = true;
   div.classList.add("integrator");
+  div.inputRatio = 0;
 
   render(html`<integrator-component style="width:100%;height:100%"></integrator-component>`, div);
 
