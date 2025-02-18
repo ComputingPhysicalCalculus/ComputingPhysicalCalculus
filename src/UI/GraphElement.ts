@@ -193,8 +193,10 @@ export class GraphElement extends LitElement {
                 last_y = y;
             }
 
+            // linearly interpolate between y and last_y
+            // with t value being (this.gantry_x - x) / (last_x - x)
             if (last_x - x !== 0) {
-                y += (last_y - y) * (this.gantry_x - x) / (last_x - x);
+                y = y + (last_y - y) * (this.gantry_x - x) / (last_x - x);
             }
 
             ctx.fillStyle = data.style;
