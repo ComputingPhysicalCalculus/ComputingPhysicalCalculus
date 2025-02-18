@@ -52,9 +52,9 @@ function test_simple_integral() {
   let diff = new Differential(shaft_two_sint, shaft_t, shaft_two_sint_plus_t);
   let integrator = new Integrator(shaft_t_into_integrator, shaft_two_sint_plus_t, shaft_intt, false, 0);
   let output_table = new OutputTable(shaft_t, shaft_two_sint_plus_t, 0, shaft_intt, -2);
-  let cross_connect_sin = new CrossConnect(shaft_t, shaft_t_into_sin);
-  let cross_connect_int = new CrossConnect(shaft_t, shaft_t_into_integrator);
-  let cross_connect_f_to_sin = new CrossConnect(shaft_f_to_shaft_sint, shaft_sint);
+  let cross_connect_sin = new CrossConnect(shaft_t, shaft_t_into_sin, false);
+  let cross_connect_int = new CrossConnect(shaft_t, shaft_t_into_integrator, false);
+  let cross_connect_f_to_sin = new CrossConnect(shaft_f_to_shaft_sint, shaft_sint, false);
 
   // initialise motor
   let motor = new Motor(rotation_rate, shaft_t);
