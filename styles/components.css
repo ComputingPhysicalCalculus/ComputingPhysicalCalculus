@@ -37,7 +37,7 @@
 }
 
 .component {
-    display: flexbox;
+    display: block;
     flex-direction: row;
     background: var(--colour-accent4);
     border-radius: var(--border-radius);
