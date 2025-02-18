@@ -30,29 +30,31 @@
     grid-column-start: 1;
     grid-column-end: 3;
 
+    box-sizing: border-box;
     border-radius: var(--border-radius);
-    max-width: 100%;
-    overflow: none;
-    max-height: 100%;
+    /* max-width: 100%; */
+    overflow: hidden;
+    /* max-height: 100%; */
 }
 
 .component {
-    display: block;
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
     background: var(--colour-accent4);
     border-radius: var(--border-radius);
     position: relative;
-    aspect-ratio: 1;
-    width: 100%;
 
     font-size: var(--text-button-size);
     font-weight: bold;
     text-align: center;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
     user-select: none;
 }
 
-.component>img {
+.component div {}
+
+.component img {
     width: 70%;
     aspect-ratio: 1;
     user-select: none;
