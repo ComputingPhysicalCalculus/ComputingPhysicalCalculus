@@ -18,13 +18,13 @@ function getShaft(className: string, predicate: (x: number, y: number, w: number
   return null;
 }
 
-function getVShaftID(x: number, y: number): number | null {
+export function getVShaftID(x: number, y: number): number | null {
   return getShaft("vShaft", (sX, sY, _, sH) => {
     return (sX == x) && (sY <= y && sY + sH - 1 >= y);
   });
 }
 
-function getHShaftID(x: number, y: number): number | null {
+export function getHShaftID(x: number, y: number): number | null {
   return getShaft("hShaft", (sX, sY, sW) => {
     return (sY == y) && (sX <= x && sX + sW - 1 >= x);
   });

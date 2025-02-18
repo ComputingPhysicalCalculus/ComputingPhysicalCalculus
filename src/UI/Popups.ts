@@ -333,7 +333,6 @@ function setupGearPairPopup(): void {
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      // const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
       const component = document.querySelector(`#${input.parentElement!.dataset.id!} > gear-pair-component`) as GearPairComponentElement;
 
       const value = input.valueAsNumber;

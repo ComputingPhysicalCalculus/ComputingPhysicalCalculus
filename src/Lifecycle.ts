@@ -1,5 +1,5 @@
 import { Config, loadConfig } from "./config";
-import { toConfig } from "./GenerateConfigFromUI";
+import { getHShaftID, getVShaftID, toConfig } from "./GenerateConfigFromUI";
 import { query, queryAll } from "./decorators";
 import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE, EPICYCLOID_EXAMPLE, EXTREME_EPICYCLOID, EXTREME_EPICYCLOID_EXAMPLE } from "./examples";
 import { setupDragHooks } from "./UI/Drag";
@@ -14,6 +14,7 @@ import { Simulator } from "./core/Main";
 import { FunctionTable } from "./core/FunctionTable";
 import Expression from "./expr/Expression";
 import { OutputTable } from "./core/OutputTable";
+import { DialComponentElement } from "./UI/DialComponentElement.ts";
 
 enum State {
     Paused,
@@ -379,6 +380,11 @@ export class Lifecycle {
             x.set_data_set("d2", [], "red", true);
         })
 
+        const dials = document.querySelectorAll(".dial") as NodeListOf<DraggableComponentElement>;
+        dials.forEach(dial => {
+            (dial.querySelector("dial-component")! as DialComponentElement).count = 0
+        })
+
         /// FIX: Is this needed?
         // simulator.components.filter(x => x instanceof OutputTable).forEach((x: OutputTable) => {
         //     const output_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
@@ -427,6 +433,20 @@ export class Lifecycle {
                     this.pause();
                     this.stop();
                     return
+                }
+            }
+
+            // TODO: Improve this code
+            const dials = document.querySelectorAll(".dial") as NodeListOf<DraggableComponentElement>;
+            for (let dial of dials) {
+                const comp = dial.querySelector("dial-component")! as DialComponentElement;
+                const pos = dial.getPosition();
+                let shaft_id = getHShaftID(pos.x, pos.y);
+                if (shaft_id == null) {
+                    shaft_id = getVShaftID(pos.x, pos.y);
+                }
+                if (shaft_id != null) {
+                    comp.count = simulator.shafts.filter(p => { return p.id == shaft_id })[0].rotation;
                 }
             }
 
