@@ -4,16 +4,17 @@
  * @author Simon Solca, Andy Zhu, Hanzhang Shen
  */
 
+import { Config } from "../config";
+import { CrossConnect } from "./CrossConnect";
 import { Device } from "./Device";
 import { Differential } from "./Differential";
 import { FunctionTable } from "./FunctionTable";
+import { GearPair } from "./GearPair";
 import { Integrator } from "./Integrator";
 import { Motor } from "./Motor";
 import { Multiplier } from "./Multiplier";
 import { OutputTable } from "./OutputTable";
-import { CrossConnect } from "./CrossConnect";
 import { Shaft } from "./Shaft";
-import { Config } from "../config";
 
 export class Simulator {
     shafts: Shaft[] = [];
@@ -157,6 +158,17 @@ export class Simulator {
                     components.push(new_component);
                     break;
 
+                case 'gearPair':
+                    new_component = new GearPair(
+                        shafts.get(component.shaft1)!,
+                        shafts.get(component.shaft2)!,
+                        component.outputRatio / component.inputRatio,
+                    )
+                    shafts.get(component.shaft1)!.outputs.push(new_component);
+                    shafts.get(component.shaft2)!.outputs.push(new_component);
+                    components.push(new_component);
+                    break;
+
                 case 'functionTable':
                     new_component = new FunctionTable(
                         shafts.get(component.inputShaft)!,
@@ -181,7 +193,7 @@ export class Simulator {
 
                 case 'outputTable':
                     let outputTable: OutputTable;
-                    if (component.outputShaft2 && this.initialY2 !== undefined) {
+                    if (component.outputShaft2) {
                         outputTable = new OutputTable(
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
@@ -189,16 +201,16 @@ export class Simulator {
                             shafts.get(component.outputShaft2)!,
                             component.initialY2,
                         );
-                        outputTable.id = component.compID;
                         shafts.get(component.outputShaft2)!.outputs.push(outputTable);
                     }
                     else {
                         outputTable = new OutputTable(
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
-                            this.initialY1,
+                            component.initialY1,
                         );
                     }
+                    outputTable.id = component.compID;
 
                     shafts.get(component.inputShaft)!.outputs.push(outputTable);
                     shafts.get(component.outputShaft1)!.outputs.push(outputTable);

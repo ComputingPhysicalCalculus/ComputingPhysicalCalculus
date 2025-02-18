@@ -1,6 +1,7 @@
 import { LitElement, svg } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { GRID_SIZE } from "./Grid.ts";
+import { DraggableComponentElement } from "./DraggableElement.ts";
 
 @customElement("shaft-component")
 export class ShaftElement extends LitElement {
@@ -21,10 +22,10 @@ export class ShaftElement extends LitElement {
   }
 
   render() {
-    let grid_size = GRID_SIZE;
+    let parent = this.parentElement as DraggableComponentElement;
 
-    let width = this.offsetWidth / grid_size;
-    let height = this.offsetHeight / grid_size;
+    let width = parent.width * (this.horizontal ? 50 : 25);
+    let height = parent.height * (this.horizontal ? 25 : 50);
 
     let top = this.horizontal ? height / 2 : 0;
     let left = this.horizontal ? 0 : width / 2;
@@ -34,14 +35,13 @@ export class ShaftElement extends LitElement {
     return svg`
       <svg
         xmlns="https://www.w3.org/2000/svg"
-        width="${width * 50}" height="${height * 50}"
-        viewBox="0 0 ${width * 50} ${height * 50}"
+        width="${width}" height="${height}"
+        viewBox="0 0 ${width} ${height}"
         style="width:100%;height:100%"
       >
         <line
-          id="line"
-          x1="${left * 50}" y1="${top * 50}"
-          x2="${right * 50}" y2="${bottom * 50}"
+          x1="${left}" y1="${top}"
+          x2="${right}" y2="${bottom}"
           stroke="black"
           stroke-width="2"
           stroke-linecap="round"

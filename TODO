@@ -1,10 +1,8 @@
-List of examples
 Saving settings to config file
+Open Larger text box for more complicated functions
+CSV output
 Sound
 
-Graph: Xmin-max YMin-max
-Add Labels to component list
-
-Calculate Shaft ID for components for I/O
-
-Stop Shafts being placed on top of eachother
+BUGS:
+Undo/Redo broken. Render positions?
+Motor reverse doesnt do anything?

@@ -55,7 +55,10 @@ export default class Expression {
       case "<=":
       case "==":
       case "!=":
-        const [lhs, lhs_vars] = ("left" in expr) ? this.partial_eval_expr(expr.left, ctx) : [{ _type: "lit", value: 0 } as ParsedExpression, new Set<string>()];
+        const [lhs, lhs_vars] = ("left" in expr)
+          ? this.partial_eval_expr(expr.left, ctx)
+          : [{ _type: "lit", value: 0 } as ParsedExpression, new Set<string>()];
+
         const [rhs, rhs_vars] = this.partial_eval_expr(expr.right, ctx);
 
         if (lhs._type === "lit" && rhs._type === "lit") {

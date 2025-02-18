@@ -7,11 +7,11 @@
     --colour-highlight1: #ECCF7E;
     --colour-highlight2: #D48C35;
     --colour-highlight3: #364D1A;
-    --text-colour: #F0F0F0;
+    --text-colour: #FCFCFC;
     --unit: calc(max(1vw, 1vh));
     --text-size: calc(var(--unit));
     --text-button-size: calc(0.8 * var(--unit));
-    --text-header-size: calc(2 * var(--unit));
+    --text-header-size: calc(1.6 * var(--unit));
     --border-radius: calc(0.5 * var(--unit));
     --gap-size: calc(0.5 * var(--unit));
 
@@ -57,7 +57,7 @@ html {
 
     width: 30vw;
     height: 100%;
-    overflow: hidden;
+    overflow: scroll;
 
     background: var(--colour-accent1);
 
@@ -66,6 +66,31 @@ html {
     gap: var(--gap-size);
 
     z-index: 6;
+}
+
+#demo-area {
+    display: flex;
+    flex-direction: column;
+    background: var(--colour-accent2);
+    border-radius: var(--border-radius);
+    padding: var(--gap-size);
+    gap: var(--gap-size);
+}
+
+#demo-area>label {
+    text-align: center;
+    font-size: var(--text-header-size);
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0 0 -5px 0;
+}
+
+#demo-area>select {
+    font-size: var(--text-button-size);
+}
+
+#demo-area>button {
+    font-size: var(--text-button-size);
 }
 
 #configuration {
