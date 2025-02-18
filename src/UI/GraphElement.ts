@@ -194,8 +194,7 @@ export class GraphElement extends LitElement {
             }
 
             if (last_x - x !== 0) {
-                let t = (this.gantry_x-x)/(last_x - x);
-                y = y + (last_y - y) * t;
+                y += (last_y - y) * (this.gantry_x - x) / (last_x - x);
             }
 
             ctx.fillStyle = data.style;
