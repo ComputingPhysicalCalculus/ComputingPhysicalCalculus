@@ -356,10 +356,21 @@ function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
+  functionTablePopup.querySelector("textarea")!.addEventListener("keydown", e => {
+    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
+    if (e.key == "Enter") {
+      const lines = input.value.split(/\r\n|\r|\n/).length;
+      input.rows = lines + 1;
+    }
+  });
+
   functionTablePopup.querySelector("textarea")!.addEventListener("change", e => {
-    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
     const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
     component_graph.data_sets["d1"].fn = String(input.value);
+
+    const lines = input.value.split(/\r\n|\r|\n/).length;
+    input.rows = lines;
 
     let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
     let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
