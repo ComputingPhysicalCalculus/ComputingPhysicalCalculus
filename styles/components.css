@@ -51,7 +51,6 @@
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    pointer-events: none;
     padding: 0.5rem;
 }
 

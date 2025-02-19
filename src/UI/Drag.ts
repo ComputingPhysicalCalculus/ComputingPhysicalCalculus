@@ -56,6 +56,7 @@ export function setupDragHooks(): void {
 }
 
 function creation(event: MouseEvent): void {
+  console.log(event);
   const target = event.currentTarget as HTMLDivElement;
   const type: string = target.dataset.type as string;
   createNewObject(event.clientX, event.clientY, type);
