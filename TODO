@@ -2,6 +2,7 @@ Saving settings to config file
 Open Larger text box for more complicated functions
 CSV output
 Sound
+Dial tooltip for exact value
 
 BUGS:
 Undo/Redo broken. Render positions?
