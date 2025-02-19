@@ -115,6 +115,12 @@ export class Lifecycle {
         setupSelectHooks();
 
         // Setup click event listener
+        this.examples_select.addEventListener("click", e => {
+            if (e.target != e.currentTarget) {
+                this.change_example(e);
+            }
+        });
+
         this.examples_select.addEventListener("change", e => this.change_example(e));
         this.examples_select.selectedIndex = 0;
         this.demo_button.addEventListener("click", _ => this.toggle_demo());
