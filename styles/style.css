@@ -59,6 +59,7 @@ html {
     flex-direction: column;
 
     width: 30vw;
+    min-width: 24rem;
     height: 100%;
     overflow: scroll;
 

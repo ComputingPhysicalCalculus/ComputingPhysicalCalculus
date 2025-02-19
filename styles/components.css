@@ -21,8 +21,8 @@
     display: grid;
     background: var(--colour-accent3);
 
-    grid-template-rows: auto;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 
     gap: calc(var(--gap-size));
     padding: calc(var(--gap-size) * 1.2);
@@ -52,6 +52,23 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     pointer-events: none;
+    padding: 0.5rem;
+}
+
+.component-label {
+    width: 100%;
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.component-img {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center
 }
 
 .component img {
