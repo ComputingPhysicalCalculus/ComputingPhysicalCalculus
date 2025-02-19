@@ -64,7 +64,7 @@
 }
 
 .component-img {
-    width: 100%;
+    width: 90%;
     aspect-ratio: 1;
     display: flex;
     justify-content: center;

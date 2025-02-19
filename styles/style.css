@@ -58,7 +58,7 @@ html {
     display: flex;
     flex-direction: column;
 
-    width: 30vw;
+    width: 28vw;
     min-width: 24rem;
     height: 100%;
     overflow: scroll;
