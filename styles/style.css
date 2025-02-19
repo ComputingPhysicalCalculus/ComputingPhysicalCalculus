@@ -60,6 +60,7 @@ html {
 
     width: 28vw;
     min-width: 24rem;
+    max-width: 32rem;
     height: 100%;
     overflow: scroll;
     overflow-x: hidden;
