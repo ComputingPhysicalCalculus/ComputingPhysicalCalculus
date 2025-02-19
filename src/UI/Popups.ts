@@ -326,13 +326,20 @@ function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
-  functionTablePopup.querySelector("textarea")!.addEventListener("keydown", e => {
+  functionTablePopup.querySelector("textarea")!.addEventListener("textchanged", e => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
-    if (e.key == "Enter") {
+    // if (e.key == "Enter") {
       const lines = input.value.split(/\r\n|\r|\n/).length;
       input.rows = Math.min(lines + 1, MAX_TEXT_AREA_LINES);
-    }
+    // }
   });
+  // functionTablePopup.querySelector("textarea")!.addEventListener("keyup", e => {
+  //   const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
+  //   if (e.key == "Backspace") {
+  //     const lines = input.value.split(/\r\n|\r|\n/).length;
+  //     input.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
+  //   }
+  // });
 
   functionTablePopup.querySelector("textarea")!.addEventListener("change", e => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
