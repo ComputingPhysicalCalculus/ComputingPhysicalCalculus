@@ -8,6 +8,7 @@ import { clearSelect } from "./SelectShaft.ts"
 
 import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
+import { machine } from "./Constants.ts";
 
 // let shaftPopup: HTMLDivElement;
 let crossConnectPopup: HTMLDivElement;
@@ -30,7 +31,7 @@ export function setupPopups(): void {
   setupOutputTablePopup();
   setupLabelPopup();
 
-  document.addEventListener("click", documentClick);
+  machine.addEventListener("click", documentClick);
 }
 
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
@@ -103,12 +104,14 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   const target = e.currentTarget as DraggableComponentElement;
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
+  functionTablePopup.querySelector("textarea")!.value =
+    graph_element.data_sets["d1"].fn ?? "";
+
   let inputs = functionTablePopup.getElementsByTagName("input");
-  inputs[0].value = graph_element.data_sets["d1"].fn ?? "";
-  inputs[1].value = String(graph_element.x_min);
-  inputs[2].value = String(graph_element.x_max);
-  inputs[3].value = String(graph_element.y_min);
-  inputs[4].value = String(graph_element.y_max);
+  inputs[0].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
+  inputs[1].value = (!target.dataset.x_max) ? String(graph_element.x_max) : target.dataset.x_max;
+  inputs[2].value = (!target.dataset.y_min) ? String(graph_element.y_min) : target.dataset.y_min;
+  inputs[3].value = (!target.dataset.y_max) ? String(graph_element.y_max) : target.dataset.y_max;
 
   e.preventDefault();
 }
@@ -122,12 +125,12 @@ export function openOutputTablePopup(e: MouseEvent): void {
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
   let inputs = outputTablePopup.getElementsByTagName("input");
-  inputs[0].value = String(target.inputRatio);
-  inputs[1].value = String(target.outputRatio);
-  inputs[2].value = String(graph_element.x_min);
-  inputs[3].value = String(graph_element.x_max);
-  inputs[4].value = String(graph_element.y_min);
-  inputs[5].value = String(graph_element.y_max);
+  inputs[0].value = (!target.dataset.initial_1) ? String(target.inputRatio) : target.dataset.initial_1;
+  inputs[1].value = (!target.dataset.initial_2) ? String(target.outputRatio) : target.dataset.initial_2;
+  inputs[2].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
+  inputs[3].value = (!target.dataset.x_max) ? String(graph_element.x_max) : target.dataset.x_max;
+  inputs[4].value = (!target.dataset.y_min) ? String(graph_element.y_min) : target.dataset.y_min;
+  inputs[5].value = (!target.dataset.y_max) ? String(graph_element.y_max) : target.dataset.y_max;
 
   e.preventDefault();
 }
@@ -333,11 +336,16 @@ function setupGearPairPopup(): void {
       // const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
       const component = document.querySelector(`#${input.parentElement!.dataset.id!} > gear-pair-component`) as GearPairComponentElement;
 
+      const value = input.valueAsNumber;
       if (input.id == "gear-pair-top-ratio") {
-        component.ratio_top = Math.min(Math.max(Number(input.value), 1), 9);
+        if (value == 0) { input.value = String(component.ratio_top); return; }
+
+        component.ratio_top = ((value < 0) ? -1 : 1) * Math.min(Math.max(Math.abs(value), 1), 9);
         input.value = String(component.ratio_top);
       } else if (input.id == "gear-pair-bottom-ratio") {
-        component.ratio_bottom = Math.min(Math.max(Number(input.value), 1), 9);
+        if (value == 0) { input.value = String(component.ratio_bottom); return; }
+
+        component.ratio_bottom = ((value < 0) ? -1 : 1) * Math.min(Math.max(Math.abs(value), 1), 9);
         input.value = String(component.ratio_bottom);
       }
     })
@@ -348,27 +356,41 @@ function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
+  functionTablePopup.querySelector("textarea")!.addEventListener("change", e => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
+    component_graph.data_sets["d1"].fn = String(input.value);
+
+    let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
+    let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
+    component_graph.mutate_data_set("d1", points => {
+      points.splice(0, points.length, ...Array.from(generator_exp));
+    });
+  });
+
   const inputs = functionTablePopup.querySelectorAll("* > input");
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!}`) as DraggableComponentElement;
       const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
 
       switch (input.id) {
-        case "function-table-fn":
-          component_graph.data_sets["d1"].fn = String(input.value);
-          break;
         case "function-table-x-min":
-          component_graph.x_min = Number(input.value);
+          component_graph.x_min = Expression.eval(input.value);
+          component.dataset.x_min = input.value;
           break;
         case "function-table-x-max":
-          component_graph.x_max = Number(input.value);
+          component_graph.x_max = Expression.eval(input.value);
+          component.dataset.x_max = input.value;
           break;
         case "function-table-y-min":
-          component_graph.y_min = Number(input.value);
+          component_graph.y_min = Expression.eval(input.value);
+          component.dataset.y_min = input.value;
           break;
         case "function-table-y-max":
-          component_graph.y_max = Number(input.value);
+          component_graph.y_max = Expression.eval(input.value);
+          component.dataset.y_max = input.value;
           break;
       }
 
@@ -394,22 +416,28 @@ function setupOutputTablePopup(): void {
 
       switch (input.id) {
         case "output-table-initial-1":
-          component.inputRatio = Number(input.value);
+          component.inputRatio = Expression.eval(input.value);
+          component.dataset.initial_1 = input.value;
           break;
         case "output-table-initial-2":
-          component.outputRatio = Number(input.value);
+          component.outputRatio = Expression.eval(input.value);
+          component.dataset.initial_2 = input.value;
           break;
         case "output-table-x-min":
-          component_graph.x_min = Number(input.value);
+          component_graph.x_min = Expression.eval(input.value);
+          component.dataset.x_min = input.value;
           break;
         case "output-table-x-max":
-          component_graph.x_max = Number(input.value);
+          component_graph.x_max = Expression.eval(input.value);
+          component.dataset.x_max = input.value;
           break;
         case "output-table-y-min":
-          component_graph.y_min = Number(input.value);
+          component_graph.y_min = Expression.eval(input.value);
+          component.dataset.y_min = input.value;
           break;
         case "output-table-y-max":
-          component_graph.y_max = Number(input.value);
+          component_graph.y_max = Expression.eval(input.value);
+          component.dataset.y_max = input.value;
           break;
       }
     })

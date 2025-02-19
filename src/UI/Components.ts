@@ -10,6 +10,7 @@ import { GRID_SIZE } from "./Grid.ts";
 import { GearPairComponentElement } from "./GearPairComponentElement.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import Expression from "@src/expr/Expression.ts";
+import { machine } from "./Constants.ts";
 
 export enum ComponentType {
   VShaft,
@@ -273,10 +274,10 @@ function createFunctionTable(div: DraggableComponentElement): void {
   type ExportedData = {
     top: number,
     left: number,
-    x_min: number,
-    x_max: number,
-    y_min: number,
-    y_max: number,
+    x_min: string,
+    x_max: string,
+    y_min: string,
+    y_max: string,
     gantry_x?: number,
     fn: string,
   };
@@ -289,10 +290,10 @@ function createFunctionTable(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
-        x_min: graph_element.x_min,
-        x_max: graph_element.x_max,
-        y_min: graph_element.y_min,
-        y_max: graph_element.y_max,
+        x_min: _this.dataset.x_min ?? String(graph_element.x_min),
+        x_max: _this.dataset.x_max ?? String(graph_element.x_max),
+        y_min: _this.dataset.y_min ?? String(graph_element.y_min),
+        y_max: _this.dataset.y_max ?? String(graph_element.y_max),
         gantry_x: graph_element.gantry_x,
         fn: graph_element.data_sets["d1"]?.fn ?? "",
       }
@@ -304,10 +305,16 @@ function createFunctionTable(div: DraggableComponentElement): void {
 
     _this.top = data.top;
     _this.left = data.left;
-    graph_element.x_min = data.x_min;
-    graph_element.x_max = data.x_max;
-    graph_element.y_min = data.y_min;
-    graph_element.y_max = data.y_max;
+
+    _this.dataset.x_min = data.x_min;
+    _this.dataset.x_max = data.x_max;
+    _this.dataset.y_min = data.y_min;
+    _this.dataset.y_max = data.y_max;
+
+    graph_element.x_min = Expression.eval(_this.dataset.x_min);
+    graph_element.x_max = Expression.eval(_this.dataset.x_max);
+    graph_element.y_min = Expression.eval(_this.dataset.y_min);
+    graph_element.y_max = Expression.eval(_this.dataset.y_max);
     graph_element.gantry_x = data.gantry_x;
 
     if (data.fn !== undefined && data.fn != "") {
@@ -386,12 +393,12 @@ function createOutputTable(div: DraggableComponentElement): void {
   type ExportedData = {
     top: number,
     left: number,
-    x_min: number,
-    x_max: number,
-    y_min: number,
-    y_max: number,
-    initialY1: number,
-    initialY2: number,
+    x_min: string,
+    x_max: string,
+    y_min: string,
+    y_max: string,
+    initialY1: string,
+    initialY2: string,
     gantry_x?: number,
     data_sets: {
       [key: string]: {
@@ -410,13 +417,13 @@ function createOutputTable(div: DraggableComponentElement): void {
       data: {
         top: _this.top,
         left: _this.left,
-        x_min: graph_element.x_min,
-        x_max: graph_element.x_max,
-        y_min: graph_element.y_min,
-        y_max: graph_element.y_max,
+        x_min: _this.dataset.x_min ?? String(graph_element.x_min),
+        x_max: _this.dataset.x_max ?? String(graph_element.x_max),
+        y_min: _this.dataset.y_min ?? String(graph_element.y_min),
+        y_max: _this.dataset.y_max ?? String(graph_element.y_max),
         gantry_x: graph_element.gantry_x,
-        initialY1: _this.inputRatio,
-        initialY2: _this.outputRatio,
+        initialY1: _this.dataset.initial_1 ?? String(_this.inputRatio),
+        initialY2: _this.dataset.initial_2 ?? String(_this.outputRatio),
       }
     };
   };
@@ -426,13 +433,21 @@ function createOutputTable(div: DraggableComponentElement): void {
 
     _this.top = data.top;
     _this.left = data.left;
-    graph_element.x_min = data.x_min;
-    graph_element.x_max = data.x_max;
-    graph_element.y_min = data.y_min;
-    graph_element.y_max = data.y_max;
+
+    _this.dataset.x_min = data.x_min;
+    _this.dataset.x_max = data.x_max;
+    _this.dataset.y_min = data.y_min;
+    _this.dataset.y_max = data.y_max;
+    _this.dataset.initial_1 = (data.initialY1) ?? "0";
+    _this.dataset.initial_2 = data.initialY2 ?? "0";
+
+    graph_element.x_min = Expression.eval(_this.dataset.x_min);
+    graph_element.x_max = Expression.eval(_this.dataset.x_max);
+    graph_element.y_min = Expression.eval(_this.dataset.y_min);
+    graph_element.y_max = Expression.eval(_this.dataset.y_max);
     graph_element.gantry_x = data.gantry_x;
-    _this.inputRatio = data.initialY1;
-    _this.outputRatio = data.initialY2;
+    _this.inputRatio = Expression.eval(_this.dataset.initial_1);
+    _this.outputRatio = Expression.eval(_this.dataset.initial_2);
   }
 }
 
@@ -518,10 +533,22 @@ function createLabel(div: DraggableComponentElement): void {
 
   div.addEventListener("mouseup", openLabelPopup);
 
-  let render_p = () => render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
+  let render_p = () => {
+    const para = div.querySelector("p") as HTMLParagraphElement;
+    let align = "";
+    if (para != null) {
+      align = para.style.textAlign;
+    }
 
-  document.addEventListener("wheel", render_p);
-  document.addEventListener("touchmove", e => { if (e.touches.length == 2) render_p(); });
+    render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
+
+    if (para != null) {
+      para.style.textAlign = align;
+    }
+  }
+
+  machine.addEventListener("wheel", render_p);
+  machine.addEventListener("touchmove", e => { if (e.touches.length == 2) render_p(); });
   render_p();
 
   type ExportedData = {
@@ -595,8 +622,8 @@ function createGearPair(div: DraggableComponentElement): void {
     const gear_pair = _this.querySelector("gear-pair-component") as GearPairComponentElement;
     _this.top = data.top;
     _this.left = data.left;
-    gear_pair.ratio_top = (!data.inputRatio) ? 1 : data.inputRatio;
-    gear_pair.ratio_bottom = (!data.outputRatio) ? 1 : data.outputRatio;
+    gear_pair.ratio_top = data.inputRatio ?? 1;
+    gear_pair.ratio_bottom = data.outputRatio ?? 1;
   };
 }
 

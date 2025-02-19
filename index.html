@@ -17,6 +17,21 @@
         </div>
 
         <div id="user-control">
+            <div id="demo-area">
+                <label>Examples</label>
+                <select name="examples" id="examples-list">
+                    <option value="LinearIntegration">Linear Integration</option>
+                    <option value="Spring">Spring</option>
+                    <option value="GammaFunction">Gamma Function</option>
+                    <option value="WeierstraussFunction">Weierstrauss Function</option>
+                    <option value="GearPair">Gear pair usage</option>
+                    <option value="Epicycloid">Epicycloid</option>
+                    <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
+                </select>
+
+                <button id="demo-button">Start Demo</button>
+            </div>
+
             <div id="components-area">
                 <p>Components List</p>
                 <div id="components-list">
@@ -96,7 +111,7 @@
                 </div>
 
                 <label for="simulation-step-period">Step period</label>
-                <input id="simulation-step-period" type="number" value="0.05"/>
+                <input id="simulation-step-period" type="number" value="0.005"/>
 
                 <div>
                     <button id="run-button">Run</button>
@@ -106,7 +121,7 @@
                 </div>
 
                 <label for="motor-speed">Motor speed</label>
-                <input id="motor-speed" type="range" min="0.0" max="1" step="0.01" value="0.1" />
+                <input id="motor-speed" type="range" min="0.0" max="1" step="0.01" value="0.5" />
             </div>
         </div>
 
@@ -152,58 +167,58 @@
 
             <div class="popup" id="gear-pair-popup" position="absolute" >
                 <label>Top Ratio</label>
-                <input id="gear-pair-top-ratio" type="number" min="1" max="9" value="1">
+                <input id="gear-pair-top-ratio" type="number" min="-9" max="9" value="1">
                 <label>Bottom Ratio</label>
-                <input id="gear-pair-bottom-ratio" type="number" min="1" max="9" value="1">
+                <input id="gear-pair-bottom-ratio" type="number" min="-9" max="9" value="1">
             </div>
 
             <div class="popup" id="function-table-popup" position="absolute" >
                 <div>
                     <label>f(x)=</label>
-                    <input type="text" id="function-table-fn" />
+                    <textarea rows="1" cols="25" id="function-table-fn"></textarea>
                 </div>
                 <div>
                     <label>X Min</label>
-                    <input type="number" step="any" id="function-table-x-min" />
+                    <input step="any" id="function-table-x-min" />
                 </div>
                 <div>
                     <label>X Max</label>
-                    <input type="number" step="any" id="function-table-x-max" />
+                    <input step="any" id="function-table-x-max" />
                 </div>
                 <div>
                     <label>Y Min</label>
-                    <input type="number" step="any" id="function-table-y-min" />
+                    <input step="any" id="function-table-y-min" />
                 </div>
                 <div>
                     <label>Y Max</label>
-                    <input type="number" step="any" id="function-table-y-max" />
+                    <input step="any" id="function-table-y-max" />
                 </div>
             </div>
 
             <div class="popup" id="output-table-popup" position="absolute" >
                 <div>
                     <label>Initial Y (blue)</label>
-                    <input type="number" step="any" id="output-table-initial-1" />
+                    <input step="any" id="output-table-initial-1" />
                 </div>
                 <div>
                     <label>Initial Y (red)</label>
-                    <input type="number" step="any" id="output-table-initial-2" />
+                    <input step="any" id="output-table-initial-2" />
                 </div>
                 <div>
                     <label>X Min</label>
-                    <input type="number" step="any" id="output-table-x-min" />
+                    <input step="any" id="output-table-x-min" />
                 </div>
                 <div>
                     <label>X Max</label>
-                    <input type="number" step="any" id="output-table-x-max" />
+                    <input step="any" id="output-table-x-max" />
                 </div>
                 <div>
                     <label>Y Min</label>
-                    <input type="number" step="any" id="output-table-y-min" />
+                    <input step="any" id="output-table-y-min" />
                 </div>
                 <div>
                     <label>Y Max</label>
-                    <input type="number" step="any" id="output-table-y-max" />
+                    <input step="any" id="output-table-y-max" />
                 </div>
             </div>
 

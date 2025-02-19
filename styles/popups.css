@@ -143,3 +143,9 @@
 .label-popup-align:not(:checked)~label {
   background-color: var(--colour-accent4);
 }
+
+#function-table-fn {
+  max-width: 97%;
+  width: 97%;
+  resize: vertical;
+}
