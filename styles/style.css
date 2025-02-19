@@ -62,6 +62,7 @@ html {
     min-width: 24rem;
     height: 100%;
     overflow: scroll;
+    overflow-x: hidden;
 
     background: var(--colour-accent1);
 

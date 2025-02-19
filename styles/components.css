@@ -21,8 +21,8 @@
     display: grid;
     background: var(--colour-accent3);
 
-    grid-template-rows: repeat(4, 1fr);
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 
     gap: calc(var(--gap-size));
     padding: calc(var(--gap-size) * 1.2);
@@ -63,7 +63,7 @@
 }
 
 .component-img {
-    width: 90%;
+    width: 100%;
     aspect-ratio: 1;
     display: flex;
     justify-content: center;
@@ -71,7 +71,7 @@
 }
 
 .component img {
-    width: 70%;
+    width: 100%;
     aspect-ratio: 1;
     user-select: none;
     -webkit-user-drag: none;
