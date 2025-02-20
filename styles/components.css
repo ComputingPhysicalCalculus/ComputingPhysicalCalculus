@@ -3,7 +3,7 @@
     flex-direction: column;
     background: var(--colour-accent2);
 
-    padding: var(--border-radius);
+    padding: 0 var(--border-radius) var(--border-radius)var(--border-radius);
     border-radius: var(--border-radius);
 }
 

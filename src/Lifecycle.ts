@@ -1,7 +1,7 @@
 import { Config, loadConfig } from "./config";
 import { getHShaftID, getVShaftID, toConfig } from "./GenerateConfigFromUI";
 import { query, queryAll } from "./decorators";
-import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE, EPICYCLOID_EXAMPLE, EXTREME_EPICYCLOID, EXTREME_EPICYCLOID_EXAMPLE } from "./examples";
+import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE, EPICYCLOID_EXAMPLE, EXTREME_EPICYCLOID, EXTREME_EPICYCLOID_EXAMPLE, FREE_FALL_EXAMPLE, DUFFING_EQUATION_EXAMPLE } from "./examples";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
@@ -115,6 +115,12 @@ export class Lifecycle {
         setupSelectHooks();
 
         // Setup click event listener
+        this.examples_select.addEventListener("click", e => {
+            if (e.target != e.currentTarget) {
+                this.change_example(e);
+            }
+        });
+
         this.examples_select.addEventListener("change", e => this.change_example(e));
         this.examples_select.selectedIndex = 0;
         this.demo_button.addEventListener("click", _ => this.toggle_demo());
@@ -275,6 +281,8 @@ export class Lifecycle {
             case "GearPair": this.loadState(GEAR_PAIR_EXAMPLE); break;
             case "Epicycloid": this.loadState(EPICYCLOID_EXAMPLE); break;
             case "ExtremeEpicycloid": this.loadState(EXTREME_EPICYCLOID_EXAMPLE); break;
+            case "Freefall": this.loadState(FREE_FALL_EXAMPLE); break;
+            case "DuffingEquation": this.loadState(DUFFING_EQUATION_EXAMPLE); break;
         }
         this.stop();
     }
