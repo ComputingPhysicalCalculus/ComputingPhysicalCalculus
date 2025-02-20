@@ -1,8 +1,11 @@
 Saving settings to config file
-Open Larger text box for more complicated functions
 CSV output
 Sound
 Dial tooltip for exact value
+Clear -> Clear screen
+Clear Output tables
+Change the redrawing of points
+Selection
 
 BUGS:
 Undo/Redo broken. Render positions?
