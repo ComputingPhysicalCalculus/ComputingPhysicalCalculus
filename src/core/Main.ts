@@ -17,220 +17,222 @@ import { OutputTable } from "./OutputTable";
 import { Shaft } from "./Shaft";
 
 export class Simulator {
-    shafts: Shaft[] = [];
-    motor: Motor | undefined;
-    outputTables: OutputTable[] = [];
-    components: Device[] = [];
-    private rotation: number; // rotation of the motor
-    private initial_x_position; // initial x position of the function table
-    private initialY1; // initial y1 position of the output table
-    private initialY2; // initial y2 position of the output table
-    private inputFunction: (n: number) => number;
+  shafts: Shaft[] = [];
+  motor: Motor | undefined;
+  outputTables: OutputTable[] = [];
+  components: Device[] = [];
+  private rotation: number; // rotation of the motor
+  private initial_x_position; // initial x position of the function table
+  private initialY1; // initial y1 position of the output table
+  private initialY2; // initial y2 position of the output table
+  private inputFunction: (n: number) => number;
 
-    constructor(config?: Config,
-        rotation: number = 1,
-        initial_x_position: number = 0,
-        initialY1: number = 0,
-        initialY2: number = 0,
-        inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
-    ) {
-        this.rotation = rotation;
-        this.initial_x_position = initial_x_position;
-        this.initialY1 = initialY1;
-        this.initialY2 = initialY2;
-        this.inputFunction = inputFunction;
-        if (config !== undefined) {
-            this.parse_config(config);
-            this.setup();
+  constructor(config?: Config,
+    rotation: number = 1,
+    initial_x_position: number = 0,
+    initialY1: number = 0,
+    initialY2: number = 0,
+    inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
+  ) {
+    this.rotation = rotation;
+    this.initial_x_position = initial_x_position;
+    this.initialY1 = initialY1;
+    this.initialY2 = initialY2;
+    this.inputFunction = inputFunction;
+    if (config !== undefined) {
+      this.parse_config(config);
+      this.setup();
+    }
+  }
+
+  /**
+   * @function simulate_one_cycle
+   * @description simulates one cycle of the differential analyzer using topological sort
+   * @return void
+   * @author Andy Zhu
+   */
+  setup(): void {
+    if (this.motor === undefined) {
+      throw new Error("The configuration must have at least one motor");
+    }
+    let stack: Shaft[] = [this.motor.determine_output()];
+    let visited: Set<number> = new Set<number>();
+    visited.add(stack[0].id);
+    while (stack.length > 0) {
+      let shaft = stack.pop()!;
+      shaft.ready_flag = true;
+      for (let device of shaft.outputs) {
+        let output = device.determine_output();
+        if (output === undefined) continue;
+        // device.update()
+        if (!visited.has(output.id)) {
+          stack.push(output);
+          visited.add(output.id);
         }
+      }
+    }
+  }
+
+  step() {
+    // update motor - effectively set independant shaft
+    // to be the motors speed
+    this.motor!.update();
+
+    // update the components 
+    for (const device of this.components) {
+      device.update();
     }
 
-    /**
-     * @function simulate_one_cycle
-     * @description simulates one cycle of the differential analyzer using topological sort
-     * @return void
-     * @author Andy Zhu
-     */
-    setup(): void {
-        if (this.motor === undefined) {
-            throw new Error("The configuration must have at least one motor");
-        }
-        let stack: Shaft[] = [this.motor.determine_output()];
-        let visited: Set<number> = new Set<number>();
-        visited.add(stack[0].id);
-        while (stack.length > 0) {
-            let shaft = stack.pop()!;
-            shaft.ready_flag = true;
-            for (let device of shaft.outputs) {
-                let output = device.determine_output();
-                if (output === undefined) continue;
-                // device.update()
-                if (!visited.has(output.id)) {
-                    stack.push(output);
-                    visited.add(output.id);
-                }
-            }
-        }
+    // update the shafts
+    for (const shaft of this.shafts) {
+      shaft.update();
+    }
+  }
+
+  /**
+   * @function parse_config
+   * @description parse the config file and create the corresponding shafts and devices
+   * @param config the config file
+   * @return void
+   * @author Hanzhang Shen
+   */
+  parse_config(config: Config): void {
+    console.log("Parsing the configuration file and instantiating shafts and components.")
+    let shafts = new Map<number, Shaft>()
+    let components = [];
+    let outputTables = [];
+    let motor = undefined;
+
+    // create the shafts
+    for (const shaft of config.shafts) {
+      shafts.set(shaft.id, new Shaft(shaft.id, []));
     }
 
-    step() {
-        // update motor - effectively set independant shaft
-        // to be the motors speed
-        this.motor!.update();
+    // create the components
+    for (const component of config.components) {
+      let new_component: Device;
+      switch (component.type) {
+        case 'differential':
+          new_component = new Differential(
+            shafts.get(component.diffShaft1)!,
+            shafts.get(component.diffShaft2)!,
+            shafts.get(component.sumShaft)!
+          );
+          shafts.get(component.diffShaft1)!.outputs.push(new_component);
+          shafts.get(component.diffShaft2)!.outputs.push(new_component);
+          shafts.get(component.sumShaft)!.outputs.push(new_component);
+          components.push(new_component);
+          break;
 
-        // update the components 
-        for (const device of this.components) {
-            device.update();
-        }
+        case 'integrator':
+          new_component = new Integrator(
+            shafts.get(component.variableOfIntegrationShaft)!,
+            shafts.get(component.integrandShaft)!,
+            shafts.get(component.outputShaft)!,
+            false,
+            component.initialPosition
+          );
+          shafts.get(component.variableOfIntegrationShaft)!.outputs.push(new_component);
+          shafts.get(component.integrandShaft)!.outputs.push(new_component);
+          components.push(new_component);
+          break;
 
-        // update the shafts
-        for (const shaft of this.shafts) {
-            shaft.update();
-        }
+        case 'multiplier':
+          new_component = new Multiplier(
+            shafts.get(component.inputShaft)!,
+            shafts.get(component.outputShaft)!,
+            component.factor
+          );
+          shafts.get(component.inputShaft)!.outputs.push(new_component);
+          components.push(new_component);
+          break;
+
+        case 'crossConnect':
+          new_component = new CrossConnect(
+            shafts.get(component.horizontal)!,
+            shafts.get(component.vertical)!,
+            component.reversed
+          );
+          shafts.get(component.horizontal)!.outputs.push(new_component);
+          shafts.get(component.vertical)!.outputs.push(new_component);
+          components.push(new_component);
+          break;
+
+        case 'gearPair':
+          new_component = new GearPair(
+            shafts.get(component.shaft1)!,
+            shafts.get(component.shaft2)!,
+            component.outputRatio / component.inputRatio,
+          )
+          shafts.get(component.shaft1)!.outputs.push(new_component);
+          shafts.get(component.shaft2)!.outputs.push(new_component);
+          components.push(new_component);
+          break;
+
+        case 'functionTable':
+          new_component = new FunctionTable(
+            shafts.get(component.inputShaft)!,
+            shafts.get(component.outputShaft)!,
+            this.initial_x_position,
+            this.inputFunction // TODO: hardcoded for now to test the engine
+          );
+          (new_component as FunctionTable).id = component.compID;
+          shafts.get(component.inputShaft)!.outputs.push(new_component);
+          components.push(new_component);
+          break;
+
+        case 'motor':
+          if (this.motor)
+            throw new Error('Only one motor is allowed.');
+          motor = new Motor(
+            this.rotation,
+            shafts.get(component.outputShaft)!
+          );
+          components.push(motor);
+          break;
+
+        case 'outputTable':
+          let outputTable: OutputTable;
+          if (component.outputShaft2) {
+            outputTable = new OutputTable(
+              shafts.get(component.inputShaft)!,
+              shafts.get(component.outputShaft1)!,
+              component.initialY1,
+              shafts.get(component.outputShaft2)!,
+              component.initialY2,
+            );
+            shafts.get(component.outputShaft2)!.outputs.push(outputTable);
+          }
+          else {
+            outputTable = new OutputTable(
+              shafts.get(component.inputShaft)!,
+              shafts.get(component.outputShaft1)!,
+              component.initialY1,
+            );
+          }
+          outputTable.id = component.compID;
+
+          shafts.get(component.inputShaft)!.outputs.push(outputTable);
+          shafts.get(component.outputShaft1)!.outputs.push(outputTable);
+          components.push(outputTable);
+          outputTables.push(outputTable);
+          break;
+        // only from frontend
+        case 'label':
+          break;
+        case 'dial':
+          break;
+        default:
+          throw new Error(`Invalid component type`);
+      }
     }
 
-    /**
-     * @function parse_config
-     * @description parse the config file and create the corresponding shafts and devices
-     * @param config the config file
-     * @return void
-     * @author Hanzhang Shen
-     */
-    parse_config(config: Config): void {
-        console.log("Parsing the configuration file and instantiating shafts and components.")
-        let shafts = new Map<number, Shaft>()
-        let components = [];
-        let outputTables = [];
-        let motor = undefined;
-
-        // create the shafts
-        for (const shaft of config.shafts) {
-            shafts.set(shaft.id, new Shaft(shaft.id, []));
-        }
-
-        // create the components
-        for (const component of config.components) {
-            let new_component: Device;
-            switch (component.type) {
-                case 'differential':
-                    new_component = new Differential(
-                        shafts.get(component.diffShaft1)!,
-                        shafts.get(component.diffShaft2)!,
-                        shafts.get(component.sumShaft)!
-                    );
-                    shafts.get(component.diffShaft1)!.outputs.push(new_component);
-                    shafts.get(component.diffShaft2)!.outputs.push(new_component);
-                    shafts.get(component.sumShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
-
-                case 'integrator':
-                    new_component = new Integrator(
-                        shafts.get(component.variableOfIntegrationShaft)!,
-                        shafts.get(component.integrandShaft)!,
-                        shafts.get(component.outputShaft)!,
-                        false,
-                        component.initialPosition
-                    );
-                    shafts.get(component.variableOfIntegrationShaft)!.outputs.push(new_component);
-                    shafts.get(component.integrandShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
-
-                case 'multiplier':
-                    new_component = new Multiplier(
-                        shafts.get(component.inputShaft)!,
-                        shafts.get(component.outputShaft)!,
-                        component.factor
-                    );
-                    shafts.get(component.inputShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
-
-                case 'crossConnect':
-                    new_component = new CrossConnect(
-                        shafts.get(component.horizontal)!,
-                        shafts.get(component.vertical)!,
-                        component.reversed
-                    );
-                    shafts.get(component.horizontal)!.outputs.push(new_component);
-                    shafts.get(component.vertical)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
-
-                case 'gearPair':
-                    new_component = new GearPair(
-                        shafts.get(component.shaft1)!,
-                        shafts.get(component.shaft2)!,
-                        component.outputRatio / component.inputRatio,
-                    )
-                    shafts.get(component.shaft1)!.outputs.push(new_component);
-                    shafts.get(component.shaft2)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
-
-                case 'functionTable':
-                    new_component = new FunctionTable(
-                        shafts.get(component.inputShaft)!,
-                        shafts.get(component.outputShaft)!,
-                        this.initial_x_position,
-                        this.inputFunction // TODO: hardcoded for now to test the engine
-                    );
-                    (new_component as FunctionTable).id = component.compID;
-                    shafts.get(component.inputShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
-
-                case 'motor':
-                    if (this.motor)
-                        throw new Error('Only one motor is allowed.');
-                    motor = new Motor(
-                        this.rotation,
-                        shafts.get(component.outputShaft)!
-                    );
-                    components.push(motor);
-                    break;
-
-                case 'outputTable':
-                    let outputTable: OutputTable;
-                    if (component.outputShaft2) {
-                        outputTable = new OutputTable(
-                            shafts.get(component.inputShaft)!,
-                            shafts.get(component.outputShaft1)!,
-                            component.initialY1,
-                            shafts.get(component.outputShaft2)!,
-                            component.initialY2,
-                        );
-                        shafts.get(component.outputShaft2)!.outputs.push(outputTable);
-                    }
-                    else {
-                        outputTable = new OutputTable(
-                            shafts.get(component.inputShaft)!,
-                            shafts.get(component.outputShaft1)!,
-                            component.initialY1,
-                        );
-                    }
-                    outputTable.id = component.compID;
-
-                    shafts.get(component.inputShaft)!.outputs.push(outputTable);
-                    shafts.get(component.outputShaft1)!.outputs.push(outputTable);
-                    components.push(outputTable);
-                    outputTables.push(outputTable);
-                    break;
-                // only from frontend
-                case 'label':
-                    break;
-                default:
-                    throw new Error(`Invalid component type`);
-            }
-        }
-
-        this.motor = motor;
-        this.shafts = Array.from(shafts.values());
-        this.outputTables = outputTables;
-        this.components = components
-        console.log("Finished parsing the configuration file and instantiating the objects.")
-    }
+    this.motor = motor;
+    this.shafts = Array.from(shafts.values());
+    this.outputTables = outputTables;
+    this.components = components
+    console.log("Finished parsing the configuration file and instantiating the objects.")
+  }
 }
 
 // export function run(): void {

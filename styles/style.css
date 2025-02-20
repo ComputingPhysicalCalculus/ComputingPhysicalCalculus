@@ -41,6 +41,9 @@ html {
     overflow: hidden;
     background: var(--colour-background);
     user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 #machine {
@@ -55,9 +58,12 @@ html {
     display: flex;
     flex-direction: column;
 
-    width: 30vw;
+    width: 28vw;
+    min-width: 24rem;
+    max-width: 34rem;
     height: 100%;
     overflow: scroll;
+    overflow-x: hidden;
 
     background: var(--colour-accent1);
 

@@ -10,7 +10,8 @@ import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import { machine } from "./Constants.ts";
 
-// let shaftPopup: HTMLDivElement;
+const MAX_TEXT_AREA_LINES = 10;
+
 let crossConnectPopup: HTMLDivElement;
 let integratorPopup: HTMLDivElement;
 let motorPopup: HTMLDivElement;
@@ -20,8 +21,10 @@ let functionTablePopup: HTMLDivElement;
 let outputTablePopup: HTMLDivElement;
 let labelPopup: HTMLDivElement;
 
+// Sets up each type of popup
+// The setup involves adding event handlers for change events and correctly updating the 
+// correct component
 export function setupPopups(): void {
-  // setupShaftPopup();
   setupCrossConnectPopup();
   setupIntegratorPopup();
   setupMotorPopup();
@@ -34,10 +37,17 @@ export function setupPopups(): void {
   machine.addEventListener("click", documentClick);
 }
 
+// Default code for opening a popup near to the mouse
+// Opens above the mouse if the popup will be displayed outside the document
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
+  const gap = 8;
   popup.style.visibility = "visible";
-  popup.style.left = `${e.clientX + 10}px`;
-  popup.style.top = `${e.clientY + 10}px`;
+  popup.style.left = `${e.clientX + gap}px`;
+  let top = e.clientY + gap;
+  if (top + popup.clientHeight > document.body.clientHeight) {
+    top = e.clientY - popup.clientHeight - gap;
+  }
+  popup.style.top = `${top}px`;
   popup.style.zIndex = "10";
 
   const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
@@ -45,29 +55,6 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
 
   clearSelect();
 }
-
-// export function openShaftPopup(e: MouseEvent): void {
-//   if (e.button != 2) return;
-//   if (currentlyDragging()) return;
-//
-//   openPopup(e, shaftPopup);
-//
-//   const target = e.currentTarget as DraggableComponentElement;
-//   const isVertical = target.componentType == "vShaft";
-//
-//   const labels = shaftPopup.getElementsByTagName("label");
-//   for (let i = 0; i < labels.length; i++) {
-//     const input = labels[i] as HTMLLabelElement;
-//
-//     if (input.id == "shaft-negative-label") {
-//       input.innerText = (isVertical) ? "Top Length" : "Left Length";
-//     } else if (input.id == "shaft-positive-label") {
-//       input.innerText = (isVertical) ? "Bottom Length" : "Right Length";
-//     }
-//   }
-//
-//   e.preventDefault();
-// }
 
 export function openCrossConnectPopup(e: MouseEvent): void {
   if (e.button != 2) return;
@@ -104,8 +91,13 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   const target = e.currentTarget as DraggableComponentElement;
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
-  functionTablePopup.querySelector("textarea")!.value =
-    graph_element.data_sets["d1"].fn ?? "";
+  const text_area = functionTablePopup.querySelector("textarea")!;
+  text_area.value = graph_element.data_sets["d1"].fn ?? "";
+
+  // Count the number of newlines in the input text to set the correct height of the
+  // textarea
+  const lines = text_area.value.split(/\r\n|\r|\n/).length;
+  text_area.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
 
   let inputs = functionTablePopup.getElementsByTagName("input");
   inputs[0].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
@@ -215,6 +207,7 @@ function closePopup(e: MouseEvent) {
   (e.currentTarget as HTMLDivElement).style.visibility = "hidden";
 }
 
+// Check whether the mouse event occurs within a popup
 function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
   if (popup.style.visibility == "hidden") return false;
 
@@ -231,6 +224,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
   return false;
 }
 
+// Close all popups when a mouse click occurs and it is not contained within a popup
 function documentClick(e: MouseEvent) {
   let popups = [crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
   popups.forEach(popup => {
@@ -239,29 +233,6 @@ function documentClick(e: MouseEvent) {
     }
   });
 }
-
-// function setupShaftPopup(): void {
-//   shaftPopup = document.getElementById("shaft-popup") as HTMLDivElement;
-//   shaftPopup.addEventListener("mouseleave", closePopup);
-//
-//   const buttons = shaftPopup.getElementsByTagName("button");
-//   for (let i = 0; i < buttons.length; i++) {
-//     buttons[i].addEventListener("click", (e) => {
-//       const button: HTMLButtonElement = e.currentTarget as HTMLButtonElement;
-//       const component = document.getElementById(button.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
-//
-//       let negativeLength = 0;
-//       if (button.id == "shaft-popup-negative-increase") negativeLength = 1;
-//       if (button.id == "shaft-popup-negative-decrease") negativeLength = -1;
-//
-//       let positiveLength = 0;
-//       if (button.id == "shaft-popup-positive-increase") positiveLength = 1;
-//       if (button.id == "shaft-popup-positive-decrease") positiveLength = -1;
-//
-//       updateShaftLength(component, negativeLength, positiveLength);
-//     });
-//   }
-// }
 
 function setupCrossConnectPopup(): void {
   crossConnectPopup = document.getElementById("cross-connect-popup") as HTMLDivElement;
@@ -333,7 +304,6 @@ function setupGearPairPopup(): void {
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      // const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
       const component = document.querySelector(`#${input.parentElement!.dataset.id!} > gear-pair-component`) as GearPairComponentElement;
 
       const value = input.valueAsNumber;
@@ -356,10 +326,28 @@ function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
+  functionTablePopup.querySelector("textarea")!.addEventListener("textchanged", e => {
+    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
+    // if (e.key == "Enter") {
+      const lines = input.value.split(/\r\n|\r|\n/).length;
+      input.rows = Math.min(lines + 1, MAX_TEXT_AREA_LINES);
+    // }
+  });
+  // functionTablePopup.querySelector("textarea")!.addEventListener("keyup", e => {
+  //   const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
+  //   if (e.key == "Backspace") {
+  //     const lines = input.value.split(/\r\n|\r|\n/).length;
+  //     input.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
+  //   }
+  // });
+
   functionTablePopup.querySelector("textarea")!.addEventListener("change", e => {
-    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
     const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
     component_graph.data_sets["d1"].fn = String(input.value);
+
+    const lines = input.value.split(/\r\n|\r|\n/).length;
+    input.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
 
     let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
     let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
@@ -466,31 +454,32 @@ function setupLabelPopup(): void {
     component.height = input.valueAsNumber;
   });
 
-  labelPopup.querySelector("#label-popup-align-left")!.addEventListener("change", (e) => {
-    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+  const setAlignment = (input: HTMLInputElement, align: string) => {
     const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
     if (input.checked) {
-      component.style.textAlign = "left";
+      component.style.textAlign = align;
     }
+  }
+
+  labelPopup.querySelector("#label-popup-align-left")!.addEventListener("change", (e) => {
+    const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
+    setAlignment(input, "left");
   });
 
   labelPopup.querySelector("#label-popup-align-right")!.addEventListener("change", (e) => {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-    const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
-    if (input.checked) {
-      component.style.textAlign = "right";
-    }
+    setAlignment(input, "right");
   });
 
   labelPopup.querySelector("#label-popup-align-center")!.addEventListener("change", (e) => {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-    const component = document.querySelector(`#${input.parentElement!.parentElement!.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
-    if (input.checked) {
-      component.style.textAlign = "center";
-    }
+    setAlignment(input, "center");
   });
 }
 
+// Update the length of a shaft depending on the values of negativeLength and positiveLength.
+// Negative length denotes the left/top amount to change, while positive length denotes the right/bottom
+// amount
 export function updateShaftLength(comp: DraggableComponentElement, negativeLength: number, positiveLength: number) {
   const isVertical = comp.componentType == "vShaft";
 
