@@ -1,7 +1,7 @@
 import { Config, loadConfig } from "./config";
 import { getHShaftID, getVShaftID, toConfig } from "./GenerateConfigFromUI";
 import { query, queryAll } from "./decorators";
-import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE, EPICYCLOID_EXAMPLE, EXTREME_EPICYCLOID, EXTREME_EPICYCLOID_EXAMPLE, FREE_FALL_EXAMPLE, DUFFING_EQUATION_EXAMPLE, POPULATION_GROWTH_EXAMPLE } from "./examples";
+import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE, EPICYCLOID_EXAMPLE, EXTREME_EPICYCLOID, EXTREME_EPICYCLOID_EXAMPLE, FREE_FALL_EXAMPLE, DUFFING_EQUATION_EXAMPLE, POPULATION_GROWTH_EXAMPLE, SIMPLE_PENDULUM_EXAMPLE } from "./examples";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
@@ -284,6 +284,7 @@ export class Lifecycle {
             case "Freefall": this.loadState(FREE_FALL_EXAMPLE); break;
             case "DuffingEquation": this.loadState(DUFFING_EQUATION_EXAMPLE); break;
             case "PopulationGrowth": this.loadState(POPULATION_GROWTH_EXAMPLE); break;
+            case "SimplePendulum": this.loadState(SIMPLE_PENDULUM_EXAMPLE); break;
         }
         this.stop();
     }
@@ -395,7 +396,7 @@ export class Lifecycle {
         })
 
         /// FIX: Is this needed?
-        // simulator.components.filter(x => x instanceof OutputTable).forEach((x: OutputTable) => {
+        // simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
         //     const output_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
         //
         //     x.xHistory[0] += output_table_element.x_min;
