@@ -71,7 +71,7 @@
         "y_max":"10",
         "inputShaft":88,
         "outputShaft":90,
-        "fn":"a=1;b=2.5;c=1.5;(a-b)*(cos(x))+c*cos((a+b)*x/b)"
+        "fn":"a=1;b=2.7;c=1.5;(a-b)*(cos(x))+c*cos((a+b)*x/b)"
     },
     {
         "type":"crossConnect",
@@ -145,7 +145,7 @@
         "y_max":"10",
         "inputShaft":87,
         "outputShaft":89,
-        "fn":"a=1;b=2.5;c=1.5;(a-b)*(cos(x))-c*sin((a+b)*x/b)"
+        "fn":"a=1;b=2.7;c=1.5;(a-b)*(cos(x))-c*sin((a+b)*x/b)"
     },
     {
         "type":"integrator",
