@@ -382,7 +382,8 @@ export class Lifecycle {
 
             let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
             x.fun = x => compiled_expr({ x });
-            x.x_position = function_table_element.x_min;
+            x.x_position = 0;
+            // x.x_position = function_table_element.x_min;
         });
 
         output_tables.forEach(x => {
