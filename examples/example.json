@@ -65,7 +65,7 @@
         "type":"functionTable",
         "compID":45,
         "position":[6,1],
-        "x_min":"0",
+        "x_min":"0", 
         "x_max":"26*pi",
         "y_min":"-10",
         "y_max":"10",
