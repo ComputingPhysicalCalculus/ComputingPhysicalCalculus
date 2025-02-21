@@ -130,7 +130,6 @@
             <div id="configuration">
                 <p>Configuration</p>
                 <label for="config-file-upload">File</label>
-                <input id="config-file-upload" type="file" accept=".json" hidden/>
 
                 <div>
                     <button id="import-button">Load</button>
@@ -145,7 +144,7 @@
                     <button class="TimeButton" id="play-button">
                             <img src="icons/Play.svg" alt="Play"/>
                     </button>
-                    <button class="TimeButton" id="pause-button" hidden>
+                    <button class="TimeButton" id="pause-button" disabled>
                             <img src="icons/Pause.svg" alt="Pause"/>
                     </button>
                     <button class="TimeButton" id="stop-button" disabled>
@@ -171,7 +170,7 @@
 
             <div class="popup" id="integrator-popup" position="absolute" >
                 <label>Initial offset</label>
-                <input id="integrator-initial-offset" type="number" value="0">
+                <input id="integrator-initial-offset">
             </div>
 
             <div class="popup" id="motor-popup" position="absolute" >
@@ -181,7 +180,7 @@
 
             <div class="popup" id="multiplier-popup" position="absolute" >
                 <label>Factor</label>
-                <input id="multiplier-input-factor" type="number" min="1" value="1">
+                <input id="multiplier-input-factor">
             </div>
 
             <div class="popup" id="gear-pair-popup" position="absolute" >

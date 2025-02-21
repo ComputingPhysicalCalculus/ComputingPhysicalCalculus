@@ -27,7 +27,7 @@ export type IntegratorConfig = {
   outputShaft: ShaftID;
   position: [number, number];
   reverse: boolean;
-  initialPosition: number;
+  initialPosition: string;
 };
 
 export type DifferentialConfig = {
@@ -44,7 +44,7 @@ export type MultiplierConfig = {
   compID: number;
   inputShaft: ShaftID;
   outputShaft: ShaftID;
-  factor: number;
+  factor: string;
   position: [number, number];
 };
 
@@ -55,10 +55,10 @@ export type FunctionTableConfig = {
   outputShaft: ShaftID;
   position: [number, number];
   fn: string,
-  x_min: number,
-  x_max: number,
-  y_min: number,
-  y_max: number,
+  x_min: string,
+  x_max: string,
+  y_min: string,
+  y_max: string,
 };
 
 export type MotorConfig = {
@@ -75,12 +75,12 @@ export type OutputTableConfig = {
   outputShaft1: ShaftID;
   outputShaft2: ShaftID;
   position: [number, number];
-  initialY1: number,
-  initialY2: number,
-  x_min: number,
-  x_max: number,
-  y_min: number,
-  y_max: number,
+  initialY1: string,
+  initialY2: string,
+  x_min: string,
+  x_max: string,
+  y_min: string,
+  y_max: string,
 };
 
 export type CrossConnectConfig = {

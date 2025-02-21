@@ -65,7 +65,7 @@ export class Lifecycle {
     @query("#pause-button")
     pause_button!: HTMLButtonElement
 
-    @query("#config-file-upload")
+    // @query("#config-file-upload")
     config_file_input!: HTMLInputElement;
 
     @query("#simulation-step-period")
@@ -117,6 +117,10 @@ export class Lifecycle {
                 this.change_example(e);
             }
         });
+
+        this.config_file_input = document.createElement("input");
+        this.config_file_input.accept = ".json";
+        this.config_file_input.type = "file";
 
         this.examples_select.addEventListener("change", e => this.change_example(e));
         this.examples_select.selectedIndex = 0;
@@ -327,8 +331,8 @@ export class Lifecycle {
         this.import_button.disabled = false;
         this.clear_button.disabled = false;
 
-        this.play_button.hidden = false;
-        this.pause_button.hidden = true;
+        this.play_button.disabled = false;
+        this.pause_button.disabled = true;
         this.stop_button.disabled = true;
     }
 
@@ -339,8 +343,8 @@ export class Lifecycle {
         }
         this.state = State.Paused;
 
-        this.play_button.hidden = false;
-        this.pause_button.hidden = true;
+        this.play_button.disabled = false;
+        this.pause_button.disabled = true;
         this.stop_button.disabled = false;
     }
 
@@ -350,8 +354,8 @@ export class Lifecycle {
         }
         this.state = State.Running;
 
-        this.play_button.hidden = true;
-        this.pause_button.hidden = false;
+        this.play_button.disabled = true;
+        this.pause_button.disabled = false;
         this.stop_button.disabled = false;
     }
 
@@ -365,8 +369,8 @@ export class Lifecycle {
         this.import_button.disabled = true;
         this.clear_button.disabled = true;
 
-        this.play_button.hidden = true;
-        this.pause_button.hidden = false;
+        this.play_button.disabled = true;
+        this.pause_button.disabled = false;
         this.stop_button.disabled = false;
 
         const simulator = new Simulator(this.exportState())

@@ -223,7 +223,7 @@ function createIntegrator(div: DraggableComponentElement): void {
     type ExportedData = {
         top: number,
         left: number,
-        initialPosition: number,
+        initialPosition: string,
     };
 
     div.export_fn = (_this) => {
@@ -232,7 +232,7 @@ function createIntegrator(div: DraggableComponentElement): void {
             data: {
                 top: _this.top,
                 left: _this.left,
-                initialPosition: _this.inputRatio,
+                initialPosition: _this.dataset.initialValue ?? "0",
             },
         };
     };
@@ -240,7 +240,7 @@ function createIntegrator(div: DraggableComponentElement): void {
     div.import_fn = (_this, data: ExportedData) => {
         _this.top = data.top;
         _this.left = data.left;
-        _this.inputRatio = data.initialPosition;
+        _this.dataset.initialValue = data.initialPosition;
     };
 }
 
@@ -501,7 +501,7 @@ function createMultiplier(div: DraggableComponentElement): void {
     type ExportedData = {
         top: number,
         left: number,
-        factor: number,
+        factor: string,
     };
 
     div.export_fn = (_this) => {
@@ -510,7 +510,7 @@ function createMultiplier(div: DraggableComponentElement): void {
             data: {
                 top: _this.top,
                 left: _this.left,
-                factor: _this.outputRatio,
+                factor: _this.dataset.factor ?? "1"
             },
         };
     };
@@ -518,7 +518,7 @@ function createMultiplier(div: DraggableComponentElement): void {
     div.import_fn = (_this, data: ExportedData) => {
         _this.top = data.top;
         _this.left = data.left;
-        _this.outputRatio = (!data.factor) ? 1 : data.factor;
+        _this.dataset.factor = data.factor ?? "1";
     };
 }
 

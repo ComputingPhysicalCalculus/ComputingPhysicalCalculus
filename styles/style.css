@@ -132,6 +132,7 @@ html {
 
 #configuration>label {
     margin: calc(-1 * var(--gap-size)) 0 0 0;
+    padding: 0;
     font-weight: bold;
 }
 
@@ -139,12 +140,8 @@ html {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: var(--gap-size);
+    gap: calc(var(--gap-size) * 3);
     padding: var(--gap-size) 0 var(--gap-size) 0;
-    width: 100%;
-}
-
-#configuration>div>button {
     width: 100%;
 }
 
@@ -153,29 +150,21 @@ html {
 }
 
 .TimeButtons {
-    height: 15%;
+    display: flex;
+    flex-direction: row;
 }
 
 .TimeButton {
-    /* display: block; */
-    /* justify-content: center; */
+    display: block;
     font-size: var(--text-button-size);
-    /* max-width: 45%; */
     max-height: calc(2*var(--unit));
-    /* height: 10%; */
-    /* visibility: hidden; */
+    justify-content: center;
+    width: auto;
 }
 
 .TimeButton>img {
     height: 70%;
 }
-
-/* .TimeButton>img { */
-/*     /* height: 100%; */
-*/
-/*     /* width: 100%; */
-*/
-/* } */
 
 #configuration button {
     font-size: var(--text-button-size);

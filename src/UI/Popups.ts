@@ -77,7 +77,7 @@ export function openIntegratorPopup(e: MouseEvent): void {
 
   const target = e.currentTarget as DraggableComponentElement;
 
-  integratorPopup.getElementsByTagName("input")[0].value = String(target.inputRatio);
+  integratorPopup.getElementsByTagName("input")[0].value = String(target.dataset.initialValue ?? "0");
 
   e.preventDefault();
 }
@@ -100,10 +100,10 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   text_area.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
 
   let inputs = functionTablePopup.getElementsByTagName("input");
-  inputs[0].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
-  inputs[1].value = (!target.dataset.x_max) ? String(graph_element.x_max) : target.dataset.x_max;
-  inputs[2].value = (!target.dataset.y_min) ? String(graph_element.y_min) : target.dataset.y_min;
-  inputs[3].value = (!target.dataset.y_max) ? String(graph_element.y_max) : target.dataset.y_max;
+  inputs[0].value = target.dataset.x_min ?? String(graph_element.x_min);
+  inputs[1].value = target.dataset.x_max ?? String(graph_element.x_max);
+  inputs[2].value = target.dataset.y_min ?? String(graph_element.y_min);
+  inputs[3].value = target.dataset.y_max ?? String(graph_element.y_max);
 
   e.preventDefault();
 }
@@ -117,12 +117,12 @@ export function openOutputTablePopup(e: MouseEvent): void {
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
   let inputs = outputTablePopup.getElementsByTagName("input");
-  inputs[0].value = (!target.dataset.initial_1) ? String(target.inputRatio) : target.dataset.initial_1;
-  inputs[1].value = (!target.dataset.initial_2) ? String(target.outputRatio) : target.dataset.initial_2;
-  inputs[2].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
-  inputs[3].value = (!target.dataset.x_max) ? String(graph_element.x_max) : target.dataset.x_max;
-  inputs[4].value = (!target.dataset.y_min) ? String(graph_element.y_min) : target.dataset.y_min;
-  inputs[5].value = (!target.dataset.y_max) ? String(graph_element.y_max) : target.dataset.y_max;
+  inputs[0].value = target.dataset.initial_1 ?? String(target.inputRatio);
+  inputs[1].value = target.dataset.initial_2 ?? String(target.outputRatio);
+  inputs[2].value = target.dataset.x_min ?? String(graph_element.x_min);
+  inputs[3].value = target.dataset.x_max ?? String(graph_element.x_max);
+  inputs[4].value = target.dataset.y_min ?? String(graph_element.y_min);
+  inputs[5].value = target.dataset.y_max ?? String(graph_element.y_max);
 
   e.preventDefault();
 }
@@ -151,7 +151,7 @@ export function openMultiplierPopup(e: MouseEvent): void {
   openPopup(e, multiplierPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
-  multiplierPopup.getElementsByTagName("input")[0].value = String(target.outputRatio);
+  multiplierPopup.getElementsByTagName("input")[0].value = String(target.dataset.factor ?? "1");
 
   e.preventDefault();
 }
@@ -258,7 +258,7 @@ function setupIntegratorPopup(): void {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
       const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
-      component.inputRatio = Number(input.value);
+      component.dataset.initialValue = input.value;
     })
   }
 }
@@ -291,7 +291,7 @@ function setupMultiplierPopup(): void {
       const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
       const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
-      component.outputRatio = Number(input.value);
+      component.dataset.factor = input.value;
     })
   }
 }
@@ -328,18 +328,9 @@ function setupFunctionTablePopup(): void {
 
   functionTablePopup.querySelector("textarea")!.addEventListener("textchanged", e => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
-    // if (e.key == "Enter") {
-      const lines = input.value.split(/\r\n|\r|\n/).length;
-      input.rows = Math.min(lines + 1, MAX_TEXT_AREA_LINES);
-    // }
+    const lines = input.value.split(/\r\n|\r|\n/).length;
+    input.rows = Math.min(lines + 1, MAX_TEXT_AREA_LINES);
   });
-  // functionTablePopup.querySelector("textarea")!.addEventListener("keyup", e => {
-  //   const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
-  //   if (e.key == "Backspace") {
-  //     const lines = input.value.split(/\r\n|\r|\n/).length;
-  //     input.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
-  //   }
-  // });
 
   functionTablePopup.querySelector("textarea")!.addEventListener("change", e => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
