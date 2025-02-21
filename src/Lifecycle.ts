@@ -56,17 +56,14 @@ export class Lifecycle {
     @query("#clear-button")
     clear_button!: HTMLButtonElement
 
-    @query("#run-button")
-    run_button!: HTMLButtonElement
+    @query("#play-button")
+    play_button!: HTMLButtonElement
 
     @query("#stop-button")
     stop_button!: HTMLButtonElement
 
     @query("#pause-button")
     pause_button!: HTMLButtonElement
-
-    @query("#unpause-button")
-    unpause_button!: HTMLButtonElement
 
     @query("#config-file-upload")
     config_file_input!: HTMLInputElement;
@@ -125,16 +122,22 @@ export class Lifecycle {
         this.examples_select.selectedIndex = 0;
         this.demo_button.addEventListener("click", _ => this.toggle_demo());
 
-        this.import_button.addEventListener("click", _ => this._handle_import_file());
+        this.import_button.addEventListener("click", _ => this.config_file_input.click());
+        this.config_file_input.addEventListener("change", _ => this._handle_import_file());
         this.export_button.addEventListener("click", _ => this._handle_export_file());
         this.clear_button.addEventListener("click", _ => this._clear_components());
 
-        this.run_button.addEventListener("click", _ => this.run());
+        this.play_button.addEventListener("click", _ => {
+            if (this.state == State.Stopped) {
+                this.run();
+            } else {
+                this.unpause();
+            }
+        });
         this.stop_button.addEventListener("click", _ => {
             if (this.currently_demoing) { this.stop_demo(); } else { this.stop(); }
         });
         this.pause_button.addEventListener("click", _ => this.pause());
-        this.unpause_button.addEventListener("click", _ => this.unpause());
 
         window.addEventListener("keydown", e => {
             if (e.defaultPrevented) {
@@ -324,10 +327,9 @@ export class Lifecycle {
         this.import_button.disabled = false;
         this.clear_button.disabled = false;
 
-        this.run_button.hidden = false;
-        this.stop_button.hidden = true;
+        this.play_button.hidden = false;
         this.pause_button.hidden = true;
-        this.unpause_button.hidden = true;
+        this.stop_button.disabled = true;
     }
 
     pause(): void {
@@ -337,10 +339,9 @@ export class Lifecycle {
         }
         this.state = State.Paused;
 
-        this.run_button.hidden = true;
-        this.stop_button.hidden = false;
+        this.play_button.hidden = false;
         this.pause_button.hidden = true;
-        this.unpause_button.hidden = false;
+        this.stop_button.disabled = false;
     }
 
     unpause(): void {
@@ -349,10 +350,9 @@ export class Lifecycle {
         }
         this.state = State.Running;
 
-        this.run_button.hidden = true;
-        this.stop_button.hidden = true;
+        this.play_button.hidden = true;
         this.pause_button.hidden = false;
-        this.unpause_button.hidden = true;
+        this.stop_button.disabled = false;
     }
 
     run(): void {
@@ -365,10 +365,9 @@ export class Lifecycle {
         this.import_button.disabled = true;
         this.clear_button.disabled = true;
 
-        this.run_button.hidden = true;
-        this.stop_button.hidden = true;
+        this.play_button.hidden = true;
         this.pause_button.hidden = false;
-        this.unpause_button.hidden = true;
+        this.stop_button.disabled = false;
 
         const simulator = new Simulator(this.exportState())
         const step_period = Number(this.step_period_input.value);

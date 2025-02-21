@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Computing Physical Calculus</title>
+    <title>Differential Analyser</title>
 
     <script type="module" src="src/index.ts"></script>
 
@@ -19,21 +19,23 @@
         <div id="user-control">
             <div id="demo-area">
                 <label>Examples</label>
-                <select name="examples" id="examples-list">
-                    <option value="LinearIntegration">Linear Integration</option>
-                    <option value="Spring">Damped Oscillation</option>
-                    <option value="GammaFunction">Gamma Function</option>
-                    <option value="WeierstraussFunction">Weierstrauss Function</option>
-                    <option value="GearPair">Gear pair usage</option>
-                    <option value="Epicycloid">Epicycloid</option>
-                    <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
-                    <option value="Freefall">Body in free fall</option>
-                    <option value="DuffingEquation">Duffing equation</option>
-                    <option value="PopulationGrowth">Population Growth</option>
-                    <option value="SimplePendulum">Simple pendulum</option>
-                </select>
+                <div>
+                    <select name="examples" id="examples-list">
+                        <option value="LinearIntegration">Linear Integration</option>
+                        <option value="Spring">Damped Oscillation</option>
+                        <option value="GammaFunction">Gamma Function</option>
+                        <option value="WeierstraussFunction">Weierstrauss Function</option>
+                        <option value="GearPair">Gear pair usage</option>
+                        <option value="Epicycloid">Epicycloid</option>
+                        <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
+                        <option value="Freefall">Body in free fall</option>
+                        <option value="DuffingEquation">Duffing equation</option>
+                        <option value="PopulationGrowth">Population Growth</option>
+                        <option value="SimplePendulum">Simple pendulum</option>
+                    </select>
 
-                <button id="demo-button">Start Demo</button>
+                    <button id="demo-button">Start Demo</button>
+                </div>
             </div>
 
             <div id="components-area">
@@ -128,22 +130,27 @@
             <div id="configuration">
                 <p>Configuration</p>
                 <label for="config-file-upload">File</label>
-                <input id="config-file-upload" type="file" />
+                <input id="config-file-upload" type="file" accept=".json" hidden/>
 
                 <div>
-                    <button id="import-button">Import</button>
-                    <button id="export-button">Export</button>
+                    <button id="import-button">Load</button>
+                    <button id="export-button">Save</button>
                     <button id="clear-button">Clear</button>
                 </div>
 
-                <label for="simulation-step-period">Step period</label>
+                <label for="simulation-step-period">Step period (s)</label>
                 <input id="simulation-step-period" type="number" value="0.005"/>
 
-                <div>
-                    <button id="run-button">Run</button>
-                    <button id="stop-button" hidden>Stop</button>
-                    <button id="pause-button" hidden>Pause</button>
-                    <button id="unpause-button" hidden>Unpause</button>
+                <div class="TimeButtons">
+                    <button class="TimeButton" id="play-button">
+                            <img src="icons/Play.svg" alt="Play"/>
+                    </button>
+                    <button class="TimeButton" id="pause-button" hidden>
+                            <img src="icons/Pause.svg" alt="Pause"/>
+                    </button>
+                    <button class="TimeButton" id="stop-button" disabled>
+                            <img src="icons/Stop.svg" alt="Stop"/>
+                    </button>
                 </div>
 
                 <label for="motor-speed">Motor speed</label>
@@ -187,7 +194,7 @@
             <div class="popup" id="function-table-popup" position="absolute" >
                 <div>
                     <label>f(x)=</label>
-                    <textarea rows="1" cols="25" id="function-table-fn"></textarea>
+                    <textarea rows="3" cols="25" id="function-table-fn"></textarea>
                 </div>
                 <div>
                     <label>X Min</label>
