@@ -10,6 +10,7 @@ import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import { machine } from "./Constants.ts";
 
+const MIN_TEXT_AREA_LINES = 3;
 const MAX_TEXT_AREA_LINES = 10;
 
 let crossConnectPopup: HTMLDivElement;
@@ -97,7 +98,7 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   // Count the number of newlines in the input text to set the correct height of the
   // textarea
   const lines = text_area.value.split(/\r\n|\r|\n/).length;
-  text_area.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
+  text_area.rows = Math.max(MIN_TEXT_AREA_LINES, Math.min(lines, MAX_TEXT_AREA_LINES));
 
   let inputs = functionTablePopup.getElementsByTagName("input");
   inputs[0].value = target.dataset.x_min ?? String(graph_element.x_min);
@@ -326,10 +327,10 @@ function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
-  functionTablePopup.querySelector("textarea")!.addEventListener("textchanged", e => {
+  functionTablePopup.querySelector("textarea")!.addEventListener("keyup", e => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
     const lines = input.value.split(/\r\n|\r|\n/).length;
-    input.rows = Math.min(lines + 1, MAX_TEXT_AREA_LINES);
+    input.rows = Math.max(MIN_TEXT_AREA_LINES, Math.min(lines + 1, MAX_TEXT_AREA_LINES));
   });
 
   functionTablePopup.querySelector("textarea")!.addEventListener("change", e => {
