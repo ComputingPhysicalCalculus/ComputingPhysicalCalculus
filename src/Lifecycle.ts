@@ -65,7 +65,6 @@ export class Lifecycle {
     @query("#pause-button")
     pause_button!: HTMLButtonElement
 
-    // @query("#config-file-upload")
     config_file_input!: HTMLInputElement;
 
     @query("#simulation-step-period")
@@ -249,7 +248,7 @@ export class Lifecycle {
         let config = this.exportState();
 
         const link = document.createElement("a");
-        const file = new Blob([JSON.stringify(config)], { type: "application/json" });
+        const file = new Blob([JSON.stringify(config, null, 2)], { type: "application/json" });
 
         link.href = URL.createObjectURL(file);
         link.download = "differential-analyzer.json";
