@@ -103,7 +103,7 @@ export function toConfig(): Config {
         }
       case 'functionTable':
         {
-          const { x_min, x_max, y_min, y_max, fn } = thisComponent.export_fn(thisComponent).data;
+          const { x_min, x_max, y_min, y_max, lookup, fn } = thisComponent.export_fn(thisComponent).data;
 
           const inputShaft = getVShaftID(position[0] + 2, position[1] + 4);
           const outputShaft = getVShaftID(position[0] + 3, position[1] + 4);
@@ -112,7 +112,7 @@ export function toConfig(): Config {
             return null;
           }
 
-          return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft, fn }
+          return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft, lookup, fn }
         }
       case 'differential':
         {

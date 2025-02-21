@@ -54,6 +54,7 @@ export type FunctionTableConfig = {
   inputShaft: ShaftID;
   outputShaft: ShaftID;
   position: [number, number];
+  lookup: boolean;
   fn: string,
   x_min: string,
   x_max: string,

@@ -385,7 +385,6 @@ export class Lifecycle {
             let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
             x.fun = x => compiled_expr({ x });
             x.x_position = 0;
-            // x.x_position = function_table_element.x_min;
         });
 
         output_tables.forEach(x => {
@@ -397,13 +396,6 @@ export class Lifecycle {
         dials.forEach(dial => {
             (dial.querySelector("dial-component")! as DialComponentElement).count = 0
         })
-
-        /// FIX: Is this needed?
-        // simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
-        //     const output_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
-        //
-        //     x.xHistory[0] += output_table_element.x_min;
-        // });
 
         let elapsed = 0;
         let steps_taken = 0;
@@ -466,7 +458,7 @@ export class Lifecycle {
             for (let comp of simulator.components.filter(x => x instanceof FunctionTable)) {
                 const table = document.querySelector(`#component-${comp.id} > graph-table`)! as GraphElement;
                 table.gantry_x = comp.x_position;
-                if (next_steps !== 0 && comp.x_position >= table.x_max) {
+                if (next_steps !== 0 && comp.x_position >= table.x_max && table.parentElement?.dataset.lookup == "0") {
                     this.pause();
                     this.stop();
                     return;

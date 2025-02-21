@@ -278,6 +278,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         y_min: string,
         y_max: string,
         gantry_x?: number,
+        lookup: boolean,
         fn: string,
     };
 
@@ -294,6 +295,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
                 y_min: _this.dataset.y_min ?? String(graph_element.y_min),
                 y_max: _this.dataset.y_max ?? String(graph_element.y_max),
                 gantry_x: graph_element.gantry_x,
+                lookup: (!_this.dataset.lookup) ? false : (_this.dataset.lookup == "1"),
                 fn: graph_element.data_sets["d1"]?.fn ?? "",
             }
         };
@@ -309,6 +311,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         _this.dataset.x_max = data.x_max;
         _this.dataset.y_min = data.y_min;
         _this.dataset.y_max = data.y_max;
+        _this.dataset.lookup = (!data.lookup) ? "0" : (data.lookup ? "1" : "0");
 
         graph_element.x_min = Expression.eval(_this.dataset.x_min);
         graph_element.x_max = Expression.eval(_this.dataset.x_max);

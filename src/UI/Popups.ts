@@ -105,6 +105,7 @@ export function openFunctionTablePopup(e: MouseEvent): void {
   inputs[1].value = target.dataset.x_max ?? String(graph_element.x_max);
   inputs[2].value = target.dataset.y_min ?? String(graph_element.y_min);
   inputs[3].value = target.dataset.y_max ?? String(graph_element.y_max);
+  inputs[4].checked = (!target.dataset.lookup) ? false : (target.dataset.lookup == "1");
 
   e.preventDefault();
 }
@@ -371,6 +372,9 @@ function setupFunctionTablePopup(): void {
         case "function-table-y-max":
           component_graph.y_max = Expression.eval(input.value);
           component.dataset.y_max = input.value;
+          break;
+        case "function-table-lookup":
+          component.dataset.lookup = input.checked ? "1" : "0";
           break;
       }
 
