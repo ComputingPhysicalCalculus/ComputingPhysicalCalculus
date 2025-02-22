@@ -33,7 +33,7 @@ export class FunctionTable implements Device {
         this.output = output;
         this.fun = fun;
         this.x_position = initial_x_position;
-        this.f_n = fun(initial_x_position);
+        this.f_n = this.fun(initial_x_position);
     }
 
     /**
