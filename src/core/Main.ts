@@ -48,7 +48,7 @@ export class Simulator {
     }
 
     /**
-     * @function simulate_one_cycle
+     * @function setup
      * @description simulates one cycle of the differential analyzer using topological sort
      * @return void
      * @author Andy Zhu
