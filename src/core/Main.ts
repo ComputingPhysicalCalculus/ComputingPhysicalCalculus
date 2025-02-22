@@ -25,21 +25,15 @@ export class Simulator {
     components: Device[] = [];
     private rotation: number; // rotation of the motor
     private initial_x_position; // initial x position of the function table
-    private initialY1; // initial y1 position of the output table
-    private initialY2; // initial y2 position of the output table
     private inputFunction: (n: number) => number;
 
     constructor(config?: Config,
         rotation: number = 1,
         initial_x_position: number = 0,
-        initialY1: number = 0,
-        initialY2: number = 0,
         inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
     ) {
         this.rotation = rotation;
         this.initial_x_position = initial_x_position;
-        this.initialY1 = initialY1;
-        this.initialY2 = initialY2;
         this.inputFunction = inputFunction;
         if (config !== undefined) {
             this.parse_config(config);

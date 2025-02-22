@@ -14,9 +14,7 @@ export class SimulatorHandler {
   private start: number = 0;
   private steps_taken: number = 0;
 
-  private resolve_finished!: (value: void | PromiseLike<void>) => void;
-  public finished: Promise<void> = new Promise(resolve => {
-    this.resolve_finished = resolve;
+  public finished: Promise<void> = new Promise(() => {
   })
   public readonly step_period: number;
   public readonly end_point: number;

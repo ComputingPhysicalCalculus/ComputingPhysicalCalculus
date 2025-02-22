@@ -1,6 +1,5 @@
 import { LitElement, svg } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { GRID_SIZE } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 
 @customElement("shaft-component")

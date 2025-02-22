@@ -224,7 +224,5 @@ function drop(event: MouseEvent): void {
   item.renderLeft = converted.x;
   item.renderTop = converted.y;
 
-  item.updated();
-
   curDragItem.item = null;
 }
