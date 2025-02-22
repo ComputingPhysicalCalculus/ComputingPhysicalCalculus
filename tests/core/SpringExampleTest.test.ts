@@ -13,7 +13,7 @@ for (let a = 10; a < 20; a++)
         test_data.push([a, b]);
 
 test("Testing the example from slides", () => {
-    let simulator = new Simulator(SPRING_EXAMPLE, 0.01, 0, 1, 0, testFunction);
+    let simulator = new Simulator(SPRING_EXAMPLE, 0.01, 0, testFunction);
 
     for (let i = 0; i < 30; i++){
         simulator.step();

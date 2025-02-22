@@ -11,7 +11,7 @@ function test_run(F: (v: number) => number, DXDT: (v: number) => number) {
     const MSE_THRESHOLD = 1;
 
     // create simulator with the initial conditions based on F and I
-    let simulator = new Simulator(OSCILLATION_EXAMPLE, 0.001, 0, 1, 0);
+    let simulator = new Simulator(OSCILLATION_EXAMPLE, 0.001, 0);
 
     for (let i = 0; i < N; i++) {
         simulator.step();
