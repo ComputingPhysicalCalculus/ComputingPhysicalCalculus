@@ -36,7 +36,7 @@ function test_initial_OutputTable_values(output_table: OutputTable,
     // testing constructor
     expect((output_table as any).x).toBe(x);
     expect((output_table as any).y1).toBe(y1);
-    expect((output_table as any).xHistory).toEqual([x.get_rotation_rate()]);
+    expect((output_table as any).xHistory).toEqual([0]);
     expect((output_table as any).y1History).toEqual([initialY1]);
     if(y2 != undefined && initialY2 != undefined) {
         expect((output_table as any).y2).toBe(y2);

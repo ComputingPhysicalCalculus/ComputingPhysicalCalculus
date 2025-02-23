@@ -15,8 +15,8 @@ import { Device } from "./Device";
 export class OutputTable implements Device {
   id: number = 0;
   x: Shaft;
-  private y1: Shaft;
-  private y2: Shaft | undefined;
+  y1: Shaft;
+  y2: Shaft | undefined;
   xHistory: number[];
   y1History: number[];
   y2History: number[] | undefined;
@@ -34,7 +34,7 @@ export class OutputTable implements Device {
    */
   constructor(x: Shaft, y1: Shaft, initialY1: number, y2?: Shaft, initialY2?: number) {
     this.x = x;
-    this.xHistory = [x.get_rotation_rate()];
+    this.xHistory = [0];
     this.y1 = y1;
     this.y1History = [initialY1];
     if (y2 != undefined && initialY2 != undefined) {
@@ -58,20 +58,14 @@ export class OutputTable implements Device {
    */
   update(): void {
     // push the new x value on
-    let x_length = this.xHistory.length;
-    let new_x = this.xHistory[x_length - 1] + this.x.get_rotation_rate();
-    this.xHistory.push(new_x);
+    this.xHistory.push(this.x.rotation);
 
     // push the new y value on
-    let y1_length = this.y1History.length;
-    let new_y1 = Number(this.y1History[y1_length - 1]) + this.y1.get_rotation_rate();
-    this.y1History.push(new_y1);
+    this.y1History.push(this.y1.rotation + this.y1History[0]);
 
     // check if y2 exists and push if needed
     if (this.y2 != undefined && this.y2History != undefined) {
-      let y2_length = this.y2History.length;
-      let new_y2 = Number(this.y2History[y2_length - 1]) + this.y2.get_rotation_rate();
-      this.y2History.push(new_y2);
+      this.y2History.push(this.y2.rotation + this.y2History[0]);
     }
   }
 }

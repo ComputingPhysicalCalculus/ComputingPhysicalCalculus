@@ -40,6 +40,7 @@ export class Shaft {
 
   set_rotation_rate(rate: number): void {
     this.rotation_rate = rate;
+    this.rotation += this.rotation_rate;
   }
 
   get_rotation_rate(): number {

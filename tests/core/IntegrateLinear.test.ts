@@ -9,6 +9,7 @@ import util from 'node:util';
 
 const WRITE_TO_FILE = true;
 
+let total_MSE = 0;
 
 // F is the function to be integrated
 // I is the integrated function
@@ -88,6 +89,8 @@ function test_linear(F: (v: number) => number, I: (v: number) => number, x_init:
 
     expect(r2).toBeGreaterThan(PPMC_THRESHOLD);
     expect(m2).toBeLessThan(MSE_THRESHOLD);
+    total_MSE += m1;
+    total_MSE += m2;
 }
 
 
@@ -105,6 +108,7 @@ function test_multiple_linears() {
     test_linear((v: number) => v * v * v, (v: number) => 1 / 4 * Math.pow(v, 4), 0);
     test_linear((v: number) => 1 / (v * v + 1), (v: number) => Math.atan(v), 0);
     test_linear((v: number) => 1 / (v), (v: number) => Math.log(v), 1);
+    console.log(total_MSE);
 }
 
 

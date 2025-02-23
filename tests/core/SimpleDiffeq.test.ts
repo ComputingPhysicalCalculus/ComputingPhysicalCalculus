@@ -24,6 +24,12 @@ import fs from 'fs';
  * @return x value
  * @author Simon Solca
 */
+
+let MAX_DX_0 = 20;
+let MAX_DDX_0 = 20;
+
+let total_MSE = 0;
+
 function test_diff_eq(dx_0: number, ddx_0: number){
     // number of cycles
     const N = 1000;
@@ -96,16 +102,23 @@ function test_diff_eq(dx_0: number, ddx_0: number){
     
     expect(r).toBeGreaterThan(PPMC_THRESHOLD);
     expect(m).toBeLessThan(MSE_THRESHOLD);
+
+    total_MSE += m;
+
+    if (dx_0 == MAX_DX_0 - 1 && ddx_0 == MAX_DDX_0 - 1){
+        console.log(total_MSE);
+    }
 };
 
 
 let test_data: [number, number][] = [];
 
-for (let a = 1; a < 20; a++){
-    for (let b = 1; b < 20; b++){
+for (let a = 1; a < MAX_DX_0; a++){
+    for (let b = 1; b < MAX_DDX_0; b++){
         test_data.push([a,b]);
     }
 }
+
 
 test.each(test_data)(`Test: x\'\' - 3x\' + 2x = 0`, (dx_0, ddx_0) => {
     test_diff_eq(dx_0, ddx_0);

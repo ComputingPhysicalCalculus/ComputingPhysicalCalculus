@@ -26,6 +26,8 @@ export class Simulator {
     private rotation: number; // rotation of the motor
     private initial_x_position; // initial x position of the function table
     private inputFunction: (n: number) => number;
+    private mini_steps_n: number = 100;
+    private mini_steps_dt: number = 1/this.mini_steps_n;
 
     constructor(config?: Config,
         rotation: number = 1,
@@ -73,9 +75,9 @@ export class Simulator {
             }
         }
         
-        for (const table of this.outputTables){
-            ordered_devices.push(table);
-        }
+        // for (const table of this.outputTables){
+        //     ordered_devices.push(table);
+        // }
 
         this.components = ordered_devices;
     }
@@ -87,9 +89,8 @@ export class Simulator {
             device.update();
         }
 
-        // update the shafts
-        for (const shaft of this.shafts) {
-            shaft.update();
+        for (const table of this.outputTables){
+            table.update();
         }
     }
 
@@ -218,7 +219,7 @@ export class Simulator {
 
                     shafts.get(component.inputShaft)!.outputs.push(outputTable);
                     shafts.get(component.outputShaft1)!.outputs.push(outputTable);
-                    components.push(outputTable);
+                    // components.push(outputTable);
                     outputTables.push(outputTable);
                     break;
                 // only from frontend
