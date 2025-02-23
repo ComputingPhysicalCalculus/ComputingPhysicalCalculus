@@ -69,7 +69,7 @@ export class Differential implements Device {
      * @description This method directly updates the rotation rate of its output 
      * to be the combination of inputs shafts depending on which shafts were ready
     */
-    update(){
+    update(dt: number = 1){
         let new_rotation = NaN;
 
         // case where sum shaft is the output

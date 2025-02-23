@@ -52,7 +52,7 @@ export class Integrator implements Device {
      * @method update
      * @description This method calculates the angular speed of the wheel by integrating the input shafts.
     */
-    update(){
+    update(dt: number = 1){
         // Linear speed of the wheel = f(x) * dx.
         this.diskPosition += this.integrand.get_rotation_rate();
         let wheelLinearSpeed = this.variableOfIntegration.get_rotation_rate() * this.diskPosition;

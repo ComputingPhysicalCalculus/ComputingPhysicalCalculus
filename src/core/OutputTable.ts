@@ -56,7 +56,7 @@ export class OutputTable implements Device {
    * @method update
    * @description Add the current position to history array for UI
    */
-  update(): void {
+  update(dt: number = 1): void {
     // push the new x value on
     this.xHistory.push(this.x.rotation);
 

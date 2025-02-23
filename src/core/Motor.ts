@@ -48,7 +48,7 @@ export class Motor implements Device{
      * @method update
      * @description Sets the outputs rotation rate to be the motors rotation rate
     */
-    update(){
-        this.output.set_rotation_rate(this.rotation);
+    update(dt: number = 1){
+        this.output.set_rotation_rate(this.rotation * dt);
     }
 }

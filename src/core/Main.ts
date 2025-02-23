@@ -84,13 +84,15 @@ export class Simulator {
         
 
     step() {
-        // update the components 
-        for (const device of this.components) {
-            device.update();
+        // update the components
+        for (let i = 0; i < this.mini_steps_n; i++){
+            for (const device of this.components) {
+                device.update(this.mini_steps_dt);
+            }
         }
 
         for (const table of this.outputTables){
-            table.update();
+            table.update(1);
         }
     }
 

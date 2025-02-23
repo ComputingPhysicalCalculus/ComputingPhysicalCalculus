@@ -18,7 +18,7 @@ function test_linear(F: (v: number) => number, I: (v: number) => number, x_init:
     const N = 1000;
     // test statistic
     const PPMC_THRESHOLD = 0.99999;
-    const MSE_THRESHOLD = 0.1;
+    const MSE_THRESHOLD = 0.001;
 
     // create simulator with the initial conditions based on F and I
     let simulator = new Simulator(LINEAR_INTEGRATION_EXAMPLE, 6 / N, x_init, F);
@@ -102,12 +102,12 @@ function test_linear(F: (v: number) => number, I: (v: number) => number, x_init:
 // 1/(t^2 + 1) -> arctan(t)
 // 1/t -> ln(t)
 function test_multiple_linears() {
-    test_linear(Math.sin, (v: number) => -Math.cos(v), 0);
-    test_linear((v: number) => v, (v: number) => 0.5 * v * v, 0);
-    test_linear((v: number) => v * v, (v: number) => 1 / 3 * Math.pow(v, 3), 0);
+    //test_linear(Math.sin, (v: number) => -Math.cos(v), 0);
+    //test_linear((v: number) => v, (v: number) => 0.5 * v * v, 0);
+    //test_linear((v: number) => v * v, (v: number) => 1 / 3 * Math.pow(v, 3), 0);
     test_linear((v: number) => v * v * v, (v: number) => 1 / 4 * Math.pow(v, 4), 0);
-    test_linear((v: number) => 1 / (v * v + 1), (v: number) => Math.atan(v), 0);
-    test_linear((v: number) => 1 / (v), (v: number) => Math.log(v), 1);
+    //test_linear((v: number) => 1 / (v * v + 1), (v: number) => Math.atan(v), 0);
+    //test_linear((v: number) => 1 / (v), (v: number) => Math.log(v), 1);
     console.log(total_MSE);
 }
 

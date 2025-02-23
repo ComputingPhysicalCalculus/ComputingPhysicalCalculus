@@ -51,7 +51,7 @@ export class FunctionTable implements Device {
      * @description This method directly updates the rotation rate of its output
      * as the change in the functions value
     */
-    update(){
+    update(dt: number = 1){
         // calculate new x position and new f(x) position
         this.x_position += this.input.get_rotation_rate();
         let f_np1 = this.fun(this.x_position);
