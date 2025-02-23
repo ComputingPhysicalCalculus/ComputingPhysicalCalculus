@@ -16,8 +16,8 @@ function test_linear(F: (v: number) => number, I: (v: number) => number, x_init:
     // number of cycles
     const N = 1000;
     // test statistic
-    const PPMC_THRESHOLD = 0.9999;
-    const MSE_THRESHOLD = 1;
+    const PPMC_THRESHOLD = 0.99999;
+    const MSE_THRESHOLD = 0.1;
 
     // create simulator with the initial conditions based on F and I
     let simulator = new Simulator(LINEAR_INTEGRATION_EXAMPLE, 6 / N, x_init, F);

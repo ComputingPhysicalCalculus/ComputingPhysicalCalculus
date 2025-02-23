@@ -19,5 +19,5 @@ test("Testing the example from slides", () => {
         simulator.step();
     }
     
-    console.log(simulator.outputTables[0].y2History);
+    //console.log(simulator.outputTables[0].y2History);
 });

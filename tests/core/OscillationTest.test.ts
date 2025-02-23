@@ -20,7 +20,8 @@ function test_run(F: (v: number) => number, DXDT: (v: number) => number) {
     let t = simulator.outputTables[0].xHistory;
     let x_t = simulator.outputTables[0].y1History;
     let dx_dt = simulator.outputTables[0].y2History!;
-    console.log(x_t)
+    
+    //console.log(x_t)
 
     let xt_true = Array.from({ length: N + 1 }, (_, i) => F(t[i]));
     let dx_true = Array.from({ length: N + 1 }, (_, i) => DXDT(t[i]));

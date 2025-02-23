@@ -28,8 +28,8 @@ function test_diff_eq(dx_0: number, ddx_0: number){
     // number of cycles
     const N = 1000;
     // test statistic
-    const PPMC_THRESHOLD = 0.99;
-    const MSE_THRESHOLD = 2.5;
+    const PPMC_THRESHOLD = 0.9999;
+    const MSE_THRESHOLD = 1.5;
 
     // create mock shafts 
     let t_shaft = new Shaft(1, []); // t
@@ -72,7 +72,7 @@ function test_diff_eq(dx_0: number, ddx_0: number){
 
     // create instance of array to test 
     let mock_shafts = [t_shaft, x_shaft, dx_shaft, three_dx_shaft, minus_two_x_shaft, to_int_shaft];
-    let devices = [differential, integrator1, multiplier1, multiplier2, outputTable, integrator2];
+    let devices = [motor, differential, integrator1, multiplier1, multiplier2, outputTable, integrator2];
     let simulator = new Simulator();
     simulator.shafts = mock_shafts;
     simulator.motor = motor;

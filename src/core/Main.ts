@@ -51,8 +51,10 @@ export class Simulator {
         if (this.motor === undefined) {
             throw new Error("The configuration must have at least one motor");
         }
+        let ordered_devices: Device[] = [this.motor];
         let stack: Shaft[] = [this.motor.determine_output()];
         let visited: Set<number> = new Set<number>();
+        let visited_devices: Set<Device> = new Set<Device>();
         visited.add(stack[0].id);
         while (stack.length > 0) {
             let shaft = stack.pop()!;
@@ -60,20 +62,26 @@ export class Simulator {
             for (let device of shaft.outputs) {
                 let output = device.determine_output();
                 if (output === undefined) continue;
-                // device.update()
+                if (!visited_devices.has(device)){
+                    ordered_devices.push(device);
+                    visited_devices.add(device);
+                }
                 if (!visited.has(output.id)) {
                     stack.push(output);
                     visited.add(output.id);
                 }
             }
         }
+        
+        for (const table of this.outputTables){
+            ordered_devices.push(table);
+        }
+
+        this.components = ordered_devices;
     }
+        
 
     step() {
-        // update motor - effectively set independant shaft
-        // to be the motors speed
-        this.motor!.update();
-
         // update the components 
         for (const device of this.components) {
             device.update();
