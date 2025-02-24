@@ -51,49 +51,40 @@ export class GraphElement extends LitElement {
         }
     } = {};
 
-    // Keep in this form otherwise `this` will be undefined
-    private _handle_resize = () => {
-        this._canvas_graph.width = this.offsetWidth;
-        this._canvas_graph.height = this.offsetHeight;
-        this._canvas_axis.width = this.offsetWidth;
-        this._canvas_axis.height = this.offsetHeight;
-
-        this._draw_graph();
-        this._draw_axis();
-    }
-
-    private _handle_onscreen = (e: IntersectionObserverEntry[]) => {
-        const [ root ]  = e;
-        if (!root) {
-            return;
-        }
-
-        this.visible = root.isIntersecting;
-        this._draw_graph();
-        this._draw_axis();
-    };
-
     connectedCallback() {
         super.connectedCallback();
 
-        this._canvasPromise.then(this._handle_resize);
-
         let resize_debouncer = true;
         let resize_observer = new ResizeObserver(_ => {
+            this._canvas_graph.width = this.offsetWidth;
+            this._canvas_graph.height = this.offsetHeight;
+            this._canvas_axis.width = this.offsetWidth;
+            this._canvas_axis.height = this.offsetHeight;
+
+            this._draw_axis();
+
             if (!resize_debouncer) {
                 return;
             }
             resize_debouncer = false;
             window.setTimeout(() => {
-                this._handle_resize();
+                this._draw_graph();
                 resize_debouncer = true;
             }, 200);
         });
         resize_observer.observe(this);
 
-        let entries:IntersectionObserverEntry[] = [];
+        let entries: IntersectionObserverEntry[] = [];
         let intersection_debouncer = true;
         let intersection_observer = new IntersectionObserver(e => {
+            const [ root ]  = e;
+            if (!root) {
+                return;
+            }
+
+            this.visible = root.isIntersecting;
+            this._draw_axis();
+
             entries = e;
             if (!intersection_debouncer) {
                 return;
@@ -102,7 +93,7 @@ export class GraphElement extends LitElement {
 
             let timeout_callback = () => {
                 if (entries.length > 0) {
-                    this._handle_onscreen(entries);
+                    this._draw_graph();
                     entries = [];
                     window.setTimeout(timeout_callback, 200);
                 } else {
