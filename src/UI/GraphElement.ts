@@ -86,16 +86,27 @@ export class GraphElement extends LitElement {
         });
         resize_observer.observe(this);
 
+        let entries:IntersectionObserverEntry[] = [];
         let intersection_debouncer = true;
         let intersection_observer = new IntersectionObserver(e => {
+            entries = e;
             if (!intersection_debouncer) {
                 return;
             }
             intersection_debouncer = false;
-            window.setTimeout(() => {
-                this._handle_onscreen(e);
-                intersection_debouncer = true;
-            }, 200);
+
+            let timeout_callback = () => {
+                if (entries.length > 0) {
+                    this._handle_onscreen(entries);
+                    entries = [];
+                    window.setTimeout(timeout_callback, 200);
+                } else {
+                    intersection_debouncer = true;
+                }
+            };
+
+            timeout_callback();
+            window.setTimeout(timeout_callback, 200);
         });
         intersection_observer.observe(this);
     }
