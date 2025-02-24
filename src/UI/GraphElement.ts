@@ -37,6 +37,8 @@ export class GraphElement extends LitElement {
     @property({ type: Boolean })
     isAnOutput: boolean = false;
 
+    visible: boolean = false;
+
     data_sets: {
         [key: string]: {
             points: Vector2[];
@@ -54,12 +56,48 @@ export class GraphElement extends LitElement {
         this._draw();
     }
 
+    private _handle_onscreen = (e: IntersectionObserverEntry[]) => {
+        const [ root ]  = e;
+        if (!root) {
+            return;
+        }
+
+        this.visible = root.isIntersecting;
+        if (this.visible) {
+            this._draw();
+        }
+    };
+
     connectedCallback() {
         super.connectedCallback();
 
         this._canvasPromise.then(this._handle_resize);
-        let resize_observer = new ResizeObserver(this._handle_resize);
+
+        let resize_debouncer = true;
+        let resize_observer = new ResizeObserver(_ => {
+            if (!resize_debouncer) {
+                return;
+            }
+            resize_debouncer = false;
+            window.setTimeout(() => {
+                this._handle_resize();
+                resize_debouncer = true;
+            }, 200);
+        });
         resize_observer.observe(this);
+
+        let intersection_debouncer = true;
+        let intersection_observer = new IntersectionObserver(e => {
+            if (!intersection_debouncer) {
+                return;
+            }
+            intersection_debouncer = false;
+            window.setTimeout(() => {
+                this._handle_onscreen(e);
+                intersection_debouncer = true;
+            }, 200);
+        });
+        intersection_observer.observe(this);
     }
 
     map_x_graph_to_screen(x: number): number {
@@ -153,6 +191,11 @@ export class GraphElement extends LitElement {
     }
 
     private _draw() {
+        if (!this.visible) {
+            return;
+        }
+        console.log("draw");
+        
         let ctx = this._canvas.getContext("2d");
         if (ctx === null) {
             console.log("Failed to get canvas 2d context");
