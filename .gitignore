@@ -2,6 +2,7 @@
 .envrc
 .direnv/*
 .vscode/*
+.vimrc
 
 # Build files output
 dist/*
