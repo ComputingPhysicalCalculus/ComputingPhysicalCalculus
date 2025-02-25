@@ -55,4 +55,5 @@ export class CrossConnect implements Device {
         const rotation_rate = this.input?.get_rotation_rate()!;
         this.output?.set_rotation_rate(this.reversed ? -rotation_rate : rotation_rate);
     }
+    getID() : number { return this.id; }
 }

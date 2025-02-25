@@ -56,4 +56,6 @@ export class GearPair implements Device {
         const rotation_rate = this.factor * this.input?.get_rotation_rate()!;
         this.output?.set_rotation_rate(rotation_rate);
     }
+
+    getID() : number { return this.id; }
 }

@@ -64,4 +64,6 @@ export class Integrator implements Device {
         }
         this.output.set_rotation_rate(wheelAngularSpeed);
     }
+
+    getID() : number { return this.id; }
 }

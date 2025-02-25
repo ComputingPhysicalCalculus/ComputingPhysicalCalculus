@@ -84,4 +84,6 @@ export class Differential implements Device {
         }
         this.output?.set_rotation_rate(new_rotation);
     }
+    
+    getID() : number { return this.id; }
 }

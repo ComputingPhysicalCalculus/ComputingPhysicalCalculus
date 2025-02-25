@@ -24,4 +24,5 @@ export interface Device {
      * @description This method directly updates the rotation rate of its output
     */
     update(dt: number) : void;
+    getID() : number;
 }

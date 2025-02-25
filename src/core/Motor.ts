@@ -53,4 +53,6 @@ export class Motor implements Device{
     update(dt: number = 1){
         this.output.set_rotation_rate(this.rotation * dt);
     }
+
+    getID() : number { return this.id; }
 }

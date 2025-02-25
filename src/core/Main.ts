@@ -93,8 +93,7 @@ export class Simulator {
     }
 
     check_config(): Map<number, boolean> {
-        let devices_config = new Map<number, boolean>();
-        let shafts_config = new Map<number, boolean>();
+        let result = new Map<number, boolean>();
         if(this.motor == undefined) {
             throw new Error("The configuration must have at least one motor");
         }
@@ -113,14 +112,16 @@ export class Simulator {
                 if (!visited_devices.has(device)){
                     ordered_devices.push(device);
                     visited_devices.add(device);
+                    result.set(device.getID(), true);
                 } else {
-                    devices_config.set(device.id, false);
+                    result.set(device.getID(), false);
                 }
                 if (!visited.has(output.id)) {
                     stack.push(output);
                     visited.add(output.id);
+                    result.set(shaft.id, true);
                 } else {
-                    shafts_config.set(shaft.id, false);
+                    result.set(shaft.id, false);
                 }
             }
         }
@@ -128,14 +129,14 @@ export class Simulator {
         // add uniterated devices as invalid devices
         for(let device of this.components) {
             if(!visited_devices.has(device)) {
-                devices_config.set(device.id, false);
+                result.set(device.getID(), false);
             }
         }
 
         // add uniterated shafts as invalid shafts
         for(let shaft of this.shafts) {
             if(!visited.has(shaft.id)) {
-                shafts_config.set(shaft.id, false);
+                result.set(shaft.id, false);
             }
         }
 

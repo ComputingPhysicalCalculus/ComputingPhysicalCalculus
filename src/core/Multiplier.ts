@@ -51,4 +51,6 @@ export class Multiplier implements Device {
     update(dt: number = 1): void {
         this.output.set_rotation_rate(this.input.get_rotation_rate() * this.factor);
     }
+
+    getID() : number { return this.id; }
 }

@@ -69,4 +69,6 @@ export class OutputTable implements Device {
       this.y2History.push(this.y2.rotation + this.y2History[0]);
     }
   }
+
+  getID() : number { return this.id; }
 }

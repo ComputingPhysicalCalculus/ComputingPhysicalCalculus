@@ -62,4 +62,6 @@ export class FunctionTable implements Device {
         // update the current f(x) value
         this.f_n = f_np1;
     }
+
+    getID() : number { return this.id; }
 }
