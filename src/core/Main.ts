@@ -15,6 +15,7 @@ import { Motor } from "./Motor";
 import { Multiplier } from "./Multiplier";
 import { OutputTable } from "./OutputTable";
 import { Shaft } from "./Shaft";
+import { ConfigError } from "../ConfigError.ts";
 
 import Expression from "../expr/Expression.ts";
 
@@ -92,8 +93,8 @@ export class Simulator {
         }
     }
 
-    check_config(): Map<number, boolean> {
-        let result = new Map<number, boolean>();
+    check_config(): Map<number, ConfigError> {
+        let result = new Map<number, ConfigError>();
         if(this.motor == undefined) {
             throw new Error("The configuration must have at least one motor");
         }
@@ -112,16 +113,16 @@ export class Simulator {
                 if (!visited_devices.has(device)){
                     ordered_devices.push(device);
                     visited_devices.add(device);
-                    result.set(device.getID(), true);
+                    result.set(device.getID(), ConfigError.NO_ERROR);
                 } else {
-                    result.set(device.getID(), false);
+                    result.set(device.getID(), ConfigError.FATAL_ERROR);
                 }
                 if (!visited.has(output.id)) {
                     stack.push(output);
                     visited.add(output.id);
-                    result.set(shaft.id, true);
+                    result.set(shaft.id, ConfigError.NO_ERROR);
                 } else {
-                    result.set(shaft.id, false);
+                    result.set(shaft.id, ConfigError.FATAL_ERROR);
                 }
             }
         }
@@ -129,14 +130,14 @@ export class Simulator {
         // add uniterated devices as invalid devices
         for(let device of this.components) {
             if(!visited_devices.has(device)) {
-                result.set(device.getID(), false);
+                result.set(device.getID(), ConfigError.NO_ERROR);
             }
         }
 
         // add uniterated shafts as invalid shafts
         for(let shaft of this.shafts) {
             if(!visited.has(shaft.id)) {
-                result.set(shaft.id, false);
+                result.set(shaft.id, ConfigError.NO_ERROR);
             }
         }
 
