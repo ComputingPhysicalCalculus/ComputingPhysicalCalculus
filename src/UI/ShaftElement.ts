@@ -23,6 +23,7 @@ export class ShaftElement extends LitElement {
   render() {
     let parent = this.parentElement as DraggableComponentElement;
 
+
     let width = parent.width * (this.horizontal ? 50 : 25);
     let height = parent.height * (this.horizontal ? 25 : 50);
 
@@ -36,7 +37,7 @@ export class ShaftElement extends LitElement {
         xmlns="https://www.w3.org/2000/svg"
         width="${width}" height="${height}"
         viewBox="0 0 ${width} ${height}"
-        style="width:100%;height:100%"
+        style="width:100%;height:100%;display:block;"
       >
         <line
           x1="${left}" y1="${top}"
@@ -45,9 +46,14 @@ export class ShaftElement extends LitElement {
           stroke-width="2"
           stroke-linecap="round"
         />
-      </svg>
-    `;
+      </svg>`;
   }
+  //   <path
+  //     d="
+  //       M${left} ${top}
+  //       ${this.horizontal ? "H" : "V"}${right} ${bottom}
+  //     "
+  // />
 }
 
 declare global {
