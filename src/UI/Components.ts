@@ -224,7 +224,7 @@ function createIntegrator(div: DraggableComponentElement): void {
     type ExportedData = {
         top: number,
         left: number,
-        initialPosition: number,
+        initialPosition: string,
     };
 
     div.export_fn = (_this) => {
@@ -233,7 +233,7 @@ function createIntegrator(div: DraggableComponentElement): void {
             data: {
                 top: _this.top,
                 left: _this.left,
-                initialPosition: _this.inputRatio,
+                initialPosition: _this.dataset.initialValue ?? "0",
             },
         };
     };
@@ -241,7 +241,7 @@ function createIntegrator(div: DraggableComponentElement): void {
     div.import_fn = (_this, data: ExportedData) => {
         _this.top = data.top;
         _this.left = data.left;
-        _this.inputRatio = data.initialPosition;
+        _this.dataset.initialValue = data.initialPosition;
     };
 }
 
@@ -279,6 +279,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         y_min: string,
         y_max: string,
         gantry_x?: number,
+        lookup: boolean,
         fn: string,
     };
 
@@ -295,6 +296,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
                 y_min: _this.dataset.y_min ?? String(graph_element.y_min),
                 y_max: _this.dataset.y_max ?? String(graph_element.y_max),
                 gantry_x: graph_element.gantry_x,
+                lookup: (!_this.dataset.lookup) ? false : (_this.dataset.lookup == "1"),
                 fn: graph_element.data_sets["d1"]?.fn ?? "",
             }
         };
@@ -310,6 +312,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
         _this.dataset.x_max = data.x_max;
         _this.dataset.y_min = data.y_min;
         _this.dataset.y_max = data.y_max;
+        _this.dataset.lookup = (!data.lookup) ? "0" : (data.lookup ? "1" : "0");
 
         graph_element.x_min = Expression.eval(_this.dataset.x_min);
         graph_element.x_max = Expression.eval(_this.dataset.x_max);
@@ -502,7 +505,7 @@ function createMultiplier(div: DraggableComponentElement): void {
     type ExportedData = {
         top: number,
         left: number,
-        factor: number,
+        factor: string,
     };
 
     div.export_fn = (_this) => {
@@ -511,7 +514,7 @@ function createMultiplier(div: DraggableComponentElement): void {
             data: {
                 top: _this.top,
                 left: _this.left,
-                factor: _this.outputRatio,
+                factor: _this.dataset.factor ?? "1"
             },
         };
     };
@@ -519,7 +522,7 @@ function createMultiplier(div: DraggableComponentElement): void {
     div.import_fn = (_this, data: ExportedData) => {
         _this.top = data.top;
         _this.left = data.left;
-        _this.outputRatio = (!data.factor) ? 1 : data.factor;
+        _this.dataset.factor = data.factor ?? "1";
     };
 }
 

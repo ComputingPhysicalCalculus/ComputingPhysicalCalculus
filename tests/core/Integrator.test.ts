@@ -46,7 +46,7 @@ describe("Testing Integrator", () =>{
     let mock_wrt = new MockShaft(2)
     let mock_output = new MockShaft(3);
     // create instance of FunctionTable
-    let integrator = new Integrator(mock_wrt, mock_integrand, mock_output, false, 1, 2);
+    let integrator = new Integrator(0, mock_wrt, mock_integrand, mock_output, false, 1, 2);
 
     test_initial_integrator_values(integrator, mock_wrt, mock_integrand, mock_output);
 });

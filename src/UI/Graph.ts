@@ -167,7 +167,6 @@ export class InputGraph extends GantryGraph {
     
     ctx.lineWidth = 1;
     ctx.strokeStyle = "blue";
-    this.draw_points(ctx, this.points);
 
     ctx.lineWidth = 2;
     ctx.strokeStyle = "gray";
@@ -205,10 +204,8 @@ export class OutputGraph extends GantryGraph {
     
     ctx.lineWidth = 1;
     ctx.strokeStyle = "blue";
-    this.draw_points(ctx, this.points_a);
 
     ctx.strokeStyle = "red";
-    this.draw_points(ctx, this.points_b);
 
     ctx.lineWidth = 2;
     ctx.strokeStyle = "gray";

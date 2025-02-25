@@ -1,7 +1,7 @@
 import { query, queryAll } from "./decorators";
 import { ComponentType, createComponent } from "./UI/Components";
 import { DraggableComponentElement } from "./UI/DraggableElement";
-import { setCells } from "./UI/Grid";
+import { GRID_SIZE, screenToWorldPosition, setCells, worldToScreenPosition } from "./UI/Grid";
 
 const MAX_HISTORY_LENGTH = 32;
 
@@ -56,6 +56,12 @@ export class UndoHistory {
       let component = createComponent(node._type);
       component.import(node.data)
 
+      // Restore screen positions
+      const gridPos = component.getPosition();
+      const pos = worldToScreenPosition({ x: gridPos.x * GRID_SIZE, y: gridPos.y * GRID_SIZE });
+      component.renderLeft = pos.x;
+      component.renderTop = pos.y;
+
       this.content.appendChild(component);
     }
   }
@@ -81,6 +87,12 @@ export class UndoHistory {
     for (let node of newNodes) {
       let component = createComponent(node._type);
       component.import(node.data)
+
+      // Restore screen positions
+      const gridPos = component.getPosition();
+      const pos = worldToScreenPosition({ x: gridPos.x * GRID_SIZE, y: gridPos.y * GRID_SIZE });
+      component.renderLeft = pos.x;
+      component.renderTop = pos.y;
 
       this.content.appendChild(component);
     }

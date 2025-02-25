@@ -39,7 +39,7 @@ function test_changeRotation(initial_rotation: number, new_rotation: number){
     // create mock shafts 
     let mock_output = new MockShaft(3);
     // create instance of FunctionTable
-    let motor = new Motor(initial_rotation, mock_output);
+    let motor = new Motor(0, initial_rotation, mock_output);
 
     test_initial_motor_values(motor, initial_rotation, mock_output);
 
@@ -59,7 +59,7 @@ function test_getOutput(initial_rotation: number, new_rotation: number){
     // create mock shafts 
     let mock_output = new MockShaft(3);
     // create instance of FunctionTable
-    let motor = new Motor(new_rotation, mock_output);
+    let motor = new Motor(0, new_rotation, mock_output);
 
     test_initial_motor_values(motor, new_rotation, mock_output);
 

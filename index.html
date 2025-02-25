@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Computing Physical Calculus</title>
+    <title>Differential Analyser</title>
 
-    <script type="module" src="./src/index.ts"></script>
+    <script type="module" src="src/index.ts"></script>
 
-    <link rel="stylesheet" href="./styles/popups.css">
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./styles/components.css">
-    <link rel="stylesheet" href="./styles/grid.css">
+    <link rel="stylesheet" href="styles/popups.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/grid.css">
 </head>
 <body>
     <div id="content">
@@ -19,18 +19,24 @@
         <div id="user-control">
             <div id="demo-area">
                 <label>Examples</label>
-                <select name="examples" id="examples-list">
-                    <option value="LinearIntegration">Linear Integration</option>
-                    <option value="Spring">Damped Oscillation</option>
-                    <option value="GammaFunction">Gamma Function</option>
-                    <option value="WeierstraussFunction">Weierstrauss Function</option>
-                    <option value="GearPair">Gear pair usage</option>
-                    <option value="Epicycloid">Epicycloid</option>
-                    <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
-                    <option value="Freefall">Body in free fall</option>
-                </select>
+                <div>
+                    <select name="examples" id="examples-list">
+                        <option value="LinearIntegration">Linear Integration</option>
+                        <option value="Spring">Damped Oscillation</option>
+                        <option value="GammaFunction">Gamma Function</option>
+                        <option value="WeierstraussFunction">Weierstrauss Function</option>
+                        <option value="GearPair">Gear pair usage</option>
+                        <option value="Epicycloid">Epicycloid</option>
+                        <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
+                        <option value="Freefall">Body in free fall</option>
+                        <option value="DuffingEquation">Duffing equation</option>
+                        <option value="PopulationGrowth">Population Growth</option>
+                        <option value="SimplePendulum">Simple pendulum</option>
+                        <option value="DoublePendulum">Double pendulum</option>
+                    </select>
 
-                <button id="demo-button">Start Demo</button>
+                    <button id="demo-button">Start Demo</button>
+                </div>
             </div>
 
             <div id="components-area">
@@ -124,23 +130,28 @@
 
             <div id="configuration">
                 <p>Configuration</p>
-                <label for="config-file-upload">File</label>
-                <input id="config-file-upload" type="file" />
-
-                <div>
-                    <button id="import-button">Import</button>
-                    <button id="export-button">Export</button>
-                    <button id="clear-button">Clear</button>
+                <div id="control_buttons">
+                    <div id="config_buttons">
+                        <button id="import-button">Load</button>
+                        <button id="export-button">Save</button>
+                        <button id="clear-button">Clear Screen</button>
+                    </div>
+                    <button id="clear-tables-button">Clear Output Tables</button>
                 </div>
 
-                <label for="simulation-step-period">Step period</label>
+                <label for="simulation-step-period">Step period (s)</label>
                 <input id="simulation-step-period" type="number" value="0.005"/>
 
-                <div>
-                    <button id="run-button">Run</button>
-                    <button id="stop-button" hidden>Stop</button>
-                    <button id="pause-button" hidden>Pause</button>
-                    <button id="unpause-button" hidden>Unpause</button>
+                <div class="TimeButtons">
+                    <button class="TimeButton" id="play-button">
+                            <img src="icons/Play.svg" alt="Play"/>
+                    </button>
+                    <button class="TimeButton" id="pause-button" disabled>
+                            <img src="icons/Pause.svg" alt="Pause"/>
+                    </button>
+                    <button class="TimeButton" id="stop-button" disabled>
+                            <img src="icons/Stop.svg" alt="Stop"/>
+                    </button>
                 </div>
 
                 <label for="motor-speed">Motor speed</label>
@@ -161,7 +172,7 @@
 
             <div class="popup" id="integrator-popup" position="absolute" >
                 <label>Initial offset</label>
-                <input id="integrator-initial-offset" type="number" value="0">
+                <textarea id="integrator-initial-offset"></textarea>
             </div>
 
             <div class="popup" id="motor-popup" position="absolute" >
@@ -171,7 +182,7 @@
 
             <div class="popup" id="multiplier-popup" position="absolute" >
                 <label>Factor</label>
-                <input id="multiplier-input-factor" type="number" min="1" value="1">
+                <textarea id="multiplier-input-factor"></textarea>
             </div>
 
             <div class="popup" id="gear-pair-popup" position="absolute" >
@@ -184,49 +195,52 @@
             <div class="popup" id="function-table-popup" position="absolute" >
                 <div>
                     <label>f(x)=</label>
-                    <textarea rows="1" cols="25" id="function-table-fn"></textarea>
+                    <textarea rows="3" cols="25" id="function-table-fn"></textarea>
                 </div>
                 <div>
-                    <label>X Min</label>
+                    <label>x Min</label>
                     <input step="any" id="function-table-x-min" />
                 </div>
                 <div>
-                    <label>X Max</label>
+                    <label>x Max</label>
                     <input step="any" id="function-table-x-max" />
                 </div>
                 <div>
-                    <label>Y Min</label>
+                    <label>y Min</label>
                     <input step="any" id="function-table-y-min" />
                 </div>
                 <div>
-                    <label>Y Max</label>
+                    <label>y Max</label>
                     <input step="any" id="function-table-y-max" />
+                </div>
+                <div>
+                    <input type="checkbox" id="function-table-lookup">Lookup Table</input>
                 </div>
             </div>
 
             <div class="popup" id="output-table-popup" position="absolute" >
                 <div>
-                    <label>Initial Y (blue)</label>
+                    <label>Initial y (blue)</label>
                     <input step="any" id="output-table-initial-1" />
                 </div>
                 <div>
-                    <label>Initial Y (red)</label>
+                    <label>Initial y (red)</label>
                     <input step="any" id="output-table-initial-2" />
                 </div>
                 <div>
-                    <label>X Min</label>
+                    <label>x Min</label>
                     <input step="any" id="output-table-x-min" />
                 </div>
                 <div>
-                    <label>X Max</label>
+                    <label>x Max</label>
                     <input step="any" id="output-table-x-max" />
                 </div>
                 <div>
-                    <label>Y Min</label>
+                    <label>y Min</label>
                     <input step="any" id="output-table-y-min" />
                 </div>
                 <div>
-                    <label>Y Max</label>
+                    <label>y Max</label>
                     <input step="any" id="output-table-y-max" />
                 </div>
             </div>

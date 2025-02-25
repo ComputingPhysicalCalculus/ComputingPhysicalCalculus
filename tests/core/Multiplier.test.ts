@@ -52,7 +52,7 @@ function multiplier_test_output_not_ready_input_ready(
     let mock_shaft_input = new MockShaft(1);
     let mock_shaft_output = new MockShaft(2);
     // create instance of Multiplier to test
-    let multiplier = new Multiplier(mock_shaft_input, mock_shaft_output, factor);
+    let multiplier = new Multiplier(0, mock_shaft_input, mock_shaft_output, factor);
 
     // testing constructor
     test_initial_multiplier_values(multiplier, mock_shaft_input, mock_shaft_output, factor);

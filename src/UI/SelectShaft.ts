@@ -1,6 +1,5 @@
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { startedDragging } from "./Drag.ts";
-import { screenDragging } from "./Grid.ts";
 import Vector2 from "./Vector2.ts";
 import { GRID_SIZE } from "./Grid.ts"
 import { updateShaftLength } from "./Popups.ts";

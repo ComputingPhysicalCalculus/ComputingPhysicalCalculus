@@ -13,7 +13,7 @@ import { Shaft } from "./Shaft";
  * @implements Device
  */
 export class FunctionTable implements Device {
-    id: number = 0;
+    id: number;
     private output: Shaft;
     x_position: number;
     private f_n: number;
@@ -28,7 +28,8 @@ export class FunctionTable implements Device {
      * @param initial_x_position The initial_x_position user sets 
      * @param fun The function of to trace
      */
-    constructor(input: Shaft, output: Shaft, initial_x_position: number, fun: (n: number) => number) {
+    constructor(id: number, input: Shaft, output: Shaft, initial_x_position: number, fun: (n: number) => number) {
+        this.id = id;
         this.input = input;
         this.output = output;
         this.fun = fun;
@@ -51,7 +52,7 @@ export class FunctionTable implements Device {
      * @description This method directly updates the rotation rate of its output
      * as the change in the functions value
     */
-    update(){
+    update(dt: number = 1){
         // calculate new x position and new f(x) position
         this.x_position += this.input.get_rotation_rate();
         let f_np1 = this.fun(this.x_position);
@@ -61,4 +62,6 @@ export class FunctionTable implements Device {
         // update the current f(x) value
         this.f_n = f_np1;
     }
+
+    getID() : number { return this.id; }
 }

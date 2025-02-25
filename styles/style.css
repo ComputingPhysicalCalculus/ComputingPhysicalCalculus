@@ -9,9 +9,9 @@
     --colour-highlight3: #364D1A;
     --text-colour: #FCFCFC;
     --unit: calc(max(1vw, 1vh));
-    --text-size: calc(var(--unit));
-    --text-button-size: calc(0.8 * var(--unit));
-    --text-header-size: calc(1.6 * var(--unit));
+    --text-size: 1.1rem;
+    --text-button-size: 1.1rem;
+    --text-header-size: 2rem;
     --border-radius: calc(0.5 * var(--unit));
     --gap-size: calc(0.5 * var(--unit));
 
@@ -60,7 +60,7 @@ html {
 
     width: 28vw;
     min-width: 24rem;
-    max-width: 34rem;
+    max-width: 28rem;
     height: 100%;
     overflow: scroll;
     overflow-x: hidden;
@@ -72,6 +72,8 @@ html {
     gap: var(--gap-size);
 
     z-index: 6;
+
+    font-family: "Arial, Helvetica, sans-serif";
 }
 
 #demo-area {
@@ -83,11 +85,19 @@ html {
     gap: var(--gap-size);
 }
 
+#demo-area>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--gap-size);
+    width: 100%;
+    font-size: var(--text-button-size);
+}
+
 #demo-area>label {
     text-align: center;
     font-size: var(--text-header-size);
     font-weight: bold;
-    text-decoration: underline;
     margin: 0 0 -5px 0;
 }
 
@@ -107,6 +117,8 @@ html {
     background: var(--colour-accent2);
     border-radius: var(--border-radius);
     font-size: var(--text-size);
+
+    overflow-y: hidden;
 }
 
 #configuration>p {
@@ -114,30 +126,59 @@ html {
     text-align: center;
     font-weight: bold;
     font-size: var(--text-header-size);
-    margin: calc(0.5 * var(--unit)) 0;
-    text-decoration: underline;
+    margin: calc(0.3 * var(--unit)) 0;
     color: var(--text-colour);
 }
 
 #configuration>label {
-    text-decoration: bold;
+    margin: calc(-1 * var(--gap-size)) 0 0 0;
+    padding: 0;
+    font-weight: bold;
 }
 
-#configuration>div {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 10%;
-    padding: var(--gap-size) 0 var(--gap-size) 0;
-}
+/* #configuration>div { */
+/*     display: flex; */
+/*     flex-direction: row; */
+/*     justify-content: center; */
+/*     gap: calc(var(--gap-size) * 3); */
+/*     padding: var(--gap-size) 0 var(--gap-size) 0; */
+/*     width: 100%; */
+/* } */
 
 #configuration>input {
     font-size: var(--text-button-size);
 }
 
-#configuration>div>button {
+#control_buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#config_buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: calc(var(--gap-size) * 3);
+    padding: var(--gap-size) 0 var(--gap-size) 0;
+    width: 100%;
+}
+
+.TimeButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.TimeButton {
+    display: block;
     font-size: var(--text-button-size);
-    width: 45%;
+    max-height: calc(2*var(--unit));
+    justify-content: center;
+    width: auto;
+}
+
+.TimeButton>img {
+    height: 70%;
 }
 
 #configuration button {

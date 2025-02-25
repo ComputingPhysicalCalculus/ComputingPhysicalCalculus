@@ -24,12 +24,18 @@ import fs from 'fs';
  * @return x value
  * @author Simon Solca
 */
+
+let MAX_DX_0 = 20;
+let MAX_DDX_0 = 20;
+
+let total_MSE = 0;
+
 function test_diff_eq(dx_0: number, ddx_0: number){
     // number of cycles
     const N = 1000;
     // test statistic
-    const PPMC_THRESHOLD = 0.99;
-    const MSE_THRESHOLD = 2.5;
+    const PPMC_THRESHOLD = 0.9999;
+    const MSE_THRESHOLD = 1.5;
 
     // create mock shafts 
     let t_shaft = new Shaft(1, []); // t
@@ -53,14 +59,14 @@ function test_diff_eq(dx_0: number, ddx_0: number){
     let rotation_rate = 2/N;
 
     // create instance of Devices
-    let differential = new Differential(three_dx_shaft, minus_two_x_shaft, to_int_shaft);
-    let integrator1 = new Integrator(t_shaft, to_int_shaft, dx_shaft, false, ddx_0);
-    let integrator2 = new Integrator(t_shaft, dx_shaft, x_shaft, false, dx_0);
-    let multiplier1 = new Multiplier(x_shaft, minus_two_x_shaft, -2);
-    let multiplier2 = new Multiplier(dx_shaft,three_dx_shaft, 3);
-    let outputTable = new OutputTable(t_shaft, x_shaft, x_0, dx_shaft, dx_0);
+    let differential = new Differential(1, three_dx_shaft, minus_two_x_shaft, to_int_shaft);
+    let integrator1 = new Integrator(2, t_shaft, to_int_shaft, dx_shaft, false, ddx_0);
+    let integrator2 = new Integrator(3, t_shaft, dx_shaft, x_shaft, false, dx_0);
+    let multiplier1 = new Multiplier(4, x_shaft, minus_two_x_shaft, -2);
+    let multiplier2 = new Multiplier(5, dx_shaft,three_dx_shaft, 3);
+    let outputTable = new OutputTable(6, t_shaft, x_shaft, x_0, dx_shaft, dx_0);
 
-    let motor = new Motor(rotation_rate, t_shaft);
+    let motor = new Motor(7, rotation_rate, t_shaft);
 
     // setting outputs to each shaft
     t_shaft.outputs = [integrator1, integrator2, outputTable];
@@ -72,7 +78,7 @@ function test_diff_eq(dx_0: number, ddx_0: number){
 
     // create instance of array to test 
     let mock_shafts = [t_shaft, x_shaft, dx_shaft, three_dx_shaft, minus_two_x_shaft, to_int_shaft];
-    let devices = [differential, integrator1, multiplier1, multiplier2, outputTable, integrator2];
+    let devices = [motor, differential, integrator1, multiplier1, multiplier2, outputTable, integrator2];
     let simulator = new Simulator();
     simulator.shafts = mock_shafts;
     simulator.motor = motor;
@@ -96,16 +102,23 @@ function test_diff_eq(dx_0: number, ddx_0: number){
     
     expect(r).toBeGreaterThan(PPMC_THRESHOLD);
     expect(m).toBeLessThan(MSE_THRESHOLD);
+
+    total_MSE += m;
+
+    if (dx_0 == MAX_DX_0 - 1 && ddx_0 == MAX_DDX_0 - 1){
+        console.log(total_MSE);
+    }
 };
 
 
 let test_data: [number, number][] = [];
 
-for (let a = 1; a < 20; a++){
-    for (let b = 1; b < 20; b++){
+for (let a = 1; a < MAX_DX_0; a++){
+    for (let b = 1; b < MAX_DDX_0; b++){
         test_data.push([a,b]);
     }
 }
+
 
 test.each(test_data)(`Test: x\'\' - 3x\' + 2x = 0`, (dx_0, ddx_0) => {
     test_diff_eq(dx_0, ddx_0);
