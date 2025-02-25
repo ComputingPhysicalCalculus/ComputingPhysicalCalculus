@@ -19,8 +19,6 @@ import { ConfigError } from "../ConfigError.ts";
 
 import Expression from "../expr/Expression.ts";
 
-import Expression from "../expr/Expression.ts";
-
 export class Simulator {
     shafts: Shaft[] = [];
     motor: Motor | undefined;
@@ -95,13 +93,8 @@ export class Simulator {
         }
     }
 
-<<<<<<< Updated upstream
     check_config(): Map<number, ConfigError> {
         let result = new Map<number, ConfigError>();
-=======
-    check_config(): Map<number, boolean> {
-        let result = new Map<number, boolean>();
->>>>>>> Stashed changes
         if (this.motor == undefined) {
             throw new Error("The configuration must have at least one motor");
         }
@@ -137,22 +130,14 @@ export class Simulator {
         // add uniterated devices as invalid devices
         for (let device of this.components) {
             if (!visited_devices.has(device)) {
-<<<<<<< Updated upstream
                 result.set(device.getID(), ConfigError.NO_ERROR);
-=======
-                result.set(device.getID(), false);
->>>>>>> Stashed changes
             }
         }
 
         // add uniterated shafts as invalid shafts
         for (let shaft of this.shafts) {
             if (!visited.has(shaft.id)) {
-<<<<<<< Updated upstream
                 result.set(shaft.id, ConfigError.NO_ERROR);
-=======
-                result.set(shaft.id, false);
->>>>>>> Stashed changes
             }
         }
 

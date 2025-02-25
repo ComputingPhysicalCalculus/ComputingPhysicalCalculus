@@ -1,835 +1,769 @@
 {
   "shafts": [
     {
-      "id": 44,
-      "start": [
-        1,
-        1
-      ],
-      "end": [
-        74,
-        1
-      ]
-    },
-    {
-      "id": 45,
-      "start": [
-        1,
-        2
-      ],
-      "end": [
-        74,
-        2
-      ]
-    },
-    {
-      "id": 46,
-      "start": [
-        1,
-        3
-      ],
-      "end": [
-        74,
-        3
-      ]
-    },
-    {
-      "id": 47,
-      "start": [
-        1,
-        4
-      ],
-      "end": [
-        74,
-        4
-      ]
-    },
-    {
-      "id": 48,
-      "start": [
-        1,
-        5
-      ],
-      "end": [
-        74,
-        5
-      ]
-    },
-    {
-      "id": 49,
-      "start": [
-        1,
-        6
-      ],
-      "end": [
-        74,
-        6
-      ]
-    },
-    {
-      "id": 50,
-      "start": [
-        1,
-        7
-      ],
-      "end": [
-        74,
-        7
-      ]
-    },
-    {
-      "id": 51,
-      "start": [
-        1,
-        8
-      ],
-      "end": [
-        74,
-        8
-      ]
-    },
-    {
-      "id": 52,
-      "start": [
-        1,
-        9
-      ],
-      "end": [
-        74,
-        9
-      ]
-    },
-    {
-      "id": 53,
-      "start": [
-        1,
-        11
-      ],
-      "end": [
-        74,
-        11
-      ]
-    },
-    {
-      "id": 54,
-      "start": [
-        1,
-        13
-      ],
-      "end": [
-        74,
-        13
-      ]
-    },
-    {
-      "id": 55,
-      "start": [
-        1,
-        14
-      ],
-      "end": [
-        74,
-        14
-      ]
-    },
-    {
-      "id": 56,
-      "start": [
-        1,
-        15
-      ],
-      "end": [
-        74,
-        15
-      ]
-    },
-    {
-      "id": 57,
-      "start": [
-        1,
-        16
-      ],
-      "end": [
-        74,
-        16
-      ]
-    },
-    {
-      "id": 60,
-      "start": [
-        2,
-        10
-      ],
-      "end": [
-        4,
-        10
-      ]
-    },
-    {
-      "id": 61,
-      "start": [
-        2,
-        12
-      ],
-      "end": [
-        4,
-        12
-      ]
-    },
-    {
-      "id": 77,
-      "start": [
-        5,
-        0
-      ],
-      "end": [
-        5,
-        4
-      ]
-    },
-    {
-      "id": 79,
-      "start": [
-        6,
-        0
-      ],
-      "end": [
-        6,
-        6
-      ]
-    },
-    {
-      "id": 81,
-      "start": [
-        10,
-        0
-      ],
-      "end": [
-        10,
-        5
-      ]
-    },
-    {
-      "id": 83,
-      "start": [
-        11,
-        0
-      ],
-      "end": [
-        11,
-        7
-      ]
-    },
-    {
-      "id": 93,
-      "start": [
-        3,
-        2
-      ],
-      "end": [
-        3,
-        10
-      ]
-    },
-    {
-      "id": 94,
-      "start": [
-        4,
-        3
-      ],
-      "end": [
-        4,
-        12
-      ]
-    },
-    {
-      "id": 103,
-      "start": [
-        15,
-        0
-      ],
-      "end": [
-        15,
-        11
-      ]
-    },
-    {
-      "id": 105,
-      "start": [
-        20,
-        0
-      ],
-      "end": [
-        20,
-        11
-      ]
-    },
-    {
-      "id": 107,
-      "start": [
-        16,
-        0
-      ],
-      "end": [
-        16,
-        13
-      ]
-    },
-    {
-      "id": 109,
-      "start": [
-        21,
-        0
-      ],
-      "end": [
-        21,
-        14
-      ]
-    },
-    {
-      "id": 111,
+      "id": 223,
       "start": [
         25,
         0
       ],
       "end": [
         25,
-        2
-      ]
-    },
-    {
-      "id": 113,
-      "start": [
-        30,
-        0
-      ],
-      "end": [
-        30,
-        3
-      ]
-    },
-    {
-      "id": 115,
-      "start": [
-        26,
-        0
-      ],
-      "end": [
-        26,
-        15
-      ]
-    },
-    {
-      "id": 116,
-      "start": [
-        31,
-        0
-      ],
-      "end": [
-        31,
-        16
-      ]
-    },
-    {
-      "id": 126,
-      "start": [
-        1,
-        18
-      ],
-      "end": [
-        24,
-        18
-      ]
-    },
-    {
-      "id": 127,
-      "start": [
-        1,
-        19
-      ],
-      "end": [
-        24,
-        19
-      ]
-    },
-    {
-      "id": 128,
-      "start": [
-        1,
-        20
-      ],
-      "end": [
-        24,
-        20
-      ]
-    },
-    {
-      "id": 129,
-      "start": [
-        1,
-        21
-      ],
-      "end": [
-        24,
-        21
-      ]
-    },
-    {
-      "id": 130,
-      "start": [
-        1,
-        22
-      ],
-      "end": [
-        24,
-        22
-      ]
-    },
-    {
-      "id": 131,
-      "start": [
-        1,
-        23
-      ],
-      "end": [
-        24,
-        23
-      ]
-    },
-    {
-      "id": 134,
-      "start": [
-        7,
-        20
-      ],
-      "end": [
-        7,
-        24
-      ]
-    },
-    {
-      "id": 136,
-      "start": [
-        12,
-        18
-      ],
-      "end": [
-        12,
-        24
-      ]
-    },
-    {
-      "id": 138,
-      "start": [
-        18,
-        21
-      ],
-      "end": [
-        18,
-        24
-      ]
-    },
-    {
-      "id": 140,
-      "start": [
-        19,
-        19
-      ],
-      "end": [
-        19,
-        24
-      ]
-    },
-    {
-      "id": 142,
-      "start": [
-        24,
-        22
-      ],
-      "end": [
-        24,
-        24
-      ]
-    },
-    {
-      "id": 144,
-      "start": [
-        23,
-        8
-      ],
-      "end": [
-        23,
-        24
-      ]
-    },
-    {
-      "id": 154,
-      "start": [
-        8,
-        14
-      ],
-      "end": [
-        8,
-        24
-      ]
-    },
-    {
-      "id": 156,
-      "start": [
-        9,
-        9
-      ],
-      "end": [
-        9,
-        24
-      ]
-    },
-    {
-      "id": 158,
-      "start": [
-        14,
-        7
-      ],
-      "end": [
-        14,
-        24
-      ]
-    },
-    {
-      "id": 160,
-      "start": [
-        13,
-        13
-      ],
-      "end": [
-        13,
-        24
-      ]
-    },
-    {
-      "id": 162,
-      "start": [
-        4,
-        15
-      ],
-      "end": [
-        4,
-        23
-      ]
-    },
-    {
-      "id": 165,
-      "start": [
-        30,
-        20
-      ],
-      "end": [
-        53,
-        20
-      ]
-    },
-    {
-      "id": 166,
-      "start": [
-        30,
-        19
-      ],
-      "end": [
-        53,
-        19
-      ]
-    },
-    {
-      "id": 167,
-      "start": [
-        30,
-        18
-      ],
-      "end": [
-        53,
-        18
-      ]
-    },
-    {
-      "id": 168,
-      "start": [
-        30,
-        21
-      ],
-      "end": [
-        53,
-        21
-      ]
-    },
-    {
-      "id": 169,
-      "start": [
-        30,
-        22
-      ],
-      "end": [
-        53,
-        22
-      ]
-    },
-    {
-      "id": 170,
-      "start": [
-        30,
-        23
-      ],
-      "end": [
-        53,
-        23
-      ]
-    },
-    {
-      "id": 186,
-      "start": [
-        48,
-        19
-      ],
-      "end": [
-        48,
-        24
-      ]
-    },
-    {
-      "id": 188,
-      "start": [
-        47,
-        21
-      ],
-      "end": [
-        47,
-        24
-      ]
-    },
-    {
-      "id": 190,
-      "start": [
-        33,
-        16
-      ],
-      "end": [
-        33,
-        23
-      ]
-    },
-    {
-      "id": 193,
-      "start": [
-        37,
-        14
-      ],
-      "end": [
-        37,
-        24
-      ]
-    },
-    {
-      "id": 195,
-      "start": [
-        36,
-        20
-      ],
-      "end": [
-        36,
-        24
-      ]
-    },
-    {
-      "id": 197,
-      "start": [
-        38,
-        8
-      ],
-      "end": [
-        38,
-        24
-      ]
-    },
-    {
-      "id": 199,
-      "start": [
-        41,
-        18
-      ],
-      "end": [
-        41,
-        24
-      ]
-    },
-    {
-      "id": 201,
-      "start": [
-        42,
-        13
-      ],
-      "end": [
-        42,
-        24
-      ]
-    },
-    {
-      "id": 203,
-      "start": [
-        43,
         6
-      ],
-      "end": [
-        43,
-        24
       ]
     },
     {
-      "id": 205,
+      "id": 224,
       "start": [
-        53,
-        22
+        30,
+        0
       ],
       "end": [
-        53,
-        24
+        30,
+        7
       ]
     },
     {
-      "id": 207,
+      "id": 225,
       "start": [
-        52,
-        9
+        0,
+        17
       ],
       "end": [
-        52,
-        24
+        8,
+        17
       ]
     },
     {
-      "id": 217,
+      "id": 226,
       "start": [
-        73,
-        1
+        0,
+        19
       ],
       "end": [
-        73,
-        24
-      ]
-    },
-    {
-      "id": 219,
-      "start": [
-        69,
-        1
-      ],
-      "end": [
-        69,
-        24
-      ]
-    },
-    {
-      "id": 220,
-      "start": [
-        63,
-        1
-      ],
-      "end": [
-        63,
-        24
-      ]
-    },
-    {
-      "id": 221,
-      "start": [
-        59,
-        1
-      ],
-      "end": [
-        59,
-        24
+        12,
+        19
       ]
     },
     {
       "id": 227,
       "start": [
-        60,
-        8
+        34,
+        0
       ],
       "end": [
-        60,
-        24
+        34,
+        11
       ]
     },
     {
       "id": 228,
       "start": [
-        58,
-        4
+        0,
+        13
       ],
       "end": [
-        58,
-        24
+        35,
+        13
+      ]
+    },
+    {
+      "id": 229,
+      "start": [
+        35,
+        0
+      ],
+      "end": [
+        35,
+        13
+      ]
+    },
+    {
+      "id": 230,
+      "start": [
+        9,
+        10
+      ],
+      "end": [
+        9,
+        27
       ]
     },
     {
       "id": 231,
       "start": [
-        64,
-        4
+        7,
+        8
       ],
       "end": [
-        64,
-        24
+        7,
+        27
+      ]
+    },
+    {
+      "id": 232,
+      "start": [
+        8,
+        17
+      ],
+      "end": [
+        8,
+        27
       ]
     },
     {
       "id": 233,
       "start": [
-        62,
-        2
+        13,
+        7
       ],
       "end": [
-        62,
-        24
+        13,
+        27
+      ]
+    },
+    {
+      "id": 234,
+      "start": [
+        12,
+        19
+      ],
+      "end": [
+        12,
+        27
       ]
     },
     {
       "id": 235,
       "start": [
-        70,
-        9
+        5,
+        12
       ],
       "end": [
-        70,
-        24
+        5,
+        27
+      ]
+    },
+    {
+      "id": 236,
+      "start": [
+        0,
+        18
+      ],
+      "end": [
+        3,
+        18
       ]
     },
     {
       "id": 237,
       "start": [
-        68,
-        5
+        3,
+        18
       ],
       "end": [
-        68,
-        24
+        3,
+        27
+      ]
+    },
+    {
+      "id": 238,
+      "start": [
+        0,
+        20
+      ],
+      "end": [
+        4,
+        20
       ]
     },
     {
       "id": 239,
       "start": [
-        74,
-        5
+        4,
+        20
       ],
       "end": [
-        74,
-        24
+        4,
+        27
+      ]
+    },
+    {
+      "id": 240,
+      "start": [
+        18,
+        10
+      ],
+      "end": [
+        18,
+        27
       ]
     },
     {
       "id": 241,
       "start": [
-        72,
-        3
+        16,
+        9
+      ],
+      "end": [
+        16,
+        27
+      ]
+    },
+    {
+      "id": 242,
+      "start": [
+        17,
+        26
+      ],
+      "end": [
+        17,
+        27
+      ]
+    },
+    {
+      "id": 243,
+      "start": [
+        22,
+        26
+      ],
+      "end": [
+        22,
+        27
+      ]
+    },
+    {
+      "id": 244,
+      "start": [
+        17,
+        26
+      ],
+      "end": [
+        22,
+        26
+      ]
+    },
+    {
+      "id": 245,
+      "start": [
+        0,
+        22
+      ],
+      "end": [
+        21,
+        22
+      ]
+    },
+    {
+      "id": 246,
+      "start": [
+        21,
+        22
+      ],
+      "end": [
+        21,
+        27
+      ]
+    },
+    {
+      "id": 247,
+      "start": [
+        27,
+        6
+      ],
+      "end": [
+        27,
+        27
+      ]
+    },
+    {
+      "id": 248,
+      "start": [
+        0,
+        25
+      ],
+      "end": [
+        26,
+        25
+      ]
+    },
+    {
+      "id": 249,
+      "start": [
+        26,
+        25
+      ],
+      "end": [
+        26,
+        27
+      ]
+    },
+    {
+      "id": 250,
+      "start": [
+        0,
+        23
+      ],
+      "end": [
+        2,
+        23
+      ]
+    },
+    {
+      "id": 251,
+      "start": [
+        0,
+        21
+      ],
+      "end": [
+        2,
+        21
+      ]
+    },
+    {
+      "id": 252,
+      "start": [
+        2,
+        21
+      ],
+      "end": [
+        2,
+        23
+      ]
+    },
+    {
+      "id": 253,
+      "start": [
+        0,
+        24
+      ],
+      "end": [
+        29,
+        24
+      ]
+    },
+    {
+      "id": 254,
+      "start": [
+        29,
+        24
+      ],
+      "end": [
+        29,
+        27
+      ]
+    },
+    {
+      "id": 255,
+      "start": [
+        31,
+        13
+      ],
+      "end": [
+        31,
+        27
+      ]
+    },
+    {
+      "id": 256,
+      "start": [
+        37,
+        1
+      ],
+      "end": [
+        37,
+        27
+      ]
+    },
+    {
+      "id": 257,
+      "start": [
+        36,
+        4
+      ],
+      "end": [
+        36,
+        27
+      ]
+    },
+    {
+      "id": 258,
+      "start": [
+        30,
+        26
+      ],
+      "end": [
+        30,
+        27
+      ]
+    },
+    {
+      "id": 259,
+      "start": [
+        38,
+        26
+      ],
+      "end": [
+        38,
+        27
+      ]
+    },
+    {
+      "id": 260,
+      "start": [
+        30,
+        26
+      ],
+      "end": [
+        38,
+        26
+      ]
+    },
+    {
+      "id": 261,
+      "start": [
+        42,
+        1
+      ],
+      "end": [
+        42,
+        27
+      ]
+    },
+    {
+      "id": 262,
+      "start": [
+        43,
+        4
+      ],
+      "end": [
+        43,
+        27
+      ]
+    },
+    {
+      "id": 263,
+      "start": [
+        41,
+        2
+      ],
+      "end": [
+        41,
+        27
+      ]
+    },
+    {
+      "id": 264,
+      "start": [
+        39,
+        0
+      ],
+      "end": [
+        39,
+        11
+      ]
+    },
+    {
+      "id": 265,
+      "start": [
+        40,
+        0
+      ],
+      "end": [
+        40,
+        14
+      ]
+    },
+    {
+      "id": 266,
+      "start": [
+        0,
+        14
+      ],
+      "end": [
+        74,
+        14
+      ]
+    },
+    {
+      "id": 267,
+      "start": [
+        48,
+        18
+      ],
+      "end": [
+        48,
+        27
+      ]
+    },
+    {
+      "id": 268,
+      "start": [
+        45,
+        18
+      ],
+      "end": [
+        48,
+        18
+      ]
+    },
+    {
+      "id": 269,
+      "start": [
+        45,
+        20
+      ],
+      "end": [
+        49,
+        20
+      ]
+    },
+    {
+      "id": 270,
+      "start": [
+        49,
+        20
+      ],
+      "end": [
+        49,
+        27
+      ]
+    },
+    {
+      "id": 271,
+      "start": [
+        50,
+        12
+      ],
+      "end": [
+        50,
+        27
+      ]
+    },
+    {
+      "id": 272,
+      "start": [
+        54,
+        9
+      ],
+      "end": [
+        54,
+        27
+      ]
+    },
+    {
+      "id": 273,
+      "start": [
+        52,
+        10
+      ],
+      "end": [
+        52,
+        27
+      ]
+    },
+    {
+      "id": 274,
+      "start": [
+        45,
+        17
+      ],
+      "end": [
+        53,
+        17
+      ]
+    },
+    {
+      "id": 275,
+      "start": [
+        53,
+        17
+      ],
+      "end": [
+        53,
+        27
+      ]
+    },
+    {
+      "id": 276,
+      "start": [
+        58,
+        6
+      ],
+      "end": [
+        58,
+        27
+      ]
+    },
+    {
+      "id": 277,
+      "start": [
+        45,
+        19
+      ],
+      "end": [
+        57,
+        19
+      ]
+    },
+    {
+      "id": 278,
+      "start": [
+        57,
+        19
+      ],
+      "end": [
+        57,
+        27
+      ]
+    },
+    {
+      "id": 279,
+      "start": [
+        60,
+        8
+      ],
+      "end": [
+        60,
+        27
+      ]
+    },
+    {
+      "id": 280,
+      "start": [
+        62,
+        10
+      ],
+      "end": [
+        62,
+        27
+      ]
+    },
+    {
+      "id": 281,
+      "start": [
+        61,
+        26
+      ],
+      "end": [
+        61,
+        27
+      ]
+    },
+    {
+      "id": 282,
+      "start": [
+        66,
+        26
+      ],
+      "end": [
+        66,
+        27
+      ]
+    },
+    {
+      "id": 283,
+      "start": [
+        61,
+        26
+      ],
+      "end": [
+        66,
+        26
+      ]
+    },
+    {
+      "id": 284,
+      "start": [
+        45,
+        22
+      ],
+      "end": [
+        65,
+        22
+      ]
+    },
+    {
+      "id": 285,
+      "start": [
+        65,
+        22
+      ],
+      "end": [
+        65,
+        27
+      ]
+    },
+    {
+      "id": 286,
+      "start": [
+        45,
+        21
+      ],
+      "end": [
+        47,
+        21
+      ]
+    },
+    {
+      "id": 287,
+      "start": [
+        47,
+        21
+      ],
+      "end": [
+        47,
+        23
+      ]
+    },
+    {
+      "id": 288,
+      "start": [
+        45,
+        23
+      ],
+      "end": [
+        47,
+        23
+      ]
+    },
+    {
+      "id": 289,
+      "start": [
+        70,
+        7
+      ],
+      "end": [
+        70,
+        27
+      ]
+    },
+    {
+      "id": 290,
+      "start": [
+        45,
+        25
+      ],
+      "end": [
+        69,
+        25
+      ]
+    },
+    {
+      "id": 291,
+      "start": [
+        69,
+        25
+      ],
+      "end": [
+        69,
+        27
+      ]
+    },
+    {
+      "id": 292,
+      "start": [
+        45,
+        24
       ],
       "end": [
         72,
@@ -837,121 +771,1712 @@
       ]
     },
     {
-      "id": 245,
+      "id": 293,
       "start": [
-        39,
+        72,
+        24
+      ],
+      "end": [
+        72,
+        27
+      ]
+    },
+    {
+      "id": 294,
+      "start": [
+        74,
+        14
+      ],
+      "end": [
+        74,
+        27
+      ]
+    },
+    {
+      "id": 295,
+      "start": [
+        73,
+        26
+      ],
+      "end": [
+        73,
+        27
+      ]
+    },
+    {
+      "id": 296,
+      "start": [
+        78,
+        26
+      ],
+      "end": [
+        78,
+        27
+      ]
+    },
+    {
+      "id": 297,
+      "start": [
+        73,
+        26
+      ],
+      "end": [
+        78,
+        26
+      ]
+    },
+    {
+      "id": 298,
+      "start": [
+        77,
+        1
+      ],
+      "end": [
+        77,
+        27
+      ]
+    },
+    {
+      "id": 299,
+      "start": [
+        81,
+        1
+      ],
+      "end": [
+        81,
+        27
+      ]
+    },
+    {
+      "id": 300,
+      "start": [
+        76,
+        5
+      ],
+      "end": [
+        76,
+        27
+      ]
+    },
+    {
+      "id": 301,
+      "start": [
+        82,
+        5
+      ],
+      "end": [
+        82,
+        27
+      ]
+    },
+    {
+      "id": 302,
+      "start": [
+        80,
+        3
+      ],
+      "end": [
+        80,
+        27
+      ]
+    },
+    {
+      "id": 303,
+      "start": [
+        46,
         0
       ],
       "end": [
-        39,
+        46,
         1
       ]
     },
     {
-      "id": 247,
+      "id": 304,
       "start": [
-        40,
+        51,
         0
       ],
       "end": [
-        40,
+        51,
+        1
+      ]
+    },
+    {
+      "id": 305,
+      "start": [
+        47,
+        0
+      ],
+      "end": [
+        47,
         2
       ]
     },
     {
-      "id": 248,
+      "id": 306,
       "start": [
-        41,
+        48,
         0
       ],
       "end": [
-        41,
+        48,
         4
       ]
     },
     {
-      "id": 252,
+      "id": 307,
       "start": [
-        45,
+        52,
         0
       ],
       "end": [
-        45,
-        1
-      ]
-    },
-    {
-      "id": 254,
-      "start": [
-        46,
-        0
-      ],
-      "end": [
-        46,
+        52,
         3
       ]
     },
     {
-      "id": 255,
+      "id": 308,
       "start": [
-        47,
+        53,
         0
       ],
       "end": [
-        47,
+        53,
         5
       ]
     },
     {
-      "id": 259,
+      "id": 309,
       "start": [
-        51,
-        0
+        0,
+        1
       ],
       "end": [
-        51,
+        81,
+        1
+      ]
+    },
+    {
+      "id": 310,
+      "start": [
+        0,
+        2
+      ],
+      "end": [
+        56,
         2
       ]
     },
     {
-      "id": 260,
+      "id": 311,
       "start": [
-        52,
+        0,
+        3
+      ],
+      "end": [
+        80,
+        3
+      ]
+    },
+    {
+      "id": 312,
+      "start": [
+        0,
+        4
+      ],
+      "end": [
+        48,
+        4
+      ]
+    },
+    {
+      "id": 313,
+      "start": [
+        0,
+        5
+      ],
+      "end": [
+        82,
+        5
+      ]
+    },
+    {
+      "id": 314,
+      "start": [
+        0,
+        6
+      ],
+      "end": [
+        58,
+        6
+      ]
+    },
+    {
+      "id": 315,
+      "start": [
+        0,
+        7
+      ],
+      "end": [
+        70,
+        7
+      ]
+    },
+    {
+      "id": 316,
+      "start": [
+        0,
+        8
+      ],
+      "end": [
+        60,
+        8
+      ]
+    },
+    {
+      "id": 317,
+      "start": [
+        0,
+        9
+      ],
+      "end": [
+        54,
+        9
+      ]
+    },
+    {
+      "id": 318,
+      "start": [
+        0,
+        11
+      ],
+      "end": [
+        54,
+        11
+      ]
+    },
+    {
+      "id": 319,
+      "start": [
+        5,
+        10
+      ],
+      "end": [
+        62,
+        10
+      ]
+    },
+    {
+      "id": 320,
+      "start": [
+        5,
+        12
+      ],
+      "end": [
+        50,
+        12
+      ]
+    },
+    {
+      "id": 321,
+      "start": [
+        1,
+        12
+      ],
+      "end": [
+        2,
+        12
+      ]
+    },
+    {
+      "id": 322,
+      "start": [
+        1,
+        10
+      ],
+      "end": [
+        3,
+        10
+      ]
+    },
+    {
+      "id": 323,
+      "start": [
+        2,
+        3
+      ],
+      "end": [
+        2,
+        12
+      ]
+    },
+    {
+      "id": 324,
+      "start": [
+        3,
+        2
+      ],
+      "end": [
+        3,
+        10
+      ]
+    },
+    {
+      "id": 325,
+      "start": [
+        4,
         0
       ],
       "end": [
-        52,
+        4,
+        4
+      ]
+    },
+    {
+      "id": 326,
+      "start": [
+        9,
+        0
+      ],
+      "end": [
+        9,
+        5
+      ]
+    },
+    {
+      "id": 327,
+      "start": [
+        5,
+        0
+      ],
+      "end": [
+        5,
+        8
+      ]
+    },
+    {
+      "id": 328,
+      "start": [
+        10,
+        0
+      ],
+      "end": [
+        10,
+        9
+      ]
+    },
+    {
+      "id": 329,
+      "start": [
+        14,
+        0
+      ],
+      "end": [
+        14,
+        11
+      ]
+    },
+    {
+      "id": 330,
+      "start": [
+        19,
+        0
+      ],
+      "end": [
+        19,
+        11
+      ]
+    },
+    {
+      "id": 331,
+      "start": [
+        15,
+        0
+      ],
+      "end": [
+        15,
+        10
+      ]
+    },
+    {
+      "id": 332,
+      "start": [
+        20,
+        0
+      ],
+      "end": [
+        20,
+        12
+      ]
+    },
+    {
+      "id": 333,
+      "start": [
+        24,
+        0
+      ],
+      "end": [
+        24,
+        2
+      ]
+    },
+    {
+      "id": 334,
+      "start": [
+        29,
+        0
+      ],
+      "end": [
+        29,
+        3
+      ]
+    },
+    {
+      "id": 1141,
+      "start": [
+        56,
+        0
+      ],
+      "end": [
+        56,
+        2
+      ]
+    },
+    {
+      "id": 1143,
+      "start": [
+        57,
+        0
+      ],
+      "end": [
+        57,
         3
       ]
     }
   ],
   "components": [
     {
-      "type": "motor",
-      "compID": 43,
+      "type": "crossConnect",
+      "compID": 849,
       "position": [
-        -1,
-        1
+        25,
+        6
       ],
       "reversed": false,
-      "outputShaft": 44
+      "vertical": 223,
+      "horizontal": 314
     },
     {
-      "type": "differential",
-      "compID": 58,
+      "type": "crossConnect",
+      "compID": 851,
       "position": [
-        2,
-        10
+        30,
+        7
       ],
-      "diffShaft1": 60,
-      "sumShaft": 53,
-      "diffShaft2": 61
+      "reversed": false,
+      "vertical": 224,
+      "horizontal": 315
+    },
+    {
+      "type": "functionTable",
+      "compID": 854,
+      "position": [
+        32,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 227,
+      "outputShaft": 229,
+      "lookup": true,
+      "fn": "A=0.00190;\nB=0.000187;\nC=0.000302;\n1/(A*B-(C^2)*(cos(x)))"
     },
     {
       "type": "label",
-      "compID": 62,
+      "compID": 855,
       "position": [
-        0,
+        31,
+        -5
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "center",
+      "_comment": "-1/(AB-C^2cos(x))"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 857,
+      "position": [
+        34,
+        11
+      ],
+      "reversed": false,
+      "vertical": 227,
+      "horizontal": 318
+    },
+    {
+      "type": "crossConnect",
+      "compID": 860,
+      "position": [
+        35,
+        13
+      ],
+      "reversed": false,
+      "vertical": 229,
+      "horizontal": 228
+    },
+    {
+      "type": "label",
+      "compID": 861,
+      "position": [
+        -7,
+        13
+      ],
+      "size": [
+        7,
+        1
+      ],
+      "align": "center",
+      "_comment": "1/(AB-C^2cos(a-b))"
+    },
+    {
+      "type": "multiplier",
+      "compID": 862,
+      "position": [
+        7,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 230,
+      "outputShaft": 232,
+      "multiplicandShaft": 231
+    },
+    {
+      "type": "crossConnect",
+      "compID": 864,
+      "position": [
+        9,
+        10
+      ],
+      "reversed": false,
+      "vertical": 230,
+      "horizontal": 319
+    },
+    {
+      "type": "crossConnect",
+      "compID": 866,
+      "position": [
+        7,
+        8
+      ],
+      "reversed": false,
+      "vertical": 231,
+      "horizontal": 316
+    },
+    {
+      "type": "crossConnect",
+      "compID": 869,
+      "position": [
+        8,
+        17
+      ],
+      "reversed": false,
+      "vertical": 232,
+      "horizontal": 225
+    },
+    {
+      "type": "multiplier",
+      "compID": 870,
+      "position": [
+        11,
+        28
+      ],
+      "factor": "E=0.0160;\nE",
+      "inputShaft": 233,
+      "outputShaft": 234,
+      "multiplicandShaft": null
+    },
+    {
+      "type": "crossConnect",
+      "compID": 872,
+      "position": [
+        13,
+        7
+      ],
+      "reversed": false,
+      "vertical": 233,
+      "horizontal": 315
+    },
+    {
+      "type": "label",
+      "compID": 873,
+      "position": [
+        11,
+        30
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "center",
+      "_comment": "E"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 875,
+      "position": [
+        12,
+        19
+      ],
+      "reversed": true,
+      "vertical": 234,
+      "horizontal": 226
+    },
+    {
+      "type": "differential",
+      "compID": 876,
+      "position": [
+        1,
+        17
+      ],
+      "diffShaft1": 225,
+      "sumShaft": 236,
+      "diffShaft2": 226
+    },
+    {
+      "type": "multiplier",
+      "compID": 877,
+      "position": [
+        3,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 235,
+      "outputShaft": 239,
+      "multiplicandShaft": 237
+    },
+    {
+      "type": "crossConnect",
+      "compID": 879,
+      "position": [
+        5,
+        12
+      ],
+      "reversed": false,
+      "vertical": 235,
+      "horizontal": 320
+    },
+    {
+      "type": "crossConnect",
+      "compID": 882,
+      "position": [
+        3,
+        18
+      ],
+      "reversed": false,
+      "vertical": 237,
+      "horizontal": 236
+    },
+    {
+      "type": "differential",
+      "compID": 883,
+      "position": [
+        1,
+        20
+      ],
+      "diffShaft1": 238,
+      "sumShaft": 251,
+      "diffShaft2": 245
+    },
+    {
+      "type": "crossConnect",
+      "compID": 886,
+      "position": [
+        4,
+        20
+      ],
+      "reversed": false,
+      "vertical": 239,
+      "horizontal": 238
+    },
+    {
+      "type": "multiplier",
+      "compID": 887,
+      "position": [
+        16,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 240,
+      "outputShaft": 242,
+      "multiplicandShaft": 241
+    },
+    {
+      "type": "multiplier",
+      "compID": 888,
+      "position": [
+        20,
+        28
+      ],
+      "factor": "B=0.000187;\nB",
+      "inputShaft": 243,
+      "outputShaft": 246,
+      "multiplicandShaft": null
+    },
+    {
+      "type": "crossConnect",
+      "compID": 890,
+      "position": [
+        18,
+        10
+      ],
+      "reversed": false,
+      "vertical": 240,
+      "horizontal": 319
+    },
+    {
+      "type": "crossConnect",
+      "compID": 892,
+      "position": [
+        16,
+        9
+      ],
+      "reversed": false,
+      "vertical": 241,
+      "horizontal": 317
+    },
+    {
+      "type": "crossConnect",
+      "compID": 896,
+      "position": [
+        17,
+        26
+      ],
+      "reversed": false,
+      "vertical": 242,
+      "horizontal": 244
+    },
+    {
+      "type": "crossConnect",
+      "compID": 897,
+      "position": [
+        22,
+        26
+      ],
+      "reversed": false,
+      "vertical": 243,
+      "horizontal": 244
+    },
+    {
+      "type": "label",
+      "compID": 898,
+      "position": [
+        20,
+        30
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "center",
+      "_comment": "B"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 901,
+      "position": [
+        21,
+        22
+      ],
+      "reversed": false,
+      "vertical": 246,
+      "horizontal": 245
+    },
+    {
+      "type": "differential",
+      "compID": 902,
+      "position": [
+        1,
+        23
+      ],
+      "diffShaft1": 250,
+      "sumShaft": 253,
+      "diffShaft2": 248
+    },
+    {
+      "type": "multiplier",
+      "compID": 903,
+      "position": [
+        25,
+        28
+      ],
+      "factor": "B=0.000187;\nD=0.114;\nB*D",
+      "inputShaft": 247,
+      "outputShaft": 249,
+      "multiplicandShaft": null
+    },
+    {
+      "type": "label",
+      "compID": 904,
+      "position": [
+        25,
+        30
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "center",
+      "_comment": "BD"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 906,
+      "position": [
+        27,
+        6
+      ],
+      "reversed": false,
+      "vertical": 247,
+      "horizontal": 314
+    },
+    {
+      "type": "crossConnect",
+      "compID": 909,
+      "position": [
+        26,
+        25
+      ],
+      "reversed": false,
+      "vertical": 249,
+      "horizontal": 248
+    },
+    {
+      "type": "crossConnect",
+      "compID": 913,
+      "position": [
+        2,
+        23
+      ],
+      "reversed": false,
+      "vertical": 252,
+      "horizontal": 250
+    },
+    {
+      "type": "crossConnect",
+      "compID": 914,
+      "position": [
+        2,
+        21
+      ],
+      "reversed": false,
+      "vertical": 252,
+      "horizontal": 251
+    },
+    {
+      "type": "multiplier",
+      "compID": 916,
+      "position": [
+        29,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 255,
+      "outputShaft": 258,
+      "multiplicandShaft": 254
+    },
+    {
+      "type": "crossConnect",
+      "compID": 918,
+      "position": [
+        29,
+        24
+      ],
+      "reversed": false,
+      "vertical": 254,
+      "horizontal": 253
+    },
+    {
+      "type": "crossConnect",
+      "compID": 920,
+      "position": [
+        31,
+        13
+      ],
+      "reversed": false,
+      "vertical": 255,
+      "horizontal": 228
+    },
+    {
+      "type": "integrator",
+      "compID": 921,
+      "position": [
+        35,
+        28
+      ],
+      "outputShaft": 257,
+      "variableOfIntegrationShaft": 256,
+      "integrandShaft": 259,
+      "initialPosition": "0"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 924,
+      "position": [
+        37,
+        1
+      ],
+      "reversed": false,
+      "vertical": 256,
+      "horizontal": 309
+    },
+    {
+      "type": "crossConnect",
+      "compID": 928,
+      "position": [
+        36,
+        4
+      ],
+      "reversed": true,
+      "vertical": 257,
+      "horizontal": 312
+    },
+    {
+      "type": "crossConnect",
+      "compID": 932,
+      "position": [
+        38,
+        26
+      ],
+      "reversed": false,
+      "vertical": 259,
+      "horizontal": 260
+    },
+    {
+      "type": "crossConnect",
+      "compID": 933,
+      "position": [
+        30,
+        26
+      ],
+      "reversed": false,
+      "vertical": 258,
+      "horizontal": 260
+    },
+    {
+      "type": "integrator",
+      "compID": 934,
+      "position": [
+        40,
+        28
+      ],
+      "outputShaft": 263,
+      "variableOfIntegrationShaft": 261,
+      "integrandShaft": 262,
+      "initialPosition": "0"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 936,
+      "position": [
+        42,
+        1
+      ],
+      "reversed": false,
+      "vertical": 261,
+      "horizontal": 309
+    },
+    {
+      "type": "crossConnect",
+      "compID": 938,
+      "position": [
+        43,
+        4
+      ],
+      "reversed": false,
+      "vertical": 262,
+      "horizontal": 312
+    },
+    {
+      "type": "crossConnect",
+      "compID": 940,
+      "position": [
+        41,
+        2
+      ],
+      "reversed": false,
+      "vertical": 263,
+      "horizontal": 310
+    },
+    {
+      "type": "label",
+      "compID": 942,
+      "position": [
+        -7,
+        14
+      ],
+      "size": [
+        7,
+        1
+      ],
+      "align": "center",
+      "_comment": "1/(AB-C^2cos^2(a-b))"
+    },
+    {
+      "type": "functionTable",
+      "compID": 943,
+      "position": [
+        37,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 264,
+      "outputShaft": 265,
+      "lookup": true,
+      "fn": "A=0.00190;\nB=0.000187;\nC=0.000302;\n1/(A*B-(C^2)*(cos(x)^2))"
+    },
+    {
+      "type": "label",
+      "compID": 944,
+      "position": [
+        36,
+        -6
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "center",
+      "_comment": "1/(AB-C^2cos^2(x))"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 946,
+      "position": [
+        39,
+        11
+      ],
+      "reversed": false,
+      "vertical": 264,
+      "horizontal": 318
+    },
+    {
+      "type": "crossConnect",
+      "compID": 949,
+      "position": [
+        40,
+        14
+      ],
+      "reversed": false,
+      "vertical": 265,
+      "horizontal": 266
+    },
+    {
+      "type": "differential",
+      "compID": 950,
+      "position": [
+        46,
+        17
+      ],
+      "diffShaft1": 274,
+      "sumShaft": 268,
+      "diffShaft2": 277
+    },
+    {
+      "type": "differential",
+      "compID": 951,
+      "position": [
+        46,
+        20
+      ],
+      "diffShaft1": 269,
+      "sumShaft": 286,
+      "diffShaft2": 284
+    },
+    {
+      "type": "differential",
+      "compID": 952,
+      "position": [
+        46,
+        23
+      ],
+      "diffShaft1": 288,
+      "sumShaft": 292,
+      "diffShaft2": 290
+    },
+    {
+      "type": "multiplier",
+      "compID": 953,
+      "position": [
+        48,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 271,
+      "outputShaft": 270,
+      "multiplicandShaft": 267
+    },
+    {
+      "type": "crossConnect",
+      "compID": 957,
+      "position": [
+        48,
+        18
+      ],
+      "reversed": false,
+      "vertical": 267,
+      "horizontal": 268
+    },
+    {
+      "type": "crossConnect",
+      "compID": 961,
+      "position": [
+        49,
+        20
+      ],
+      "reversed": false,
+      "vertical": 270,
+      "horizontal": 269
+    },
+    {
+      "type": "crossConnect",
+      "compID": 963,
+      "position": [
+        50,
+        12
+      ],
+      "reversed": false,
+      "vertical": 271,
+      "horizontal": 320
+    },
+    {
+      "type": "multiplier",
+      "compID": 964,
+      "position": [
+        52,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 272,
+      "outputShaft": 275,
+      "multiplicandShaft": 273
+    },
+    {
+      "type": "crossConnect",
+      "compID": 966,
+      "position": [
+        54,
+        9
+      ],
+      "reversed": false,
+      "vertical": 272,
+      "horizontal": 317
+    },
+    {
+      "type": "crossConnect",
+      "compID": 968,
+      "position": [
+        52,
+        10
+      ],
+      "reversed": false,
+      "vertical": 273,
+      "horizontal": 319
+    },
+    {
+      "type": "crossConnect",
+      "compID": 971,
+      "position": [
+        53,
+        17
+      ],
+      "reversed": false,
+      "vertical": 275,
+      "horizontal": 274
+    },
+    {
+      "type": "multiplier",
+      "compID": 972,
+      "position": [
+        56,
+        28
+      ],
+      "factor": "D=0.114;\nD",
+      "inputShaft": 276,
+      "outputShaft": 278,
+      "multiplicandShaft": null
+    },
+    {
+      "type": "label",
+      "compID": 973,
+      "position": [
+        56,
+        30
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "center",
+      "_comment": "D"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 975,
+      "position": [
+        58,
+        6
+      ],
+      "reversed": false,
+      "vertical": 276,
+      "horizontal": 314
+    },
+    {
+      "type": "crossConnect",
+      "compID": 978,
+      "position": [
+        57,
+        19
+      ],
+      "reversed": false,
+      "vertical": 278,
+      "horizontal": 277
+    },
+    {
+      "type": "multiplier",
+      "compID": 979,
+      "position": [
+        60,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 280,
+      "outputShaft": 281,
+      "multiplicandShaft": 279
+    },
+    {
+      "type": "crossConnect",
+      "compID": 981,
+      "position": [
+        60,
+        8
+      ],
+      "reversed": false,
+      "vertical": 279,
+      "horizontal": 316
+    },
+    {
+      "type": "crossConnect",
+      "compID": 983,
+      "position": [
+        62,
+        10
+      ],
+      "reversed": false,
+      "vertical": 280,
+      "horizontal": 319
+    },
+    {
+      "type": "multiplier",
+      "compID": 984,
+      "position": [
+        64,
+        28
+      ],
+      "factor": "A=0.00190;\nA",
+      "inputShaft": 282,
+      "outputShaft": 285,
+      "multiplicandShaft": null
+    },
+    {
+      "type": "label",
+      "compID": 985,
+      "position": [
+        64,
+        30
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "center",
+      "_comment": "A"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 989,
+      "position": [
+        66,
+        26
+      ],
+      "reversed": false,
+      "vertical": 282,
+      "horizontal": 283
+    },
+    {
+      "type": "crossConnect",
+      "compID": 990,
+      "position": [
+        61,
+        26
+      ],
+      "reversed": false,
+      "vertical": 281,
+      "horizontal": 283
+    },
+    {
+      "type": "crossConnect",
+      "compID": 993,
+      "position": [
+        65,
+        22
+      ],
+      "reversed": false,
+      "vertical": 285,
+      "horizontal": 284
+    },
+    {
+      "type": "crossConnect",
+      "compID": 999,
+      "position": [
+        47,
+        23
+      ],
+      "reversed": false,
+      "vertical": 287,
+      "horizontal": 288
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1000,
+      "position": [
+        47,
+        21
+      ],
+      "reversed": false,
+      "vertical": 287,
+      "horizontal": 286
+    },
+    {
+      "type": "multiplier",
+      "compID": 1001,
+      "position": [
+        68,
+        28
+      ],
+      "factor": "A=0.00190;\nE=0.0160;\nA*E",
+      "inputShaft": 289,
+      "outputShaft": 291,
+      "multiplicandShaft": null
+    },
+    {
+      "type": "label",
+      "compID": 1002,
+      "position": [
+        68,
+        30
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "center",
+      "_comment": "AE"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1004,
+      "position": [
+        70,
+        7
+      ],
+      "reversed": false,
+      "vertical": 289,
+      "horizontal": 315
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1007,
+      "position": [
+        69,
+        25
+      ],
+      "reversed": true,
+      "vertical": 291,
+      "horizontal": 290
+    },
+    {
+      "type": "multiplier",
+      "compID": 1009,
+      "position": [
+        72,
+        28
+      ],
+      "factor": "1",
+      "inputShaft": 294,
+      "outputShaft": 295,
+      "multiplicandShaft": 293
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1011,
+      "position": [
+        72,
+        24
+      ],
+      "reversed": false,
+      "vertical": 293,
+      "horizontal": 292
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1013,
+      "position": [
+        74,
+        14
+      ],
+      "reversed": false,
+      "vertical": 294,
+      "horizontal": 266
+    },
+    {
+      "type": "integrator",
+      "compID": 1014,
+      "position": [
+        75,
+        28
+      ],
+      "outputShaft": 300,
+      "variableOfIntegrationShaft": 298,
+      "integrandShaft": 296,
+      "initialPosition": "0"
+    },
+    {
+      "type": "integrator",
+      "compID": 1015,
+      "position": [
+        79,
+        28
+      ],
+      "outputShaft": 302,
+      "variableOfIntegrationShaft": 299,
+      "integrandShaft": 301,
+      "initialPosition": "2*pi/3"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1019,
+      "position": [
+        78,
+        26
+      ],
+      "reversed": false,
+      "vertical": 296,
+      "horizontal": 297
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1020,
+      "position": [
+        73,
+        26
+      ],
+      "reversed": false,
+      "vertical": 295,
+      "horizontal": 297
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1022,
+      "position": [
+        77,
+        1
+      ],
+      "reversed": false,
+      "vertical": 298,
+      "horizontal": 309
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1024,
+      "position": [
+        81,
+        1
+      ],
+      "reversed": false,
+      "vertical": 299,
+      "horizontal": 309
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1026,
+      "position": [
+        76,
+        5
+      ],
+      "reversed": false,
+      "vertical": 300,
+      "horizontal": 313
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1028,
+      "position": [
+        82,
+        5
+      ],
+      "reversed": false,
+      "vertical": 301,
+      "horizontal": 313
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1030,
+      "position": [
+        80,
+        3
+      ],
+      "reversed": false,
+      "vertical": 302,
+      "horizontal": 311
+    },
+    {
+      "type": "outputTable",
+      "compID": 1031,
+      "position": [
+        45,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 303,
+      "outputShaft1": 305,
+      "outputShaft2": 306,
+      "initialY1": "0",
+      "initialY2": "0"
+    },
+    {
+      "type": "outputTable",
+      "compID": 1032,
+      "position": [
+        50,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 304,
+      "outputShaft1": 307,
+      "outputShaft2": 308,
+      "initialY1": "0",
+      "initialY2": "2*pi/3"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1035,
+      "position": [
+        46,
+        1
+      ],
+      "reversed": false,
+      "vertical": 303,
+      "horizontal": 309
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1036,
+      "position": [
+        51,
+        1
+      ],
+      "reversed": false,
+      "vertical": 304,
+      "horizontal": 309
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1038,
+      "position": [
+        47,
+        2
+      ],
+      "reversed": false,
+      "vertical": 305,
+      "horizontal": 310
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1040,
+      "position": [
+        48,
+        4
+      ],
+      "reversed": false,
+      "vertical": 306,
+      "horizontal": 312
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1042,
+      "position": [
+        52,
+        3
+      ],
+      "reversed": false,
+      "vertical": 307,
+      "horizontal": 311
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1045,
+      "position": [
+        53,
+        5
+      ],
+      "reversed": false,
+      "vertical": 308,
+      "horizontal": 313
+    },
+    {
+      "type": "label",
+      "compID": 1058,
+      "position": [
+        -5,
+        17
+      ],
+      "size": [
+        5,
+        1
+      ],
+      "align": "",
+      "_comment": "Ca''^2sin(a-b)"
+    },
+    {
+      "type": "motor",
+      "compID": 785,
+      "position": [
+        -2,
+        1
+      ],
+      "reversed": false,
+      "outputShaft": 309
+    },
+    {
+      "type": "label",
+      "compID": 793,
+      "position": [
+        -1,
         2
       ],
       "size": [
@@ -963,9 +2488,9 @@
     },
     {
       "type": "label",
-      "compID": 63,
+      "compID": 794,
       "position": [
-        0,
+        -1,
         3
       ],
       "size": [
@@ -977,13 +2502,13 @@
     },
     {
       "type": "label",
-      "compID": 64,
+      "compID": 795,
       "position": [
         -1,
         4
       ],
       "size": [
-        2,
+        1,
         1
       ],
       "align": "center",
@@ -991,13 +2516,13 @@
     },
     {
       "type": "label",
-      "compID": 65,
+      "compID": 796,
       "position": [
         -1,
         5
       ],
       "size": [
-        2,
+        1,
         1
       ],
       "align": "center",
@@ -1005,10 +2530,10 @@
     },
     {
       "type": "label",
-      "compID": 66,
+      "compID": 797,
       "position": [
-        -1,
-        6
+        -2,
+        8
       ],
       "size": [
         2,
@@ -1019,10 +2544,10 @@
     },
     {
       "type": "label",
-      "compID": 67,
+      "compID": 798,
       "position": [
-        -1,
-        7
+        -2,
+        9
       ],
       "size": [
         2,
@@ -1032,306 +2557,65 @@
       "_comment": "b'^2"
     },
     {
-      "type": "label",
-      "compID": 68,
+      "type": "differential",
+      "compID": 804,
       "position": [
-        -1,
-        8
+        1,
+        10
       ],
-      "size": [
-        2,
-        1
-      ],
-      "align": "center",
-      "_comment": "a''"
-    },
-    {
-      "type": "label",
-      "compID": 69,
-      "position": [
-        -1,
-        9
-      ],
-      "size": [
-        2,
-        1
-      ],
-      "align": "center",
-      "_comment": "b''"
-    },
-    {
-      "type": "functionTable",
-      "compID": 70,
-      "position": [
-        3,
-        -4
-      ],
-      "x_min": "-10",
-      "x_max": "10",
-      "y_min": "0",
-      "y_max": "100",
-      "inputShaft": 77,
-      "outputShaft": 79,
-      "lookup": true,
-      "fn": "x^2"
-    },
-    {
-      "type": "functionTable",
-      "compID": 72,
-      "position": [
-        8,
-        -4
-      ],
-      "x_min": "-10",
-      "x_max": "10",
-      "y_min": "0",
-      "y_max": "100",
-      "inputShaft": 81,
-      "outputShaft": 83,
-      "lookup": true,
-      "fn": "x^2"
-    },
-    {
-      "type": "functionTable",
-      "compID": 73,
-      "position": [
-        13,
-        -4
-      ],
-      "x_min": "0",
-      "x_max": "10",
-      "y_min": "-1.5",
-      "y_max": "1.5",
-      "inputShaft": 103,
-      "outputShaft": 107,
-      "lookup": true,
-      "fn": "sin(x)"
-    },
-    {
-      "type": "functionTable",
-      "compID": 76,
-      "position": [
-        18,
-        -4
-      ],
-      "x_min": "0",
-      "x_max": "10",
-      "y_min": "-1.5",
-      "y_max": "1.5",
-      "inputShaft": 105,
-      "outputShaft": 109,
-      "lookup": true,
-      "fn": "cos(x)"
+      "diffShaft1": 322,
+      "sumShaft": 318,
+      "diffShaft2": 321
     },
     {
       "type": "crossConnect",
-      "compID": 78,
-      "position": [
-        5,
-        4
-      ],
-      "reversed": false,
-      "vertical": 77,
-      "horizontal": 47
-    },
-    {
-      "type": "crossConnect",
-      "compID": 80,
-      "position": [
-        6,
-        6
-      ],
-      "reversed": false,
-      "vertical": 79,
-      "horizontal": 49
-    },
-    {
-      "type": "crossConnect",
-      "compID": 82,
-      "position": [
-        10,
-        5
-      ],
-      "reversed": false,
-      "vertical": 81,
-      "horizontal": 48
-    },
-    {
-      "type": "crossConnect",
-      "compID": 84,
-      "position": [
-        11,
-        7
-      ],
-      "reversed": false,
-      "vertical": 83,
-      "horizontal": 50
-    },
-    {
-      "type": "label",
-      "compID": 85,
-      "position": [
-        4,
-        -5
-      ],
-      "size": [
-        2,
-        1
-      ],
-      "align": "center",
-      "_comment": "x^2"
-    },
-    {
-      "type": "label",
-      "compID": 86,
-      "position": [
-        9,
-        -5
-      ],
-      "size": [
-        2,
-        1
-      ],
-      "align": "center",
-      "_comment": "x^2"
-    },
-    {
-      "type": "functionTable",
-      "compID": 87,
-      "position": [
-        23,
-        -4
-      ],
-      "x_min": "0",
-      "x_max": "10",
-      "y_min": "-0.5",
-      "y_max": "0.5",
-      "inputShaft": 111,
-      "outputShaft": 115,
-      "lookup": true,
-      "fn": "D=0.114;\nD*sin(x)"
-    },
-    {
-      "type": "functionTable",
-      "compID": 88,
-      "position": [
-        28,
-        -4
-      ],
-      "x_min": "0",
-      "x_max": "10",
-      "y_min": "-0.5",
-      "y_max": "0.5",
-      "inputShaft": 113,
-      "outputShaft": 116,
-      "lookup": true,
-      "fn": "E=0.0160;\nE*sin(x)"
-    },
-    {
-      "type": "label",
-      "compID": 89,
-      "position": [
-        13,
-        -5
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "sin(a-b)"
-    },
-    {
-      "type": "label",
-      "compID": 90,
-      "position": [
-        18,
-        -5
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "cos(a-b)"
-    },
-    {
-      "type": "label",
-      "compID": 91,
-      "position": [
-        23,
-        -5
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "Dsin(x)"
-    },
-    {
-      "type": "label",
-      "compID": 92,
-      "position": [
-        28,
-        -5
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "Esin(x)"
-    },
-    {
-      "type": "crossConnect",
-      "compID": 95,
-      "position": [
-        4,
-        12
-      ],
-      "reversed": true,
-      "vertical": 94,
-      "horizontal": 61
-    },
-    {
-      "type": "crossConnect",
-      "compID": 96,
+      "compID": 809,
       "position": [
         3,
         10
       ],
       "reversed": false,
-      "vertical": 93,
-      "horizontal": 60
+      "vertical": 324,
+      "horizontal": 322
     },
     {
       "type": "crossConnect",
-      "compID": 97,
+      "compID": 810,
       "position": [
-        4,
-        3
+        2,
+        12
       ],
-      "reversed": false,
-      "vertical": 94,
-      "horizontal": 46
+      "reversed": true,
+      "vertical": 323,
+      "horizontal": 321
     },
     {
       "type": "crossConnect",
-      "compID": 98,
+      "compID": 811,
       "position": [
         3,
         2
       ],
       "reversed": false,
-      "vertical": 93,
-      "horizontal": 45
+      "vertical": 324,
+      "horizontal": 310
+    },
+    {
+      "type": "crossConnect",
+      "compID": 812,
+      "position": [
+        2,
+        3
+      ],
+      "reversed": false,
+      "vertical": 323,
+      "horizontal": 311
     },
     {
       "type": "label",
-      "compID": 99,
+      "compID": 813,
       "position": [
-        -1,
+        -2,
         11
       ],
       "size": [
@@ -1343,826 +2627,328 @@
     },
     {
       "type": "label",
-      "compID": 100,
+      "compID": 814,
       "position": [
-        -2,
-        13
+        -3,
+        10
       ],
       "size": [
         3,
         1
       ],
       "align": "center",
-      "_comment": "sin(a-b)"
+      "_comment": "Csin(a-b)"
     },
     {
       "type": "label",
-      "compID": 102,
+      "compID": 815,
       "position": [
-        -2,
-        14
+        -3,
+        12
       ],
       "size": [
         3,
         1
       ],
       "align": "center",
-      "_comment": "cos(a-b)"
+      "_comment": "Ccos(a-b)"
+    },
+    {
+      "type": "functionTable",
+      "compID": 816,
+      "position": [
+        2,
+        -4
+      ],
+      "x_min": "-10",
+      "x_max": "10",
+      "y_min": "0",
+      "y_max": "100",
+      "inputShaft": 325,
+      "outputShaft": 327,
+      "lookup": true,
+      "fn": "x^2"
+    },
+    {
+      "type": "functionTable",
+      "compID": 817,
+      "position": [
+        7,
+        -4
+      ],
+      "x_min": "-10",
+      "x_max": "10",
+      "y_min": "0",
+      "y_max": "100",
+      "inputShaft": 326,
+      "outputShaft": 328,
+      "lookup": true,
+      "fn": "x^2"
     },
     {
       "type": "crossConnect",
-      "compID": 104,
+      "compID": 819,
+      "position": [
+        4,
+        4
+      ],
+      "reversed": false,
+      "vertical": 325,
+      "horizontal": 312
+    },
+    {
+      "type": "crossConnect",
+      "compID": 821,
+      "position": [
+        9,
+        5
+      ],
+      "reversed": false,
+      "vertical": 326,
+      "horizontal": 313
+    },
+    {
+      "type": "crossConnect",
+      "compID": 823,
+      "position": [
+        5,
+        8
+      ],
+      "reversed": false,
+      "vertical": 327,
+      "horizontal": 316
+    },
+    {
+      "type": "crossConnect",
+      "compID": 825,
+      "position": [
+        10,
+        9
+      ],
+      "reversed": false,
+      "vertical": 328,
+      "horizontal": 317
+    },
+    {
+      "type": "functionTable",
+      "compID": 826,
+      "position": [
+        12,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 329,
+      "outputShaft": 331,
+      "lookup": true,
+      "fn": "C=0.000302;\nC*sin(x)"
+    },
+    {
+      "type": "functionTable",
+      "compID": 827,
+      "position": [
+        17,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 330,
+      "outputShaft": 332,
+      "lookup": true,
+      "fn": "C=0.000302;\nC*cos(x)"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 830,
+      "position": [
+        14,
+        11
+      ],
+      "reversed": false,
+      "vertical": 329,
+      "horizontal": 318
+    },
+    {
+      "type": "crossConnect",
+      "compID": 831,
+      "position": [
+        19,
+        11
+      ],
+      "reversed": false,
+      "vertical": 330,
+      "horizontal": 318
+    },
+    {
+      "type": "crossConnect",
+      "compID": 833,
       "position": [
         15,
-        11
+        10
       ],
       "reversed": false,
-      "vertical": 103,
-      "horizontal": 53
+      "vertical": 331,
+      "horizontal": 319
     },
     {
       "type": "crossConnect",
-      "compID": 106,
+      "compID": 835,
       "position": [
         20,
-        11
+        12
       ],
       "reversed": false,
-      "vertical": 105,
-      "horizontal": 53
+      "vertical": 332,
+      "horizontal": 320
+    },
+    {
+      "type": "label",
+      "compID": 836,
+      "position": [
+        12,
+        -5
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "Csin(x)"
+    },
+    {
+      "type": "label",
+      "compID": 837,
+      "position": [
+        17,
+        -5
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "Ccos(x)"
+    },
+    {
+      "type": "label",
+      "compID": 838,
+      "position": [
+        -2,
+        6
+      ],
+      "size": [
+        2,
+        1
+      ],
+      "align": "center",
+      "_comment": "sin(a)"
+    },
+    {
+      "type": "label",
+      "compID": 839,
+      "position": [
+        -2,
+        7
+      ],
+      "size": [
+        2,
+        1
+      ],
+      "align": "center",
+      "_comment": "sin(b)"
+    },
+    {
+      "type": "functionTable",
+      "compID": 840,
+      "position": [
+        22,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 333,
+      "outputShaft": 223,
+      "lookup": true,
+      "fn": "sin(x)"
+    },
+    {
+      "type": "functionTable",
+      "compID": 841,
+      "position": [
+        27,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 334,
+      "outputShaft": 224,
+      "lookup": true,
+      "fn": "sin(x)"
+    },
+    {
+      "type": "label",
+      "compID": 842,
+      "position": [
+        22,
+        -5
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "sin(x)"
+    },
+    {
+      "type": "label",
+      "compID": 843,
+      "position": [
+        27,
+        -5
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "sin(x)"
     },
     {
       "type": "crossConnect",
-      "compID": 108,
+      "compID": 846,
       "position": [
-        16,
-        13
-      ],
-      "reversed": false,
-      "vertical": 107,
-      "horizontal": 54
-    },
-    {
-      "type": "crossConnect",
-      "compID": 110,
-      "position": [
-        21,
-        14
-      ],
-      "reversed": false,
-      "vertical": 109,
-      "horizontal": 55
-    },
-    {
-      "type": "crossConnect",
-      "compID": 112,
-      "position": [
-        25,
-        2
-      ],
-      "reversed": false,
-      "vertical": 111,
-      "horizontal": 45
-    },
-    {
-      "type": "crossConnect",
-      "compID": 114,
-      "position": [
-        30,
+        29,
         3
       ],
       "reversed": false,
-      "vertical": 113,
-      "horizontal": 46
-    },
-    {
-      "type": "label",
-      "compID": 117,
-      "position": [
-        -2,
-        15
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "Dsin(a)"
-    },
-    {
-      "type": "label",
-      "compID": 118,
-      "position": [
-        -2,
-        16
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "Esin(b)"
+      "vertical": 334,
+      "horizontal": 311
     },
     {
       "type": "crossConnect",
-      "compID": 119,
-      "position": [
-        26,
-        15
-      ],
-      "reversed": false,
-      "vertical": 115,
-      "horizontal": 56
-    },
-    {
-      "type": "crossConnect",
-      "compID": 120,
-      "position": [
-        31,
-        16
-      ],
-      "reversed": false,
-      "vertical": 116,
-      "horizontal": 57
-    },
-    {
-      "type": "integrator",
-      "compID": 122,
-      "position": [
-        6,
-        25
-      ],
-      "outputShaft": 134,
-      "variableOfIntegrationShaft": 154,
-      "integrandShaft": 156,
-      "initialPosition": "0"
-    },
-    {
-      "type": "integrator",
-      "compID": 123,
-      "position": [
-        11,
-        25
-      ],
-      "outputShaft": 136,
-      "variableOfIntegrationShaft": 160,
-      "integrandShaft": 158,
-      "initialPosition": "0"
-    },
-    {
-      "type": "multiplier",
-      "compID": 124,
-      "position": [
-        17,
-        25
-      ],
-      "factor": "C=0.000302;C",
-      "inputShaft": 140,
-      "outputShaft": 138
-    },
-    {
-      "type": "multiplier",
-      "compID": 125,
-      "position": [
-        22,
-        25
-      ],
-      "factor": "A=0.0190;-1/A",
-      "inputShaft": 142,
-      "outputShaft": 144
-    },
-    {
-      "type": "differential",
-      "compID": 132,
-      "position": [
-        2,
-        18
-      ],
-      "diffShaft1": 126,
-      "sumShaft": 127,
-      "diffShaft2": 128
-    },
-    {
-      "type": "differential",
-      "compID": 133,
-      "position": [
-        2,
-        21
-      ],
-      "diffShaft1": 129,
-      "sumShaft": 130,
-      "diffShaft2": 131
-    },
-    {
-      "type": "crossConnect",
-      "compID": 135,
-      "position": [
-        7,
-        20
-      ],
-      "reversed": false,
-      "vertical": 134,
-      "horizontal": 128
-    },
-    {
-      "type": "crossConnect",
-      "compID": 137,
-      "position": [
-        12,
-        18
-      ],
-      "reversed": false,
-      "vertical": 136,
-      "horizontal": 126
-    },
-    {
-      "type": "crossConnect",
-      "compID": 139,
-      "position": [
-        18,
-        21
-      ],
-      "reversed": false,
-      "vertical": 138,
-      "horizontal": 129
-    },
-    {
-      "type": "crossConnect",
-      "compID": 141,
-      "position": [
-        19,
-        19
-      ],
-      "reversed": false,
-      "vertical": 140,
-      "horizontal": 127
-    },
-    {
-      "type": "crossConnect",
-      "compID": 143,
+      "compID": 847,
       "position": [
         24,
-        22
+        2
       ],
       "reversed": false,
-      "vertical": 142,
-      "horizontal": 130
-    },
-    {
-      "type": "crossConnect",
-      "compID": 145,
-      "position": [
-        23,
-        8
-      ],
-      "reversed": false,
-      "vertical": 144,
-      "horizontal": 51
+      "vertical": 333,
+      "horizontal": 310
     },
     {
       "type": "label",
-      "compID": 146,
-      "position": [
-        17,
-        27
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "C"
-    },
-    {
-      "type": "label",
-      "compID": 147,
-      "position": [
-        22,
-        27
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "-1/A"
-    },
-    {
-      "type": "label",
-      "compID": 148,
-      "position": [
-        -3,
-        18
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "b'^2sin(a-b)"
-    },
-    {
-      "type": "label",
-      "compID": 149,
-      "position": [
-        -3,
-        20
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "b''cos(a-b)"
-    },
-    {
-      "type": "label",
-      "compID": 150,
-      "position": [
-        0,
-        19
-      ],
-      "size": [
-        1,
-        1
-      ],
-      "align": "center",
-      "_comment": "F"
-    },
-    {
-      "type": "label",
-      "compID": 151,
-      "position": [
-        0,
-        21
-      ],
-      "size": [
-        1,
-        1
-      ],
-      "align": "center",
-      "_comment": "CF"
-    },
-    {
-      "type": "label",
-      "compID": 152,
-      "position": [
-        -2,
-        23
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "Dsin(a)"
-    },
-    {
-      "type": "label",
-      "compID": 153,
-      "position": [
-        -3,
-        22
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "Dsin(a)+CF"
-    },
-    {
-      "type": "crossConnect",
-      "compID": 155,
-      "position": [
-        8,
-        14
-      ],
-      "reversed": false,
-      "vertical": 154,
-      "horizontal": 55
-    },
-    {
-      "type": "crossConnect",
-      "compID": 157,
-      "position": [
-        9,
-        9
-      ],
-      "reversed": false,
-      "vertical": 156,
-      "horizontal": 52
-    },
-    {
-      "type": "crossConnect",
-      "compID": 159,
-      "position": [
-        14,
-        7
-      ],
-      "reversed": false,
-      "vertical": 158,
-      "horizontal": 50
-    },
-    {
-      "type": "crossConnect",
-      "compID": 161,
-      "position": [
-        13,
-        13
-      ],
-      "reversed": false,
-      "vertical": 160,
-      "horizontal": 54
-    },
-    {
-      "type": "crossConnect",
-      "compID": 163,
-      "position": [
-        4,
-        23
-      ],
-      "reversed": false,
-      "vertical": 162,
-      "horizontal": 131
-    },
-    {
-      "type": "crossConnect",
-      "compID": 164,
-      "position": [
-        4,
-        15
-      ],
-      "reversed": false,
-      "vertical": 162,
-      "horizontal": 56
-    },
-    {
-      "type": "differential",
-      "compID": 171,
-      "position": [
-        31,
-        18
-      ],
-      "diffShaft1": 167,
-      "sumShaft": 166,
-      "diffShaft2": 165
-    },
-    {
-      "type": "differential",
-      "compID": 172,
-      "position": [
-        31,
-        21
-      ],
-      "diffShaft1": 168,
-      "sumShaft": 169,
-      "diffShaft2": 170
-    },
-    {
-      "type": "integrator",
-      "compID": 174,
+      "compID": 1138,
       "position": [
         35,
-        25
-      ],
-      "outputShaft": 195,
-      "variableOfIntegrationShaft": 193,
-      "integrandShaft": 197,
-      "initialPosition": "0"
-    },
-    {
-      "type": "integrator",
-      "compID": 175,
-      "position": [
-        40,
-        25
-      ],
-      "outputShaft": 199,
-      "variableOfIntegrationShaft": 201,
-      "integrandShaft": 203,
-      "initialPosition": "0"
-    },
-    {
-      "type": "multiplier",
-      "compID": 176,
-      "position": [
-        46,
-        25
-      ],
-      "factor": "C=0.000302;C",
-      "inputShaft": 186,
-      "outputShaft": 188
-    },
-    {
-      "type": "multiplier",
-      "compID": 177,
-      "position": [
-        51,
-        25
-      ],
-      "factor": "B=0.000187;-1/B",
-      "inputShaft": 205,
-      "outputShaft": 207
-    },
-    {
-      "type": "label",
-      "compID": 178,
-      "position": [
-        26,
-        18
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "a'^2sin(a-b)"
-    },
-    {
-      "type": "label",
-      "compID": 179,
-      "position": [
-        29,
-        19
-      ],
-      "size": [
-        1,
-        1
-      ],
-      "align": "",
-      "_comment": "G"
-    },
-    {
-      "type": "label",
-      "compID": 180,
-      "position": [
-        26,
-        20
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "-a''cos(a-b)"
-    },
-    {
-      "type": "label",
-      "compID": 181,
-      "position": [
-        29,
-        21
-      ],
-      "size": [
-        1,
-        1
-      ],
-      "align": "center",
-      "_comment": "CG"
-    },
-    {
-      "type": "label",
-      "compID": 182,
-      "position": [
-        27,
-        23
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "Esin(b)"
-    },
-    {
-      "type": "label",
-      "compID": 183,
-      "position": [
-        26,
-        22
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "Esin(b)+CG"
-    },
-    {
-      "type": "label",
-      "compID": 184,
-      "position": [
-        46,
-        27
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "C"
-    },
-    {
-      "type": "label",
-      "compID": 185,
-      "position": [
-        51,
-        27
-      ],
-      "size": [
-        3,
-        1
-      ],
-      "align": "center",
-      "_comment": "-1/B"
-    },
-    {
-      "type": "crossConnect",
-      "compID": 187,
-      "position": [
-        48,
-        19
-      ],
-      "reversed": false,
-      "vertical": 186,
-      "horizontal": 166
-    },
-    {
-      "type": "crossConnect",
-      "compID": 189,
-      "position": [
-        47,
-        21
-      ],
-      "reversed": false,
-      "vertical": 188,
-      "horizontal": 168
-    },
-    {
-      "type": "crossConnect",
-      "compID": 191,
-      "position": [
-        33,
-        16
-      ],
-      "reversed": false,
-      "vertical": 190,
-      "horizontal": 57
-    },
-    {
-      "type": "crossConnect",
-      "compID": 192,
-      "position": [
-        33,
-        23
-      ],
-      "reversed": false,
-      "vertical": 190,
-      "horizontal": 170
-    },
-    {
-      "type": "crossConnect",
-      "compID": 194,
-      "position": [
-        37,
-        14
-      ],
-      "reversed": false,
-      "vertical": 193,
-      "horizontal": 55
-    },
-    {
-      "type": "crossConnect",
-      "compID": 196,
-      "position": [
-        36,
-        20
-      ],
-      "reversed": true,
-      "vertical": 195,
-      "horizontal": 165
-    },
-    {
-      "type": "crossConnect",
-      "compID": 198,
-      "position": [
-        38,
-        8
-      ],
-      "reversed": false,
-      "vertical": 197,
-      "horizontal": 51
-    },
-    {
-      "type": "crossConnect",
-      "compID": 200,
-      "position": [
-        41,
-        18
-      ],
-      "reversed": false,
-      "vertical": 199,
-      "horizontal": 167
-    },
-    {
-      "type": "crossConnect",
-      "compID": 202,
-      "position": [
-        42,
-        13
-      ],
-      "reversed": false,
-      "vertical": 201,
-      "horizontal": 54
-    },
-    {
-      "type": "crossConnect",
-      "compID": 204,
-      "position": [
-        43,
-        6
-      ],
-      "reversed": false,
-      "vertical": 203,
-      "horizontal": 49
-    },
-    {
-      "type": "crossConnect",
-      "compID": 206,
-      "position": [
-        53,
-        22
-      ],
-      "reversed": false,
-      "vertical": 205,
-      "horizontal": 169
-    },
-    {
-      "type": "crossConnect",
-      "compID": 208,
-      "position": [
-        52,
-        9
-      ],
-      "reversed": false,
-      "vertical": 207,
-      "horizontal": 52
-    },
-    {
-      "type": "integrator",
-      "compID": 209,
-      "position": [
-        57,
-        25
-      ],
-      "outputShaft": 228,
-      "variableOfIntegrationShaft": 221,
-      "integrandShaft": 227,
-      "initialPosition": "0"
-    },
-    {
-      "type": "integrator",
-      "compID": 210,
-      "position": [
-        61,
-        25
-      ],
-      "outputShaft": 233,
-      "variableOfIntegrationShaft": 220,
-      "integrandShaft": 231,
-      "initialPosition": "pi/2"
-    },
-    {
-      "type": "integrator",
-      "compID": 211,
-      "position": [
-        67,
-        25
-      ],
-      "outputShaft": 237,
-      "variableOfIntegrationShaft": 219,
-      "integrandShaft": 235,
-      "initialPosition": "0"
-    },
-    {
-      "type": "integrator",
-      "compID": 212,
-      "position": [
-        71,
-        25
-      ],
-      "outputShaft": 241,
-      "variableOfIntegrationShaft": 217,
-      "integrandShaft": 239,
-      "initialPosition": "pi/2"
-    },
-    {
-      "type": "label",
-      "compID": 213,
-      "position": [
-        57,
-        27
+        30
       ],
       "size": [
         4,
@@ -2173,10 +2959,10 @@
     },
     {
       "type": "label",
-      "compID": 214,
+      "compID": 1139,
       "position": [
-        61,
-        27
+        40,
+        30
       ],
       "size": [
         4,
@@ -2186,351 +2972,43 @@
       "_comment": "Initial a"
     },
     {
-      "type": "label",
-      "compID": 215,
-      "position": [
-        67,
-        27
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "Initial b'"
-    },
-    {
-      "type": "label",
-      "compID": 216,
-      "position": [
-        71,
-        27
-      ],
-      "size": [
-        4,
-        1
-      ],
-      "align": "center",
-      "_comment": "Initial b"
-    },
-    {
-      "type": "crossConnect",
-      "compID": 222,
-      "position": [
-        73,
-        1
-      ],
-      "reversed": false,
-      "vertical": 217,
-      "horizontal": 44
-    },
-    {
-      "type": "crossConnect",
-      "compID": 223,
-      "position": [
-        69,
-        1
-      ],
-      "reversed": false,
-      "vertical": 219,
-      "horizontal": 44
-    },
-    {
-      "type": "crossConnect",
-      "compID": 224,
-      "position": [
-        63,
-        1
-      ],
-      "reversed": false,
-      "vertical": 220,
-      "horizontal": 44
-    },
-    {
-      "type": "crossConnect",
-      "compID": 225,
-      "position": [
-        59,
-        1
-      ],
-      "reversed": false,
-      "vertical": 221,
-      "horizontal": 44
-    },
-    {
-      "type": "crossConnect",
-      "compID": 229,
-      "position": [
-        60,
-        8
-      ],
-      "reversed": false,
-      "vertical": 227,
-      "horizontal": 51
-    },
-    {
-      "type": "crossConnect",
-      "compID": 230,
-      "position": [
-        58,
-        4
-      ],
-      "reversed": false,
-      "vertical": 228,
-      "horizontal": 47
-    },
-    {
-      "type": "crossConnect",
-      "compID": 232,
-      "position": [
-        64,
-        4
-      ],
-      "reversed": false,
-      "vertical": 231,
-      "horizontal": 47
-    },
-    {
-      "type": "crossConnect",
-      "compID": 234,
-      "position": [
-        62,
-        2
-      ],
-      "reversed": false,
-      "vertical": 233,
-      "horizontal": 45
-    },
-    {
-      "type": "crossConnect",
-      "compID": 236,
-      "position": [
-        70,
-        9
-      ],
-      "reversed": false,
-      "vertical": 235,
-      "horizontal": 52
-    },
-    {
-      "type": "crossConnect",
-      "compID": 238,
-      "position": [
-        68,
-        5
-      ],
-      "reversed": false,
-      "vertical": 237,
-      "horizontal": 48
-    },
-    {
-      "type": "crossConnect",
-      "compID": 240,
-      "position": [
-        74,
-        5
-      ],
-      "reversed": false,
-      "vertical": 239,
-      "horizontal": 48
-    },
-    {
-      "type": "crossConnect",
-      "compID": 242,
-      "position": [
-        72,
-        3
-      ],
-      "reversed": false,
-      "vertical": 241,
-      "horizontal": 46
-    },
-    {
       "type": "outputTable",
-      "compID": 244,
+      "compID": 1140,
       "position": [
-        38,
+        55,
         -4
       ],
-      "x_min": "0",
-      "x_max": "10",
-      "y_min": "-3",
-      "y_max": "3",
-      "inputShaft": 245,
-      "outputShaft1": 247,
-      "outputShaft2": 248,
-      "initialY1": "0",
-      "initialY2": "pi/2"
-    },
-    {
-      "type": "crossConnect",
-      "compID": 246,
-      "position": [
-        39,
-        1
-      ],
-      "reversed": false,
-      "vertical": 245,
-      "horizontal": 44
-    },
-    {
-      "type": "crossConnect",
-      "compID": 249,
-      "position": [
-        40,
-        2
-      ],
-      "reversed": false,
-      "vertical": 247,
-      "horizontal": 45
-    },
-    {
-      "type": "crossConnect",
-      "compID": 250,
-      "position": [
-        41,
-        4
-      ],
-      "reversed": false,
-      "vertical": 248,
-      "horizontal": 47
-    },
-    {
-      "type": "outputTable",
-      "compID": 251,
-      "position": [
-        44,
-        -4
-      ],
-      "x_min": "0",
-      "x_max": "10",
-      "y_min": "-3",
-      "y_max": "3",
-      "inputShaft": 252,
-      "outputShaft1": 254,
-      "outputShaft2": 255,
-      "initialY1": "0",
-      "initialY2": "pi/2"
-    },
-    {
-      "type": "crossConnect",
-      "compID": 253,
-      "position": [
-        45,
-        1
-      ],
-      "reversed": false,
-      "vertical": 252,
-      "horizontal": 44
-    },
-    {
-      "type": "crossConnect",
-      "compID": 256,
-      "position": [
-        47,
-        5
-      ],
-      "reversed": false,
-      "vertical": 255,
-      "horizontal": 48
-    },
-    {
-      "type": "crossConnect",
-      "compID": 257,
-      "position": [
-        46,
-        3
-      ],
-      "reversed": false,
-      "vertical": 254,
-      "horizontal": 46
-    },
-    {
-      "type": "outputTable",
-      "compID": 258,
-      "position": [
-        50,
-        -4
-      ],
-      "x_min": "-1",
-      "x_max": "1",
-      "y_min": "-1",
-      "y_max": "1",
-      "inputShaft": 259,
-      "outputShaft1": 260,
+      "x_min": "-0.1",
+      "x_max": "0.1",
+      "y_min": "-0.2",
+      "y_max": "0.2",
+      "inputShaft": 1141,
+      "outputShaft1": 1143,
       "outputShaft2": null,
       "initialY1": "0",
       "initialY2": "0"
     },
     {
       "type": "crossConnect",
-      "compID": 261,
+      "compID": 1142,
       "position": [
-        51,
+        56,
         2
       ],
       "reversed": false,
-      "vertical": 259,
-      "horizontal": 45
+      "vertical": 1141,
+      "horizontal": 310
     },
     {
       "type": "crossConnect",
-      "compID": 262,
+      "compID": 1144,
       "position": [
-        52,
+        57,
         3
       ],
       "reversed": false,
-      "vertical": 260,
-      "horizontal": 46
-    },
-    {
-      "type": "dial",
-      "compID": 269,
-      "position": [
-        8,
-        24
-      ]
-    },
-    {
-      "type": "dial",
-      "compID": 270,
-      "position": [
-        9,
-        24
-      ]
-    },
-    {
-      "type": "dial",
-      "compID": 276,
-      "position": [
-        13,
-        24
-      ]
-    },
-    {
-      "type": "dial",
-      "compID": 277,
-      "position": [
-        14,
-        24
-      ]
-    },
-    {
-      "type": "dial",
-      "compID": 278,
-      "position": [
-        12,
-        24
-      ]
-    },
-    {
-      "type": "dial",
-      "compID": 279,
-      "position": [
-        7,
-        24
-      ]
+      "vertical": 1143,
+      "horizontal": 311
     }
   ]
 }
