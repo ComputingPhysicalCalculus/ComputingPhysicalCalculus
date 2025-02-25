@@ -44,6 +44,7 @@ export type MultiplierConfig = {
   compID: number;
   inputShaft: ShaftID;
   outputShaft: ShaftID;
+  multiplicandShaft: ShaftID;
   factor: string;
   position: [number, number];
 };

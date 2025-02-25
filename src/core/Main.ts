@@ -95,8 +95,13 @@ export class Simulator {
         }
     }
 
+<<<<<<< Updated upstream
     check_config(): Map<number, ConfigError> {
         let result = new Map<number, ConfigError>();
+=======
+    check_config(): Map<number, boolean> {
+        let result = new Map<number, boolean>();
+>>>>>>> Stashed changes
         if (this.motor == undefined) {
             throw new Error("The configuration must have at least one motor");
         }
@@ -132,14 +137,22 @@ export class Simulator {
         // add uniterated devices as invalid devices
         for (let device of this.components) {
             if (!visited_devices.has(device)) {
+<<<<<<< Updated upstream
                 result.set(device.getID(), ConfigError.NO_ERROR);
+=======
+                result.set(device.getID(), false);
+>>>>>>> Stashed changes
             }
         }
 
         // add uniterated shafts as invalid shafts
         for (let shaft of this.shafts) {
             if (!visited.has(shaft.id)) {
+<<<<<<< Updated upstream
                 result.set(shaft.id, ConfigError.NO_ERROR);
+=======
+                result.set(shaft.id, false);
+>>>>>>> Stashed changes
             }
         }
 
@@ -211,7 +224,8 @@ export class Simulator {
                         component.compID,
                         shafts.get(component.inputShaft)!,
                         shafts.get(component.outputShaft)!,
-                        Expression.eval(String(component.factor)) // Accounts for numbers instead of a string in config
+                        Expression.eval(String(component.factor)), // Accounts for numbers instead of a string in config
+                        (!component.multiplicandShaft) ? undefined : shafts.get(component.multiplicandShaft)!
                     );
                     shafts.get(component.inputShaft)!.outputs.push(new_component);
                     components.push(new_component);

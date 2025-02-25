@@ -159,12 +159,13 @@ export function toConfig(): Config {
 
           const inputShaft = getVShaftID(position[0] + 2, position[1] - 1);
           const outputShaft = getVShaftID(position[0] + 1, position[1] - 1);
+          const multiplicandShaft = getVShaftID(position[0], position[1] - 1);
 
           if (inputShaft === null || outputShaft === null) {
             return null;
           }
 
-          return { type, compID, position, factor, inputShaft, outputShaft }
+          return { type, compID, position, factor, inputShaft, outputShaft, multiplicandShaft }
         }
       case "label":
         {
