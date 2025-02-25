@@ -30,30 +30,8 @@ export class Simulator {
     private initial_x_position; // initial x position of the function table
     private inputFunction: (n: number) => number;
     private mini_steps_n: number = 100;
-    private mini_steps_dt: number = 1/this.mini_steps_n;
-    shafts: Shaft[] = [];
-    motor: Motor | undefined;
-    outputTables: OutputTable[] = [];
-    components: Device[] = [];
-    private rotation: number; // rotation of the motor
-    private initial_x_position; // initial x position of the function table
-    private inputFunction: (n: number) => number;
-    private mini_steps_n: number = 100;
-    private mini_steps_dt: number = 1/this.mini_steps_n;
+    private mini_steps_dt: number = 1 / this.mini_steps_n;
 
-    constructor(config?: Config,
-        rotation: number = 1,
-        initial_x_position: number = 0,
-        inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
-    ) {
-        this.rotation = rotation;
-        this.initial_x_position = initial_x_position;
-        this.inputFunction = inputFunction;
-        if (config !== undefined) {
-            this.parse_config(config);
-            this.setup();
-        }
-    }
     constructor(config?: Config,
         rotation: number = 1,
         initial_x_position: number = 0,
@@ -89,7 +67,7 @@ export class Simulator {
             for (let device of shaft.outputs) {
                 let output = device.determine_output();
                 if (output === undefined) continue;
-                if (!visited_devices.has(device)){
+                if (!visited_devices.has(device)) {
                     ordered_devices.push(device);
                     visited_devices.add(device);
                 }
@@ -102,24 +80,24 @@ export class Simulator {
 
         this.components = ordered_devices;
     }
-        
+
 
     step() {
         // update the components
-        for (let i = 0; i < this.mini_steps_n; i++){
+        for (let i = 0; i < this.mini_steps_n; i++) {
             for (const device of this.components) {
                 device.update(this.mini_steps_dt);
             }
         }
 
-        for (const table of this.outputTables){
+        for (const table of this.outputTables) {
             table.update(1);
         }
     }
 
     check_config(): Map<number, ConfigError> {
         let result = new Map<number, ConfigError>();
-        if(this.motor == undefined) {
+        if (this.motor == undefined) {
             throw new Error("The configuration must have at least one motor");
         }
         let ordered_devices: Device[] = [this.motor];
@@ -134,7 +112,7 @@ export class Simulator {
             for (let device of shaft.outputs) {
                 let output = device.determine_output();
                 if (output === undefined) continue;
-                if (!visited_devices.has(device)){
+                if (!visited_devices.has(device)) {
                     ordered_devices.push(device);
                     visited_devices.add(device);
                     result.set(device.getID(), ConfigError.NO_ERROR);
@@ -152,15 +130,15 @@ export class Simulator {
         }
 
         // add uniterated devices as invalid devices
-        for(let device of this.components) {
-            if(!visited_devices.has(device)) {
+        for (let device of this.components) {
+            if (!visited_devices.has(device)) {
                 result.set(device.getID(), ConfigError.NO_ERROR);
             }
         }
 
         // add uniterated shafts as invalid shafts
-        for(let shaft of this.shafts) {
-            if(!visited.has(shaft.id)) {
+        for (let shaft of this.shafts) {
+            if (!visited.has(shaft.id)) {
                 result.set(shaft.id, ConfigError.NO_ERROR);
             }
         }
@@ -175,12 +153,6 @@ export class Simulator {
      * @return void
      * @author Hanzhang Shen
      */
-    parse_config(config: Config): void {
-        console.log("Parsing the configuration file and instantiating shafts and components.")
-        let shafts = new Map<number, Shaft>()
-        let components = [];
-        let outputTables = [];
-        let motor = undefined;
     /**
      * @function parse_config
      * @description parse the config file and create the corresponding shafts and devices
@@ -220,36 +192,6 @@ export class Simulator {
                     shafts.get(component.sumShaft)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
-        // create the components
-        for (const component of config.components) {
-            let new_component: Device;
-            switch (component.type) {
-                case 'differential':
-                    new_component = new Differential(
-                        component.compID,
-                        shafts.get(component.diffShaft1)!,
-                        shafts.get(component.diffShaft2)!,
-                        shafts.get(component.sumShaft)!
-                    );
-                    shafts.get(component.diffShaft1)!.outputs.push(new_component);
-                    shafts.get(component.diffShaft2)!.outputs.push(new_component);
-                    shafts.get(component.sumShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
-
-                case 'integrator':
-                    new_component = new Integrator(
-                        component.compID,
-                        shafts.get(component.variableOfIntegrationShaft)!,
-                        shafts.get(component.integrandShaft)!,
-                        shafts.get(component.outputShaft)!,
-                        false,
-                        Expression.eval(String(component.initialPosition)) // Accounts for direct numbers in config
-                    );
-                    shafts.get(component.variableOfIntegrationShaft)!.outputs.push(new_component);
-                    shafts.get(component.integrandShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
                 case 'integrator':
                     new_component = new Integrator(
                         component.compID,
@@ -274,16 +216,6 @@ export class Simulator {
                     shafts.get(component.inputShaft)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
-                case 'multiplier':
-                    new_component = new Multiplier(
-                        component.compID,
-                        shafts.get(component.inputShaft)!,
-                        shafts.get(component.outputShaft)!,
-                        Expression.eval(String(component.factor)) // Accounts for numbers instead of a string in config
-                    );
-                    shafts.get(component.inputShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
 
                 case 'crossConnect':
                     new_component = new CrossConnect(
@@ -296,29 +228,7 @@ export class Simulator {
                     shafts.get(component.vertical)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
-                case 'crossConnect':
-                    new_component = new CrossConnect(
-                        component.compID,
-                        shafts.get(component.horizontal)!,
-                        shafts.get(component.vertical)!,
-                        component.reversed
-                    );
-                    shafts.get(component.horizontal)!.outputs.push(new_component);
-                    shafts.get(component.vertical)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
 
-                case 'gearPair':
-                    new_component = new GearPair(
-                        component.compID,
-                        shafts.get(component.shaft1)!,
-                        shafts.get(component.shaft2)!,
-                        component.outputRatio / component.inputRatio,
-                    )
-                    shafts.get(component.shaft1)!.outputs.push(new_component);
-                    shafts.get(component.shaft2)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
                 case 'gearPair':
                     new_component = new GearPair(
                         component.compID,
@@ -343,18 +253,6 @@ export class Simulator {
                     shafts.get(component.inputShaft)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
-                case 'functionTable':
-                    new_component = new FunctionTable(
-                        component.compID,
-                        shafts.get(component.inputShaft)!,
-                        shafts.get(component.outputShaft)!,
-                        this.initial_x_position,
-                        this.inputFunction // TODO: hardcoded for now to test the engine
-                    );
-                    (new_component as FunctionTable).id = component.compID;
-                    shafts.get(component.inputShaft)!.outputs.push(new_component);
-                    components.push(new_component);
-                    break;
 
                 case 'motor':
                     if (this.motor)
@@ -366,39 +264,6 @@ export class Simulator {
                     );
                     components.push(motor);
                     break;
-                case 'motor':
-                    if (this.motor)
-                        throw new Error('Only one motor is allowed.');
-                    motor = new Motor(
-                        component.compID,
-                        this.rotation,
-                        shafts.get(component.outputShaft)!
-                    );
-                    components.push(motor);
-                    break;
-
-                case 'outputTable':
-                    let outputTable: OutputTable;
-                    if (component.outputShaft2) {
-                        outputTable = new OutputTable(
-                            component.compID,
-                            shafts.get(component.inputShaft)!,
-                            shafts.get(component.outputShaft1)!,
-                            Expression.eval(String(component.initialY1)), // Accounts for numbers instead of a string being passed into input
-                            shafts.get(component.outputShaft2)!,
-                            Expression.eval(String(component.initialY2)),
-                        );
-                        shafts.get(component.outputShaft2)!.outputs.push(outputTable);
-                    }
-                    else {
-                        outputTable = new OutputTable(
-                            component.compID,
-                            shafts.get(component.inputShaft)!,
-                            shafts.get(component.outputShaft1)!,
-                            Expression.eval(String(component.initialY1)),
-                        );
-                    }
-                    outputTable.id = component.compID;
                 case 'outputTable':
                     let outputTable: OutputTable;
                     if (component.outputShaft2) {
@@ -436,31 +301,11 @@ export class Simulator {
                     throw new Error(`Invalid component type`);
             }
         }
-                    shafts.get(component.inputShaft)!.outputs.push(outputTable);
-                    shafts.get(component.outputShaft1)!.outputs.push(outputTable);
-                    // components.push(outputTable);
-                    outputTables.push(outputTable);
-                    break;
-                // only from frontend
-                case 'label':
-                    break;
-                case 'dial':
-                    break;
-                default:
-                    throw new Error(`Invalid component type`);
-            }
-        }
 
         this.motor = motor;
         this.shafts = Array.from(shafts.values());
         this.outputTables = outputTables;
-        this.components = components
-        console.log("Finished parsing the configuration file and instantiating the objects.")
-    }
-        this.motor = motor;
-        this.shafts = Array.from(shafts.values());
-        this.outputTables = outputTables;
-        this.components = components
+        this.components = components;
         console.log("Finished parsing the configuration file and instantiating the objects.")
     }
 }

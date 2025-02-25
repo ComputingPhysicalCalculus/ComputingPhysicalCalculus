@@ -2,8 +2,6 @@ Saving settings to config file
 CSV output
 Sound
 Dial tooltip for exact value
-Clear -> Clear screen
-Clear Output tables
 Selection
 
 BUGS:
@@ -13,6 +11,5 @@ Richard things:
 Help and About screen
 Change component diagrams
 Animation
-Play,Pause,Stop buttons
 Traffic lights
 Double pendulum
