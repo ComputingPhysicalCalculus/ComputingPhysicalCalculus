@@ -13,7 +13,7 @@ import { Shaft } from "./Shaft";
  * @implements Device
  */
 export class FunctionTable implements Device {
-    id: number = 0;
+    id: number;
     private output: Shaft;
     x_position: number;
     private f_n: number;
@@ -28,7 +28,8 @@ export class FunctionTable implements Device {
      * @param initial_x_position The initial_x_position user sets 
      * @param fun The function of to trace
      */
-    constructor(input: Shaft, output: Shaft, initial_x_position: number, fun: (n: number) => number) {
+    constructor(id: number, input: Shaft, output: Shaft, initial_x_position: number, fun: (n: number) => number) {
+        this.id = id;
         this.input = input;
         this.output = output;
         this.fun = fun;

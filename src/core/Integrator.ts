@@ -14,6 +14,7 @@ import { Shaft } from "./Shaft";
  * @implements Device
  */
 export class Integrator implements Device {
+    id: number;
     private output: Shaft;
     private integrand: Shaft;
     private diskPosition: number;
@@ -28,10 +29,11 @@ export class Integrator implements Device {
      * @param integrand The shaft that represents the integrand f(x).
      * @param output The output shaft that represents the angular speed of the wheel.
      */
-    constructor(variableOfIntegration: Shaft, integrand: Shaft, output: Shaft,
+    constructor(id: number, variableOfIntegration: Shaft, integrand: Shaft, output: Shaft,
                 reverse: boolean,
                 initialPosition: number)
     {
+        this.id = id;
         this.output = output;
         this.integrand = integrand;
         this.variableOfIntegration = variableOfIntegration;

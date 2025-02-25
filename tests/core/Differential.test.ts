@@ -23,7 +23,7 @@ describe("Differential Class Testing 1", () =>{
     let mock_shaft_2 = new MockShaft(2);
     let mock_shaft_3 = new MockShaft(3);
     // create instance of Differential
-    let differential = new Differential(mock_shaft_1, mock_shaft_3, mock_shaft_2);
+    let differential = new Differential(0, mock_shaft_1, mock_shaft_3, mock_shaft_2);
     // create instance of array to test against internal Differential state
     let mock_shaft_arr = [mock_shaft_1, mock_shaft_2, mock_shaft_3];
 
@@ -57,7 +57,7 @@ describe("Differential Class Testing 2", () =>{
     let mock_shaft_1 = new MockShaft(5);
     let mock_shaft_2 = new MockShaft(2);
     let mock_shaft_3 = new MockShaft(2);
-    let differential = new Differential(mock_shaft_1, mock_shaft_3, mock_shaft_2);
+    let differential = new Differential(0, mock_shaft_1, mock_shaft_3, mock_shaft_2);
     let mock_shaft_arr = [mock_shaft_1, mock_shaft_2, mock_shaft_3];
 
     test("Checking initial values", () => {
@@ -86,7 +86,7 @@ describe("Differential Class Testing 3", () =>{
     let mock_shaft_1 = new MockShaft(3);
     let mock_shaft_2 = new MockShaft(9);
     let mock_shaft_3 = new MockShaft(4);
-    let differential = new Differential(mock_shaft_1, mock_shaft_3, mock_shaft_2);
+    let differential = new Differential(0, mock_shaft_1, mock_shaft_3, mock_shaft_2);
     let mock_shaft_arr = [mock_shaft_1, mock_shaft_2, mock_shaft_3];
 
     test("Checking initial values", () => {

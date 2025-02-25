@@ -16,6 +16,7 @@ export class Multiplier implements Device {
     private output: Shaft;
     private factor: number;
     private input: Shaft;
+    id: number;
 
 
     /**
@@ -25,7 +26,8 @@ export class Multiplier implements Device {
      * @param output The shaft which the output goes to
      * @param factor The factor of multiplication
      */
-    constructor(input: Shaft, output: Shaft, factor: number) {
+    constructor(id: number, input: Shaft, output: Shaft, factor: number) {
+        this.id = id;
         this.factor = factor
         this.input = input;
         this.output = output;

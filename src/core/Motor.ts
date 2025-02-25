@@ -14,6 +14,7 @@ import { Device } from "./Device";
 export class Motor implements Device{
     private rotation: number;
     private output: Shaft;
+    id: number;
 
     /**
      * @constructor
@@ -21,7 +22,8 @@ export class Motor implements Device{
      * @param rotation The rotation speed of the motor
      * @param output The output shaft
      */
-    constructor(rotation: number, output: Shaft) {
+    constructor(id: number, rotation: number, output: Shaft) {
+        this.id = id;
         this.rotation = rotation;
         this.output = output;
     }

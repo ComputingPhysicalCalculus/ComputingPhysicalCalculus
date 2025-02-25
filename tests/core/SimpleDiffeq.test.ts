@@ -59,14 +59,14 @@ function test_diff_eq(dx_0: number, ddx_0: number){
     let rotation_rate = 2/N;
 
     // create instance of Devices
-    let differential = new Differential(three_dx_shaft, minus_two_x_shaft, to_int_shaft);
-    let integrator1 = new Integrator(t_shaft, to_int_shaft, dx_shaft, false, ddx_0);
-    let integrator2 = new Integrator(t_shaft, dx_shaft, x_shaft, false, dx_0);
-    let multiplier1 = new Multiplier(x_shaft, minus_two_x_shaft, -2);
-    let multiplier2 = new Multiplier(dx_shaft,three_dx_shaft, 3);
-    let outputTable = new OutputTable(t_shaft, x_shaft, x_0, dx_shaft, dx_0);
+    let differential = new Differential(1, three_dx_shaft, minus_two_x_shaft, to_int_shaft);
+    let integrator1 = new Integrator(2, t_shaft, to_int_shaft, dx_shaft, false, ddx_0);
+    let integrator2 = new Integrator(3, t_shaft, dx_shaft, x_shaft, false, dx_0);
+    let multiplier1 = new Multiplier(4, x_shaft, minus_two_x_shaft, -2);
+    let multiplier2 = new Multiplier(5, dx_shaft,three_dx_shaft, 3);
+    let outputTable = new OutputTable(6, t_shaft, x_shaft, x_0, dx_shaft, dx_0);
 
-    let motor = new Motor(rotation_rate, t_shaft);
+    let motor = new Motor(7, rotation_rate, t_shaft);
 
     // setting outputs to each shaft
     t_shaft.outputs = [integrator1, integrator2, outputTable];

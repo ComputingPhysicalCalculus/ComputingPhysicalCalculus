@@ -121,6 +121,7 @@ export class Simulator {
             switch (component.type) {
                 case 'differential':
                     new_component = new Differential(
+                        component.compID,
                         shafts.get(component.diffShaft1)!,
                         shafts.get(component.diffShaft2)!,
                         shafts.get(component.sumShaft)!
@@ -133,6 +134,7 @@ export class Simulator {
 
                 case 'integrator':
                     new_component = new Integrator(
+                        component.compID,
                         shafts.get(component.variableOfIntegrationShaft)!,
                         shafts.get(component.integrandShaft)!,
                         shafts.get(component.outputShaft)!,
@@ -146,6 +148,7 @@ export class Simulator {
 
                 case 'multiplier':
                     new_component = new Multiplier(
+                        component.compID,
                         shafts.get(component.inputShaft)!,
                         shafts.get(component.outputShaft)!,
                         Expression.eval(String(component.factor)) // Accounts for numbers instead of a string in config
@@ -156,6 +159,7 @@ export class Simulator {
 
                 case 'crossConnect':
                     new_component = new CrossConnect(
+                        component.compID,
                         shafts.get(component.horizontal)!,
                         shafts.get(component.vertical)!,
                         component.reversed
@@ -167,6 +171,7 @@ export class Simulator {
 
                 case 'gearPair':
                     new_component = new GearPair(
+                        component.compID,
                         shafts.get(component.shaft1)!,
                         shafts.get(component.shaft2)!,
                         component.outputRatio / component.inputRatio,
@@ -178,6 +183,7 @@ export class Simulator {
 
                 case 'functionTable':
                     new_component = new FunctionTable(
+                        component.compID,
                         shafts.get(component.inputShaft)!,
                         shafts.get(component.outputShaft)!,
                         this.initial_x_position,
@@ -192,6 +198,7 @@ export class Simulator {
                     if (this.motor)
                         throw new Error('Only one motor is allowed.');
                     motor = new Motor(
+                        component.compID,
                         this.rotation,
                         shafts.get(component.outputShaft)!
                     );
@@ -202,6 +209,7 @@ export class Simulator {
                     let outputTable: OutputTable;
                     if (component.outputShaft2) {
                         outputTable = new OutputTable(
+                            component.compID,
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
                             Expression.eval(String(component.initialY1)), // Accounts for numbers instead of a string being passed into input
@@ -212,6 +220,7 @@ export class Simulator {
                     }
                     else {
                         outputTable = new OutputTable(
+                            component.compID,
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
                             Expression.eval(String(component.initialY1)),

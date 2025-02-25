@@ -61,7 +61,7 @@ function test_update_once(x_rot: number, y1_rot: number, initial_y1: number, y2_
         y2.set_rotation_rate(y2_rot);
     }
 
-    let output_table = new OutputTable(x, y1, initial_y1, y2, initial_y2);
+    let output_table = new OutputTable(0, x, y1, initial_y1, y2, initial_y2);
 
     test_initial_OutputTable_values(output_table, x, y1, initial_y1, y2, initial_y2);
 

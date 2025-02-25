@@ -13,15 +13,15 @@ import { Device } from "./Device";
  * @implements Device
  */
 export class OutputTable implements Device {
-  id: number = 0;
+  id: number;
   x: Shaft;
   y1: Shaft;
   y2: Shaft | undefined;
   xHistory: number[];
   y1History: number[];
   y2History: number[] | undefined;
-  constructor(x: Shaft, y1: Shaft, initialY1: number, y2: Shaft, initialY2: number);
-  constructor(x: Shaft, y1: Shaft, initialY1: number);
+  constructor(id: number, x: Shaft, y1: Shaft, initialY1: number, y2: Shaft, initialY2: number);
+  constructor(id: number, x: Shaft, y1: Shaft, initialY1: number);
 
   /**
    * @constructor
@@ -32,7 +32,8 @@ export class OutputTable implements Device {
    * @param y2 The shaft of the second y axis 
    * @param initialY2 The initial position of the second y axis
    */
-  constructor(x: Shaft, y1: Shaft, initialY1: number, y2?: Shaft, initialY2?: number) {
+  constructor(id: number, x: Shaft, y1: Shaft, initialY1: number, y2?: Shaft, initialY2?: number) {
+    this.id = id;
     this.x = x;
     this.xHistory = [0];
     this.y1 = y1;
