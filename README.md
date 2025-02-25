@@ -1,5 +1,7 @@
-# Computing Physical Calculus
+# Differential Analyzer Simulator
 University of Cambridge IB group project
+
+[Access Simulator](https://differentialanalyser.github.io/)
 
 ## Design Brief
 In the days when Cambridge innovators like Turing were still inventing the

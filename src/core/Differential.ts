@@ -14,6 +14,7 @@ import { Shaft } from "./Shaft";
  * @implements Device
  */
 export class Differential implements Device {
+    id: number;
     private output: Shaft | undefined;
     // the sum shaft is always in the middle
     private shafts: Shaft[];
@@ -26,7 +27,8 @@ export class Differential implements Device {
      * @param diffShaft2 The shaft that represents one of the connected shaft
      * @param sumShaft The shaft that represents the sum of the two diffShafts (not necessarily the output)
      */
-    constructor(diffShaft1: Shaft, diffShaft2: Shaft, sumShaft: Shaft) {
+    constructor(id: number, diffShaft1: Shaft, diffShaft2: Shaft, sumShaft: Shaft) {
+        this.id = id;
         this.shafts = [diffShaft1, sumShaft, diffShaft2];
     }
 
@@ -69,7 +71,7 @@ export class Differential implements Device {
      * @description This method directly updates the rotation rate of its output 
      * to be the combination of inputs shafts depending on which shafts were ready
     */
-    update(){
+    update(dt: number = 1){
         let new_rotation = NaN;
 
         // case where sum shaft is the output
@@ -82,4 +84,6 @@ export class Differential implements Device {
         }
         this.output?.set_rotation_rate(new_rotation);
     }
+    
+    getID() : number { return this.id; }
 }

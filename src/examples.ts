@@ -11,6 +11,8 @@ import _freefall_example from "../examples/body-in-free-fall.json";
 import _oscillation_example from "../examples/spring-example-2.json";
 import _duffing_equation_example from "../examples/duffing-equation.json";
 import _population_growth_example from "../examples/population-growth.json";
+import _simple_pendulum_example from "../examples/simple-pendulum.json";
+import _double_pendulum_example from "../examples/double-pendulum.json";
 
 export const SPRING_EXAMPLE: Config = _spring_example as any;
 export const LINEAR_INTEGRATION_EXAMPLE: Config = _linear_integration_example as any;
@@ -23,6 +25,8 @@ export const FREE_FALL_EXAMPLE: Config = _freefall_example as any;
 export const OSCILLATION_EXAMPLE: Config = _oscillation_example as any;
 export const DUFFING_EQUATION_EXAMPLE: Config = _duffing_equation_example as any;
 export const POPULATION_GROWTH_EXAMPLE: Config = _population_growth_example as any;
+export const SIMPLE_PENDULUM_EXAMPLE: Config = _simple_pendulum_example as any;
+export const DOUBLE_PENDULUM_EXAMPLE: Config = _double_pendulum_example as any;
 
 import _dangling_shaft from "../examples/broken/dangling-shaft.json";
 

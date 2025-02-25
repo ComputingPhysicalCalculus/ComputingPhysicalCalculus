@@ -1,7 +1,7 @@
 import { Config, loadConfig } from "./config";
 import { getHShaftID, getVShaftID, toConfig } from "./GenerateConfigFromUI";
 import { query, queryAll } from "./decorators";
-import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE, EPICYCLOID_EXAMPLE, EXTREME_EPICYCLOID, EXTREME_EPICYCLOID_EXAMPLE, FREE_FALL_EXAMPLE, DUFFING_EQUATION_EXAMPLE, POPULATION_GROWTH_EXAMPLE } from "./examples";
+import { SPRING_EXAMPLE, LINEAR_INTEGRATION_EXAMPLE, GAMMA_FUNCTION_EXAMPLE, WEIERSTRAUSS_FUNCTION_EXAMPLE, GEAR_PAIR_EXAMPLE, EPICYCLOID_EXAMPLE, EXTREME_EPICYCLOID_EXAMPLE, FREE_FALL_EXAMPLE, DUFFING_EQUATION_EXAMPLE, POPULATION_GROWTH_EXAMPLE, SIMPLE_PENDULUM_EXAMPLE, DOUBLE_PENDULUM_EXAMPLE } from "./examples";
 import { setupDragHooks } from "./UI/Drag";
 import { DraggableComponentElement } from "./UI/DraggableElement";
 import { GRID_SIZE, resetScreenOffset, setCells, setScreenOffset, setupScreenHooks } from "./UI/Grid";
@@ -13,7 +13,6 @@ import { GraphElement } from "./UI/GraphElement";
 import { Simulator } from "./core/Main";
 import { FunctionTable } from "./core/FunctionTable";
 import Expression from "./expr/Expression";
-import { OutputTable } from "./core/OutputTable";
 import { DialComponentElement } from "./UI/DialComponentElement.ts";
 
 enum State {
@@ -56,8 +55,11 @@ export class Lifecycle {
     @query("#clear-button")
     clear_button!: HTMLButtonElement
 
-    @query("#run-button")
-    run_button!: HTMLButtonElement
+    @query("#clear-tables-button")
+    clear_output_tables_button!: HTMLButtonElement
+
+    @query("#play-button")
+    play_button!: HTMLButtonElement
 
     @query("#stop-button")
     stop_button!: HTMLButtonElement
@@ -65,10 +67,6 @@ export class Lifecycle {
     @query("#pause-button")
     pause_button!: HTMLButtonElement
 
-    @query("#unpause-button")
-    unpause_button!: HTMLButtonElement
-
-    @query("#config-file-upload")
     config_file_input!: HTMLInputElement;
 
     @query("#simulation-step-period")
@@ -121,20 +119,38 @@ export class Lifecycle {
             }
         });
 
+        this.config_file_input = document.createElement("input");
+        this.config_file_input.accept = ".json";
+        this.config_file_input.type = "file";
+
         this.examples_select.addEventListener("change", e => this.change_example(e));
         this.examples_select.selectedIndex = 0;
         this.demo_button.addEventListener("click", _ => this.toggle_demo());
 
-        this.import_button.addEventListener("click", _ => this._handle_import_file());
+        this.import_button.addEventListener("click", _ => this.config_file_input.click());
+        this.config_file_input.addEventListener("change", _ => this._handle_import_file());
         this.export_button.addEventListener("click", _ => this._handle_export_file());
         this.clear_button.addEventListener("click", _ => this._clear_components());
 
-        this.run_button.addEventListener("click", _ => this.run());
+        this.clear_output_tables_button.addEventListener("click", _ => {
+            const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
+            output_tables.forEach(x => {
+                this.reset_output_table(x);
+                x.redraw();
+            })
+        });
+
+        this.play_button.addEventListener("click", _ => {
+            if (this.state == State.Stopped) {
+                this.run();
+            } else {
+                this.unpause();
+            }
+        });
         this.stop_button.addEventListener("click", _ => {
             if (this.currently_demoing) { this.stop_demo(); } else { this.stop(); }
         });
         this.pause_button.addEventListener("click", _ => this.pause());
-        this.unpause_button.addEventListener("click", _ => this.unpause());
 
         window.addEventListener("keydown", e => {
             if (e.defaultPrevented) {
@@ -231,6 +247,7 @@ export class Lifecycle {
     }
 
     private _clear_components(): void {
+        UNDO_SINGLETON.push();
         for (let component of this.placedComponents) {
             let { top, left, width, height } = component;
             component.remove();
@@ -242,7 +259,7 @@ export class Lifecycle {
         let config = this.exportState();
 
         const link = document.createElement("a");
-        const file = new Blob([JSON.stringify(config)], { type: "application/json" });
+        const file = new Blob([JSON.stringify(config, null, 2)], { type: "application/json" });
 
         link.href = URL.createObjectURL(file);
         link.download = "differential-analyzer.json";
@@ -284,6 +301,8 @@ export class Lifecycle {
             case "Freefall": this.loadState(FREE_FALL_EXAMPLE); break;
             case "DuffingEquation": this.loadState(DUFFING_EQUATION_EXAMPLE); break;
             case "PopulationGrowth": this.loadState(POPULATION_GROWTH_EXAMPLE); break;
+            case "SimplePendulum": this.loadState(SIMPLE_PENDULUM_EXAMPLE); break;
+            case "DoublePendulum": this.loadState(DOUBLE_PENDULUM_EXAMPLE); break;
         }
         this.stop();
     }
@@ -323,10 +342,10 @@ export class Lifecycle {
         this.import_button.disabled = false;
         this.clear_button.disabled = false;
 
-        this.run_button.hidden = false;
-        this.stop_button.hidden = true;
-        this.pause_button.hidden = true;
-        this.unpause_button.hidden = true;
+        this.play_button.disabled = false;
+        this.pause_button.disabled = true;
+        this.stop_button.disabled = true;
+        this.clear_output_tables_button.disabled = false;
     }
 
     pause(): void {
@@ -336,10 +355,10 @@ export class Lifecycle {
         }
         this.state = State.Paused;
 
-        this.run_button.hidden = true;
-        this.stop_button.hidden = false;
-        this.pause_button.hidden = true;
-        this.unpause_button.hidden = false;
+        this.play_button.disabled = false;
+        this.pause_button.disabled = true;
+        this.stop_button.disabled = false;
+        this.clear_output_tables_button.disabled = true;
     }
 
     unpause(): void {
@@ -348,10 +367,10 @@ export class Lifecycle {
         }
         this.state = State.Running;
 
-        this.run_button.hidden = true;
-        this.stop_button.hidden = true;
-        this.pause_button.hidden = false;
-        this.unpause_button.hidden = true;
+        this.play_button.disabled = true;
+        this.pause_button.disabled = false;
+        this.stop_button.disabled = false;
+        this.clear_output_tables_button.disabled = true;
     }
 
     run(): void {
@@ -364,10 +383,10 @@ export class Lifecycle {
         this.import_button.disabled = true;
         this.clear_button.disabled = true;
 
-        this.run_button.hidden = true;
-        this.stop_button.hidden = true;
-        this.pause_button.hidden = false;
-        this.unpause_button.hidden = true;
+        this.play_button.disabled = true;
+        this.pause_button.disabled = false;
+        this.stop_button.disabled = false;
+        this.clear_output_tables_button.disabled = true;
 
         const simulator = new Simulator(this.exportState())
         const step_period = Number(this.step_period_input.value);
@@ -381,25 +400,17 @@ export class Lifecycle {
 
             let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
             x.fun = x => compiled_expr({ x });
-            x.x_position = function_table_element.x_min;
+            x.x_position = 0;
         });
 
         output_tables.forEach(x => {
-            x.set_data_set("d1", []);
-            x.set_data_set("d2", [], "red", true);
+            this.reset_output_table(x);
         })
 
         const dials = document.querySelectorAll(".dial") as NodeListOf<DraggableComponentElement>;
         dials.forEach(dial => {
             (dial.querySelector("dial-component")! as DialComponentElement).count = 0
         })
-
-        /// FIX: Is this needed?
-        // simulator.components.filter(x => x instanceof OutputTable).forEach((x: OutputTable) => {
-        //     const output_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
-        //
-        //     x.xHistory[0] += output_table_element.x_min;
-        // });
 
         let elapsed = 0;
         let steps_taken = 0;
@@ -462,7 +473,7 @@ export class Lifecycle {
             for (let comp of simulator.components.filter(x => x instanceof FunctionTable)) {
                 const table = document.querySelector(`#component-${comp.id} > graph-table`)! as GraphElement;
                 table.gantry_x = comp.x_position;
-                if (next_steps !== 0 && comp.x_position >= table.x_max) {
+                if (next_steps !== 0 && comp.x_position >= table.x_max && table.parentElement?.dataset.lookup == "0") {
                     this.pause();
                     this.stop();
                     return;
@@ -479,5 +490,11 @@ export class Lifecycle {
         if (this._on_frame !== undefined) {
             this._on_frame(delta);
         }
+    }
+
+    private reset_output_table(table: GraphElement): void {
+        table.set_data_set("d1", []);
+        table.set_data_set("d2", [], "red", true);
+        table.gantry_x = 0;
     }
 }

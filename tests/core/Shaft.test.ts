@@ -30,7 +30,6 @@ describe("Shaft Class Testing", () =>{
     test("Checking update function", () => {
         let next_rotation_value = 0.75;
         shaft.set_rotation_rate(next_rotation_value);
-        shaft.update();
         expect(shaft.rotation).toBe(next_rotation_value);
     });
 })

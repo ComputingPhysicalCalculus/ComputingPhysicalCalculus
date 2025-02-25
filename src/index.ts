@@ -19,7 +19,6 @@ import "./UI/DialComponentElement.ts";
 import "./expr/Expression.ts";
 
 import "./run.ts";
-import Expression from "./expr/Expression.ts";
 
 // Give the example configuration a type
 

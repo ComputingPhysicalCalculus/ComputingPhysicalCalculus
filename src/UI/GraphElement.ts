@@ -10,8 +10,11 @@ const SQRT_3_2 = Math.sqrt(3) / 2;
 export class GraphElement extends LitElement {
     static styles = css`${unsafeCSS(styles)}`;
 
-    @query("canvas")
-    _canvas!: HTMLCanvasElement;
+    @query("#graph")
+    _canvas_graph!: HTMLCanvasElement;
+
+    @query("#axis")
+    _canvas_axis!: HTMLCanvasElement;
 
     @queryAsync("canvas")
     _canvasPromise!: Promise<HTMLCanvasElement>;
@@ -37,6 +40,8 @@ export class GraphElement extends LitElement {
     @property({ type: Boolean })
     isAnOutput: boolean = false;
 
+    visible: boolean = false;
+
     data_sets: {
         [key: string]: {
             points: Vector2[];
@@ -46,20 +51,60 @@ export class GraphElement extends LitElement {
         }
     } = {};
 
-    // Keep in this form otherwise `this` will be undefined
-    private _handle_resize = () => {
-        this._canvas.width = this.offsetWidth;
-        this._canvas.height = this.offsetHeight;
-
-        this._draw();
-    }
-
     connectedCallback() {
         super.connectedCallback();
 
-        this._canvasPromise.then(this._handle_resize);
-        let resize_observer = new ResizeObserver(this._handle_resize);
+        let resize_debouncer = true;
+        let resize_observer = new ResizeObserver(_ => {
+            this._canvas_axis.width = this.offsetWidth;
+            this._canvas_axis.height = this.offsetHeight;
+
+            this._draw_axis();
+
+            if (!resize_debouncer) {
+                return;
+            }
+            resize_debouncer = false;
+            window.setTimeout(() => {
+                this._canvas_graph.width = this.offsetWidth;
+                this._canvas_graph.height = this.offsetHeight;
+                this._draw_graph();
+                resize_debouncer = true;
+            }, 200);
+        });
         resize_observer.observe(this);
+
+        let entries: IntersectionObserverEntry[] = [];
+        let intersection_debouncer = true;
+        let intersection_observer = new IntersectionObserver(e => {
+            const [root] = e;
+            if (!root) {
+                return;
+            }
+
+            this.visible = root.isIntersecting;
+            this._draw_axis();
+
+            entries = e;
+            if (!intersection_debouncer) {
+                return;
+            }
+            intersection_debouncer = false;
+
+            let timeout_callback = () => {
+                if (entries.length > 0) {
+                    this._draw_graph();
+                    entries = [];
+                    window.setTimeout(timeout_callback, 200);
+                } else {
+                    intersection_debouncer = true;
+                }
+            };
+
+            timeout_callback();
+            window.setTimeout(timeout_callback, 200);
+        });
+        intersection_observer.observe(this);
     }
 
     map_x_graph_to_screen(x: number): number {
@@ -80,14 +125,26 @@ export class GraphElement extends LitElement {
             return false;
         }
 
+        let points_length = this.data_sets[key].points.length;
+
         callback(this.data_sets[key].points);
 
-        this.requestUpdate();
+        this._draw_graph(points_length);
         return true;
     }
 
-    protected updated(_changedProperties: PropertyValues): void {
-        this._draw();
+    protected updated(changedProperties: PropertyValues): void {
+        this._draw_axis();
+        for (let prop of changedProperties.keys()) {
+            switch (prop) {
+                case "x_min":
+                case "x_max":
+                case "y_min":
+                case "y_max":
+                    this._draw_graph();
+                    break;
+            }
+        }
     }
 
     render() {
@@ -140,41 +197,97 @@ export class GraphElement extends LitElement {
       `;
         }
         return html`
-    <svg
-        xmlns="https://www.w3.org/2000/svg"
-        width="200" height="200"
-        viewBox="0 0 200 200"
-        style="width:100%;height:100%;position:absolute;z-index:5" 
-        >
-        ${content}
-       </svg>
-      <canvas />
-    `;
+            <svg
+                xmlns="https://www.w3.org/2000/svg"
+                width="200" height="200"
+                viewBox="0 0 200 200"
+                style="width:100%;height:100%;position:absolute;z-index:5" 
+                >
+                ${content}
+            </svg>
+            <canvas style="position:absolute;left:0;top:0;width:100%;height:100%" id="graph"></canvas>
+            <canvas style="position:absolute;left:0;top:0;width:100%;height:100%" id="axis"></canvas>
+        `;
     }
 
-    private _draw() {
-        let ctx = this._canvas.getContext("2d");
+    private _draw_graph(start_index: number = 0) {
+        if (!this.visible) {
+            return;
+        }
+
+        let ctx = this._canvas_graph.getContext("2d");
         if (ctx === null) {
             console.log("Failed to get canvas 2d context");
             return;
         }
 
-        ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
-
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "black";
-        this._draw_axis(ctx);
-
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "gray";
-        this._draw_gantry_shaft(ctx);
+        if (start_index === 0) {
+            ctx.clearRect(0, 0, this._canvas_graph.width, this._canvas_graph.height);
+        }
 
         ctx.lineWidth = 1;
         for (let data of Object.values(this.data_sets)) {
 
             ctx.strokeStyle = data.style;
-            this._draw_points(ctx, data.points);
+            this._draw_points(ctx, data.points, start_index);
+        }
+    }
 
+    private _draw_axis() {
+        let ctx = this._canvas_axis.getContext("2d");
+        if (ctx === null) {
+            console.log("Failed to get canvas 2d context");
+            return;
+        }
+
+        ctx.clearRect(0, 0, this._canvas_axis.width, this._canvas_axis.height);
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "black";
+        // X axis
+        ctx.beginPath();
+
+        let y = this._canvas_axis.height - this.padding;
+        if (this.y_max < 0.0) {
+            y = this.padding;
+        } else if (this.y_min < 0.0) {
+            y += this.y_min / (this.y_max - this.y_min)
+                * (this._canvas_axis.height - this.padding * 2);
+        }
+
+        // Bottom left with padding
+        ctx.moveTo(this.padding, y);
+
+        // Bottom right with padding
+        ctx.lineTo(this._canvas_axis.width - this.padding, y);
+
+        ctx.stroke();
+
+        // Y axis
+        ctx.beginPath();
+
+        let x = this.padding;
+        if (this.x_max < 0.0) {
+            x = this._canvas_axis.width - this.padding;
+        } else if (this.x_min < 0.0) {
+            x = this.padding - this.x_min / (this.x_max - this.x_min)
+                * (this._canvas_axis.width - this.padding * 2);
+        }
+
+        // Bottom left with  padding
+        ctx.moveTo(x, this._canvas_axis.height - this.padding);
+
+        // Top Left with padding
+        ctx.lineTo(x, this.padding);
+
+        ctx.stroke();
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "gray";
+        this._draw_gantry_shaft(ctx);
+
+
+        for (let data of Object.values(this.data_sets)) {
             if (this.gantry_x === undefined) {
                 continue;
             }
@@ -204,46 +317,6 @@ export class GraphElement extends LitElement {
         }
     }
 
-    private _draw_axis(ctx: CanvasRenderingContext2D) {
-        // X axis
-        ctx.beginPath();
-
-        let y = this._canvas.height - this.padding;
-        if (this.y_max < 0.0) {
-            y = this.padding;
-        } else if (this.y_min < 0.0) {
-            y += this.y_min / (this.y_max - this.y_min)
-                * (this._canvas.height - this.padding * 2);
-        }
-
-        // Bottom left with padding
-        ctx.moveTo(this.padding, y);
-
-        // Bottom right with padding
-        ctx.lineTo(this._canvas.width - this.padding, y);
-
-        ctx.stroke();
-
-        // Y axis
-        ctx.beginPath();
-
-        let x = this.padding;
-        if (this.x_max < 0.0) {
-            x = this._canvas.width - this.padding;
-        } else if (this.x_min < 0.0) {
-            x = this.padding - this.x_min / (this.x_max - this.x_min)
-                * (this._canvas.width - this.padding * 2);
-        }
-
-        // Bottom left with  padding
-        ctx.moveTo(x, this._canvas.height - this.padding);
-
-        // Top Left with padding
-        ctx.lineTo(x, this.padding);
-
-        ctx.stroke();
-    }
-
     private _draw_gantry_shaft(ctx: CanvasRenderingContext2D) {
         if (this.gantry_x === undefined) {
             return;
@@ -253,15 +326,16 @@ export class GraphElement extends LitElement {
         ctx.beginPath();
 
         const gantry_x_screen = this.map_x_graph_to_screen(this.gantry_x);
-        ctx.moveTo(gantry_x_screen, this._canvas.height - this.padding);
+        ctx.moveTo(gantry_x_screen, this._canvas_axis.height - this.padding);
         ctx.lineTo(gantry_x_screen, this.padding);
 
         ctx.stroke();
     }
 
-    private _draw_points(ctx: CanvasRenderingContext2D, points: Vector2[]) {
+    private _draw_points(ctx: CanvasRenderingContext2D, points: Vector2[], start_index: number = 0) {
         ctx.beginPath();
-        for (let point of points) {
+        console.log(points.slice(Math.max(start_index - 1, 0)));
+        for (let point of points.slice(Math.max(start_index - 1, 0))) {
             if (point.x < this.x_min || point.x > this.x_max) {
                 continue;
             }

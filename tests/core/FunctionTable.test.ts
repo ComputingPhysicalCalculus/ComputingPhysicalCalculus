@@ -62,7 +62,7 @@ describe("Testing FunctionTable", () =>{
     let initial_x = 10;
     function fun(n : number){return n + 5};
     // create instance of FunctionTable
-    let ft = new FunctionTable(mock_input, mock_output, initial_x, fun);
+    let ft = new FunctionTable(0, mock_input, mock_output, initial_x, fun);
 
     test_initial_functionTable_values(ft, mock_input, mock_output, initial_x, fun);
 });

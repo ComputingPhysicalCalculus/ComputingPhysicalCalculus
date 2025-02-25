@@ -23,6 +23,7 @@ function createNewObject(x: number, y: number, typeString: string): void {
   if (componentType == null)
     return;
 
+  UNDO_SINGLETON.push();
   const item = createComponent(componentType);
 
   curDragItem.item = item;
@@ -180,6 +181,22 @@ function drop(event: MouseEvent): void {
 
   highlightHoveredCells(topLeft, size, false);
 
+  // Delete element because it is out of bounds
+  {
+    const grid = document.getElementById("grid") as HTMLDivElement;
+
+    let worldTopLeft = worldToScreenPosition(new Vector2(topLeft.x * GRID_SIZE, topLeft.y * GRID_SIZE));
+
+    if (worldTopLeft.x > grid.clientWidth) {
+      item.remove();
+      curDragItem.item = null;
+      if (item.shouldLockCells) {
+        setCells(topLeft, size, false);
+      }
+      return;
+    }
+  }
+
   // Check whether or not the item being dragged can be placed
   {
     if ((item.shouldLockCells && !allValid(topLeft, size)) || (!item.shouldLockCells && !validShaft(topLeft, item))) {
@@ -200,31 +217,12 @@ function drop(event: MouseEvent): void {
     }
   }
 
-  const grid = document.getElementById("grid") as HTMLDivElement;
-
-  // Delete element because it is out of bounds
-  {
-    let worldTopLeft = worldToScreenPosition(new Vector2(topLeft.x * GRID_SIZE, topLeft.y * GRID_SIZE));
-    // let worldBottomRight = worldToScreenPosition(new Vector2((topLeft.x + size.x) * GRID_SIZE, (topLeft.y + size.y) * GRID_SIZE));
-
-    if (worldTopLeft.x > grid.clientWidth) {
-      item.remove();
-      curDragItem.item = null;
-      if (item.shouldLockCells) {
-        setCells(topLeft, size, false);
-      }
-      return;
-    }
-  }
-
   item.hasBeenPlaced = true;
   item.left = topLeft.x;
   item.top = topLeft.y;
   let converted = worldToScreenPosition(new Vector2(topLeft.x * GRID_SIZE, topLeft.y * GRID_SIZE));
   item.renderLeft = converted.x;
   item.renderTop = converted.y;
-
-  item.updated();
 
   curDragItem.item = null;
 }

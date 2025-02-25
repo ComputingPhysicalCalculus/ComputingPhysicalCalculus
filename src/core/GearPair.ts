@@ -13,6 +13,7 @@ import { Shaft } from "./Shaft";
  * @implements Device
  */
 export class GearPair implements Device {
+    id: number;
     private shafts: Shaft[];
     private input: Shaft | undefined;
     private output: Shaft | undefined;
@@ -25,7 +26,8 @@ export class GearPair implements Device {
      * @param shaft2 The shaft that represents one of the connected shaft
      * @param factor The gear ratio. A ratio of k means that shaft 2 rotates k turns when shaft 1 rotates 1 turn. It can be negative.
      */
-    constructor(shaft1: Shaft, shaft2: Shaft, factor: number) {
+    constructor(id: number, shaft1: Shaft, shaft2: Shaft, factor: number) {
+        this.id = id;
         this.shafts = [shaft1, shaft2];
         this.factor = factor
     }
@@ -50,8 +52,10 @@ export class GearPair implements Device {
         }
         return this.output;
     }
-    update(): void {
+    update(dt: number = 1): void {
         const rotation_rate = this.factor * this.input?.get_rotation_rate()!;
         this.output?.set_rotation_rate(rotation_rate);
     }
+
+    getID() : number { return this.id; }
 }

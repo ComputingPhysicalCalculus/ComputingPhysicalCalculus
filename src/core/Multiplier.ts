@@ -15,7 +15,10 @@ import { Shaft } from "./Shaft";
 export class Multiplier implements Device {
     private output: Shaft;
     private factor: number;
+    private multiplicand_shaft?: Shaft;
     private input: Shaft;
+    private previous_value: number;
+    id: number;
 
 
     /**
@@ -25,10 +28,13 @@ export class Multiplier implements Device {
      * @param output The shaft which the output goes to
      * @param factor The factor of multiplication
      */
-    constructor(input: Shaft, output: Shaft, factor: number) {
+    constructor(id: number, input: Shaft, output: Shaft, factor: number, multiplicand_shaft: Shaft | undefined = undefined) {
+        this.id = id;
         this.factor = factor
         this.input = input;
         this.output = output;
+        this.multiplicand_shaft = multiplicand_shaft;
+        this.previous_value = this.factor;
     }
 
     /**
@@ -46,7 +52,14 @@ export class Multiplier implements Device {
      * @description This method directly updates the rotation rate of its output
      * to be factor * (input's rotation rate)
     */
-    update(): void {
-        this.output.set_rotation_rate(this.input.get_rotation_rate() * this.factor);
+    update(dt: number = 1): void {
+        if (!this.multiplicand_shaft) {
+            this.output.set_rotation_rate(this.input.get_rotation_rate() * this.factor);
+        } else {
+            this.output.set_rotation_rate(this.input.rotation * this.multiplicand_shaft.get_rotation_rate() + this.multiplicand_shaft.rotation * this.input.get_rotation_rate());
+        }
+
     }
+
+    getID(): number { return this.id; }
 }

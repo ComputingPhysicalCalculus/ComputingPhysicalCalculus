@@ -47,17 +47,17 @@ function test_simple_integral() {
   let shaft_intt = new Shaft(4, []);
 
   // initialise the devices
-  let function_table = new FunctionTable(shaft_t_into_sin, shaft_f_to_shaft_sint, 0, Math.sin);
-  let multi = new Multiplier(shaft_sint, shaft_two_sint, 2);
-  let diff = new Differential(shaft_two_sint, shaft_t, shaft_two_sint_plus_t);
-  let integrator = new Integrator(shaft_t_into_integrator, shaft_two_sint_plus_t, shaft_intt, false, 0);
-  let output_table = new OutputTable(shaft_t, shaft_two_sint_plus_t, 0, shaft_intt, -2);
-  let cross_connect_sin = new CrossConnect(shaft_t, shaft_t_into_sin, false);
-  let cross_connect_int = new CrossConnect(shaft_t, shaft_t_into_integrator, false);
-  let cross_connect_f_to_sin = new CrossConnect(shaft_f_to_shaft_sint, shaft_sint, false);
+  let function_table = new FunctionTable(1, shaft_t_into_sin, shaft_f_to_shaft_sint, 0, Math.sin);
+  let multi = new Multiplier(2, shaft_sint, shaft_two_sint, 2);
+  let diff = new Differential(3, shaft_two_sint, shaft_t, shaft_two_sint_plus_t);
+  let integrator = new Integrator(4, shaft_t_into_integrator, shaft_two_sint_plus_t, shaft_intt, false, 0);
+  let output_table = new OutputTable(5, shaft_t, shaft_two_sint_plus_t, 0, shaft_intt, -2);
+  let cross_connect_sin = new CrossConnect(6, shaft_t, shaft_t_into_sin, false);
+  let cross_connect_int = new CrossConnect(7, shaft_t, shaft_t_into_integrator, false);
+  let cross_connect_f_to_sin = new CrossConnect(8, shaft_f_to_shaft_sint, shaft_sint, false);
 
   // initialise motor
-  let motor = new Motor(rotation_rate, shaft_t);
+  let motor = new Motor(9, rotation_rate, shaft_t);
 
   // set the outputs
   shaft_t.outputs = [cross_connect_sin, cross_connect_int, output_table, diff];

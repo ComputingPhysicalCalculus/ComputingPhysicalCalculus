@@ -10,6 +10,7 @@ import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import { machine } from "./Constants.ts";
 
+const MIN_TEXT_AREA_LINES = 3;
 const MAX_TEXT_AREA_LINES = 10;
 
 let crossConnectPopup: HTMLDivElement;
@@ -77,7 +78,9 @@ export function openIntegratorPopup(e: MouseEvent): void {
 
   const target = e.currentTarget as DraggableComponentElement;
 
-  integratorPopup.getElementsByTagName("input")[0].value = String(target.inputRatio);
+  updateTextAreaLines(functionTablePopup.querySelector("textarea")!);
+
+  integratorPopup.getElementsByTagName("textarea")[0].value = String(target.dataset.initialValue ?? "0");
 
   e.preventDefault();
 }
@@ -96,14 +99,14 @@ export function openFunctionTablePopup(e: MouseEvent): void {
 
   // Count the number of newlines in the input text to set the correct height of the
   // textarea
-  const lines = text_area.value.split(/\r\n|\r|\n/).length;
-  text_area.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
+  updateTextAreaLines(text_area);
 
   let inputs = functionTablePopup.getElementsByTagName("input");
-  inputs[0].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
-  inputs[1].value = (!target.dataset.x_max) ? String(graph_element.x_max) : target.dataset.x_max;
-  inputs[2].value = (!target.dataset.y_min) ? String(graph_element.y_min) : target.dataset.y_min;
-  inputs[3].value = (!target.dataset.y_max) ? String(graph_element.y_max) : target.dataset.y_max;
+  inputs[0].value = target.dataset.x_min ?? String(graph_element.x_min);
+  inputs[1].value = target.dataset.x_max ?? String(graph_element.x_max);
+  inputs[2].value = target.dataset.y_min ?? String(graph_element.y_min);
+  inputs[3].value = target.dataset.y_max ?? String(graph_element.y_max);
+  inputs[4].checked = (!target.dataset.lookup) ? false : (target.dataset.lookup == "1");
 
   e.preventDefault();
 }
@@ -117,12 +120,12 @@ export function openOutputTablePopup(e: MouseEvent): void {
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
   let inputs = outputTablePopup.getElementsByTagName("input");
-  inputs[0].value = (!target.dataset.initial_1) ? String(target.inputRatio) : target.dataset.initial_1;
-  inputs[1].value = (!target.dataset.initial_2) ? String(target.outputRatio) : target.dataset.initial_2;
-  inputs[2].value = (!target.dataset.x_min) ? String(graph_element.x_min) : target.dataset.x_min;
-  inputs[3].value = (!target.dataset.x_max) ? String(graph_element.x_max) : target.dataset.x_max;
-  inputs[4].value = (!target.dataset.y_min) ? String(graph_element.y_min) : target.dataset.y_min;
-  inputs[5].value = (!target.dataset.y_max) ? String(graph_element.y_max) : target.dataset.y_max;
+  inputs[0].value = target.dataset.initial_1 ?? String(target.inputRatio);
+  inputs[1].value = target.dataset.initial_2 ?? String(target.outputRatio);
+  inputs[2].value = target.dataset.x_min ?? String(graph_element.x_min);
+  inputs[3].value = target.dataset.x_max ?? String(graph_element.x_max);
+  inputs[4].value = target.dataset.y_min ?? String(graph_element.y_min);
+  inputs[5].value = target.dataset.y_max ?? String(graph_element.y_max);
 
   e.preventDefault();
 }
@@ -151,7 +154,8 @@ export function openMultiplierPopup(e: MouseEvent): void {
   openPopup(e, multiplierPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
-  multiplierPopup.getElementsByTagName("input")[0].value = String(target.outputRatio);
+  updateTextAreaLines(functionTablePopup.querySelector("textarea")!);
+  multiplierPopup.getElementsByTagName("textarea")[0].value = String(target.dataset.factor ?? "1");
 
   e.preventDefault();
 }
@@ -252,15 +256,17 @@ function setupIntegratorPopup(): void {
   integratorPopup = document.getElementById("integrator-popup") as HTMLDivElement;
   integratorPopup.addEventListener("mouseleave", closePopup);
 
-  const inputs = integratorPopup.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener("change", (e) => {
-      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+  setupTextAreaCallback(integratorPopup.querySelector("textarea")!);
 
-      component.inputRatio = Number(input.value);
-    })
-  }
+  const inputs = integratorPopup.getElementsByTagName("textarea");
+  inputs[0].addEventListener("change", (e) => {
+    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
+    const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+
+    updateTextAreaLines(input);
+
+    component.dataset.initialValue = input.value;
+  })
 }
 
 function setupMotorPopup(): void {
@@ -285,15 +291,17 @@ function setupMultiplierPopup(): void {
   multiplierPopup = document.getElementById("multiplier-popup") as HTMLDivElement;
   multiplierPopup.addEventListener("mouseleave", closePopup);
 
-  const inputs = multiplierPopup.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener("change", (e) => {
-      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+  setupTextAreaCallback(multiplierPopup.querySelector("textarea")!);
 
-      component.outputRatio = Number(input.value);
-    })
-  }
+  const inputs = multiplierPopup.getElementsByTagName("textarea");
+  inputs[0].addEventListener("change", (e) => {
+    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
+    const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+
+    updateTextAreaLines(input);
+
+    component.dataset.factor = input.value;
+  });
 }
 
 function setupGearPairPopup(): void {
@@ -326,28 +334,14 @@ function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
   functionTablePopup.addEventListener("mouseleave", closePopup);
 
-  functionTablePopup.querySelector("textarea")!.addEventListener("textchanged", e => {
-    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
-    // if (e.key == "Enter") {
-      const lines = input.value.split(/\r\n|\r|\n/).length;
-      input.rows = Math.min(lines + 1, MAX_TEXT_AREA_LINES);
-    // }
-  });
-  // functionTablePopup.querySelector("textarea")!.addEventListener("keyup", e => {
-  //   const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
-  //   if (e.key == "Backspace") {
-  //     const lines = input.value.split(/\r\n|\r|\n/).length;
-  //     input.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
-  //   }
-  // });
+  setupTextAreaCallback(functionTablePopup.querySelector("textarea")!);
 
   functionTablePopup.querySelector("textarea")!.addEventListener("change", e => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
     const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
     component_graph.data_sets["d1"].fn = String(input.value);
 
-    const lines = input.value.split(/\r\n|\r|\n/).length;
-    input.rows = Math.min(lines, MAX_TEXT_AREA_LINES);
+    updateTextAreaLines(input);
 
     let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
     let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
@@ -379,6 +373,9 @@ function setupFunctionTablePopup(): void {
         case "function-table-y-max":
           component_graph.y_max = Expression.eval(input.value);
           component.dataset.y_max = input.value;
+          break;
+        case "function-table-lookup":
+          component.dataset.lookup = input.checked ? "1" : "0";
           break;
       }
 
@@ -495,4 +492,16 @@ export function updateShaftLength(comp: DraggableComponentElement, negativeLengt
   let screenPosition = worldToScreenPosition(new Vector2(comp.left * GRID_SIZE, comp.top * GRID_SIZE));
   comp.renderLeft = screenPosition.x;
   comp.renderTop = screenPosition.y;
+}
+
+function setupTextAreaCallback(area: HTMLTextAreaElement): void {
+  area.addEventListener("keyup", e => {
+    const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
+    updateTextAreaLines(input);
+  });
+}
+
+function updateTextAreaLines(area: HTMLTextAreaElement): void {
+  const lines = area.value.split(/\r\n|\r|\n/).length;
+  area.rows = Math.max(MIN_TEXT_AREA_LINES, Math.min(lines + 1, MAX_TEXT_AREA_LINES));
 }

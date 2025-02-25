@@ -13,6 +13,7 @@ import { Shaft } from "./Shaft";
  * @implements Device
  */
 export class CrossConnect implements Device {
+    id: number;
     private shafts: Shaft[];
     private output: Shaft | undefined;
     private input: Shaft | undefined;
@@ -25,7 +26,8 @@ export class CrossConnect implements Device {
      * @param shaft2 The shaft that represents one of the connected shaft
      * @param reversed A flag representing whether or not the output should be reversed
      */
-    constructor(shaft1: Shaft, shaft2: Shaft, reversed: Boolean) {
+    constructor(id: number, shaft1: Shaft, shaft2: Shaft, reversed: Boolean) {
+        this.id = id;
         this.shafts = [shaft1, shaft2];
         this.reversed = reversed;
     }
@@ -49,8 +51,9 @@ export class CrossConnect implements Device {
         }
         return this.output;
     }
-    update(): void {
+    update(dt: number = 1): void {
         const rotation_rate = this.input?.get_rotation_rate()!;
         this.output?.set_rotation_rate(this.reversed ? -rotation_rate : rotation_rate);
     }
+    getID() : number { return this.id; }
 }
