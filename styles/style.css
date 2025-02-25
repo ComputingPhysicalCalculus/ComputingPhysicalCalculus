@@ -136,17 +136,32 @@ html {
     font-weight: bold;
 }
 
-#configuration>div {
+/* #configuration>div { */
+/*     display: flex; */
+/*     flex-direction: row; */
+/*     justify-content: center; */
+/*     gap: calc(var(--gap-size) * 3); */
+/*     padding: var(--gap-size) 0 var(--gap-size) 0; */
+/*     width: 100%; */
+/* } */
+
+#configuration>input {
+    font-size: var(--text-button-size);
+}
+
+#control_buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#config_buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: calc(var(--gap-size) * 3);
     padding: var(--gap-size) 0 var(--gap-size) 0;
     width: 100%;
-}
-
-#configuration>input {
-    font-size: var(--text-button-size);
 }
 
 .TimeButtons {

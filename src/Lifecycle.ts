@@ -55,6 +55,9 @@ export class Lifecycle {
     @query("#clear-button")
     clear_button!: HTMLButtonElement
 
+    @query("#clear-tables-button")
+    clear_output_tables_button!: HTMLButtonElement
+
     @query("#play-button")
     play_button!: HTMLButtonElement
 
@@ -128,6 +131,14 @@ export class Lifecycle {
         this.config_file_input.addEventListener("change", _ => this._handle_import_file());
         this.export_button.addEventListener("click", _ => this._handle_export_file());
         this.clear_button.addEventListener("click", _ => this._clear_components());
+
+        this.clear_output_tables_button.addEventListener("click", _ => {
+            const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
+            output_tables.forEach(x => {
+                this.reset_output_table(x);
+                x.redraw();
+            })
+        });
 
         this.play_button.addEventListener("click", _ => {
             if (this.state == State.Stopped) {
@@ -236,6 +247,7 @@ export class Lifecycle {
     }
 
     private _clear_components(): void {
+        UNDO_SINGLETON.push();
         for (let component of this.placedComponents) {
             let { top, left, width, height } = component;
             component.remove();
@@ -333,6 +345,7 @@ export class Lifecycle {
         this.play_button.disabled = false;
         this.pause_button.disabled = true;
         this.stop_button.disabled = true;
+        this.clear_output_tables_button.disabled = false;
     }
 
     pause(): void {
@@ -345,6 +358,7 @@ export class Lifecycle {
         this.play_button.disabled = false;
         this.pause_button.disabled = true;
         this.stop_button.disabled = false;
+        this.clear_output_tables_button.disabled = true;
     }
 
     unpause(): void {
@@ -356,6 +370,7 @@ export class Lifecycle {
         this.play_button.disabled = true;
         this.pause_button.disabled = false;
         this.stop_button.disabled = false;
+        this.clear_output_tables_button.disabled = true;
     }
 
     run(): void {
@@ -371,6 +386,7 @@ export class Lifecycle {
         this.play_button.disabled = true;
         this.pause_button.disabled = false;
         this.stop_button.disabled = false;
+        this.clear_output_tables_button.disabled = true;
 
         const simulator = new Simulator(this.exportState())
         const step_period = Number(this.step_period_input.value);
@@ -388,8 +404,7 @@ export class Lifecycle {
         });
 
         output_tables.forEach(x => {
-            x.set_data_set("d1", []);
-            x.set_data_set("d2", [], "red", true);
+            this.reset_output_table(x);
         })
 
         const dials = document.querySelectorAll(".dial") as NodeListOf<DraggableComponentElement>;
@@ -475,5 +490,11 @@ export class Lifecycle {
         if (this._on_frame !== undefined) {
             this._on_frame(delta);
         }
+    }
+
+    private reset_output_table(table: GraphElement): void {
+        table.set_data_set("d1", []);
+        table.set_data_set("d2", [], "red", true);
+        table.gantry_x = 0;
     }
 }

@@ -77,7 +77,7 @@ export class GraphElement extends LitElement {
         let entries: IntersectionObserverEntry[] = [];
         let intersection_debouncer = true;
         let intersection_observer = new IntersectionObserver(e => {
-            const [ root ]  = e;
+            const [root] = e;
             if (!root) {
                 return;
             }
@@ -200,12 +200,16 @@ export class GraphElement extends LitElement {
         `;
     }
 
+    redraw(): void {
+        this._draw_graph();
+    }
+
     private _draw_graph(start_index: number = 0) {
         if (!this.visible) {
             return;
         }
         console.log("draw graph");
-        
+
         let ctx = this._canvas_graph.getContext("2d");
         if (ctx === null) {
             console.log("Failed to get canvas 2d context");
@@ -278,7 +282,7 @@ export class GraphElement extends LitElement {
         ctx.strokeStyle = "gray";
         this._draw_gantry_shaft(ctx);
 
-        
+
         for (let data of Object.values(this.data_sets)) {
             if (this.gantry_x === undefined) {
                 continue;
