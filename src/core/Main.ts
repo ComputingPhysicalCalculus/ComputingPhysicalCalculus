@@ -74,10 +74,6 @@ export class Simulator {
                 }
             }
         }
-        
-        // for (const table of this.outputTables){
-        //     ordered_devices.push(table);
-        // }
 
         this.components = ordered_devices;
     }
@@ -94,6 +90,56 @@ export class Simulator {
         for (const table of this.outputTables){
             table.update(1);
         }
+    }
+
+    check_config(): Map<number, boolean> {
+        let devices_config = new Map<number, boolean>();
+        let shafts_config = new Map<number, boolean>();
+        if(this.motor == undefined) {
+            throw new Error("The configuration must have at least one motor");
+        }
+        let ordered_devices: Device[] = [this.motor];
+        let stack: Shaft[] = [this.motor.determine_output()];
+        let visited: Set<number> = new Set<number>();
+        let visited_devices: Set<Device> = new Set<Device>();
+        visited.add(stack[0].id);
+        while (stack.length > 0) {
+            let shaft = stack.pop()!;
+            // if shaft is already ready, a problem occur
+            shaft.ready_flag = true;
+            for (let device of shaft.outputs) {
+                let output = device.determine_output();
+                if (output === undefined) continue;
+                if (!visited_devices.has(device)){
+                    ordered_devices.push(device);
+                    visited_devices.add(device);
+                } else {
+                    devices_config.set(device.id, false);
+                }
+                if (!visited.has(output.id)) {
+                    stack.push(output);
+                    visited.add(output.id);
+                } else {
+                    shafts_config.set(shaft.id, false);
+                }
+            }
+        }
+
+        // add uniterated devices as invalid devices
+        for(let device of this.components) {
+            if(!visited_devices.has(device)) {
+                devices_config.set(device.id, false);
+            }
+        }
+
+        // add uniterated shafts as invalid shafts
+        for(let shaft of this.shafts) {
+            if(!visited.has(shaft.id)) {
+                shafts_config.set(shaft.id, false);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -250,13 +296,3 @@ export class Simulator {
         console.log("Finished parsing the configuration file and instantiating the objects.")
     }
 }
-
-// export function run(): void {
-//     parse_config(config);
-//     init(shafts, motor, outputTables);
-//     for (let i = 0; i < 100; i++) {
-//         simulate_one_cycle();
-//         update();
-//     }
-// }
-
