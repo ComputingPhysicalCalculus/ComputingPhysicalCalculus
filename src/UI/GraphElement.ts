@@ -56,8 +56,6 @@ export class GraphElement extends LitElement {
 
         let resize_debouncer = true;
         let resize_observer = new ResizeObserver(_ => {
-            this._canvas_graph.width = this.offsetWidth;
-            this._canvas_graph.height = this.offsetHeight;
             this._canvas_axis.width = this.offsetWidth;
             this._canvas_axis.height = this.offsetHeight;
 
@@ -68,6 +66,8 @@ export class GraphElement extends LitElement {
             }
             resize_debouncer = false;
             window.setTimeout(() => {
+                this._canvas_graph.width = this.offsetWidth;
+                this._canvas_graph.height = this.offsetHeight;
                 this._draw_graph();
                 resize_debouncer = true;
             }, 200);
@@ -133,8 +133,18 @@ export class GraphElement extends LitElement {
         return true;
     }
 
-    protected updated(_changedProperties: PropertyValues): void {
+    protected updated(changedProperties: PropertyValues): void {
         this._draw_axis();
+        for (let prop of changedProperties.keys()) {
+            switch (prop) {
+                case "x_min":
+                case "x_max":
+                case "y_min":
+                case "y_max":
+                    this._draw_graph();
+                    break;
+            }
+        }
     }
 
     render() {
@@ -200,15 +210,10 @@ export class GraphElement extends LitElement {
         `;
     }
 
-    redraw(): void {
-        this._draw_graph();
-    }
-
     private _draw_graph(start_index: number = 0) {
         if (!this.visible) {
             return;
         }
-        console.log("draw graph");
 
         let ctx = this._canvas_graph.getContext("2d");
         if (ctx === null) {
@@ -219,7 +224,6 @@ export class GraphElement extends LitElement {
         if (start_index === 0) {
             ctx.clearRect(0, 0, this._canvas_graph.width, this._canvas_graph.height);
         }
-
 
         ctx.lineWidth = 1;
         for (let data of Object.values(this.data_sets)) {
