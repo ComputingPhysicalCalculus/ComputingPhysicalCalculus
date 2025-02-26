@@ -16,7 +16,6 @@ const MAX_TEXT_AREA_LINES = 10;
 
 let crossConnectPopup: HTMLDivElement;
 let integratorPopup: HTMLDivElement;
-let motorPopup: HTMLDivElement;
 let multiplierPopup: HTMLDivElement;
 let gearPairPopup: HTMLDivElement;
 let functionTablePopup: HTMLDivElement;
@@ -29,7 +28,6 @@ let labelPopup: HTMLDivElement;
 export function setupPopups(): void {
   setupCrossConnectPopup();
   setupIntegratorPopup();
-  setupMotorPopup();
   setupMultiplierPopup();
   setupGearPairPopup();
   setupFunctionTablePopup();
@@ -131,23 +129,6 @@ export function openOutputTablePopup(e: MouseEvent): void {
   e.preventDefault();
 }
 
-export function openMotorPopup(e: MouseEvent): void {
-  if (e.button != 2) return;
-  if (currentlyDragging()) return;
-
-  openPopup(e, motorPopup);
-
-  const target = e.currentTarget as DraggableComponentElement;
-
-  if (target.outputRatio < 0) {
-    motorPopup.getElementsByTagName("input")[0].checked = true;
-  } else {
-    motorPopup.getElementsByTagName("input")[0].checked = false;
-  }
-
-  e.preventDefault();
-}
-
 export function openMultiplierPopup(e: MouseEvent): void {
   if (e.button != 2) return;
   if (currentlyDragging()) return;
@@ -231,7 +212,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
 
 // Close all popups when a mouse click occurs and it is not contained within a popup
 function documentClick(e: MouseEvent) {
-  let popups = [crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
+  let popups = [crossConnectPopup, integratorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
   popups.forEach(popup => {
     if (!mouseWithin(popup, e)) {
       popup.style.visibility = "hidden";
@@ -268,24 +249,6 @@ function setupIntegratorPopup(): void {
 
     component.dataset.initialValue = input.value;
   })
-}
-
-function setupMotorPopup(): void {
-  motorPopup = document.getElementById("motor-popup") as HTMLDivElement;
-  motorPopup.addEventListener("mouseleave", closePopup);
-
-  const inputs = motorPopup.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener("change", (e) => {
-      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
-
-      if (input.checked)
-        component.outputRatio = -1;
-      else
-        component.outputRatio = 1;
-    })
-  }
 }
 
 function setupMultiplierPopup(): void {

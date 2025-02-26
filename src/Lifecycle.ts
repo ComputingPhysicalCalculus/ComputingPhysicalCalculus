@@ -211,7 +211,6 @@ export class Lifecycle {
         })
 
         document.querySelectorAll("#fullscreen .center").forEach(x => x.addEventListener("click", e => e.stopImmediatePropagation()));
-        console.log(document.querySelectorAll("#fullscreen .center"));
 
         document.addEventListener("placecomponent", () => this.check_da());
 
@@ -550,7 +549,7 @@ export class Lifecycle {
             for (let comp of simulator.components.filter(x => x instanceof FunctionTable)) {
                 const table = document.querySelector(`#component-${comp.id} > graph-table`)! as GraphElement;
                 table.gantry_x = comp.x_position;
-                if (next_steps !== 0 && comp.x_position >= table.x_max && table.parentElement?.dataset.lookup == "0") {
+                if (next_steps !== 0 && (comp.x_position >= table.x_max || comp.x_position < table.x_min) && table.parentElement?.dataset.lookup == "0") {
                     this.pause();
                     this.stop();
                     return;

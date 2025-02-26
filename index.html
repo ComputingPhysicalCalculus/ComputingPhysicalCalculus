@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="styles/fullscreen.css">
     <link rel="stylesheet" href="styles/grid.css">
     <link rel="stylesheet" href="styles/popups.css">
+    <link rel="stylesheet" href="styles/tooltip.css">
 </head>
 <body>
     <div id="fullscreen">
@@ -92,14 +93,17 @@
     <div id="content">
         <div id="machine">
             <div id="info_buttons">
-                <div id="about_button">
+                <div id="about_button" class="tooltip">
                     <img src="icons/Info.svg" class="nodrag" alt="Info" style="rotate: 180deg;"/>
+                    <span class="tooltiptext">About</span>
                 </div>
-                <div id="help_button">
+                <div id="help_button" class="tooltip">
                     <img src="icons/Help.svg" class="nodrag" alt="Help"/>
+                    <span class="tooltiptext">Help</span>
                 </div>
-                <div id="constants_button">
+                <div id="constants_button" class="tooltip">
                     <img src="icons/Constants.svg" class="nodrag" alt="Constants"/>
+                    <span class="tooltiptext">Constant variables</span>
                 </div>
             </div>
             <div id="grid"></div>
@@ -264,11 +268,6 @@
                 <textarea id="integrator-initial-offset"></textarea>
             </div>
 
-            <div class="popup" id="motor-popup" position="absolute" >
-                <label>Reverse</label>
-                <input id="motor-reverse" type="checkbox">
-            </div>
-
             <div class="popup" id="multiplier-popup" position="absolute" >
                 <label>Factor</label>
                 <textarea id="multiplier-input-factor"></textarea>
@@ -302,8 +301,9 @@
                     <label>y Max</label>
                     <input step="any" id="function-table-y-max" />
                 </div>
-                <div>
+                <div class="tooltip">
                     <input type="checkbox" id="function-table-lookup">Lookup Table</input>
+                    <span class="tooltiptext">Disable boundary checks</span>
                 </div>
             </div>
 

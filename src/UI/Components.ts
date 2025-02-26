@@ -2,7 +2,7 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup, openLabelPopup } from "./Popups.ts"
+import { openIntegratorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup, openLabelPopup } from "./Popups.ts"
 import { selectShaft } from "./SelectShaft.ts";
 
 import Vector2 from "./Vector2.ts";
@@ -474,8 +474,6 @@ function createMotor(div: DraggableComponentElement): void {
     div.outputRatio = 1;
 
     render(html`<motor-component style="width:100%;height:100%"></motor-component>`, div);
-
-    div.addEventListener("mouseup", openMotorPopup);
 
     type ExportedData = {
         top: number,
