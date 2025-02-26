@@ -36,7 +36,7 @@ export class CrossConnectComponentElement extends LitElement {
         xmlns="https://www.w3.org/2000/svg"
         width="50" height="50"
         viewBox="0 0 50 50"
-        style="width:100%;height:100%"
+        style="width:100%;height:100%;display:block"
       >
       <circle class="fill-fg stroke-fg" cx="25" cy="25" r="7" stroke="black"/>
       <rect class="fill-fg stroke-fg" x="13" width="24" y="22" height="6" stroke="black" rx="1"/>
