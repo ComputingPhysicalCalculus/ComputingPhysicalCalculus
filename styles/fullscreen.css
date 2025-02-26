@@ -27,6 +27,11 @@
   height: 100%;
 }
 
+#fullscreen label {
+  font-size: var(--text-header-size);
+  font-weight: bold;
+}
+
 #fullscreen .content {
   display: flex;
   flex-direction: column;

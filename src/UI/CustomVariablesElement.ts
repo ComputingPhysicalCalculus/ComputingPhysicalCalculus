@@ -17,7 +17,7 @@ export class CustomVariablesElement extends LitElement {
 
   change() {
     this._textarea.style.height = "auto";
-    this._textarea.style.height = this._textarea.scrollHeight+"px";
+    this._textarea.style.height = this._textarea.scrollHeight + "px";
 
     this.expression = this._textarea.value;
     if (this.expression.trim() === "") {
@@ -26,7 +26,7 @@ export class CustomVariablesElement extends LitElement {
     }
 
     let parsed_expression = Expression.parse(this.expression);
-    
+
     do {
       if (parsed_expression._type !== "let") {
         const [result, vars] = Expression.partial_eval_expr(parsed_expression, this.values)
@@ -49,10 +49,10 @@ export class CustomVariablesElement extends LitElement {
   render() {
     // Gets new value in change
     const delayed_change = () => window.setTimeout(() => this.change(), 0);
-    
+
     return html`
       <div style="display:flex;width:100%">
-        <textarea style="flex:1 1 auto;overflow:hidden;resize:none;padding:0" type="text" rows="1"
+        <textarea style="flex:1 1 auto;overflow:hidden;resize:none;padding:0" type="text" rows="10"
           @change=${delayed_change}
           @cut=${delayed_change}
           @paste=${delayed_change}

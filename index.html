@@ -17,6 +17,7 @@
             <div class="center">
                 <div class="content-background">
                     <div class="content">
+                        <label>About</label>
                         <span>
                             This website was designed to be a simulation of a differential analyser,
                             mechanical machines that were designed to solve differential equations
@@ -42,6 +43,20 @@
             <div class="center">
                 <div class="content-background">
                     <div class="content">
+                        <label>Help</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="constants">
+            <div class="center">
+                <div class="content-background">
+                    <div class="content">
+                        <label>Constants</label>
+                        <span>Global constants written here are accessible in all input fields</span>
+                        <div class="custom-variables">
+                            <custom-variables></custom-variables>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,10 +68,13 @@
         <div id="machine">
             <div id="info_buttons">
                 <div id="about_button">
-                    <img src="icons/Integrator.svg" class="nodrag" alt="Integrator"/>
+                    <img src="icons/Info.svg" class="nodrag" alt="Info" style="rotate: 180deg;"/>
                 </div>
                 <div id="help_button">
-                    <img src="icons/CrossConnect.svg" class="nodrag" alt="Integrator"/>
+                    <img src="icons/Help.svg" class="nodrag" alt="Help"/>
+                </div>
+                <div id="constants_button">
+                    <img src="icons/Constants.svg" class="nodrag" alt="Constants"/>
                 </div>
             </div>
             <div id="grid"></div>
@@ -202,10 +220,6 @@
 
                 <label for="motor-speed">Motor speed</label>
                 <input id="motor-speed" type="range" min="0.0" max="2" step="0.01" value="0.5" />
-            </div>
-
-            <div class="custom-variables">
-                <custom-variables></custom-variables>
             </div>
         </div>
 

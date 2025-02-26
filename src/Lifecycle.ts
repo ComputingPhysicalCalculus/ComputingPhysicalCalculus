@@ -94,17 +94,23 @@ export class Lifecycle {
     @query("#fullscreen")
     fullscreen!: HTMLElement;
 
+    @query("#about_button")
+    about_button!: HTMLElement;
+
     @query("#about")
     about_screen!: HTMLElement;
+
+    @query("#help_button")
+    help_button!: HTMLElement;
 
     @query("#help")
     help_screen!: HTMLElement;
 
-    @query("#about_button")
-    about_button!: HTMLElement;
+    @query("#constants_button")
+    constants_button!: HTMLElement;
 
-    @query("#help_button")
-    help_button!: HTMLElement;
+    @query("#constants")
+    constants_screen!: HTMLElement;
 
     currently_demoing: Boolean = false;
 
@@ -180,19 +186,32 @@ export class Lifecycle {
             this.fullscreen.style.visibility = "hidden";
             this.about_screen.style.visibility = "hidden";
             this.help_screen.style.visibility = "hidden";
+            this.constants_screen.style.visibility = "hidden";
         });
 
         this.about_button.addEventListener("click", _ => {
             this.fullscreen.style.visibility = "visible";
             this.about_screen.style.visibility = "visible";
             this.help_screen.style.visibility = "hidden";
+            this.constants_screen.style.visibility = "hidden";
         })
 
         this.help_button.addEventListener("click", _ => {
             this.fullscreen.style.visibility = "visible";
             this.about_screen.style.visibility = "hidden";
             this.help_screen.style.visibility = "visible";
+            this.constants_screen.style.visibility = "hidden";
         })
+
+        this.constants_button.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "visible";
+            this.about_screen.style.visibility = "hidden";
+            this.help_screen.style.visibility = "hidden";
+            this.constants_screen.style.visibility = "visible";
+        })
+
+        document.querySelectorAll("#fullscreen .center").forEach(x => x.addEventListener("click", e => e.stopImmediatePropagation()));
+        console.log(document.querySelectorAll("#fullscreen .center"));
 
         document.addEventListener("placecomponent", () => this.check_da());
 

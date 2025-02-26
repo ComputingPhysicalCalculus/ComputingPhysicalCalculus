@@ -67,12 +67,16 @@ html {
     z-index: 100;
 }
 
+#constants_button {
+    z-index: 100;
+}
+
 #info_buttons img {
     width: 100%;
     aspect-ratio: 1;
     opacity: 70%;
     z-index: 100;
-    width: calc(5 * var(--unit));
+    width: calc(4 * var(--unit));
 }
 
 #user-control {
