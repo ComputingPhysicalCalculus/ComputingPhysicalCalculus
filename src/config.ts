@@ -117,6 +117,7 @@ export type DialConfig = {
   type: "dial";
   compID: number;
   position: [number, number];
+  inputShaft: number;
 };
 
 const type_name_dict = {

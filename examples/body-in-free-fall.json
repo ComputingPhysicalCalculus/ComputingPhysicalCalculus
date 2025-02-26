@@ -1,1 +1,619 @@
-{"shafts":[{"id":76,"start":[0,3],"end":[20,3]},{"id":77,"start":[0,4],"end":[20,4]},{"id":78,"start":[0,5],"end":[20,5]},{"id":79,"start":[0,6],"end":[20,6]},{"id":80,"start":[0,7],"end":[20,7]},{"id":81,"start":[0,8],"end":[20,8]},{"id":82,"start":[3,2],"end":[3,4]},{"id":83,"start":[4,2],"end":[4,8]},{"id":84,"start":[7,3],"end":[7,10]},{"id":85,"start":[8,5],"end":[8,10]},{"id":86,"start":[6,4],"end":[6,10]},{"id":87,"start":[14,7],"end":[14,10]},{"id":88,"start":[13,3],"end":[13,10]},{"id":89,"start":[12,5],"end":[12,10]},{"id":90,"start":[17,2],"end":[17,3]},{"id":91,"start":[18,2],"end":[18,4]},{"id":92,"start":[19,2],"end":[19,5]},{"id":93,"start":[9,2],"end":[9,5]},{"id":94,"start":[10,2],"end":[10,6]}],"components":[{"type":"motor","compID":43,"position":[-2,3],"reversed":false,"outputShaft":76},{"type":"label","compID":50,"position":[21,3],"size":[1,1],"align":"","_comment":"t"},{"type":"functionTable","compID":51,"position":[1,-2],"x_min":"0","x_max":"100","y_min":"-10","y_max":"10","inputShaft":82,"outputShaft":83,"fn":"1"},{"type":"label","compID":52,"position":[2,-3],"size":[2,1],"align":"center","_comment":"g(x)"},{"type":"crossConnect","compID":55,"position":[3,4],"reversed":false,"vertical":82,"horizontal":77},{"type":"crossConnect","compID":57,"position":[4,8],"reversed":false,"vertical":83,"horizontal":81},{"type":"differential","compID":58,"position":[1,6],"diffShaft1":79,"sumShaft":80,"diffShaft2":81},{"type":"label","compID":59,"position":[21,4],"size":[1,1],"align":"","_comment":"x"},{"type":"label","compID":60,"position":[21,5],"size":[2,1],"align":"","_comment":"dx/dt"},{"type":"label","compID":61,"position":[21,6],"size":[3,1],"align":"","_comment":"F(dx/dt)"},{"type":"label","compID":62,"position":[21,8],"size":[1,1],"align":"","_comment":"g"},{"type":"label","compID":63,"position":[21,7],"size":[5,1],"align":"","_comment":"F(dx/dt) + g(x)"},{"type":"integrator","compID":64,"position":[5,11],"outputShaft":86,"variableOfIntegrationShaft":84,"integrandShaft":85,"initialPosition":0},{"type":"integrator","compID":65,"position":[11,11],"outputShaft":89,"variableOfIntegrationShaft":88,"integrandShaft":87,"initialPosition":1},{"type":"crossConnect","compID":67,"position":[7,3],"reversed":false,"vertical":84,"horizontal":76},{"type":"crossConnect","compID":69,"position":[8,5],"reversed":false,"vertical":85,"horizontal":78},{"type":"crossConnect","compID":71,"position":[6,4],"reversed":false,"vertical":86,"horizontal":77},{"type":"crossConnect","compID":73,"position":[14,7],"reversed":false,"vertical":87,"horizontal":80},{"type":"crossConnect","compID":75,"position":[13,3],"reversed":false,"vertical":88,"horizontal":76},{"type":"crossConnect","compID":77,"position":[12,5],"reversed":false,"vertical":89,"horizontal":78},{"type":"outputTable","compID":79,"position":[16,-2],"x_min":"0","x_max":"4","y_min":"-5","y_max":"42","inputShaft":90,"outputShaft1":91,"outputShaft2":92,"initialY1":"0","initialY2":"0.1"},{"type":"crossConnect","compID":81,"position":[17,3],"reversed":false,"vertical":90,"horizontal":76},{"type":"crossConnect","compID":84,"position":[18,4],"reversed":false,"vertical":91,"horizontal":77},{"type":"crossConnect","compID":85,"position":[19,5],"reversed":false,"vertical":92,"horizontal":78},{"type":"dial","compID":86,"position":[20,4]},{"type":"dial","compID":87,"position":[20,5]},{"type":"label","compID":90,"position":[5,13],"size":[4,2],"align":"center","_comment":"Initial Velocity: V"},{"type":"label","compID":91,"position":[11,13],"size":[4,1],"align":"center","_comment":"F(V)+g"},{"type":"functionTable","compID":92,"position":[7,-2],"x_min":"0","x_max":"30","y_min":"0","y_max":"10","inputShaft":93,"outputShaft":94,"fn":"2x^0.5"},{"type":"crossConnect","compID":94,"position":[9,5],"reversed":false,"vertical":93,"horizontal":78},{"type":"crossConnect","compID":96,"position":[10,6],"reversed":false,"vertical":94,"horizontal":79},{"type":"label","compID":97,"position":[7,-3],"size":[4,1],"align":"center","_comment":"F(dx/dt)"},{"type":"dial","compID":98,"position":[20,3]}]}
+{
+  "shafts": [
+    {
+      "id": 76,
+      "start": [
+        0,
+        3
+      ],
+      "end": [
+        20,
+        3
+      ]
+    },
+    {
+      "id": 77,
+      "start": [
+        0,
+        4
+      ],
+      "end": [
+        20,
+        4
+      ]
+    },
+    {
+      "id": 78,
+      "start": [
+        0,
+        5
+      ],
+      "end": [
+        20,
+        5
+      ]
+    },
+    {
+      "id": 79,
+      "start": [
+        0,
+        6
+      ],
+      "end": [
+        20,
+        6
+      ]
+    },
+    {
+      "id": 80,
+      "start": [
+        0,
+        7
+      ],
+      "end": [
+        20,
+        7
+      ]
+    },
+    {
+      "id": 81,
+      "start": [
+        0,
+        8
+      ],
+      "end": [
+        20,
+        8
+      ]
+    },
+    {
+      "id": 82,
+      "start": [
+        3,
+        2
+      ],
+      "end": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": 83,
+      "start": [
+        4,
+        2
+      ],
+      "end": [
+        4,
+        8
+      ]
+    },
+    {
+      "id": 84,
+      "start": [
+        7,
+        3
+      ],
+      "end": [
+        7,
+        10
+      ]
+    },
+    {
+      "id": 85,
+      "start": [
+        8,
+        5
+      ],
+      "end": [
+        8,
+        10
+      ]
+    },
+    {
+      "id": 86,
+      "start": [
+        6,
+        4
+      ],
+      "end": [
+        6,
+        10
+      ]
+    },
+    {
+      "id": 87,
+      "start": [
+        14,
+        7
+      ],
+      "end": [
+        14,
+        10
+      ]
+    },
+    {
+      "id": 88,
+      "start": [
+        13,
+        3
+      ],
+      "end": [
+        13,
+        10
+      ]
+    },
+    {
+      "id": 89,
+      "start": [
+        12,
+        5
+      ],
+      "end": [
+        12,
+        10
+      ]
+    },
+    {
+      "id": 90,
+      "start": [
+        17,
+        2
+      ],
+      "end": [
+        17,
+        3
+      ]
+    },
+    {
+      "id": 91,
+      "start": [
+        18,
+        2
+      ],
+      "end": [
+        18,
+        4
+      ]
+    },
+    {
+      "id": 92,
+      "start": [
+        19,
+        2
+      ],
+      "end": [
+        19,
+        5
+      ]
+    },
+    {
+      "id": 93,
+      "start": [
+        9,
+        2
+      ],
+      "end": [
+        9,
+        5
+      ]
+    },
+    {
+      "id": 94,
+      "start": [
+        10,
+        2
+      ],
+      "end": [
+        10,
+        6
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "motor",
+      "compID": 43,
+      "position": [
+        -2,
+        3
+      ],
+      "reversed": false,
+      "outputShaft": 76
+    },
+    {
+      "type": "label",
+      "compID": 50,
+      "position": [
+        21,
+        3
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
+      "_comment": "t"
+    },
+    {
+      "type": "functionTable",
+      "compID": 51,
+      "position": [
+        1,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "100",
+      "y_min": "-10",
+      "y_max": "10",
+      "inputShaft": 82,
+      "outputShaft": 83,
+      "lookup": false,
+      "fn": "1"
+    },
+    {
+      "type": "label",
+      "compID": 52,
+      "position": [
+        2,
+        -3
+      ],
+      "size": [
+        2,
+        1
+      ],
+      "align": "center",
+      "_comment": "g(x)"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 55,
+      "position": [
+        3,
+        4
+      ],
+      "reversed": false,
+      "vertical": 82,
+      "horizontal": 77
+    },
+    {
+      "type": "crossConnect",
+      "compID": 57,
+      "position": [
+        4,
+        8
+      ],
+      "reversed": false,
+      "vertical": 83,
+      "horizontal": 81
+    },
+    {
+      "type": "differential",
+      "compID": 58,
+      "position": [
+        1,
+        6
+      ],
+      "diffShaft1": 79,
+      "sumShaft": 80,
+      "diffShaft2": 81
+    },
+    {
+      "type": "label",
+      "compID": 59,
+      "position": [
+        21,
+        4
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
+      "_comment": "x"
+    },
+    {
+      "type": "label",
+      "compID": 60,
+      "position": [
+        21,
+        5
+      ],
+      "size": [
+        2,
+        1
+      ],
+      "align": "",
+      "_comment": "dx/dt"
+    },
+    {
+      "type": "label",
+      "compID": 61,
+      "position": [
+        21,
+        6
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "F(dx/dt)"
+    },
+    {
+      "type": "label",
+      "compID": 62,
+      "position": [
+        21,
+        8
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
+      "_comment": "g"
+    },
+    {
+      "type": "label",
+      "compID": 63,
+      "position": [
+        21,
+        7
+      ],
+      "size": [
+        5,
+        1
+      ],
+      "align": "",
+      "_comment": "F(dx/dt) + g(x)"
+    },
+    {
+      "type": "integrator",
+      "compID": 64,
+      "position": [
+        5,
+        11
+      ],
+      "outputShaft": 86,
+      "variableOfIntegrationShaft": 84,
+      "integrandShaft": 85,
+      "initialPosition": "0"
+    },
+    {
+      "type": "integrator",
+      "compID": 65,
+      "position": [
+        11,
+        11
+      ],
+      "outputShaft": 89,
+      "variableOfIntegrationShaft": 88,
+      "integrandShaft": 87,
+      "initialPosition": "1"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 67,
+      "position": [
+        7,
+        3
+      ],
+      "reversed": false,
+      "vertical": 84,
+      "horizontal": 76
+    },
+    {
+      "type": "crossConnect",
+      "compID": 69,
+      "position": [
+        8,
+        5
+      ],
+      "reversed": false,
+      "vertical": 85,
+      "horizontal": 78
+    },
+    {
+      "type": "crossConnect",
+      "compID": 71,
+      "position": [
+        6,
+        4
+      ],
+      "reversed": false,
+      "vertical": 86,
+      "horizontal": 77
+    },
+    {
+      "type": "crossConnect",
+      "compID": 73,
+      "position": [
+        14,
+        7
+      ],
+      "reversed": false,
+      "vertical": 87,
+      "horizontal": 80
+    },
+    {
+      "type": "crossConnect",
+      "compID": 75,
+      "position": [
+        13,
+        3
+      ],
+      "reversed": false,
+      "vertical": 88,
+      "horizontal": 76
+    },
+    {
+      "type": "crossConnect",
+      "compID": 77,
+      "position": [
+        12,
+        5
+      ],
+      "reversed": false,
+      "vertical": 89,
+      "horizontal": 78
+    },
+    {
+      "type": "outputTable",
+      "compID": 79,
+      "position": [
+        16,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "4",
+      "y_min": "-5",
+      "y_max": "42",
+      "inputShaft": 90,
+      "outputShaft1": 91,
+      "outputShaft2": 92,
+      "initialY1": "0",
+      "initialY2": "0.1"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 81,
+      "position": [
+        17,
+        3
+      ],
+      "reversed": false,
+      "vertical": 90,
+      "horizontal": 76
+    },
+    {
+      "type": "crossConnect",
+      "compID": 84,
+      "position": [
+        18,
+        4
+      ],
+      "reversed": false,
+      "vertical": 91,
+      "horizontal": 77
+    },
+    {
+      "type": "crossConnect",
+      "compID": 85,
+      "position": [
+        19,
+        5
+      ],
+      "reversed": false,
+      "vertical": 92,
+      "horizontal": 78
+    },
+    {
+      "type": "label",
+      "compID": 90,
+      "position": [
+        5,
+        13
+      ],
+      "size": [
+        4,
+        2
+      ],
+      "align": "center",
+      "_comment": "Initial Velocity: V"
+    },
+    {
+      "type": "label",
+      "compID": 91,
+      "position": [
+        11,
+        13
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "F(V)+g"
+    },
+    {
+      "type": "functionTable",
+      "compID": 92,
+      "position": [
+        7,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "30",
+      "y_min": "0",
+      "y_max": "10",
+      "inputShaft": 93,
+      "outputShaft": 94,
+      "lookup": false,
+      "fn": "2x^0.5"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 94,
+      "position": [
+        9,
+        5
+      ],
+      "reversed": false,
+      "vertical": 93,
+      "horizontal": 78
+    },
+    {
+      "type": "crossConnect",
+      "compID": 96,
+      "position": [
+        10,
+        6
+      ],
+      "reversed": false,
+      "vertical": 94,
+      "horizontal": 79
+    },
+    {
+      "type": "label",
+      "compID": 97,
+      "position": [
+        7,
+        -3
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "F(dx/dt)"
+    },
+    {
+      "type": "dial",
+      "compID": 99,
+      "position": [
+        20,
+        3
+      ],
+      "inputShaft": 76
+    },
+    {
+      "type": "dial",
+      "compID": 100,
+      "position": [
+        20,
+        4
+      ],
+      "inputShaft": 77
+    },
+    {
+      "type": "dial",
+      "compID": 101,
+      "position": [
+        20,
+        5
+      ],
+      "inputShaft": 78
+    }
+  ]
+}

@@ -25,6 +25,7 @@ export class Simulator {
     motor: Motor | undefined;
     outputTables: OutputTable[] = [];
     components: Device[] = [];
+    ordered_components: Device[] = [];
     private rotation: number; // rotation of the motor
     private initial_x_position; // initial x position of the function table
     private inputFunction: (n: number) => number;
@@ -77,14 +78,14 @@ export class Simulator {
             }
         }
 
-        this.components = ordered_devices;
+        this.ordered_components = ordered_devices;
     }
 
 
     step() {
         // update the components
         for (let i = 0; i < this.mini_steps_n; i++) {
-            for (const device of this.components) {
+            for (const device of this.ordered_components) {
                 device.update(this.mini_steps_dt);
             }
         }
@@ -111,7 +112,6 @@ export class Simulator {
             shaft.ready_flag = true;
             for (let device of shaft.outputs) {
                 let output = device.determine_output();
-                if (output === undefined) continue;
                 if (!visited_devices.has(device)) {
                     ordered_devices.push(device);
                     visited_devices.add(device);
@@ -119,6 +119,7 @@ export class Simulator {
                 } else {
                     continue;
                 }
+                if (output === undefined) continue;
                 if (!visited.has(output.id)) {
                     stack.push(output);
                     visited.add(output.id);
@@ -296,6 +297,16 @@ export class Simulator {
                 case 'label':
                     break;
                 case 'dial':
+                    new_component = new (class Dial implements Device {
+                        private id: number;
+
+                        constructor(id: number) { this.id = id; }
+                        determine_output(): Shaft | undefined { return undefined; }
+                        update(_dt: number): void {}
+                        getID(): number { return this.id; }
+                    })(component.compID);
+                    shafts.get(component.inputShaft)!.outputs.push(new_component);
+                    components.push(new_component);
                     break;
                 default:
                     throw new Error(`Invalid component type`);
@@ -305,6 +316,7 @@ export class Simulator {
         this.motor = motor;
         this.shafts = Array.from(shafts.values());
         this.outputTables = outputTables;
+        this.ordered_components = components;
         this.components = components;
     }
 }

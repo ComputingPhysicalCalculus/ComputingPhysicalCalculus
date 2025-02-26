@@ -194,10 +194,7 @@ export class Lifecycle {
             this.help_screen.style.visibility = "visible";
         })
 
-        document.addEventListener("placecomponent", () => {
-            console.log("hi");
-            this.check_da();
-        })
+        document.addEventListener("placecomponent", () => this.check_da());
 
         window.addEventListener("keydown", e => {
             if (e.defaultPrevented) {
@@ -552,6 +549,7 @@ export class Lifecycle {
             if (component.componentType === "motor") {
                 no_motor = true;
             }
+            component.classList.add("unconnected");
             component.classList.add("warning");
         });
 
@@ -567,11 +565,14 @@ export class Lifecycle {
             ...simulator.outputTables.map(x => x.getID()),
             ...simulator.shafts.filter(x => x.ready_flag).map(x => x.id),
         ]);
-        let unused_components = new Set([...components.entries()].filter(([_, v]) => v.componentType !== "label" && !joined_components.has(v.componentID)).map(x => x[0]));
+        let unused_components = new Set([...components.entries()].filter(([_, v]) => {
+            return v.componentType !== "label" && !joined_components.has(v.componentID)
+        }).map(x => x[1].componentID));
+        let unfinished_components_sets = new Set([...unfinished_components]);
 
         let error = ![...result.entries()].every(x => x[1] !== ConfigError.FATAL_ERROR);
         components.forEach(x => {
-            if (unused_components.has(x.componentID) || (result.get(x.componentID) ?? ConfigError.NO_ERROR) === ConfigError.NOT_SET_UP) {
+            if (unused_components.has(x.componentID) || unfinished_components_sets.has(x.componentID) || (result.get(x.componentID) ?? ConfigError.NO_ERROR) === ConfigError.NOT_SET_UP) {
                 x.classList.add("unconnected");
                 x.classList.remove("error");
             } else {

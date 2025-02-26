@@ -200,7 +200,14 @@ export function toConfig(): [Config, number[]] {
         }
       case "dial":
         {
-          result = { type, compID, position };
+          const shaft1 = getHShaftID(position[0], position[1]);
+          const shaft2 = getVShaftID(position[0], position[1]);
+
+          if (shaft1 === null && shaft2 === null) {
+            break;
+          }
+
+          result = { type, compID, position, inputShaft: shaft1 ?? shaft2 };
           break;
         }
     }
