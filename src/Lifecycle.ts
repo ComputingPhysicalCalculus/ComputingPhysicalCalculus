@@ -90,6 +90,21 @@ export class Lifecycle {
     @query("#machine")
     machine!: HTMLElement;
 
+    @query("#fullscreen")
+    fullscreen!: HTMLElement;
+
+    @query("#about")
+    about_screen!: HTMLElement;
+
+    @query("#help")
+    help_screen!: HTMLElement;
+
+    @query("#about_button")
+    about_button!: HTMLElement;
+
+    @query("#help_button")
+    help_button!: HTMLElement;
+
     currently_demoing: Boolean = false;
 
     state: State = State.Stopped;
@@ -159,6 +174,24 @@ export class Lifecycle {
             if (this.currently_demoing) { this.stop_demo(); } else { this.stop(); }
         });
         this.pause_button.addEventListener("click", _ => this.pause());
+
+        this.fullscreen.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "hidden";
+            this.about_screen.style.visibility = "hidden";
+            this.help_screen.style.visibility = "hidden";
+        });
+
+        this.about_button.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "visible";
+            this.about_screen.style.visibility = "visible";
+            this.help_screen.style.visibility = "hidden";
+        })
+
+        this.help_button.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "visible";
+            this.about_screen.style.visibility = "hidden";
+            this.help_screen.style.visibility = "visible";
+        })
 
         window.addEventListener("keydown", e => {
             if (e.defaultPrevented) {

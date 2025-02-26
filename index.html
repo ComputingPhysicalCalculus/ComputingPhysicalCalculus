@@ -2,24 +2,63 @@
 <html>
 <head>
     <title>Differential Analyser</title>
-    <title>Differential Analyser</title>
 
     <script type="module" src="src/index.ts"></script>
-    <script type="module" src="src/index.ts"></script>
 
-    <link rel="stylesheet" href="styles/popups.css">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/fullscreen.css">
     <link rel="stylesheet" href="styles/grid.css">
     <link rel="stylesheet" href="styles/popups.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/grid.css">
 </head>
 <body>
+    <div id="fullscreen">
+        <div id="about">
+            <div class="center">
+                <div class="content-background">
+                    <div class="content">
+                        <span>
+                            This website was designed to be a simulation of a differential analyser,
+                            mechanical machines that were designed to solve differential equations
+                            through integration. The components implemented in this simulation are
+                            based on the original paper by Vannevar Bush, released in 1931. All components
+                            are implemented to be similar to how the physical machines would have functioned.
+                        </span>
+
+                        <span>
+                            More information can be found  <a href="https://en.wikipedia.org/wiki/Differential_analyser" target="_blank">here</a>
+                        </span>
+
+                        <span>
+                            This website was constructed over 7 weeks, between the dates of 23/01/25 and 13/03/25, by Aaron Danton,
+                            Andy Zhu, Hanzhang Shen, Joseph Hunt, Simon Solca, and Sophie Ring as part of Cambridge's
+                            Computer Science IB group project for the client, Richard Pawson.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="help">
+            <div class="center">
+                <div class="content-background">
+                    <div class="content">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="content">
         <div id="machine">
-            <div id="grid"></div>
+            <div id="info_buttons">
+                <div id="about_button">
+                    <img src="icons/Integrator.svg" class="nodrag" alt="Integrator"/>
+                </div>
+                <div id="help_button">
+                    <img src="icons/CrossConnect.svg" class="nodrag" alt="Integrator"/>
+                </div>
+            </div>
         </div>
 
         <div id="user-control">

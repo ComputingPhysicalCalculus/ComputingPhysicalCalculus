@@ -9,13 +9,13 @@
     --colour-highlight3: #364D1A;
     --text-colour: #FCFCFC;
     --unit: calc(max(1vw, 1vh));
-    --text-size: 1.1rem;
-    --text-button-size: 1.1rem;
-    --text-header-size: 2rem;
+    --text-size: 0.6rem;
+    --text-button-size: 0.8rem;
+    --text-header-size: 1.5rem;
     --border-radius: calc(0.5 * var(--unit));
     --gap-size: calc(0.5 * var(--unit));
 
-    font-family: monospace;
+    font-family: "Arial, Helvetica, sans-serif";
     color: var(--text-colour);
     background: var(--colour-background);
 }
@@ -53,6 +53,28 @@ html {
     height: 100%;
 }
 
+#info_buttons {
+    display: flex;
+    flex-direction: row;
+    float: right;
+}
+
+#about_button {
+    z-index: 100;
+}
+
+#help_button {
+    z-index: 100;
+}
+
+#info_buttons img {
+    width: 100%;
+    aspect-ratio: 1;
+    opacity: 70%;
+    z-index: 100;
+    width: calc(5 * var(--unit));
+}
+
 #user-control {
     margin: 0;
     display: flex;
@@ -72,8 +94,6 @@ html {
     gap: var(--gap-size);
 
     z-index: 6;
-
-    font-family: "Arial, Helvetica, sans-serif";
 }
 
 #demo-area {
@@ -127,7 +147,7 @@ html {
     font-size: var(--text-size);
 }
 
-.custom-variables > custom-variables {
+.custom-variables>custom-variables {
     width: 100%;
 }
 
@@ -217,4 +237,12 @@ html {
 
 .arrow:hover {
     cursor: pointer;
+}
+
+.nodrag {
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    pointer-events: none;
 }
