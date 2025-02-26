@@ -393,6 +393,38 @@ function setupOutputTablePopup(): void {
   outputTablePopup = document.getElementById("output-table-popup") as HTMLDivElement;
   outputTablePopup.addEventListener("mouseleave", closePopup);
 
+  const button = outputTablePopup.querySelector("* > button") as HTMLButtonElement;
+  button.addEventListener("click", e => {
+    const input = e.currentTarget as HTMLButtonElement;
+    const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
+
+    const keys = [...Object.keys(component_graph.data_sets)];
+    let result = keys.map(k => `${k}_x,${k}_y,`).reduce((a, b) => a + b);
+    const max_length = Object.values(component_graph.data_sets).map(v => v.points.length).reduce((a, b) => Math.max(a, b));
+    for (let i = 0; i < max_length; i++) {
+      result += "\n";
+      for (let k of keys) {
+        const v = component_graph.data_sets[k];
+        if (v.points.length <= i) {
+          continue;
+        }
+
+        result += `${v.points[i].x},${v.points[i].y},`
+      }
+    }
+
+    console.log(result);
+
+    const link = document.createElement("a");
+    const file = new Blob([result], { type: "application/json" });
+
+    link.href = URL.createObjectURL(file);
+    link.download = `data-${input.parentElement!.parentElement!.dataset.id!}.csv`;
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+  });
+
   const inputs = outputTablePopup.querySelectorAll("* > input");
   for (let i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener("change", (e) => {
