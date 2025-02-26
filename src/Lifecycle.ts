@@ -568,11 +568,12 @@ export class Lifecycle {
         let unused_components = new Set([...components.entries()].filter(([_, v]) => {
             return v.componentType !== "label" && !joined_components.has(v.componentID)
         }).map(x => x[1].componentID));
-        let unfinished_components_sets = new Set([...unfinished_components]);
+        let unfinished_components_set = new Set([...unfinished_components]);
 
         let error = ![...result.entries()].every(x => x[1] !== ConfigError.FATAL_ERROR);
         components.forEach(x => {
-            if (unused_components.has(x.componentID) || unfinished_components_sets.has(x.componentID) || (result.get(x.componentID) ?? ConfigError.NO_ERROR) === ConfigError.NOT_SET_UP) {
+            console.log(unused_components, unfinished_components_set, result);
+            if (unused_components.has(x.componentID) || unfinished_components_set.has(x.componentID) || (result.get(x.componentID) ?? ConfigError.NO_ERROR) === ConfigError.NOT_SET_UP) {
                 x.classList.add("unconnected");
                 x.classList.remove("error");
             } else {

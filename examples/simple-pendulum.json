@@ -1,7 +1,7 @@
 {
   "shafts": [
     {
-      "id": 148,
+      "id": 39,
       "start": [
         3,
         4
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "id": 149,
+      "id": 40,
       "start": [
         3,
         5
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "id": 150,
+      "id": 41,
       "start": [
         8,
         3
@@ -34,7 +34,7 @@
       ]
     },
     {
-      "id": 151,
+      "id": 42,
       "start": [
         3,
         6
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "id": 152,
+      "id": 43,
       "start": [
         3,
         7
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "id": 153,
+      "id": 44,
       "start": [
         10,
         4
@@ -67,7 +67,7 @@
       ]
     },
     {
-      "id": 154,
+      "id": 45,
       "start": [
         9,
         7
@@ -78,7 +78,7 @@
       ]
     },
     {
-      "id": 155,
+      "id": 46,
       "start": [
         11,
         6
@@ -89,7 +89,7 @@
       ]
     },
     {
-      "id": 156,
+      "id": 47,
       "start": [
         7,
         3
@@ -100,7 +100,7 @@
       ]
     },
     {
-      "id": 157,
+      "id": 48,
       "start": [
         6,
         5
@@ -111,7 +111,7 @@
       ]
     },
     {
-      "id": 158,
+      "id": 49,
       "start": [
         5,
         8
@@ -122,7 +122,7 @@
       ]
     },
     {
-      "id": 159,
+      "id": 50,
       "start": [
         3,
         8
@@ -133,7 +133,7 @@
       ]
     },
     {
-      "id": 160,
+      "id": 51,
       "start": [
         15,
         4
@@ -144,7 +144,7 @@
       ]
     },
     {
-      "id": 161,
+      "id": 52,
       "start": [
         16,
         8
@@ -155,7 +155,7 @@
       ]
     },
     {
-      "id": 162,
+      "id": 53,
       "start": [
         14,
         6
@@ -166,7 +166,7 @@
       ]
     },
     {
-      "id": 163,
+      "id": 54,
       "start": [
         20,
         3
@@ -177,7 +177,7 @@
       ]
     },
     {
-      "id": 164,
+      "id": 55,
       "start": [
         25,
         3
@@ -188,7 +188,7 @@
       ]
     },
     {
-      "id": 165,
+      "id": 56,
       "start": [
         21,
         3
@@ -199,7 +199,7 @@
       ]
     },
     {
-      "id": 166,
+      "id": 57,
       "start": [
         26,
         3
@@ -210,7 +210,7 @@
       ]
     },
     {
-      "id": 167,
+      "id": 58,
       "start": [
         20,
         5
@@ -221,7 +221,7 @@
       ]
     },
     {
-      "id": 168,
+      "id": 59,
       "start": [
         20,
         6
@@ -232,7 +232,7 @@
       ]
     },
     {
-      "id": 169,
+      "id": 60,
       "start": [
         30,
         3
@@ -243,7 +243,7 @@
       ]
     },
     {
-      "id": 170,
+      "id": 61,
       "start": [
         31,
         3
@@ -257,17 +257,17 @@
   "components": [
     {
       "type": "motor",
-      "compID": 43,
+      "compID": 0,
       "position": [
         1,
         4
       ],
       "reversed": false,
-      "outputShaft": 148
+      "outputShaft": 39
     },
     {
       "type": "functionTable",
-      "compID": 44,
+      "compID": 1,
       "position": [
         5,
         -1
@@ -276,14 +276,14 @@
       "x_max": "pi/2",
       "y_min": "-1.5",
       "y_max": "1.5",
-      "inputShaft": 156,
-      "outputShaft": 150,
+      "inputShaft": 47,
+      "outputShaft": 41,
       "lookup": true,
       "fn": "sin(x)"
     },
     {
       "type": "label",
-      "compID": 45,
+      "compID": 2,
       "position": [
         6,
         -2
@@ -297,63 +297,64 @@
     },
     {
       "type": "multiplier",
-      "compID": 48,
+      "compID": 3,
       "position": [
         4,
         10
       ],
       "factor": "L=1;g=0.7;g/L",
-      "inputShaft": 157,
-      "outputShaft": 158
+      "inputShaft": 48,
+      "outputShaft": 49,
+      "multiplicandShaft": null
     },
     {
       "type": "crossConnect",
-      "compID": 51,
+      "compID": 4,
       "position": [
         8,
         5
       ],
       "reversed": false,
-      "vertical": 150,
-      "horizontal": 149
+      "vertical": 41,
+      "horizontal": 40
     },
     {
       "type": "integrator",
-      "compID": 52,
+      "compID": 5,
       "position": [
         8,
         10
       ],
-      "outputShaft": 154,
-      "variableOfIntegrationShaft": 153,
-      "integrandShaft": 155,
+      "outputShaft": 45,
+      "variableOfIntegrationShaft": 44,
+      "integrandShaft": 46,
       "initialPosition": "1"
     },
     {
       "type": "crossConnect",
-      "compID": 56,
+      "compID": 6,
       "position": [
         10,
         4
       ],
       "reversed": false,
-      "vertical": 153,
-      "horizontal": 148
+      "vertical": 44,
+      "horizontal": 39
     },
     {
       "type": "crossConnect",
-      "compID": 60,
+      "compID": 7,
       "position": [
         11,
         6
       ],
       "reversed": false,
-      "vertical": 155,
-      "horizontal": 151
+      "vertical": 46,
+      "horizontal": 42
     },
     {
       "type": "label",
-      "compID": 61,
+      "compID": 8,
       "position": [
         7,
         12
@@ -367,40 +368,40 @@
     },
     {
       "type": "crossConnect",
-      "compID": 65,
+      "compID": 9,
       "position": [
         7,
         7
       ],
       "reversed": false,
-      "vertical": 156,
-      "horizontal": 152
+      "vertical": 47,
+      "horizontal": 43
     },
     {
       "type": "crossConnect",
-      "compID": 67,
+      "compID": 10,
       "position": [
         6,
         5
       ],
       "reversed": false,
-      "vertical": 157,
-      "horizontal": 149
+      "vertical": 48,
+      "horizontal": 40
     },
     {
       "type": "crossConnect",
-      "compID": 71,
+      "compID": 11,
       "position": [
         5,
         8
       ],
       "reversed": true,
-      "vertical": 158,
-      "horizontal": 159
+      "vertical": 49,
+      "horizontal": 50
     },
     {
       "type": "label",
-      "compID": 72,
+      "compID": 12,
       "position": [
         1,
         5
@@ -414,7 +415,7 @@
     },
     {
       "type": "label",
-      "compID": 74,
+      "compID": 13,
       "position": [
         2,
         7
@@ -428,52 +429,52 @@
     },
     {
       "type": "integrator",
-      "compID": 76,
+      "compID": 14,
       "position": [
         13,
         10
       ],
-      "outputShaft": 162,
-      "variableOfIntegrationShaft": 160,
-      "integrandShaft": 161,
+      "outputShaft": 53,
+      "variableOfIntegrationShaft": 51,
+      "integrandShaft": 52,
       "initialPosition": "0"
     },
     {
       "type": "crossConnect",
-      "compID": 78,
+      "compID": 15,
       "position": [
         15,
         4
       ],
       "reversed": false,
-      "vertical": 160,
-      "horizontal": 148
+      "vertical": 51,
+      "horizontal": 39
     },
     {
       "type": "crossConnect",
-      "compID": 80,
+      "compID": 16,
       "position": [
         16,
         8
       ],
       "reversed": false,
-      "vertical": 161,
-      "horizontal": 159
+      "vertical": 52,
+      "horizontal": 50
     },
     {
       "type": "crossConnect",
-      "compID": 82,
+      "compID": 17,
       "position": [
         14,
         6
       ],
       "reversed": false,
-      "vertical": 162,
-      "horizontal": 151
+      "vertical": 53,
+      "horizontal": 42
     },
     {
       "type": "label",
-      "compID": 83,
+      "compID": 18,
       "position": [
         -1,
         8
@@ -487,7 +488,7 @@
     },
     {
       "type": "functionTable",
-      "compID": 84,
+      "compID": 19,
       "position": [
         18,
         -1
@@ -496,14 +497,14 @@
       "x_max": "pi/2",
       "y_min": "-1.5",
       "y_max": "1.5",
-      "inputShaft": 163,
-      "outputShaft": 165,
+      "inputShaft": 54,
+      "outputShaft": 56,
       "lookup": true,
       "fn": "sin(x)"
     },
     {
       "type": "functionTable",
-      "compID": 85,
+      "compID": 20,
       "position": [
         23,
         -1
@@ -512,14 +513,14 @@
       "x_max": "pi/2",
       "y_min": "-1.5",
       "y_max": "1.5",
-      "inputShaft": 164,
-      "outputShaft": 166,
+      "inputShaft": 55,
+      "outputShaft": 57,
       "lookup": true,
       "fn": "cos(x)"
     },
     {
       "type": "label",
-      "compID": 86,
+      "compID": 21,
       "position": [
         19,
         -2
@@ -533,7 +534,7 @@
     },
     {
       "type": "label",
-      "compID": 87,
+      "compID": 22,
       "position": [
         24,
         -2
@@ -547,51 +548,51 @@
     },
     {
       "type": "crossConnect",
-      "compID": 90,
+      "compID": 23,
       "position": [
         25,
         7
       ],
       "reversed": false,
-      "vertical": 164,
-      "horizontal": 152
+      "vertical": 55,
+      "horizontal": 43
     },
     {
       "type": "crossConnect",
-      "compID": 91,
+      "compID": 24,
       "position": [
         20,
         7
       ],
       "reversed": false,
-      "vertical": 163,
-      "horizontal": 152
+      "vertical": 54,
+      "horizontal": 43
     },
     {
       "type": "crossConnect",
-      "compID": 96,
+      "compID": 25,
       "position": [
         26,
         6
       ],
       "reversed": true,
-      "vertical": 166,
-      "horizontal": 168
+      "vertical": 57,
+      "horizontal": 59
     },
     {
       "type": "crossConnect",
-      "compID": 97,
+      "compID": 26,
       "position": [
         21,
         5
       ],
       "reversed": false,
-      "vertical": 165,
-      "horizontal": 167
+      "vertical": 56,
+      "horizontal": 58
     },
     {
       "type": "outputTable",
-      "compID": 98,
+      "compID": 27,
       "position": [
         29,
         -1
@@ -600,37 +601,37 @@
       "x_max": "2",
       "y_min": "-2",
       "y_max": "2",
-      "inputShaft": 169,
-      "outputShaft1": 170,
+      "inputShaft": 60,
+      "outputShaft1": 61,
       "outputShaft2": null,
       "initialY1": "0",
       "initialY2": "0"
     },
     {
       "type": "crossConnect",
-      "compID": 101,
+      "compID": 28,
       "position": [
         30,
         5
       ],
       "reversed": false,
-      "vertical": 169,
-      "horizontal": 167
+      "vertical": 60,
+      "horizontal": 58
     },
     {
       "type": "crossConnect",
-      "compID": 102,
+      "compID": 29,
       "position": [
         31,
         6
       ],
       "reversed": false,
-      "vertical": 170,
-      "horizontal": 168
+      "vertical": 61,
+      "horizontal": 59
     },
     {
       "type": "label",
-      "compID": 103,
+      "compID": 30,
       "position": [
         19,
         5
@@ -644,7 +645,7 @@
     },
     {
       "type": "label",
-      "compID": 104,
+      "compID": 31,
       "position": [
         19,
         6
@@ -658,42 +659,45 @@
     },
     {
       "type": "dial",
-      "compID": 106,
+      "compID": 32,
       "position": [
         16,
         4
-      ]
+      ],
+      "inputShaft": 39
     },
     {
       "type": "dial",
-      "compID": 107,
+      "compID": 33,
       "position": [
         16,
         6
-      ]
+      ],
+      "inputShaft": 42
     },
     {
       "type": "dial",
-      "compID": 108,
+      "compID": 34,
       "position": [
         16,
         7
-      ]
+      ],
+      "inputShaft": 43
     },
     {
       "type": "crossConnect",
-      "compID": 109,
+      "compID": 35,
       "position": [
         9,
         7
       ],
       "reversed": false,
-      "vertical": 154,
-      "horizontal": 152
+      "vertical": 45,
+      "horizontal": 43
     },
     {
       "type": "label",
-      "compID": 110,
+      "compID": 36,
       "position": [
         2,
         6
@@ -707,7 +711,7 @@
     },
     {
       "type": "label",
-      "compID": 111,
+      "compID": 37,
       "position": [
         13,
         12
@@ -721,7 +725,7 @@
     },
     {
       "type": "label",
-      "compID": 112,
+      "compID": 38,
       "position": [
         4,
         12

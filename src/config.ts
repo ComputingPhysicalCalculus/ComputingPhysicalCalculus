@@ -170,9 +170,9 @@ export function loadConfig(config: Config): void {
     item.left = left;
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
-    item.id = `component-${components.compID}`;
-    item.componentID = components.compID;
-    maxID = Math.max(maxID, components.compID);
+    item.componentID = maxID;
+    maxID += 1;
+    item.id = `component-${item.componentID}`;
 
     if (item.componentType != "label") {
       setCells(new Vector2(left, top), item.getSize(), true);
@@ -208,9 +208,9 @@ export function loadConfig(config: Config): void {
     item.renderLeft = left * GRID_SIZE;
     item.width = width;
     item.height = height;
-    item.id = `shaft-component-${shaft.id}`;
-    item.componentID = shaft.id;
-    maxID = Math.max(maxID, shaft.id);
+    item.componentID = maxID;
+    maxID += 1;
+    item.id = `shaft-component-${item.componentID}`;
 
     item.hasBeenPlaced = true;
     item.requestUpdate();
