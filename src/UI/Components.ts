@@ -11,6 +11,7 @@ import { GearPairComponentElement } from "./GearPairComponentElement.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import Expression from "@src/expr/Expression.ts";
 import { machine } from "./Constants.ts";
+import { get_global_ctx } from "@src/Lifecycle.ts";
 
 export enum ComponentType {
     VShaft,
@@ -314,14 +315,14 @@ function createFunctionTable(div: DraggableComponentElement): void {
         _this.dataset.y_max = data.y_max;
         _this.dataset.lookup = (!data.lookup) ? "0" : (data.lookup ? "1" : "0");
 
-        graph_element.x_min = Expression.eval(_this.dataset.x_min);
-        graph_element.x_max = Expression.eval(_this.dataset.x_max);
-        graph_element.y_min = Expression.eval(_this.dataset.y_min);
-        graph_element.y_max = Expression.eval(_this.dataset.y_max);
+        graph_element.x_min = Expression.eval(_this.dataset.x_min, get_global_ctx());
+        graph_element.x_max = Expression.eval(_this.dataset.x_max, get_global_ctx());
+        graph_element.y_min = Expression.eval(_this.dataset.y_min, get_global_ctx());
+        graph_element.y_max = Expression.eval(_this.dataset.y_max, get_global_ctx());
         graph_element.gantry_x = data.gantry_x;
 
         if (data.fn !== undefined && data.fn != "") {
-            let compiled_expr = Expression.compile(data.fn);
+            let compiled_expr = Expression.compile(data.fn, get_global_ctx());
             let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
             graph_element.set_data_set("d1", Array.from([...generator_exp]));
             graph_element.data_sets["d1"].fn = data.fn;
@@ -444,13 +445,13 @@ function createOutputTable(div: DraggableComponentElement): void {
         _this.dataset.initial_1 = (data.initialY1) ?? "0";
         _this.dataset.initial_2 = data.initialY2 ?? "0";
 
-        graph_element.x_min = Expression.eval(_this.dataset.x_min);
-        graph_element.x_max = Expression.eval(_this.dataset.x_max);
-        graph_element.y_min = Expression.eval(_this.dataset.y_min);
-        graph_element.y_max = Expression.eval(_this.dataset.y_max);
+        graph_element.x_min = Expression.eval(_this.dataset.x_min, get_global_ctx());
+        graph_element.x_max = Expression.eval(_this.dataset.x_max, get_global_ctx());
+        graph_element.y_min = Expression.eval(_this.dataset.y_min, get_global_ctx());
+        graph_element.y_max = Expression.eval(_this.dataset.y_max, get_global_ctx());
         graph_element.gantry_x = data.gantry_x;
-        _this.inputRatio = Expression.eval(_this.dataset.initial_1);
-        _this.outputRatio = Expression.eval(_this.dataset.initial_2);
+        _this.inputRatio = Expression.eval(_this.dataset.initial_1, get_global_ctx());
+        _this.outputRatio = Expression.eval(_this.dataset.initial_2, get_global_ctx());
     }
 }
 

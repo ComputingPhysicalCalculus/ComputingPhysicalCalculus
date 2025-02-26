@@ -62,7 +62,7 @@ html {
     min-width: 24rem;
     max-width: 28rem;
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
     overflow-x: hidden;
 
     background: var(--colour-accent1);
@@ -117,8 +117,18 @@ html {
     background: var(--colour-accent2);
     border-radius: var(--border-radius);
     font-size: var(--text-size);
+}
 
-    overflow-y: hidden;
+.custom-variables {
+    display: flex;
+    padding: var(--gap-size);
+    background: var(--colour-accent2);
+    border-radius: var(--border-radius);
+    font-size: var(--text-size);
+}
+
+.custom-variables > custom-variables {
+    width: 100%;
 }
 
 #configuration>p {
@@ -170,10 +180,11 @@ html {
 }
 
 .TimeButton {
-    display: block;
+    display: flex;
     font-size: var(--text-button-size);
     max-height: calc(2*var(--unit));
     justify-content: center;
+    align-items: center;
     width: auto;
 }
 

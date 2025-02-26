@@ -14,11 +14,17 @@ import { Simulator } from "./core/Main";
 import { FunctionTable } from "./core/FunctionTable";
 import Expression from "./expr/Expression";
 import { DialComponentElement } from "./UI/DialComponentElement.ts";
+import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 
 enum State {
     Paused,
     Running,
     Stopped,
+}
+
+export function get_global_ctx(): { [k: string]: number } {
+    const custom_variables = document.querySelector("custom-variables") as CustomVariablesElement;
+    return custom_variables.getValues();
 }
 
 /**
@@ -136,7 +142,6 @@ export class Lifecycle {
             const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
             output_tables.forEach(x => {
                 this.reset_output_table(x);
-                x.redraw();
             })
         });
 
@@ -398,13 +403,19 @@ export class Lifecycle {
         simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
             const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
 
-            let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
+            let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "", get_global_ctx());
             x.fun = x => compiled_expr({ x });
             x.x_position = 0;
         });
 
-        output_tables.forEach(x => {
-            this.reset_output_table(x);
+        simulator.outputTables.forEach(x => {
+            const table = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
+            table.gantry_x = 0;
+            table.data_sets = {};
+            table.set_data_set("d1", []);
+            if (x.y2 !== undefined) {
+                table.set_data_set("d2", [], "red", true);
+            }
         })
 
         const dials = document.querySelectorAll(".dial") as NodeListOf<DraggableComponentElement>;
@@ -493,8 +504,7 @@ export class Lifecycle {
     }
 
     private reset_output_table(table: GraphElement): void {
-        table.set_data_set("d1", []);
-        table.set_data_set("d2", [], "red", true);
+        table.data_sets = {};
         table.gantry_x = 0;
     }
 }

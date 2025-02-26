@@ -18,6 +18,7 @@ import { Shaft } from "./Shaft";
 import { ConfigError } from "../ConfigError.ts";
 
 import Expression from "../expr/Expression.ts";
+import { get_global_ctx } from "@src/Lifecycle.ts";
 
 export class Simulator {
     shafts: Shaft[] = [];
@@ -197,7 +198,7 @@ export class Simulator {
                         shafts.get(component.integrandShaft)!,
                         shafts.get(component.outputShaft)!,
                         false,
-                        Expression.eval(String(component.initialPosition)) // Accounts for direct numbers in config
+                        Expression.eval(String(component.initialPosition), get_global_ctx()) // Accounts for direct numbers in config
                     );
                     shafts.get(component.variableOfIntegrationShaft)!.outputs.push(new_component);
                     shafts.get(component.integrandShaft)!.outputs.push(new_component);
@@ -209,7 +210,7 @@ export class Simulator {
                         component.compID,
                         shafts.get(component.inputShaft)!,
                         shafts.get(component.outputShaft)!,
-                        Expression.eval(String(component.factor)), // Accounts for numbers instead of a string in config
+                        Expression.eval(String(component.factor), get_global_ctx()), // Accounts for numbers instead of a string in config
                         (!component.multiplicandShaft) ? undefined : shafts.get(component.multiplicandShaft)!
                     );
                     shafts.get(component.inputShaft)!.outputs.push(new_component);
@@ -270,9 +271,9 @@ export class Simulator {
                             component.compID,
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
-                            Expression.eval(String(component.initialY1)), // Accounts for numbers instead of a string being passed into input
+                            Expression.eval(String(component.initialY1), get_global_ctx()), // Accounts for numbers instead of a string being passed into input
                             shafts.get(component.outputShaft2)!,
-                            Expression.eval(String(component.initialY2)),
+                            Expression.eval(String(component.initialY2), get_global_ctx()),
                         );
                         shafts.get(component.outputShaft2)!.outputs.push(outputTable);
                     }
@@ -281,7 +282,7 @@ export class Simulator {
                             component.compID,
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
-                            Expression.eval(String(component.initialY1)),
+                            Expression.eval(String(component.initialY1), get_global_ctx()),
                         );
                     }
                     outputTable.id = component.compID;

@@ -9,6 +9,7 @@ import { clearSelect } from "./SelectShaft.ts"
 import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import { machine } from "./Constants.ts";
+import { get_global_ctx } from "@src/Lifecycle.ts";
 
 const MIN_TEXT_AREA_LINES = 3;
 const MAX_TEXT_AREA_LINES = 10;
@@ -343,11 +344,11 @@ function setupFunctionTablePopup(): void {
 
     updateTextAreaLines(input);
 
-    let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
+    let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0", get_global_ctx());
     let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
     component_graph.mutate_data_set("d1", points => {
       points.splice(0, points.length, ...Array.from(generator_exp));
-    });
+    }, true);
   });
 
   const inputs = functionTablePopup.querySelectorAll("* > input");
@@ -359,19 +360,19 @@ function setupFunctionTablePopup(): void {
 
       switch (input.id) {
         case "function-table-x-min":
-          component_graph.x_min = Expression.eval(input.value);
+          component_graph.x_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_min = input.value;
           break;
         case "function-table-x-max":
-          component_graph.x_max = Expression.eval(input.value);
+          component_graph.x_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_max = input.value;
           break;
         case "function-table-y-min":
-          component_graph.y_min = Expression.eval(input.value);
+          component_graph.y_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_min = input.value;
           break;
         case "function-table-y-max":
-          component_graph.y_max = Expression.eval(input.value);
+          component_graph.y_max = Expression.eval(input.value,get_global_ctx());
           component.dataset.y_max = input.value;
           break;
         case "function-table-lookup":
@@ -379,11 +380,11 @@ function setupFunctionTablePopup(): void {
           break;
       }
 
-      let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
+      let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0", get_global_ctx());
       let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
       component_graph.mutate_data_set("d1", points => {
         points.splice(0, points.length, ...Array.from(generator_exp));
-      });
+      }, true);
     })
   }
 }
@@ -401,27 +402,27 @@ function setupOutputTablePopup(): void {
 
       switch (input.id) {
         case "output-table-initial-1":
-          component.inputRatio = Expression.eval(input.value);
+          component.inputRatio = Expression.eval(input.value,get_global_ctx());
           component.dataset.initial_1 = input.value;
           break;
         case "output-table-initial-2":
-          component.outputRatio = Expression.eval(input.value);
+          component.outputRatio = Expression.eval(input.value, get_global_ctx());
           component.dataset.initial_2 = input.value;
           break;
         case "output-table-x-min":
-          component_graph.x_min = Expression.eval(input.value);
+          component_graph.x_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_min = input.value;
           break;
         case "output-table-x-max":
-          component_graph.x_max = Expression.eval(input.value);
+          component_graph.x_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_max = input.value;
           break;
         case "output-table-y-min":
-          component_graph.y_min = Expression.eval(input.value);
+          component_graph.y_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_min = input.value;
           break;
         case "output-table-y-max":
-          component_graph.y_max = Expression.eval(input.value);
+          component_graph.y_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_max = input.value;
           break;
       }
