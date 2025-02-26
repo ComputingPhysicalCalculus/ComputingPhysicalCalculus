@@ -18,7 +18,7 @@
 }
 
 :host(.error) ::slotted(*) {
-  --svg-bg: orange;
+  --svg-bg: white;
   --svg-fg: red;
 }
 
