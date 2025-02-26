@@ -525,6 +525,9 @@ export function updateShaftLength(comp: DraggableComponentElement, negativeLengt
   let screenPosition = worldToScreenPosition(new Vector2(comp.left * GRID_SIZE, comp.top * GRID_SIZE));
   comp.renderLeft = screenPosition.x;
   comp.renderTop = screenPosition.y;
+
+  let e = new CustomEvent("placecomponent");
+  document.dispatchEvent(e);
 }
 
 function setupTextAreaCallback(area: HTMLTextAreaElement): void {
