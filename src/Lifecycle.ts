@@ -16,7 +16,7 @@ import Expression from "./expr/Expression";
 import { DialComponentElement } from "./UI/DialComponentElement.ts";
 import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 import { ConfigError } from "./ConfigError.ts";
-import { ComponentType } from "./UI/Components.ts";
+import { ComponentType, resetIDs } from "./UI/Components.ts";
 
 enum State {
     Paused,
@@ -292,6 +292,7 @@ export class Lifecycle {
 
     private _clear_components(): void {
         UNDO_SINGLETON.push();
+        resetIDs();
         for (let component of this.placedComponents) {
             let { top, left, width, height } = component;
             component.remove();
@@ -557,7 +558,7 @@ export class Lifecycle {
             components.forEach(x => x.componentType === "motor" || x.componentType === "label" || x.classList.add("unconnected"));
             return;
         }
-        
+
         const simulator = new Simulator(config)
         let result = simulator.check_config();
         let joined_components = new Set([
@@ -572,7 +573,7 @@ export class Lifecycle {
 
         let error = ![...result.entries()].every(x => x[1] !== ConfigError.FATAL_ERROR);
         components.forEach(x => {
-            console.log(unused_components, unfinished_components_set, result);
+            // console.log(unused_components, unfinished_components_set, result);
             if (unused_components.has(x.componentID) || unfinished_components_set.has(x.componentID) || (result.get(x.componentID) ?? ConfigError.NO_ERROR) === ConfigError.NOT_SET_UP) {
                 x.classList.add("unconnected");
                 x.classList.remove("error");

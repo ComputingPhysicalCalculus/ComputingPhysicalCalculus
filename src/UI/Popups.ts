@@ -372,7 +372,7 @@ function setupFunctionTablePopup(): void {
           component.dataset.y_min = input.value;
           break;
         case "function-table-y-max":
-          component_graph.y_max = Expression.eval(input.value,get_global_ctx());
+          component_graph.y_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_max = input.value;
           break;
         case "function-table-lookup":
@@ -413,8 +413,6 @@ function setupOutputTablePopup(): void {
       }
     }
 
-    console.log(result);
-
     const link = document.createElement("a");
     const file = new Blob([result], { type: "application/json" });
 
@@ -434,7 +432,7 @@ function setupOutputTablePopup(): void {
 
       switch (input.id) {
         case "output-table-initial-1":
-          component.inputRatio = Expression.eval(input.value,get_global_ctx());
+          component.inputRatio = Expression.eval(input.value, get_global_ctx());
           component.dataset.initial_1 = input.value;
           break;
         case "output-table-initial-2":

@@ -1,4 +1,4 @@
-import { ComponentType, createComponent, stringToComponent } from "./Components.ts"
+import { ComponentType, createComponent, deleteComponent, stringToComponent } from "./Components.ts"
 import Vector2 from "./Vector2.ts"
 import { GRID_SIZE, allValid, setCells, highlightHoveredCells, screenToWorldPosition, worldToScreenPosition, validShaft } from "./Grid.ts";
 import { DraggableComponentElement } from "./DraggableElement.ts";
@@ -188,6 +188,7 @@ function drop(event: MouseEvent): void {
     let worldTopLeft = worldToScreenPosition(new Vector2(topLeft.x * GRID_SIZE, topLeft.y * GRID_SIZE));
 
     if (worldTopLeft.x > grid.clientWidth) {
+      deleteComponent(item);
       item.remove();
       curDragItem.item = null;
       if (item.shouldLockCells) {

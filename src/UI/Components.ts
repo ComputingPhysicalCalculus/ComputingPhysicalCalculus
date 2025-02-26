@@ -28,9 +28,10 @@ export enum ComponentType {
     Dial,
 };
 
-let CURRENT_ID: number = 0;
+let max_id = 0;
+let free_ids: number[] = [];
 
-export function setIDCounter(id: number): void { CURRENT_ID = id; }
+// export function setIDCounter(id: number): void { CURRENT_ID = id; }
 
 export function stringToComponent(componentName: string): ComponentType | null {
     return ComponentType[componentName as keyof typeof ComponentType];
@@ -89,10 +90,24 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     return comp;
 }
 
-function createUniqueID(): number {
-    const v = CURRENT_ID;
-    CURRENT_ID += 1;
-    return v;
+export function resetIDs(): void {
+    free_ids = [];
+    max_id = 0;
+}
+
+export function deleteComponent(component: DraggableComponentElement): void {
+    free_ids.push(component.componentID);
+}
+
+export function createUniqueID(): number {
+    if (free_ids.length == 0) {
+        let id = max_id;
+        max_id += 1;
+        return id;
+    } else {
+        let value = free_ids.pop()!;
+        return value;
+    }
 }
 
 function setID(div: DraggableComponentElement): void {
@@ -211,12 +226,12 @@ function createHShaft(div: DraggableComponentElement): void {
 }
 
 function createIntegrator(div: DraggableComponentElement): void {
-  div.width = 4;
-  div.height = 2;
-  div.componentType = "integrator";
-  div.shouldLockCells = true;
-  div.classList.add("integrator");
-  div.inputRatio = 0;
+    div.width = 4;
+    div.height = 2;
+    div.componentType = "integrator";
+    div.shouldLockCells = true;
+    div.classList.add("integrator");
+    div.inputRatio = 0;
 
     render(html`<integrator-component style="width:100%;height:100%"></integrator-component>`, div);
 

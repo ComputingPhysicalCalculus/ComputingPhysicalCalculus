@@ -1,4 +1,4 @@
-import { setIDCounter, ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { ComponentType, createComponent, stringToComponent, createUniqueID } from "./UI/Components";
 import { machine } from "./UI/Constants.ts";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { setCells, GRID_SIZE } from "./UI/Grid";
@@ -134,7 +134,6 @@ const type_name_dict = {
 };
 
 export function loadConfig(config: Config): void {
-  let maxID = 0;
   for (let components of config.components) {
     let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
@@ -170,8 +169,7 @@ export function loadConfig(config: Config): void {
     item.left = left;
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
-    item.componentID = maxID;
-    maxID += 1;
+    item.componentID = createUniqueID();
     item.id = `component-${item.componentID}`;
 
     if (item.componentType != "label") {
@@ -208,8 +206,7 @@ export function loadConfig(config: Config): void {
     item.renderLeft = left * GRID_SIZE;
     item.width = width;
     item.height = height;
-    item.componentID = maxID;
-    maxID += 1;
+    item.componentID = createUniqueID();
     item.id = `shaft-component-${item.componentID}`;
 
     item.hasBeenPlaced = true;
@@ -217,6 +214,4 @@ export function loadConfig(config: Config): void {
 
     machine.appendChild(item);
   }
-
-  setIDCounter(maxID + 1);
 }
