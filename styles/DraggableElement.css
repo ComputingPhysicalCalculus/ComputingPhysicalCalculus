@@ -13,6 +13,6 @@
 }
 
 :host(.warning) ::slotted(*) {
-  --svg-bg: orange;
-  --svg-fg: red;
+  --svg-bg: #FFA100;
+  --svg-fg: black;
 }

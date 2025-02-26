@@ -496,9 +496,6 @@ export class Lifecycle {
     }
 
     private _frame(delta: number): void {
-        // let simulator = new Simulator(this.exportState());
-        // console.log(simulator.check_config());
-
         if (this.state !== State.Running) {
             return;
         }
