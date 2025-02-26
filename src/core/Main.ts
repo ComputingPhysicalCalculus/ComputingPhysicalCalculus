@@ -94,7 +94,7 @@ export class Simulator {
         }
     }
 
-    check_config(): Map<number, ConfigError> {
+    check_config(): ConfigError {
         let result = new Map<number, ConfigError>();
         if (this.motor == undefined) {
             throw new Error("The configuration must have at least one motor");
@@ -115,6 +115,8 @@ export class Simulator {
                     ordered_devices.push(device);
                     visited_devices.add(device);
                     result.set(device.getID(), ConfigError.NO_ERROR);
+                } else {
+                    continue;
                 }
                 if (!visited.has(output.id)) {
                     stack.push(output);
@@ -140,7 +142,11 @@ export class Simulator {
             }
         }
 
-        return result;
+        if ([...result.values()].find(x => x !== ConfigError.NO_ERROR) !== undefined) {
+            return ConfigError.FATAL_ERROR;
+        } else {
+            return ConfigError.NO_ERROR;
+        }
     }
 
     /**

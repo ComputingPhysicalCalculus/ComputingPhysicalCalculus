@@ -418,6 +418,23 @@ export class Lifecycle {
         if (this.state !== State.Stopped) {
             console.warn(`Tried to run application when it was not stopped.\nState was ${this.state}`);
         }
+        const simulator = new Simulator(this.exportState())
+        let result = simulator.check_config();
+        console.log(result);
+        let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
+        components.forEach(x => {
+            if (!x.classList.contains("unconnected")) {
+                if (result === ConfigError.FATAL_ERROR) {
+                    x.classList.add("error");
+                } else {
+                    x.classList.remove("error");
+                }
+            }
+        });
+        if (result !== ConfigError.NO_ERROR) {
+            return;
+        }
+
         this.state = State.Running;
 
         this.step_period_input.disabled = true;
@@ -428,15 +445,6 @@ export class Lifecycle {
         this.pause_button.disabled = false;
         this.stop_button.disabled = false;
         this.clear_output_tables_button.disabled = true;
-
-        const simulator = new Simulator(this.exportState())
-        console.log(simulator.check_config());
-        simulator.check_config().forEach((v, k) => {
-            const element = document.querySelector(`#component-${k},#shaft-component-${k}`) as DraggableComponentElement;
-            if (v === ConfigError.FATAL_ERROR) {
-                element.classList.add("error");
-            }
-        });
 
         const step_period = Number(this.step_period_input.value);
         const get_motor_speed = () => Number(this.motor_speed_input.value);
@@ -538,6 +546,19 @@ export class Lifecycle {
     }
 
     private _frame(delta: number): void {
+        const simulator = new Simulator(this.exportState())
+        let result = simulator.check_config();
+        let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
+        components.forEach(x => {
+            if (!x.classList.contains("unconnected")) {
+                if (result === ConfigError.FATAL_ERROR) {
+                    x.classList.add("error");
+                } else {
+                    x.classList.remove("error");
+                }
+            }
+        });
+
         if (this.state !== State.Running) {
             return;
         }
