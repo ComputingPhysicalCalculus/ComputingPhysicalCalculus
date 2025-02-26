@@ -94,7 +94,7 @@ export class Simulator {
         }
     }
 
-    check_config(): ConfigError {
+    check_config(): Map<number, ConfigError> {
         let result = new Map<number, ConfigError>();
         if (this.motor == undefined) {
             throw new Error("The configuration must have at least one motor");
@@ -103,6 +103,7 @@ export class Simulator {
         let stack: Shaft[] = [this.motor.determine_output()];
         let visited: Set<number> = new Set<number>();
         let visited_devices: Set<Device> = new Set<Device>();
+        visited_devices.add(this.motor);
         visited.add(stack[0].id);
         while (stack.length > 0) {
             let shaft = stack.pop()!;
@@ -131,22 +132,18 @@ export class Simulator {
         // add uniterated devices as invalid devices
         for (let device of this.components) {
             if (!visited_devices.has(device)) {
-                result.set(device.getID(), ConfigError.NO_ERROR);
+                result.set(device.getID(), ConfigError.NOT_SET_UP);
             }
         }
 
         // add uniterated shafts as invalid shafts
         for (let shaft of this.shafts) {
             if (!visited.has(shaft.id)) {
-                result.set(shaft.id, ConfigError.NO_ERROR);
+                result.set(shaft.id, ConfigError.NOT_SET_UP);
             }
         }
 
-        if ([...result.values()].find(x => x !== ConfigError.NO_ERROR) !== undefined) {
-            return ConfigError.FATAL_ERROR;
-        } else {
-            return ConfigError.NO_ERROR;
-        }
+        return result;
     }
 
     /**

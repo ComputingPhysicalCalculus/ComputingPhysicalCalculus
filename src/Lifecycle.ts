@@ -16,6 +16,7 @@ import Expression from "./expr/Expression";
 import { DialComponentElement } from "./UI/DialComponentElement.ts";
 import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 import { ConfigError } from "./ConfigError.ts";
+import { ComponentType } from "./UI/Components.ts";
 
 enum State {
     Paused,
@@ -284,7 +285,7 @@ export class Lifecycle {
     }
 
     public exportState(): Config {
-        return toConfig();
+        return toConfig()[0];
     }
 
     private _clear_components(): void {
@@ -419,19 +420,10 @@ export class Lifecycle {
             console.warn(`Tried to run application when it was not stopped.\nState was ${this.state}`);
         }
         const simulator = new Simulator(this.exportState())
-        let result = simulator.check_config();
-        console.log(result);
-        let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
-        components.forEach(x => {
-            if (!x.classList.contains("unconnected")) {
-                if (result === ConfigError.FATAL_ERROR) {
-                    x.classList.add("error");
-                } else {
-                    x.classList.remove("error");
-                }
-            }
-        });
-        if (result !== ConfigError.NO_ERROR) {
+        let result = [...simulator.check_config().entries()].map(x => x[1]).find(x => x === ConfigError.FATAL_ERROR);
+
+        // let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
+        if (result === ConfigError.FATAL_ERROR) {
             return;
         }
 
@@ -546,12 +538,40 @@ export class Lifecycle {
     }
 
     private _frame(delta: number): void {
-        const simulator = new Simulator(this.exportState())
-        let result = simulator.check_config();
+        let [config, unfinished_components] = toConfig();
+        let no_motor = false;
         let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
+        components.forEach(x => x.classList.remove("warning"));
+        unfinished_components.forEach(x => {
+            const component = document.querySelector(`#component-${x}`) as DraggableComponentElement;
+            if (component.componentType === "motor") {
+                no_motor = true;
+            }
+            component.classList.add("warning");
+        });
+
+        if (no_motor) {
+            components.forEach(x => x.componentType === "motor" || x.componentType === "label" || x.classList.add("unconnected"));
+            return;
+        }
+        
+        const simulator = new Simulator(config)
+        let result = simulator.check_config();
+        let joined_components = new Set([
+            ...simulator.components.map(x => x.getID()),
+            ...simulator.outputTables.map(x => x.getID()),
+            ...simulator.shafts.filter(x => x.ready_flag).map(x => x.id),
+        ]);
+        let unused_components = new Set([...components.entries()].filter(([_, v]) => v.componentType !== "label" && !joined_components.has(v.componentID)).map(x => x[0]));
+
+        let error = ![...result.entries()].every(x => x[1] !== ConfigError.FATAL_ERROR);
         components.forEach(x => {
-            if (!x.classList.contains("unconnected")) {
-                if (result === ConfigError.FATAL_ERROR) {
+            if (unused_components.has(x.componentID) || (result.get(x.componentID) ?? ConfigError.NO_ERROR) === ConfigError.NOT_SET_UP) {
+                x.classList.add("unconnected");
+                x.classList.remove("error");
+            } else {
+                x.classList.remove("unconnected");
+                if (error) {
                     x.classList.add("error");
                 } else {
                     x.classList.remove("error");
