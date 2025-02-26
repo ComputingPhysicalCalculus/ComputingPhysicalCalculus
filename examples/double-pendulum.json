@@ -921,7 +921,7 @@
       ],
       "end": [
         48,
-        4
+        3
       ]
     },
     {
@@ -1283,7 +1283,7 @@
         -13
       ],
       "end": [
-        60,
+        79,
         -13
       ]
     },
@@ -1327,7 +1327,7 @@
         -10
       ],
       "end": [
-        66,
+        80,
         -10
       ]
     },
@@ -1437,18 +1437,18 @@
         -12
       ],
       "end": [
-        79,
+        85,
         -12
       ]
     },
     {
       "id": 1191,
       "start": [
-        79,
-        -16
+        85,
+        -17
       ],
       "end": [
-        79,
+        85,
         -12
       ]
     },
@@ -1459,19 +1459,41 @@
         -9
       ],
       "end": [
-        80,
+        87,
         -9
       ]
     },
     {
       "id": 1194,
       "start": [
+        86,
+        -17
+      ],
+      "end": [
+        86,
+        -9
+      ]
+    },
+    {
+      "id": 1409,
+      "start": [
+        79,
+        -17
+      ],
+      "end": [
+        79,
+        -13
+      ]
+    },
+    {
+      "id": 1410,
+      "start": [
         80,
         -16
       ],
       "end": [
         80,
-        -9
+        -10
       ]
     }
   ],
@@ -1512,7 +1534,7 @@
       "inputShaft": 1294,
       "outputShaft": 1296,
       "lookup": true,
-      "fn": "A=0.00190;\nB=0.000187;\nC=0.000302;\n1/(A*B-(C^2)*(cos(x)))"
+      "fn": "A=0.00190;\nB=0.000187;\nC=0.000302;\n1/(A*B-(C^2)*(cos(x+pi/2)))"
     },
     {
       "type": "label",
@@ -1942,7 +1964,7 @@
       "outputShaft": 1324,
       "variableOfIntegrationShaft": 1323,
       "integrandShaft": 1326,
-      "initialPosition": "0"
+      "initialPosition": "-60"
     },
     {
       "type": "crossConnect",
@@ -2061,14 +2083,14 @@
       "inputShaft": 1331,
       "outputShaft": 1332,
       "lookup": true,
-      "fn": "A=0.00190;\nB=0.000187;\nC=0.000302;\n1/(A*B-(C^2)*(cos(x)^2))"
+      "fn": "A=0.00190;\nB=0.000187;\nC=0.000302;\n1/(A*B-(C^2)*(cos(x+pi/2)^2))"
     },
     {
       "type": "label",
       "compID": 944,
       "position": [
         36,
-        -6
+        -5
       ],
       "size": [
         6,
@@ -2576,14 +2598,14 @@
         -4
       ],
       "x_min": "0",
-      "x_max": "30",
-      "y_min": "-1.5",
-      "y_max": "1.5",
+      "x_max": "3.8",
+      "y_min": "-17",
+      "y_max": "5",
       "inputShaft": 1370,
       "outputShaft1": 1372,
       "outputShaft2": 1373,
-      "initialY1": "0",
-      "initialY2": "1"
+      "initialY1": "pi/2",
+      "initialY2": "0"
     },
     {
       "type": "outputTable",
@@ -2593,9 +2615,9 @@
         -4
       ],
       "x_min": "0",
-      "x_max": "30",
-      "y_min": "-1.5",
-      "y_max": "1.5",
+      "x_max": "4",
+      "y_min": "-pi",
+      "y_max": "30",
       "inputShaft": 1371,
       "outputShaft1": 1374,
       "outputShaft2": 1375,
@@ -2640,11 +2662,11 @@
       "compID": 1040,
       "position": [
         48,
-        4
+        3
       ],
       "reversed": false,
       "vertical": 1373,
-      "horizontal": 1379
+      "horizontal": 1378
     },
     {
       "type": "crossConnect",
@@ -2963,7 +2985,7 @@
       "inputShaft": 1396,
       "outputShaft": 1398,
       "lookup": true,
-      "fn": "C=0.000302;\nC*sin(x)"
+      "fn": "C=0.000302;\nC*sin(x+pi/2)"
     },
     {
       "type": "functionTable",
@@ -2979,7 +3001,7 @@
       "inputShaft": 1397,
       "outputShaft": 1399,
       "lookup": true,
-      "fn": "C=0.000302;\nC*cos(x)"
+      "fn": "C=0.000302;\nC*cos(x+pi/2)"
     },
     {
       "type": "crossConnect",
@@ -3095,7 +3117,7 @@
       "inputShaft": 1400,
       "outputShaft": 1290,
       "lookup": true,
-      "fn": "sin(x)"
+      "fn": "sin(x+pi/2)"
     },
     {
       "type": "functionTable",
@@ -3190,23 +3212,6 @@
       ],
       "align": "center",
       "_comment": "Initial a"
-    },
-    {
-      "type": "outputTable",
-      "compID": 1140,
-      "position": [
-        55,
-        -4
-      ],
-      "x_min": "-0.4",
-      "x_max": "0.4",
-      "y_min": "-0.4",
-      "y_max": "0.4",
-      "inputShaft": 1402,
-      "outputShaft1": 1403,
-      "outputShaft2": null,
-      "initialY1": "0",
-      "initialY2": "0"
     },
     {
       "type": "crossConnect",
@@ -3343,17 +3348,6 @@
       "outputShaft": 1169,
       "lookup": true,
       "fn": "b=1;\n-b*cos(x)"
-    },
-    {
-      "type": "differential",
-      "compID": 1156,
-      "position": [
-        57,
-        -13
-      ],
-      "diffShaft1": 1158,
-      "sumShaft": 1189,
-      "diffShaft2": 1160
     },
     {
       "type": "differential",
@@ -3564,13 +3558,13 @@
       "type": "outputTable",
       "compID": 1190,
       "position": [
-        78,
+        84,
         -20
       ],
-      "x_min": "-1",
-      "x_max": "1",
+      "x_min": "-3",
+      "x_max": "3",
       "y_min": "-3",
-      "y_max": "0.1",
+      "y_max": "3",
       "inputShaft": 1191,
       "outputShaft1": 1194,
       "outputShaft2": null,
@@ -3581,7 +3575,7 @@
       "type": "crossConnect",
       "compID": 1192,
       "position": [
-        79,
+        85,
         -12
       ],
       "reversed": false,
@@ -3592,7 +3586,7 @@
       "type": "crossConnect",
       "compID": 1195,
       "position": [
-        80,
+        86,
         -9
       ],
       "reversed": false,
@@ -3678,6 +3672,112 @@
         59,
         -12
       ]
+    },
+    {
+      "type": "outputTable",
+      "compID": 1404,
+      "position": [
+        78,
+        -20
+      ],
+      "x_min": "-2",
+      "x_max": "2",
+      "y_min": "-2",
+      "y_max": "2",
+      "inputShaft": 1409,
+      "outputShaft1": 1410,
+      "outputShaft2": null,
+      "initialY1": "0",
+      "initialY2": "0"
+    },
+    {
+      "type": "differential",
+      "compID": 1406,
+      "position": [
+        57,
+        -13
+      ],
+      "diffShaft1": 1158,
+      "sumShaft": 1189,
+      "diffShaft2": 1160
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1407,
+      "position": [
+        79,
+        -13
+      ],
+      "reversed": false,
+      "vertical": 1409,
+      "horizontal": 1158
+    },
+    {
+      "type": "crossConnect",
+      "compID": 1408,
+      "position": [
+        80,
+        -10
+      ],
+      "reversed": false,
+      "vertical": 1410,
+      "horizontal": 1164
+    },
+    {
+      "type": "label",
+      "compID": 1411,
+      "position": [
+        78,
+        -21
+      ],
+      "size": [
+        5,
+        1
+      ],
+      "align": "",
+      "_comment": "First Pendulum"
+    },
+    {
+      "type": "label",
+      "compID": 1412,
+      "position": [
+        84,
+        -21
+      ],
+      "size": [
+        5,
+        1
+      ],
+      "align": "",
+      "_comment": "Second Pendulum"
+    },
+    {
+      "type": "label",
+      "compID": 1413,
+      "position": [
+        46,
+        -5
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "a and b"
+    },
+    {
+      "type": "label",
+      "compID": 1414,
+      "position": [
+        51,
+        -5
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "a' and b'"
     }
   ]
 }
