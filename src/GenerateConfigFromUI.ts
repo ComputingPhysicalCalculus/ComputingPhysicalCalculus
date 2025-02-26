@@ -1,3 +1,4 @@
+import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { Config } from "./config";
 // used to configure parameters and initial setings
@@ -259,6 +260,11 @@ export function toConfig(): [Config, number[]] {
 
   const shafts = config1;
   const components: any = config2;
-  const config: Config = { shafts, components: components.filter((x: { type: string }) => x.type !== "unconnected") };
+  const constants = (document.querySelector("custom-variables")! as CustomVariablesElement).getText();
+  const settings = {
+    "custom_variables": constants,
+  };
+
+  const config: Config = { shafts, components: components.filter((x: { type: string }) => x.type !== "unconnected"), settings };
   return [config, components.filter((x: { type: string }) => x.type === "unconnected").map((x: { compID: number }) => x.compID)];
 }

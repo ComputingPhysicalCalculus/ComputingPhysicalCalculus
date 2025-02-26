@@ -15,6 +15,14 @@ export class CustomVariablesElement extends LitElement {
     return this.values;
   }
 
+  getText(): string {
+    return this._textarea.value;
+  }
+
+  setText(text: string): void {
+    this._textarea.value = text;
+  }
+
   change() {
     this._textarea.style.height = "auto";
     this._textarea.style.height = this._textarea.scrollHeight + "px";

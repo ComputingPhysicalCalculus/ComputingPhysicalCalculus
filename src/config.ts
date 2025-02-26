@@ -1,5 +1,6 @@
 import { ComponentType, createComponent, stringToComponent, createUniqueID } from "./UI/Components";
 import { machine } from "./UI/Constants.ts";
+import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { setCells, GRID_SIZE } from "./UI/Grid";
 import Vector2 from "./UI/Vector2.ts";
@@ -7,6 +8,9 @@ import Vector2 from "./UI/Vector2.ts";
 export type Config = {
   shafts: ShaftConfig[];
   components: ComponentConfig[];
+  settings: {
+    custom_variables: string;
+  };
 };
 
 export type ShaftID = number;
@@ -134,6 +138,13 @@ const type_name_dict = {
 };
 
 export function loadConfig(config: Config): void {
+  let settings = config.settings;
+  if (settings) {
+    if (settings.custom_variables) {
+      (document.querySelector("custom-variables")! as CustomVariablesElement).setText(config.settings.custom_variables);
+    }
+  }
+
   for (let components of config.components) {
     let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
