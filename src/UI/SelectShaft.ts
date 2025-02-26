@@ -32,7 +32,7 @@ export function setupSelectHooks() {
   negativeArrow.addEventListener("dragstart", e => e.preventDefault());
   positiveArrow.addEventListener("dragstart", e => e.preventDefault());
 
-  machine.addEventListener("mousemove", moveDrag);
+  machine.addEventListener("mousemove", moveDrag, true);
   machine.addEventListener("mouseup", endDrag);
 }
 

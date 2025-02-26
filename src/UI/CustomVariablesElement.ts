@@ -21,6 +21,7 @@ export class CustomVariablesElement extends LitElement {
 
   setText(text: string): void {
     this._textarea.value = text;
+    this.change();
   }
 
   change() {

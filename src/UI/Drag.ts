@@ -52,7 +52,7 @@ export function setupDragHooks(): void {
     (element as HTMLElement).addEventListener("mousedown", creation);
   });
 
-  document.addEventListener("mousemove", move);
+  document.addEventListener("mousemove", move, true);
   document.addEventListener("mouseup", drop);
 }
 

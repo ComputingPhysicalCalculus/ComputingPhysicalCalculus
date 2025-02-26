@@ -32,6 +32,11 @@
   font-weight: bold;
 }
 
+#fullscreen p {
+  margin: 0;
+  text-decoration: underline;
+}
+
 #fullscreen .content {
   display: flex;
   flex-direction: column;

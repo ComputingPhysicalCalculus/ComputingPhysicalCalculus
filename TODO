@@ -1,12 +1,9 @@
-Saving settings to config file
 Sound
 Dial tooltip for exact value
 Selection
 
-BUGS:
-Motor reverse doesnt do anything?
-
 Richard things:
 Help and About screen
-Change component diagrams
-Animation
+
+Bugs:
+final value in constants with ; is ignored

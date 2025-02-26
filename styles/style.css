@@ -9,7 +9,7 @@
     --colour-highlight3: #364D1A;
     --text-colour: #FCFCFC;
     --unit: calc(max(1vw, 1vh));
-    --text-size: 0.6rem;
+    --text-size: 0.8rem;
     --text-button-size: 0.8rem;
     --text-header-size: 1.5rem;
     --border-radius: calc(0.5 * var(--unit));
