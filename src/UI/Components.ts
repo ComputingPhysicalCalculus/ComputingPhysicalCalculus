@@ -247,9 +247,6 @@ function createIntegrator(div: DraggableComponentElement): void {
 }
 
 function createFunctionTable(div: DraggableComponentElement): void {
-    div.style.background = "white";
-    div.style.border = "2px solid black";
-    div.style.borderRadius = "5px";
     div.width = 4;
     div.height = 4;
     div.componentType = "functionTable";
@@ -362,9 +359,6 @@ function createDifferential(div: DraggableComponentElement): void {
 }
 
 function createOutputTable(div: DraggableComponentElement): void {
-    div.style.background = "white";
-    div.style.border = "2px solid black";
-    div.style.borderRadius = "5px";
     div.width = 4;
     div.height = 4;
     div.componentType = "outputTable";

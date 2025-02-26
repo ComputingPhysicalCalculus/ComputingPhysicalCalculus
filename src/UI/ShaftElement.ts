@@ -1,9 +1,12 @@
-import { LitElement, svg } from "lit";
+import { css, LitElement, svg, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { DraggableComponentElement } from "./DraggableElement.ts";
+import styles from "../../styles/SVGElement.css?inline";
 
 @customElement("shaft-component")
 export class ShaftElement extends LitElement {
+  static styles = css`${unsafeCSS(styles)}`;
+
   @query("svg")
   _svg!: SVGElement;
 
@@ -40,9 +43,9 @@ export class ShaftElement extends LitElement {
         style="width:100%;height:100%;display:block;"
       >
         <line
+          class="stroke-fg"
           x1="${left}" y1="${top}"
           x2="${right}" y2="${bottom}"
-          stroke="black"
           stroke-width="2"
           stroke-linecap="round"
         />

@@ -2,13 +2,17 @@ import { css, html, LitElement, PropertyValues, unsafeCSS, svg } from "lit";
 import { customElement, property, query, queryAsync } from "lit/decorators.js";
 
 import styles from "../../styles/GraphElement.css?inline";
+import svgstyles from "../../styles/SVGElement.css?inline";
 import Vector2 from "./Vector2";
 
 const SQRT_3_2 = Math.sqrt(3) / 2;
 
 @customElement("graph-table")
 export class GraphElement extends LitElement {
-    static styles = css`${unsafeCSS(styles)}`;
+    static styles = css`
+        ${unsafeCSS(styles)}
+        ${unsafeCSS(svgstyles)}
+    `;
 
     @query("#graph")
     _canvas_graph!: HTMLCanvasElement;

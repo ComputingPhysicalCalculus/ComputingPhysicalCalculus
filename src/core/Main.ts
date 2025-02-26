@@ -160,7 +160,6 @@ export class Simulator {
      * @author Hanzhang Shen
      */
     parse_config(config: Config): void {
-        console.log("Parsing the configuration file and instantiating shafts and components.")
         let shafts = new Map<number, Shaft>()
         let components = [];
         let outputTables = [];
@@ -306,6 +305,5 @@ export class Simulator {
         this.shafts = Array.from(shafts.values());
         this.outputTables = outputTables;
         this.components = components;
-        console.log("Finished parsing the configuration file and instantiating the objects.")
     }
 }
