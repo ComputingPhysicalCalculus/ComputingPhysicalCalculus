@@ -115,8 +115,6 @@ export class Simulator {
                     ordered_devices.push(device);
                     visited_devices.add(device);
                     result.set(device.getID(), ConfigError.NO_ERROR);
-                } else {
-                    result.set(device.getID(), ConfigError.FATAL_ERROR);
                 }
                 if (!visited.has(output.id)) {
                     stack.push(output);

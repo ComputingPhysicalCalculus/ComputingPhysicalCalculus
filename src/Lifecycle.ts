@@ -15,6 +15,7 @@ import { FunctionTable } from "./core/FunctionTable";
 import Expression from "./expr/Expression";
 import { DialComponentElement } from "./UI/DialComponentElement.ts";
 import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
+import { ConfigError } from "./ConfigError.ts";
 
 enum State {
     Paused,
@@ -396,6 +397,14 @@ export class Lifecycle {
         this.clear_output_tables_button.disabled = true;
 
         const simulator = new Simulator(this.exportState())
+        console.log(simulator.check_config());
+        simulator.check_config().forEach((v, k) => {
+            const element = document.querySelector(`#component-${k},#shaft-component-${k}`) as DraggableComponentElement;
+            if (v === ConfigError.FATAL_ERROR) {
+                element.classList.add("error");
+            }
+        });
+
         const step_period = Number(this.step_period_input.value);
         const get_motor_speed = () => Number(this.motor_speed_input.value);
 

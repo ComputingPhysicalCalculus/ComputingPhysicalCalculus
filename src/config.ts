@@ -208,6 +208,7 @@ export function loadConfig(config: Config): void {
     item.width = width;
     item.height = height;
     item.id = `shaft-component-${shaft.id}`;
+    item.componentID = shaft.id;
     maxID = Math.max(maxID, shaft.id);
 
     item.hasBeenPlaced = true;

@@ -12,7 +12,11 @@
   --svg-fg: black;
 }
 
-:host(.warning) ::slotted(*) {
+:host(.error) ::slotted(*) {
   --svg-bg: #FFA100;
   --svg-fg: black;
+}
+
+:host(.unconnected) ::slotted(*) {
+  opacity: 0.3;
 }
