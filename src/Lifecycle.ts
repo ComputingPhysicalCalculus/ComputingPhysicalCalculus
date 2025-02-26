@@ -194,6 +194,11 @@ export class Lifecycle {
             this.help_screen.style.visibility = "visible";
         })
 
+        document.addEventListener("placecomponent", () => {
+            console.log("hi");
+            this.check_da();
+        })
+
         window.addEventListener("keydown", e => {
             if (e.defaultPrevented) {
                 return;
@@ -537,7 +542,7 @@ export class Lifecycle {
         };
     }
 
-    private _frame(delta: number): void {
+    public check_da(): void {
         let [config, unfinished_components] = toConfig();
         let no_motor = false;
         let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
@@ -578,7 +583,9 @@ export class Lifecycle {
                 }
             }
         });
+    }
 
+    private _frame(delta: number): void {
         if (this.state !== State.Running) {
             return;
         }

@@ -225,4 +225,7 @@ function drop(event: MouseEvent): void {
   item.renderTop = converted.y;
 
   curDragItem.item = null;
+
+  let e = new CustomEvent("placecomponent");
+  document.dispatchEvent(e);
 }
