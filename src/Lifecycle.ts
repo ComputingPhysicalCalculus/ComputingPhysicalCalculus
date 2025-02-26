@@ -24,6 +24,8 @@ enum State {
 
 export function get_global_ctx(): { [k: string]: number } {
     const custom_variables = document.querySelector("custom-variables") as CustomVariablesElement;
+    if (!custom_variables) return {}
+
     return custom_variables.getValues();
 }
 
