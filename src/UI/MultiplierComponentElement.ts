@@ -29,6 +29,7 @@ export class MultiplierComponentElement extends LitElement {
         <polygon class="stroke-fg fill-fg" stroke-width="2" stroke-linejoin="round" points="40,60 50,55 50,65" />
         <line class="stroke-fg" x1="125" y1="0" x2="125" y2="50" stroke-width="2" linecap="round" />
         <polygon class="stroke-fg fill-fg" stroke-width="2" stroke-linejoin="round" points="120,50 125,60 130,50" />
+        <line class="stroke-fg" fill="fill-fg" stroke-width="2" x1="25" y1="0" x2="25" y2="19"/>
       </svg>
     `;
   }
