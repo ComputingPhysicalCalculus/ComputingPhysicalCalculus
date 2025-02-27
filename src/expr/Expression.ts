@@ -18,7 +18,7 @@ export default class Expression {
     return (typeof result === "number") ? _ => result : result;
   }
 
-  static compile_min(expr: string, ctx: { [ident: string]: number } = {}): number | ((ctx?: { [ident: string]: number}) => number) {
+  static compile_min(expr: string, ctx: { [ident: string]: number } = {}): number | ((ctx?: { [ident: string]: number }) => number) {
     const parsed_expr = this.parse(expr);
     const [partial_expr, _] = this.partial_eval_expr(parsed_expr, ctx);
 
@@ -106,7 +106,7 @@ export default class Expression {
         if (start_expr._type !== "lit" || end_expr._type !== "lit" || !value_ready) {
           value_vars.delete(expr.ident)
           return [
-            
+
             { _type: expr._type, ident: expr.ident, start: start_expr, end: end_expr, value: value_expr },
             new Set([...start_vars, ...end_vars, ...value_vars])
           ];
@@ -135,7 +135,7 @@ export default class Expression {
           const [cons, cons_vars] = this.partial_eval_expr(expr.cons, ctx);
           cons_vars.delete(expr.ident);
           return [
-            { _type: "let", ident: expr.ident, value: value_expr, cons  },
+            { _type: "let", ident: expr.ident, value: value_expr, cons },
             new Set([...value_vars, ...cons_vars]),
           ];
         }

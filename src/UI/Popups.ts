@@ -9,13 +9,13 @@ import { clearSelect } from "./SelectShaft.ts"
 import { generator } from "../index.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import { machine } from "./Constants.ts";
+import { get_global_ctx } from "@src/Lifecycle.ts";
 
 const MIN_TEXT_AREA_LINES = 3;
 const MAX_TEXT_AREA_LINES = 10;
 
 let crossConnectPopup: HTMLDivElement;
 let integratorPopup: HTMLDivElement;
-let motorPopup: HTMLDivElement;
 let multiplierPopup: HTMLDivElement;
 let gearPairPopup: HTMLDivElement;
 let functionTablePopup: HTMLDivElement;
@@ -28,7 +28,6 @@ let labelPopup: HTMLDivElement;
 export function setupPopups(): void {
   setupCrossConnectPopup();
   setupIntegratorPopup();
-  setupMotorPopup();
   setupMultiplierPopup();
   setupGearPairPopup();
   setupFunctionTablePopup();
@@ -130,23 +129,6 @@ export function openOutputTablePopup(e: MouseEvent): void {
   e.preventDefault();
 }
 
-export function openMotorPopup(e: MouseEvent): void {
-  if (e.button != 2) return;
-  if (currentlyDragging()) return;
-
-  openPopup(e, motorPopup);
-
-  const target = e.currentTarget as DraggableComponentElement;
-
-  if (target.outputRatio < 0) {
-    motorPopup.getElementsByTagName("input")[0].checked = true;
-  } else {
-    motorPopup.getElementsByTagName("input")[0].checked = false;
-  }
-
-  e.preventDefault();
-}
-
 export function openMultiplierPopup(e: MouseEvent): void {
   if (e.button != 2) return;
   if (currentlyDragging()) return;
@@ -230,7 +212,7 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
 
 // Close all popups when a mouse click occurs and it is not contained within a popup
 function documentClick(e: MouseEvent) {
-  let popups = [crossConnectPopup, integratorPopup, motorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
+  let popups = [crossConnectPopup, integratorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
   popups.forEach(popup => {
     if (!mouseWithin(popup, e)) {
       popup.style.visibility = "hidden";
@@ -267,24 +249,6 @@ function setupIntegratorPopup(): void {
 
     component.dataset.initialValue = input.value;
   })
-}
-
-function setupMotorPopup(): void {
-  motorPopup = document.getElementById("motor-popup") as HTMLDivElement;
-  motorPopup.addEventListener("mouseleave", closePopup);
-
-  const inputs = motorPopup.getElementsByTagName("input");
-  for (let i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener("change", (e) => {
-      const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
-
-      if (input.checked)
-        component.outputRatio = -1;
-      else
-        component.outputRatio = 1;
-    })
-  }
 }
 
 function setupMultiplierPopup(): void {
@@ -343,11 +307,11 @@ function setupFunctionTablePopup(): void {
 
     updateTextAreaLines(input);
 
-    let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
+    let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0", get_global_ctx());
     let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
     component_graph.mutate_data_set("d1", points => {
       points.splice(0, points.length, ...Array.from(generator_exp));
-    });
+    }, true);
   });
 
   const inputs = functionTablePopup.querySelectorAll("* > input");
@@ -359,19 +323,19 @@ function setupFunctionTablePopup(): void {
 
       switch (input.id) {
         case "function-table-x-min":
-          component_graph.x_min = Expression.eval(input.value);
+          component_graph.x_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_min = input.value;
           break;
         case "function-table-x-max":
-          component_graph.x_max = Expression.eval(input.value);
+          component_graph.x_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_max = input.value;
           break;
         case "function-table-y-min":
-          component_graph.y_min = Expression.eval(input.value);
+          component_graph.y_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_min = input.value;
           break;
         case "function-table-y-max":
-          component_graph.y_max = Expression.eval(input.value);
+          component_graph.y_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_max = input.value;
           break;
         case "function-table-lookup":
@@ -379,11 +343,11 @@ function setupFunctionTablePopup(): void {
           break;
       }
 
-      let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0");
+      let compiled_expr = Expression.compile(component_graph.data_sets["d1"].fn ?? "0", get_global_ctx());
       let generator_exp = generator(500, component_graph.x_min, component_graph.x_max, x => compiled_expr({ x }));
       component_graph.mutate_data_set("d1", points => {
         points.splice(0, points.length, ...Array.from(generator_exp));
-      });
+      }, true);
     })
   }
 }
@@ -391,6 +355,36 @@ function setupFunctionTablePopup(): void {
 function setupOutputTablePopup(): void {
   outputTablePopup = document.getElementById("output-table-popup") as HTMLDivElement;
   outputTablePopup.addEventListener("mouseleave", closePopup);
+
+  const button = outputTablePopup.querySelector("* > button") as HTMLButtonElement;
+  button.addEventListener("click", e => {
+    const input = e.currentTarget as HTMLButtonElement;
+    const component_graph = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > graph-table`) as GraphElement;
+
+    const keys = [...Object.keys(component_graph.data_sets)];
+    let result = keys.map(k => `${k}_x,${k}_y,`).reduce((a, b) => a + b);
+    const max_length = Object.values(component_graph.data_sets).map(v => v.points.length).reduce((a, b) => Math.max(a, b));
+    for (let i = 0; i < max_length; i++) {
+      result += "\n";
+      for (let k of keys) {
+        const v = component_graph.data_sets[k];
+        if (v.points.length <= i) {
+          continue;
+        }
+
+        result += `${v.points[i].x},${v.points[i].y},`
+      }
+    }
+
+    const link = document.createElement("a");
+    const file = new Blob([result], { type: "application/json" });
+
+    link.href = URL.createObjectURL(file);
+    link.download = `data-${input.parentElement!.parentElement!.dataset.id!}.csv`;
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+  });
 
   const inputs = outputTablePopup.querySelectorAll("* > input");
   for (let i = 0; i < inputs.length; i++) {
@@ -401,27 +395,27 @@ function setupOutputTablePopup(): void {
 
       switch (input.id) {
         case "output-table-initial-1":
-          component.inputRatio = Expression.eval(input.value);
+          component.inputRatio = Expression.eval(input.value, get_global_ctx());
           component.dataset.initial_1 = input.value;
           break;
         case "output-table-initial-2":
-          component.outputRatio = Expression.eval(input.value);
+          component.outputRatio = Expression.eval(input.value, get_global_ctx());
           component.dataset.initial_2 = input.value;
           break;
         case "output-table-x-min":
-          component_graph.x_min = Expression.eval(input.value);
+          component_graph.x_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_min = input.value;
           break;
         case "output-table-x-max":
-          component_graph.x_max = Expression.eval(input.value);
+          component_graph.x_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_max = input.value;
           break;
         case "output-table-y-min":
-          component_graph.y_min = Expression.eval(input.value);
+          component_graph.y_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_min = input.value;
           break;
         case "output-table-y-max":
-          component_graph.y_max = Expression.eval(input.value);
+          component_graph.y_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_max = input.value;
           break;
       }
@@ -492,6 +486,9 @@ export function updateShaftLength(comp: DraggableComponentElement, negativeLengt
   let screenPosition = worldToScreenPosition(new Vector2(comp.left * GRID_SIZE, comp.top * GRID_SIZE));
   comp.renderLeft = screenPosition.x;
   comp.renderTop = screenPosition.y;
+
+  let e = new CustomEvent("placecomponent");
+  document.dispatchEvent(e);
 }
 
 function setupTextAreaCallback(area: HTMLTextAreaElement): void {

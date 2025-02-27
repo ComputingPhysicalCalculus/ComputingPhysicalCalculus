@@ -2,7 +2,7 @@ import { html, render } from "lit";
 import { DraggableComponentElement } from "./DraggableElement.ts";
 import { GraphElement } from "./GraphElement.ts";
 import { generator } from "../index.ts";
-import { openIntegratorPopup, openMotorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup, openLabelPopup } from "./Popups.ts"
+import { openIntegratorPopup, openMultiplierPopup, openGearPairPopup, openFunctionTablePopup, openOutputTablePopup, openCrossConnectPopup, openLabelPopup } from "./Popups.ts"
 import { selectShaft } from "./SelectShaft.ts";
 
 import Vector2 from "./Vector2.ts";
@@ -11,6 +11,7 @@ import { GearPairComponentElement } from "./GearPairComponentElement.ts";
 import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts";
 import Expression from "@src/expr/Expression.ts";
 import { machine } from "./Constants.ts";
+import { get_global_ctx } from "@src/Lifecycle.ts";
 
 export enum ComponentType {
     VShaft,
@@ -27,9 +28,10 @@ export enum ComponentType {
     Dial,
 };
 
-let CURRENT_ID: number = 0;
+let max_id = 0;
+let free_ids: number[] = [];
 
-export function setIDCounter(id: number): void { CURRENT_ID = id; }
+// export function setIDCounter(id: number): void { CURRENT_ID = id; }
 
 export function stringToComponent(componentName: string): ComponentType | null {
     return ComponentType[componentName as keyof typeof ComponentType];
@@ -88,10 +90,24 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     return comp;
 }
 
-function createUniqueID(): number {
-    const v = CURRENT_ID;
-    CURRENT_ID += 1;
-    return v;
+export function resetIDs(): void {
+    free_ids = [];
+    max_id = 0;
+}
+
+export function deleteComponent(component: DraggableComponentElement): void {
+    free_ids.push(component.componentID);
+}
+
+export function createUniqueID(): number {
+    if (free_ids.length == 0) {
+        let id = max_id;
+        max_id += 1;
+        return id;
+    } else {
+        let value = free_ids.pop()!;
+        return value;
+    }
 }
 
 function setID(div: DraggableComponentElement): void {
@@ -210,12 +226,12 @@ function createHShaft(div: DraggableComponentElement): void {
 }
 
 function createIntegrator(div: DraggableComponentElement): void {
-  div.width = 4;
-  div.height = 2;
-  div.componentType = "integrator";
-  div.shouldLockCells = true;
-  div.classList.add("integrator");
-  div.inputRatio = 0;
+    div.width = 4;
+    div.height = 2;
+    div.componentType = "integrator";
+    div.shouldLockCells = true;
+    div.classList.add("integrator");
+    div.inputRatio = 0;
 
     render(html`<integrator-component style="width:100%;height:100%"></integrator-component>`, div);
 
@@ -246,9 +262,6 @@ function createIntegrator(div: DraggableComponentElement): void {
 }
 
 function createFunctionTable(div: DraggableComponentElement): void {
-    div.style.background = "white";
-    div.style.border = "2px solid black";
-    div.style.borderRadius = "5px";
     div.width = 4;
     div.height = 4;
     div.componentType = "functionTable";
@@ -314,14 +327,14 @@ function createFunctionTable(div: DraggableComponentElement): void {
         _this.dataset.y_max = data.y_max;
         _this.dataset.lookup = (!data.lookup) ? "0" : (data.lookup ? "1" : "0");
 
-        graph_element.x_min = Expression.eval(_this.dataset.x_min);
-        graph_element.x_max = Expression.eval(_this.dataset.x_max);
-        graph_element.y_min = Expression.eval(_this.dataset.y_min);
-        graph_element.y_max = Expression.eval(_this.dataset.y_max);
+        graph_element.x_min = Expression.eval(_this.dataset.x_min, get_global_ctx());
+        graph_element.x_max = Expression.eval(_this.dataset.x_max, get_global_ctx());
+        graph_element.y_min = Expression.eval(_this.dataset.y_min, get_global_ctx());
+        graph_element.y_max = Expression.eval(_this.dataset.y_max, get_global_ctx());
         graph_element.gantry_x = data.gantry_x;
 
         if (data.fn !== undefined && data.fn != "") {
-            let compiled_expr = Expression.compile(data.fn);
+            let compiled_expr = Expression.compile(data.fn, get_global_ctx());
             let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
             graph_element.set_data_set("d1", Array.from([...generator_exp]));
             graph_element.data_sets["d1"].fn = data.fn;
@@ -361,9 +374,6 @@ function createDifferential(div: DraggableComponentElement): void {
 }
 
 function createOutputTable(div: DraggableComponentElement): void {
-    div.style.background = "white";
-    div.style.border = "2px solid black";
-    div.style.borderRadius = "5px";
     div.width = 4;
     div.height = 4;
     div.componentType = "outputTable";
@@ -444,13 +454,13 @@ function createOutputTable(div: DraggableComponentElement): void {
         _this.dataset.initial_1 = (data.initialY1) ?? "0";
         _this.dataset.initial_2 = data.initialY2 ?? "0";
 
-        graph_element.x_min = Expression.eval(_this.dataset.x_min);
-        graph_element.x_max = Expression.eval(_this.dataset.x_max);
-        graph_element.y_min = Expression.eval(_this.dataset.y_min);
-        graph_element.y_max = Expression.eval(_this.dataset.y_max);
+        graph_element.x_min = Expression.eval(_this.dataset.x_min, get_global_ctx());
+        graph_element.x_max = Expression.eval(_this.dataset.x_max, get_global_ctx());
+        graph_element.y_min = Expression.eval(_this.dataset.y_min, get_global_ctx());
+        graph_element.y_max = Expression.eval(_this.dataset.y_max, get_global_ctx());
         graph_element.gantry_x = data.gantry_x;
-        _this.inputRatio = Expression.eval(_this.dataset.initial_1);
-        _this.outputRatio = Expression.eval(_this.dataset.initial_2);
+        _this.inputRatio = Expression.eval(_this.dataset.initial_1, get_global_ctx());
+        _this.outputRatio = Expression.eval(_this.dataset.initial_2, get_global_ctx());
     }
 }
 
@@ -464,8 +474,6 @@ function createMotor(div: DraggableComponentElement): void {
     div.outputRatio = 1;
 
     render(html`<motor-component style="width:100%;height:100%"></motor-component>`, div);
-
-    div.addEventListener("mouseup", openMotorPopup);
 
     type ExportedData = {
         top: number,

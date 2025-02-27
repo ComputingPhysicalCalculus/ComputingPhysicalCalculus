@@ -1,15 +1,9 @@
-Saving settings to config file
-CSV output
 Sound
 Dial tooltip for exact value
 Selection
 
-BUGS:
-Motor reverse doesnt do anything?
-
 Richard things:
 Help and About screen
-Change component diagrams
-Animation
-Traffic lights
-Double pendulum
+
+Bugs:
+final value in constants with ; is ignored

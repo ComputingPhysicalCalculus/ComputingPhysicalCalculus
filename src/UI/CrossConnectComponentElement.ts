@@ -1,6 +1,7 @@
-import { LitElement, svg } from "lit";
+import { css, LitElement, svg, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import Vector2 from "./Vector2";
+import styles from "../../styles/SVGElement.css?inline";
 
 export const generator = function*(n: number, min: number, max: number, f: (x: number) => Vector2) {
   for (let i = min; i < max; i += (max - min) / n) {
@@ -10,6 +11,8 @@ export const generator = function*(n: number, min: number, max: number, f: (x: n
 
 @customElement("cross-connect-component")
 export class CrossConnectComponentElement extends LitElement {
+  static styles = css`${unsafeCSS(styles)}`;
+
   @property({ type: Boolean })
   inverted: boolean = false;
 
@@ -32,14 +35,14 @@ export class CrossConnectComponentElement extends LitElement {
       <svg
         xmlns="https://www.w3.org/2000/svg"
         width="50" height="50"
-        viewBox="-20 -20 40 40"
-        style="width:100%;height:100%"
+        viewBox="0 0 50 50"
+        style="width:100%;height:100%;display:block"
       >
-      <circle cx="0" cy="0" r="5" stroke="black" fill="black"/>
-      <rect x="-2" width="4" y="-8" height="16" stroke="black" fill="black" rx="0.2"/>
-      <rect x="-8" width="16" y="-2" height="4" stroke="black" fill="black" rx="0.2"/>
+      <circle class="fill-fg stroke-fg" cx="25" cy="25" r="7" stroke="black"/>
+      <rect class="fill-fg stroke-fg" x="13" width="24" y="22" height="6" stroke="black" rx="1"/>
+      <rect class="fill-fg stroke-fg" x="22" width="6" y="13" height="24" stroke="black" rx="1"/>
         ${this.inverted ?
-        svg`<circle rx="0" ry="0" r="10" stroke="black" stroke-width="2" fill="none" />`
+        svg`<circle class="stroke-fg" cx="25" cy="25" r="13" stroke-width="2" fill="none" />`
         : ""}
       </svg>
     `;

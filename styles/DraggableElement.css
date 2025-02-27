@@ -6,3 +6,22 @@
   align-items: center;
   justify-content: center;
 }
+
+:host {
+  --svg-bg: white;
+  --svg-fg: black;
+}
+
+:host(.warning) ::slotted(*) {
+  --svg-bg: var(--colour-highlight1);
+  --svg-fg: black;
+}
+
+:host(.error) ::slotted(*) {
+  --svg-bg: white;
+  --svg-fg: red;
+}
+
+:host(.unconnected) ::slotted(*) {
+  opacity: 0.3;
+}

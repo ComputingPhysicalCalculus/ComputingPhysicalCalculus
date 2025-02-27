@@ -18,26 +18,29 @@ import { Shaft } from "./Shaft";
 import { ConfigError } from "../ConfigError.ts";
 
 import Expression from "../expr/Expression.ts";
+import { get_global_ctx } from "@src/Lifecycle.ts";
 
 export class Simulator {
     shafts: Shaft[] = [];
     motor: Motor | undefined;
     outputTables: OutputTable[] = [];
     components: Device[] = [];
+    ordered_components: Device[] = [];
     private rotation: number; // rotation of the motor
     private initial_x_position; // initial x position of the function table
-    private inputFunction: (n: number) => number;
+    private inputFunction: (n: number) => number = Math.sin;
     private mini_steps_n: number = 100;
     private mini_steps_dt: number = 1 / this.mini_steps_n;
 
     constructor(config?: Config,
         rotation: number = 1,
         initial_x_position: number = 0,
-        inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
+        inputFunction?: (n: number) => number
     ) {
         this.rotation = rotation;
         this.initial_x_position = initial_x_position;
-        this.inputFunction = inputFunction;
+        if (inputFunction !== undefined)
+            this.inputFunction = inputFunction;
         if (config !== undefined) {
             this.parse_config(config);
             this.setup();
@@ -76,14 +79,13 @@ export class Simulator {
             }
         }
 
-        this.components = ordered_devices;
+        this.ordered_components = ordered_devices;
     }
-
 
     step() {
         // update the components
         for (let i = 0; i < this.mini_steps_n; i++) {
-            for (const device of this.components) {
+            for (const device of this.ordered_components) {
                 device.update(this.mini_steps_dt);
             }
         }
@@ -102,6 +104,7 @@ export class Simulator {
         let stack: Shaft[] = [this.motor.determine_output()];
         let visited: Set<number> = new Set<number>();
         let visited_devices: Set<Device> = new Set<Device>();
+        visited_devices.add(this.motor);
         visited.add(stack[0].id);
         while (stack.length > 0) {
             let shaft = stack.pop()!;
@@ -109,14 +112,14 @@ export class Simulator {
             shaft.ready_flag = true;
             for (let device of shaft.outputs) {
                 let output = device.determine_output();
-                if (output === undefined) continue;
                 if (!visited_devices.has(device)) {
                     ordered_devices.push(device);
                     visited_devices.add(device);
                     result.set(device.getID(), ConfigError.NO_ERROR);
                 } else {
-                    result.set(device.getID(), ConfigError.FATAL_ERROR);
+                    continue;
                 }
+                if (output === undefined) continue;
                 if (!visited.has(output.id)) {
                     stack.push(output);
                     visited.add(output.id);
@@ -130,14 +133,14 @@ export class Simulator {
         // add uniterated devices as invalid devices
         for (let device of this.components) {
             if (!visited_devices.has(device)) {
-                result.set(device.getID(), ConfigError.NO_ERROR);
+                result.set(device.getID(), ConfigError.NOT_SET_UP);
             }
         }
 
         // add uniterated shafts as invalid shafts
         for (let shaft of this.shafts) {
             if (!visited.has(shaft.id)) {
-                result.set(shaft.id, ConfigError.NO_ERROR);
+                result.set(shaft.id, ConfigError.NOT_SET_UP);
             }
         }
 
@@ -146,29 +149,17 @@ export class Simulator {
 
     /**
      * @function parse_config
-     * @description parse the config file and create the corresponding shafts and devices
-     * @param config the config file
-     * @return void
-     * @author Hanzhang Shen
-     */
-    /**
-     * @function parse_config
-     * @description parse the config file and create the corresponding shafts and devices
-     * @param config the config file
+     * @description parse the config and create the corresponding shafts and devices
+     * @param config the Config object parsed from the config JSON file
      * @return void
      * @author Hanzhang Shen
      */
     parse_config(config: Config): void {
-        console.log("Parsing the configuration file and instantiating shafts and components.")
         let shafts = new Map<number, Shaft>()
         let components = [];
         let outputTables = [];
         let motor = undefined;
 
-        // create the shafts
-        for (const shaft of config.shafts) {
-            shafts.set(shaft.id, new Shaft(shaft.id, []));
-        }
         // create the shafts
         for (const shaft of config.shafts) {
             shafts.set(shaft.id, new Shaft(shaft.id, []));
@@ -190,6 +181,7 @@ export class Simulator {
                     shafts.get(component.sumShaft)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
+
                 case 'integrator':
                     new_component = new Integrator(
                         component.compID,
@@ -197,7 +189,7 @@ export class Simulator {
                         shafts.get(component.integrandShaft)!,
                         shafts.get(component.outputShaft)!,
                         false,
-                        Expression.eval(String(component.initialPosition)) // Accounts for direct numbers in config
+                        Expression.eval(String(component.initialPosition), get_global_ctx()) // Accounts for direct numbers in config
                     );
                     shafts.get(component.variableOfIntegrationShaft)!.outputs.push(new_component);
                     shafts.get(component.integrandShaft)!.outputs.push(new_component);
@@ -209,7 +201,7 @@ export class Simulator {
                         component.compID,
                         shafts.get(component.inputShaft)!,
                         shafts.get(component.outputShaft)!,
-                        Expression.eval(String(component.factor)), // Accounts for numbers instead of a string in config
+                        Expression.eval(String(component.factor), get_global_ctx()), // Accounts for numbers instead of a string in config
                         (!component.multiplicandShaft) ? undefined : shafts.get(component.multiplicandShaft)!
                     );
                     shafts.get(component.inputShaft)!.outputs.push(new_component);
@@ -263,6 +255,7 @@ export class Simulator {
                     );
                     components.push(motor);
                     break;
+
                 case 'outputTable':
                     let outputTable: OutputTable;
                     if (component.outputShaft2) {
@@ -270,9 +263,9 @@ export class Simulator {
                             component.compID,
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
-                            Expression.eval(String(component.initialY1)), // Accounts for numbers instead of a string being passed into input
+                            Expression.eval(String(component.initialY1), get_global_ctx()), // Accounts for numbers instead of a string being passed into input
                             shafts.get(component.outputShaft2)!,
-                            Expression.eval(String(component.initialY2)),
+                            Expression.eval(String(component.initialY2), get_global_ctx()),
                         );
                         shafts.get(component.outputShaft2)!.outputs.push(outputTable);
                     }
@@ -281,7 +274,7 @@ export class Simulator {
                             component.compID,
                             shafts.get(component.inputShaft)!,
                             shafts.get(component.outputShaft1)!,
-                            Expression.eval(String(component.initialY1)),
+                            Expression.eval(String(component.initialY1), get_global_ctx()),
                         );
                     }
                     outputTable.id = component.compID;
@@ -291,11 +284,24 @@ export class Simulator {
                     // components.push(outputTable);
                     outputTables.push(outputTable);
                     break;
+
                 // only from frontend
                 case 'label':
                     break;
+
                 case 'dial':
+                    new_component = new (class Dial implements Device {
+                        private id: number;
+
+                        constructor(id: number) { this.id = id; }
+                        determine_output(): Shaft | undefined { return undefined; }
+                        update(_dt: number): void { }
+                        getID(): number { return this.id; }
+                    })(component.compID);
+                    shafts.get(component.inputShaft)!.outputs.push(new_component);
+                    components.push(new_component);
                     break;
+
                 default:
                     throw new Error(`Invalid component type`);
             }
@@ -304,7 +310,7 @@ export class Simulator {
         this.motor = motor;
         this.shafts = Array.from(shafts.values());
         this.outputTables = outputTables;
+        this.ordered_components = components;
         this.components = components;
-        console.log("Finished parsing the configuration file and instantiating the objects.")
     }
 }

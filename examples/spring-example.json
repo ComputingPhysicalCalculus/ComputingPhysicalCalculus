@@ -1,1 +1,532 @@
-{"shafts":[{"id":121,"start":[4,1],"end":[24,1]},{"id":122,"start":[4,2],"end":[24,2]},{"id":123,"start":[4,3],"end":[24,3]},{"id":124,"start":[4,4],"end":[24,4]},{"id":125,"start":[4,5],"end":[24,5]},{"id":126,"start":[4,6],"end":[24,6]},{"id":127,"start":[9,5],"end":[9,7]},{"id":128,"start":[8,1],"end":[8,7]},{"id":129,"start":[7,3],"end":[7,7]},{"id":130,"start":[11,0],"end":[11,3]},{"id":131,"start":[12,0],"end":[12,4]},{"id":132,"start":[14,2],"end":[14,7]},{"id":133,"start":[15,1],"end":[15,7]},{"id":134,"start":[16,3],"end":[16,7]},{"id":135,"start":[19,0],"end":[19,2]},{"id":136,"start":[23,2],"end":[23,7]},{"id":137,"start":[22,6],"end":[22,7]},{"id":138,"start":[18,0],"end":[18,1]},{"id":139,"start":[20,0],"end":[20,3]}],"components":[{"type":"motor","compID":27,"position":[2,1],"reversed":false,"outputShaft":121},{"type":"differential","compID":28,"position":[5,4],"diffShaft1":124,"sumShaft":125,"diffShaft2":126},{"type":"integrator","compID":29,"position":[6,8],"outputShaft":129,"variableOfIntegrationShaft":128,"integrandShaft":127,"initialPosition":-1},{"type":"integrator","compID":30,"position":[13,8],"outputShaft":132,"variableOfIntegrationShaft":133,"integrandShaft":134,"initialPosition":1},{"type":"multiplier","compID":31,"position":[21,8],"factor":1,"inputShaft":136,"outputShaft":137},{"type":"functionTable","compID":32,"position":[9,-4],"x_min":"0","x_max":"10","y_min":"-1","y_max":"100","inputShaft":130,"outputShaft":131,"fn":"4*x"},{"type":"outputTable","compID":33,"position":[17,-4],"x_min":"0","x_max":"10","y_min":"-6","y_max":"5","inputShaft":138,"outputShaft1":135,"outputShaft2":139,"initialY1":"-5","initialY2":"0"},{"type":"crossConnect","compID":34,"position":[9,5],"reversed":false,"vertical":127,"horizontal":125},{"type":"crossConnect","compID":35,"position":[8,1],"reversed":false,"vertical":128,"horizontal":121},{"type":"crossConnect","compID":36,"position":[7,3],"reversed":true,"vertical":129,"horizontal":123},{"type":"crossConnect","compID":37,"position":[12,4],"reversed":false,"vertical":131,"horizontal":124},{"type":"crossConnect","compID":38,"position":[11,3],"reversed":false,"vertical":130,"horizontal":123},{"type":"crossConnect","compID":39,"position":[14,2],"reversed":false,"vertical":132,"horizontal":122},{"type":"crossConnect","compID":40,"position":[15,1],"reversed":false,"vertical":133,"horizontal":121},{"type":"crossConnect","compID":41,"position":[16,3],"reversed":false,"vertical":134,"horizontal":123},{"type":"crossConnect","compID":42,"position":[18,1],"reversed":false,"vertical":138,"horizontal":121},{"type":"crossConnect","compID":43,"position":[19,2],"reversed":false,"vertical":135,"horizontal":122},{"type":"crossConnect","compID":44,"position":[20,3],"reversed":false,"vertical":139,"horizontal":123},{"type":"crossConnect","compID":45,"position":[22,6],"reversed":false,"vertical":137,"horizontal":126},{"type":"crossConnect","compID":46,"position":[23,2],"reversed":false,"vertical":136,"horizontal":122},{"type":"label","compID":47,"position":[26,1],"size":[1,1],"align":"","_comment":"t"},{"type":"label","compID":48,"position":[26,2],"size":[1,1],"align":"","_comment":"x"},{"type":"label","compID":49,"position":[26,3],"size":[3,1],"align":"","_comment":"dx/dt"},{"type":"label","compID":50,"position":[26,4],"size":[4,1],"align":"","_comment":"f(dx/dt)"},{"type":"label","compID":51,"position":[26,5],"size":[6,1],"align":"","_comment":"f(dx/dt)+kx/m"},{"type":"label","compID":52,"position":[26,6],"size":[3,1],"align":"","_comment":"kx/m"}]}
+{
+  "shafts": [
+    {
+      "id": 26,
+      "start": [
+        4,
+        1
+      ],
+      "end": [
+        24,
+        1
+      ]
+    },
+    {
+      "id": 27,
+      "start": [
+        4,
+        2
+      ],
+      "end": [
+        24,
+        2
+      ]
+    },
+    {
+      "id": 28,
+      "start": [
+        4,
+        3
+      ],
+      "end": [
+        24,
+        3
+      ]
+    },
+    {
+      "id": 29,
+      "start": [
+        4,
+        4
+      ],
+      "end": [
+        24,
+        4
+      ]
+    },
+    {
+      "id": 30,
+      "start": [
+        4,
+        5
+      ],
+      "end": [
+        24,
+        5
+      ]
+    },
+    {
+      "id": 31,
+      "start": [
+        4,
+        6
+      ],
+      "end": [
+        24,
+        6
+      ]
+    },
+    {
+      "id": 32,
+      "start": [
+        9,
+        5
+      ],
+      "end": [
+        9,
+        7
+      ]
+    },
+    {
+      "id": 33,
+      "start": [
+        8,
+        1
+      ],
+      "end": [
+        8,
+        7
+      ]
+    },
+    {
+      "id": 34,
+      "start": [
+        7,
+        3
+      ],
+      "end": [
+        7,
+        7
+      ]
+    },
+    {
+      "id": 35,
+      "start": [
+        11,
+        0
+      ],
+      "end": [
+        11,
+        3
+      ]
+    },
+    {
+      "id": 36,
+      "start": [
+        12,
+        0
+      ],
+      "end": [
+        12,
+        4
+      ]
+    },
+    {
+      "id": 37,
+      "start": [
+        14,
+        2
+      ],
+      "end": [
+        14,
+        7
+      ]
+    },
+    {
+      "id": 38,
+      "start": [
+        15,
+        1
+      ],
+      "end": [
+        15,
+        7
+      ]
+    },
+    {
+      "id": 39,
+      "start": [
+        16,
+        3
+      ],
+      "end": [
+        16,
+        7
+      ]
+    },
+    {
+      "id": 40,
+      "start": [
+        19,
+        0
+      ],
+      "end": [
+        19,
+        2
+      ]
+    },
+    {
+      "id": 41,
+      "start": [
+        23,
+        2
+      ],
+      "end": [
+        23,
+        7
+      ]
+    },
+    {
+      "id": 42,
+      "start": [
+        22,
+        6
+      ],
+      "end": [
+        22,
+        7
+      ]
+    },
+    {
+      "id": 43,
+      "start": [
+        18,
+        0
+      ],
+      "end": [
+        18,
+        1
+      ]
+    },
+    {
+      "id": 44,
+      "start": [
+        20,
+        0
+      ],
+      "end": [
+        20,
+        3
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "motor",
+      "compID": 0,
+      "position": [
+        2,
+        1
+      ],
+      "reversed": false,
+      "outputShaft": 26
+    },
+    {
+      "type": "differential",
+      "compID": 1,
+      "position": [
+        5,
+        4
+      ],
+      "diffShaft1": 29,
+      "sumShaft": 30,
+      "diffShaft2": 31
+    },
+    {
+      "type": "integrator",
+      "compID": 2,
+      "position": [
+        6,
+        8
+      ],
+      "outputShaft": 34,
+      "variableOfIntegrationShaft": 33,
+      "integrandShaft": 32,
+      "initialPosition": "-1"
+    },
+    {
+      "type": "integrator",
+      "compID": 3,
+      "position": [
+        13,
+        8
+      ],
+      "outputShaft": 37,
+      "variableOfIntegrationShaft": 38,
+      "integrandShaft": 39,
+      "initialPosition": "1"
+    },
+    {
+      "type": "multiplier",
+      "compID": 4,
+      "position": [
+        21,
+        8
+      ],
+      "factor": "1",
+      "inputShaft": 41,
+      "outputShaft": 42,
+      "multiplicandShaft": null
+    },
+    {
+      "type": "functionTable",
+      "compID": 5,
+      "position": [
+        9,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-1",
+      "y_max": "100",
+      "inputShaft": 35,
+      "outputShaft": 36,
+      "lookup": false,
+      "fn": "4*x"
+    },
+    {
+      "type": "outputTable",
+      "compID": 6,
+      "position": [
+        17,
+        -4
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-6",
+      "y_max": "5",
+      "inputShaft": 43,
+      "outputShaft1": 40,
+      "outputShaft2": 44,
+      "initialY1": "-5",
+      "initialY2": "0"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 7,
+      "position": [
+        9,
+        5
+      ],
+      "reversed": false,
+      "vertical": 32,
+      "horizontal": 30
+    },
+    {
+      "type": "crossConnect",
+      "compID": 8,
+      "position": [
+        8,
+        1
+      ],
+      "reversed": false,
+      "vertical": 33,
+      "horizontal": 26
+    },
+    {
+      "type": "crossConnect",
+      "compID": 9,
+      "position": [
+        7,
+        3
+      ],
+      "reversed": true,
+      "vertical": 34,
+      "horizontal": 28
+    },
+    {
+      "type": "crossConnect",
+      "compID": 10,
+      "position": [
+        12,
+        4
+      ],
+      "reversed": false,
+      "vertical": 36,
+      "horizontal": 29
+    },
+    {
+      "type": "crossConnect",
+      "compID": 11,
+      "position": [
+        11,
+        3
+      ],
+      "reversed": false,
+      "vertical": 35,
+      "horizontal": 28
+    },
+    {
+      "type": "crossConnect",
+      "compID": 12,
+      "position": [
+        14,
+        2
+      ],
+      "reversed": false,
+      "vertical": 37,
+      "horizontal": 27
+    },
+    {
+      "type": "crossConnect",
+      "compID": 13,
+      "position": [
+        15,
+        1
+      ],
+      "reversed": false,
+      "vertical": 38,
+      "horizontal": 26
+    },
+    {
+      "type": "crossConnect",
+      "compID": 14,
+      "position": [
+        16,
+        3
+      ],
+      "reversed": false,
+      "vertical": 39,
+      "horizontal": 28
+    },
+    {
+      "type": "crossConnect",
+      "compID": 15,
+      "position": [
+        18,
+        1
+      ],
+      "reversed": false,
+      "vertical": 43,
+      "horizontal": 26
+    },
+    {
+      "type": "crossConnect",
+      "compID": 16,
+      "position": [
+        19,
+        2
+      ],
+      "reversed": false,
+      "vertical": 40,
+      "horizontal": 27
+    },
+    {
+      "type": "crossConnect",
+      "compID": 17,
+      "position": [
+        20,
+        3
+      ],
+      "reversed": false,
+      "vertical": 44,
+      "horizontal": 28
+    },
+    {
+      "type": "crossConnect",
+      "compID": 18,
+      "position": [
+        22,
+        6
+      ],
+      "reversed": false,
+      "vertical": 42,
+      "horizontal": 31
+    },
+    {
+      "type": "crossConnect",
+      "compID": 19,
+      "position": [
+        23,
+        2
+      ],
+      "reversed": false,
+      "vertical": 41,
+      "horizontal": 27
+    },
+    {
+      "type": "label",
+      "compID": 20,
+      "position": [
+        26,
+        1
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
+      "_comment": "t"
+    },
+    {
+      "type": "label",
+      "compID": 21,
+      "position": [
+        26,
+        2
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
+      "_comment": "x"
+    },
+    {
+      "type": "label",
+      "compID": 22,
+      "position": [
+        26,
+        3
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "dx/dt"
+    },
+    {
+      "type": "label",
+      "compID": 23,
+      "position": [
+        26,
+        4
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "",
+      "_comment": "f(dx/dt)"
+    },
+    {
+      "type": "label",
+      "compID": 24,
+      "position": [
+        26,
+        5
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "",
+      "_comment": "f(dx/dt)+kx/m"
+    },
+    {
+      "type": "label",
+      "compID": 25,
+      "position": [
+        26,
+        6
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "kx/m"
+    }
+  ]
+}

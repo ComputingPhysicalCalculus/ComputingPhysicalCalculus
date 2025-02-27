@@ -1,1 +1,291 @@
-{"shafts":[{"id":84,"start":[3,6],"end":[12,6]},{"id":85,"start":[3,7],"end":[12,7]},{"id":86,"start":[3,8],"end":[12,8]},{"id":87,"start":[5,5],"end":[5,7]},{"id":88,"start":[4,5],"end":[4,6]},{"id":89,"start":[6,8],"end":[6,9]},{"id":90,"start":[7,6],"end":[7,9]},{"id":91,"start":[8,7],"end":[8,9]},{"id":92,"start":[11,5],"end":[11,8]},{"id":93,"start":[9,5],"end":[9,6]},{"id":94,"start":[10,5],"end":[10,7]}],"components":[{"type":"motor","compID":0,"position":[1,6],"reversed":false,"outputShaft":84},{"type":"functionTable","compID":1,"position":[2,1],"x_min":0,"x_max":10,"y_min":-2,"y_max":2,"inputShaft":88,"outputShaft":87,"fn":"a=0.5;\nb=13;\nsum(n=0,8,a^n*cos(b^n*pi*x))"},{"type":"integrator","compID":2,"position":[5,10],"outputShaft":89,"variableOfIntegrationShaft":90,"integrandShaft":91,"initialPosition":0},{"type":"outputTable","compID":3,"position":[8,1],"x_min":0,"x_max":10,"y_min":-2,"y_max":2,"inputShaft":93,"outputShaft1":94,"outputShaft2":92,"initialY1":0,"initialY2":0},{"type":"crossConnect","compID":4,"position":[5,7],"reversed":false,"vertical":87,"horizontal":85},{"type":"crossConnect","compID":5,"position":[4,6],"vertical":88,"horizontal":84},{"type":"crossConnect","compID":6,"position":[6,8],"vertical":89,"horizontal":86},{"type":"crossConnect","compID":7,"position":[7,6],"vertical":90,"horizontal":84},{"type":"crossConnect","compID":8,"position":[8,7],"vertical":91,"horizontal":85},{"type":"crossConnect","compID":9,"position":[11,8],"vertical":92,"horizontal":86},{"type":"crossConnect","compID":10,"position":[9,6],"vertical":93,"horizontal":84},{"type":"crossConnect","compID":11,"position":[10,7],"vertical":94,"horizontal":85},{"type":"label","compID":12,"position":[13,6],"size":[1,1],"align":"","_comment":"t"},{"type":"label","compID":15,"position":[2,-1],"size":[4,2],"align":"center","_comment":"weierstrauss function a=0.5, b=13"}]}
+{
+  "shafts": [
+    {
+      "id": 14,
+      "start": [
+        3,
+        6
+      ],
+      "end": [
+        12,
+        6
+      ]
+    },
+    {
+      "id": 15,
+      "start": [
+        3,
+        7
+      ],
+      "end": [
+        12,
+        7
+      ]
+    },
+    {
+      "id": 16,
+      "start": [
+        3,
+        8
+      ],
+      "end": [
+        12,
+        8
+      ]
+    },
+    {
+      "id": 17,
+      "start": [
+        5,
+        5
+      ],
+      "end": [
+        5,
+        7
+      ]
+    },
+    {
+      "id": 18,
+      "start": [
+        4,
+        5
+      ],
+      "end": [
+        4,
+        6
+      ]
+    },
+    {
+      "id": 19,
+      "start": [
+        6,
+        8
+      ],
+      "end": [
+        6,
+        9
+      ]
+    },
+    {
+      "id": 20,
+      "start": [
+        7,
+        6
+      ],
+      "end": [
+        7,
+        9
+      ]
+    },
+    {
+      "id": 21,
+      "start": [
+        8,
+        7
+      ],
+      "end": [
+        8,
+        9
+      ]
+    },
+    {
+      "id": 22,
+      "start": [
+        11,
+        5
+      ],
+      "end": [
+        11,
+        8
+      ]
+    },
+    {
+      "id": 23,
+      "start": [
+        9,
+        5
+      ],
+      "end": [
+        9,
+        6
+      ]
+    },
+    {
+      "id": 24,
+      "start": [
+        10,
+        5
+      ],
+      "end": [
+        10,
+        7
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "motor",
+      "compID": 0,
+      "position": [
+        1,
+        6
+      ],
+      "reversed": false,
+      "outputShaft": 14
+    },
+    {
+      "type": "functionTable",
+      "compID": 1,
+      "position": [
+        2,
+        1
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-2",
+      "y_max": "2",
+      "inputShaft": 18,
+      "outputShaft": 17,
+      "lookup": false,
+      "fn": "a=0.5;\nb=13;\nsum(n=0,8,a^n*cos(b^n*pi*x))"
+    },
+    {
+      "type": "integrator",
+      "compID": 2,
+      "position": [
+        5,
+        10
+      ],
+      "outputShaft": 19,
+      "variableOfIntegrationShaft": 20,
+      "integrandShaft": 21,
+      "initialPosition": "0"
+    },
+    {
+      "type": "outputTable",
+      "compID": 3,
+      "position": [
+        8,
+        1
+      ],
+      "x_min": "0",
+      "x_max": "10",
+      "y_min": "-2",
+      "y_max": "2",
+      "inputShaft": 23,
+      "outputShaft1": 24,
+      "outputShaft2": 22,
+      "initialY1": "0",
+      "initialY2": "0"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 4,
+      "position": [
+        5,
+        7
+      ],
+      "reversed": false,
+      "vertical": 17,
+      "horizontal": 15
+    },
+    {
+      "type": "crossConnect",
+      "compID": 5,
+      "position": [
+        4,
+        6
+      ],
+      "vertical": 18,
+      "horizontal": 14
+    },
+    {
+      "type": "crossConnect",
+      "compID": 6,
+      "position": [
+        6,
+        8
+      ],
+      "vertical": 19,
+      "horizontal": 16
+    },
+    {
+      "type": "crossConnect",
+      "compID": 7,
+      "position": [
+        7,
+        6
+      ],
+      "vertical": 20,
+      "horizontal": 14
+    },
+    {
+      "type": "crossConnect",
+      "compID": 8,
+      "position": [
+        8,
+        7
+      ],
+      "vertical": 21,
+      "horizontal": 15
+    },
+    {
+      "type": "crossConnect",
+      "compID": 9,
+      "position": [
+        11,
+        8
+      ],
+      "vertical": 22,
+      "horizontal": 16
+    },
+    {
+      "type": "crossConnect",
+      "compID": 10,
+      "position": [
+        9,
+        6
+      ],
+      "vertical": 23,
+      "horizontal": 14
+    },
+    {
+      "type": "crossConnect",
+      "compID": 11,
+      "position": [
+        10,
+        7
+      ],
+      "vertical": 24,
+      "horizontal": 15
+    },
+    {
+      "type": "label",
+      "compID": 12,
+      "position": [
+        13,
+        6
+      ],
+      "size": [
+        1,
+        1
+      ],
+      "align": "",
+      "_comment": "t"
+    },
+    {
+      "type": "label",
+      "compID": 13,
+      "position": [
+        2,
+        -1
+      ],
+      "size": [
+        4,
+        2
+      ],
+      "align": "center",
+      "_comment": "weierstrauss function a=0.5, b=13"
+    }
+  ]
+}

@@ -1,1163 +1,1164 @@
 {
-    "shafts": [
-      {
-        "id": 103,
-        "start": [
-          4,
-          3
-        ],
-        "end": [
-          33,
-          3
-        ]
-      },
-      {
-        "id": 104,
-        "start": [
-          4,
-          4
-        ],
-        "end": [
-          45,
-          4
-        ]
-      },
-      {
-        "id": 105,
-        "start": [
-          4,
-          5
-        ],
-        "end": [
-          45,
-          5
-        ]
-      },
-      {
-        "id": 106,
-        "start": [
-          4,
-          6
-        ],
-        "end": [
-          27,
-          6
-        ]
-      },
-      {
-        "id": 107,
-        "start": [
-          4,
-          7
-        ],
-        "end": [
-          27,
-          7
-        ]
-      },
-      {
-        "id": 108,
-        "start": [
-          7,
-          2
-        ],
-        "end": [
-          7,
-          3
-        ]
-      },
-      {
-        "id": 109,
-        "start": [
-          8,
-          2
-        ],
-        "end": [
-          8,
-          7
-        ]
-      },
-      {
-        "id": 110,
-        "start": [
-          4,
-          8
-        ],
-        "end": [
-          27,
-          8
-        ]
-      },
-      {
-        "id": 111,
-        "start": [
-          4,
-          9
-        ],
-        "end": [
-          27,
-          9
-        ]
-      },
-      {
-        "id": 112,
-        "start": [
-          4,
-          10
-        ],
-        "end": [
-          27,
-          10
-        ]
-      },
-      {
-        "id": 113,
-        "start": [
-          13,
-          2
-        ],
-        "end": [
-          13,
-          5
-        ]
-      },
-      {
-        "id": 114,
-        "start": [
-          14,
-          2
-        ],
-        "end": [
-          14,
-          9
-        ]
-      },
-      {
-        "id": 115,
-        "start": [
-          19,
-          2
-        ],
-        "end": [
-          19,
-          4
-        ]
-      },
-      {
-        "id": 116,
-        "start": [
-          20,
-          2
-        ],
-        "end": [
-          20,
-          10
-        ]
-      },
-      {
-        "id": 117,
-        "start": [
-          25,
-          2
-        ],
-        "end": [
-          25,
-          4
-        ]
-      },
-      {
-        "id": 118,
-        "start": [
-          26,
-          2
-        ],
-        "end": [
-          26,
-          12
-        ]
-      },
-      {
-        "id": 119,
-        "start": [
-          4,
-          11
-        ],
-        "end": [
-          27,
-          11
-        ]
-      },
-      {
-        "id": 120,
-        "start": [
-          4,
-          12
-        ],
-        "end": [
-          27,
-          12
-        ]
-      },
-      {
-        "id": 121,
-        "start": [
-          4,
-          13
-        ],
-        "end": [
-          27,
-          13
-        ]
-      },
-      {
-        "id": 122,
-        "start": [
-          4,
-          14
-        ],
-        "end": [
-          27,
-          14
-        ]
-      },
-      {
-        "id": 123,
-        "start": [
-          4,
-          15
-        ],
-        "end": [
-          27,
-          15
-        ]
-      },
-      {
-        "id": 124,
-        "start": [
-          7,
-          8
-        ],
-        "end": [
-          7,
-          13
-        ]
-      },
-      {
-        "id": 125,
-        "start": [
-          9,
-          11
-        ],
-        "end": [
-          9,
-          15
-        ]
-      },
-      {
-        "id": 126,
-        "start": [
-          17,
-          14
-        ],
-        "end": [
-          17,
-          17
-        ]
-      },
-      {
-        "id": 127,
-        "start": [
-          16,
-          3
-        ],
-        "end": [
-          16,
-          18
-        ]
-      },
-      {
-        "id": 128,
-        "start": [
-          15,
-          5
-        ],
-        "end": [
-          15,
-          18
-        ]
-      },
-      {
-        "id": 129,
-        "start": [
-          22,
-          4
-        ],
-        "end": [
-          22,
-          17
-        ]
-      },
-      {
-        "id": 130,
-        "start": [
-          23,
-          3
-        ],
-        "end": [
-          23,
-          18
-        ]
-      },
-      {
-        "id": 131,
-        "start": [
-          24,
-          5
-        ],
-        "end": [
-          24,
-          18
-        ]
-      },
-      {
-        "id": 132,
-        "start": [
-          36,
-          1
-        ],
-        "end": [
-          36,
-          4
-        ]
-      },
-      {
-        "id": 133,
-        "start": [
-          37,
-          1
-        ],
-        "end": [
-          37,
-          5
-        ]
-      },
-      {
-        "id": 134,
-        "start": [
-          32,
-          6
-        ],
-        "end": [
-          45,
-          6
-        ]
-      },
-      {
-        "id": 135,
-        "start": [
-          31,
-          2
-        ],
-        "end": [
-          31,
-          3
-        ]
-      },
-      {
-        "id": 136,
-        "start": [
-          32,
-          1
-        ],
-        "end": [
-          32,
-          6
-        ]
-      },
-      {
-        "id": 137,
-        "start": [
-          43,
-          1
-        ],
-        "end": [
-          43,
-          6
-        ]
-      },
-      {
-        "id": 138,
-        "start": [
-          44,
-          2
-        ],
-        "end": [
-          44,
-          4
-        ]
-      }
-    ],
-    "components": [
-      {
-        "type": "motor",
-        "compID": 0,
-        "position": [
-          2,
-          3
-        ],
-        "reversed": false,
-        "outputShaft": 103
-      },
-      {
-        "type": "functionTable",
-        "compID": 54,
-        "position": [
-          5,
-          -2
-        ],
-        "x_min": "0",
-        "x_max": "100",
-        "y_min": "-3",
-        "y_max": "3",
-        "inputShaft": 108,
-        "outputShaft": 109,
-        "lookup": false,
-        "fn": "gamma=0.3;omega=1.4;\ngamma*cos(omega*x)"
-      },
-      {
-        "type": "crossConnect",
-        "compID": 55,
-        "position": [
-          7,
-          3
-        ],
-        "reversed": false,
-        "vertical": 108,
-        "horizontal": 103
-      },
-      {
-        "type": "crossConnect",
-        "compID": 59,
-        "position": [
-          8,
-          7
-        ],
-        "reversed": false,
-        "vertical": 109,
-        "horizontal": 107
-      },
-      {
-        "type": "label",
-        "compID": 61,
-        "position": [
-          4,
-          -3
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "center",
-        "_comment": "f_1(t) = γcos(ωt)"
-      },
-      {
-        "type": "label",
-        "compID": 62,
-        "position": [
-          28,
-          7
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "f_1(t)"
-      },
-      {
-        "type": "label",
-        "compID": 63,
-        "position": [
-          34,
-          3
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "t"
-      },
-      {
-        "type": "functionTable",
-        "compID": 65,
-        "position": [
-          11,
-          -2
-        ],
-        "x_min": "0",
-        "x_max": "800",
-        "y_min": "-1.5",
-        "y_max": "1.5",
-        "inputShaft": 113,
-        "outputShaft": 114,
-        "lookup": false,
-        "fn": "delta=0.1;-delta*(x+1)"
-      },
-      {
-        "type": "label",
-        "compID": 66,
-        "position": [
-          10,
-          -3
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "center",
-        "_comment": "f_2(x') = -δx'"
-      },
-      {
-        "type": "functionTable",
-        "compID": 68,
-        "position": [
-          17,
-          -2
-        ],
-        "x_min": "0",
-        "x_max": "800",
-        "y_min": "-1",
-        "y_max": "15",
-        "inputShaft": 115,
-        "outputShaft": 116,
-        "lookup": false,
-        "fn": "alpha=-1;-alpha*(x+1)"
-      },
-      {
-        "type": "functionTable",
-        "compID": 69,
-        "position": [
-          23,
-          -2
-        ],
-        "x_min": "0",
-        "x_max": "800",
-        "y_min": "-1000",
-        "y_max": "1",
-        "inputShaft": 117,
-        "outputShaft": 118,
-        "lookup": false,
-        "fn": "beta=1;-beta*(x+1)^3"
-      },
-      {
-        "type": "label",
-        "compID": 70,
-        "position": [
-          17,
-          -3
-        ],
-        "size": [
-          4,
-          1
-        ],
-        "align": "center",
-        "_comment": "f_3(x) = -αx"
-      },
-      {
-        "type": "label",
-        "compID": 71,
-        "position": [
-          22,
-          -3
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "center",
-        "_comment": "f_4(x) = -βx^3"
-      },
-      {
-        "type": "integrator",
-        "compID": 73,
-        "position": [
-          14,
-          18
-        ],
-        "outputShaft": 128,
-        "variableOfIntegrationShaft": 127,
-        "integrandShaft": 126,
-        "initialPosition": "0.2"
-      },
-      {
-        "type": "integrator",
-        "compID": 74,
-        "position": [
-          21,
-          18
-        ],
-        "outputShaft": 129,
-        "variableOfIntegrationShaft": 130,
-        "integrandShaft": 131,
-        "initialPosition": "1"
-      },
-      {
-        "type": "label",
-        "compID": 82,
-        "position": [
-          46,
-          4
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "x"
-      },
-      {
-        "type": "label",
-        "compID": 83,
-        "position": [
-          46,
-          5
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "x'"
-      },
-      {
-        "type": "label",
-        "compID": 84,
-        "position": [
-          28,
-          6
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "x''"
-      },
-      {
-        "type": "label",
-        "compID": 86,
-        "position": [
-          28,
-          9
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "f_2(x')"
-      },
-      {
-        "type": "label",
-        "compID": 87,
-        "position": [
-          28,
-          10
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "f_3(x)"
-      },
-      {
-        "type": "label",
-        "compID": 89,
-        "position": [
-          28,
-          12
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "f_4(x)"
-      },
-      {
-        "type": "crossConnect",
-        "compID": 91,
-        "position": [
-          13,
-          5
-        ],
-        "reversed": false,
-        "vertical": 113,
-        "horizontal": 105
-      },
-      {
-        "type": "crossConnect",
-        "compID": 93,
-        "position": [
-          14,
-          9
-        ],
-        "reversed": false,
-        "vertical": 114,
-        "horizontal": 111
-      },
-      {
-        "type": "crossConnect",
-        "compID": 101,
-        "position": [
-          20,
-          10
-        ],
-        "reversed": false,
-        "vertical": 116,
-        "horizontal": 112
-      },
-      {
-        "type": "crossConnect",
-        "compID": 102,
-        "position": [
-          19,
-          4
-        ],
-        "reversed": false,
-        "vertical": 115,
-        "horizontal": 104
-      },
-      {
-        "type": "crossConnect",
-        "compID": 103,
-        "position": [
-          25,
-          4
-        ],
-        "reversed": false,
-        "vertical": 117,
-        "horizontal": 104
-      },
-      {
-        "type": "label",
-        "compID": 104,
-        "position": [
-          28,
-          8
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "",
-        "_comment": "f_1(t) + f_2(x')"
-      },
-      {
-        "type": "label",
-        "compID": 105,
-        "position": [
-          28,
-          11
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "",
-        "_comment": "f_3(x) + f_4(x)"
-      },
-      {
-        "type": "crossConnect",
-        "compID": 108,
-        "position": [
-          26,
-          12
-        ],
-        "reversed": false,
-        "vertical": 118,
-        "horizontal": 120
-      },
-      {
-        "type": "differential",
-        "compID": 109,
-        "position": [
-          5,
-          10
-        ],
-        "diffShaft1": 112,
-        "sumShaft": 119,
-        "diffShaft2": 120
-      },
-      {
-        "type": "differential",
-        "compID": 110,
-        "position": [
-          5,
-          7
-        ],
-        "diffShaft1": 107,
-        "sumShaft": 110,
-        "diffShaft2": 111
-      },
-      {
-        "type": "crossConnect",
-        "compID": 114,
-        "position": [
-          7,
-          8
-        ],
-        "reversed": false,
-        "vertical": 124,
-        "horizontal": 110
-      },
-      {
-        "type": "crossConnect",
-        "compID": 116,
-        "position": [
-          9,
-          11
-        ],
-        "reversed": false,
-        "vertical": 125,
-        "horizontal": 119
-      },
-      {
-        "type": "crossConnect",
-        "compID": 118,
-        "position": [
-          7,
-          13
-        ],
-        "reversed": false,
-        "vertical": 124,
-        "horizontal": 121
-      },
-      {
-        "type": "crossConnect",
-        "compID": 119,
-        "position": [
-          9,
-          15
-        ],
-        "reversed": false,
-        "vertical": 125,
-        "horizontal": 123
-      },
-      {
-        "type": "differential",
-        "compID": 120,
-        "position": [
-          10,
-          13
-        ],
-        "diffShaft1": 121,
-        "sumShaft": 122,
-        "diffShaft2": 123
-      },
-      {
-        "type": "label",
-        "compID": 121,
-        "position": [
-          28,
-          13
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "",
-        "_comment": "f_1(t) + f_2(x')"
-      },
-      {
-        "type": "label",
-        "compID": 122,
-        "position": [
-          28,
-          14
-        ],
-        "size": [
-          12,
-          1
-        ],
-        "align": "",
-        "_comment": "f_1(t) + f_2(x') + f_3(x) + f_4(x)"
-      },
-      {
-        "type": "label",
-        "compID": 123,
-        "position": [
-          28,
-          15
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "",
-        "_comment": "f_3(x) + f_4(x)"
-      },
-      {
-        "type": "crossConnect",
-        "compID": 124,
-        "position": [
-          17,
-          14
-        ],
-        "reversed": false,
-        "vertical": 126,
-        "horizontal": 122
-      },
-      {
-        "type": "crossConnect",
-        "compID": 128,
-        "position": [
-          16,
-          3
-        ],
-        "reversed": false,
-        "vertical": 127,
-        "horizontal": 103
-      },
-      {
-        "type": "crossConnect",
-        "compID": 131,
-        "position": [
-          15,
-          5
-        ],
-        "reversed": false,
-        "vertical": 128,
-        "horizontal": 105
-      },
-      {
-        "type": "crossConnect",
-        "compID": 133,
-        "position": [
-          22,
-          4
-        ],
-        "reversed": false,
-        "vertical": 129,
-        "horizontal": 104
-      },
-      {
-        "type": "crossConnect",
-        "compID": 135,
-        "position": [
-          23,
-          3
-        ],
-        "reversed": false,
-        "vertical": 130,
-        "horizontal": 103
-      },
-      {
-        "type": "crossConnect",
-        "compID": 138,
-        "position": [
-          24,
-          5
-        ],
-        "reversed": false,
-        "vertical": 131,
-        "horizontal": 105
-      },
-      {
-        "type": "outputTable",
-        "compID": 139,
-        "position": [
-          35,
-          -2
-        ],
-        "x_min": "-3",
-        "x_max": "3",
-        "y_min": "-3",
-        "y_max": "3",
-        "inputShaft": 132,
-        "outputShaft1": 133,
-        "outputShaft2": null,
-        "initialY1": "1",
-        "initialY2": "0"
-      },
-      {
-        "type": "crossConnect",
-        "compID": 142,
-        "position": [
-          36,
-          4
-        ],
-        "reversed": false,
-        "vertical": 132,
-        "horizontal": 104
-      },
-      {
-        "type": "crossConnect",
-        "compID": 148,
-        "position": [
-          37,
-          5
-        ],
-        "reversed": false,
-        "vertical": 133,
-        "horizontal": 105
-      },
-      {
-        "type": "outputTable",
-        "compID": 149,
-        "position": [
-          42,
-          -2
-        ],
-        "x_min": "0",
-        "x_max": "200",
-        "y_min": "-1",
-        "y_max": "2",
-        "inputShaft": 137,
-        "outputShaft1": 138,
-        "outputShaft2": null,
-        "initialY1": "0",
-        "initialY2": "0"
-      },
-      {
-        "type": "functionTable",
-        "compID": 151,
-        "position": [
-          29,
-          -2
-        ],
-        "x_min": "0",
-        "x_max": "800",
-        "y_min": "-1.5",
-        "y_max": "1.5",
-        "inputShaft": 135,
-        "outputShaft": 136,
-        "lookup": false,
-        "fn": "omega=1.4;x*omega/(2*pi)"
-      },
-      {
-        "type": "label",
-        "compID": 153,
-        "position": [
-          46,
-          6
-        ],
-        "size": [
-          3,
-          1
-        ],
-        "align": "",
-        "_comment": "t/T"
-      },
-      {
-        "type": "crossConnect",
-        "compID": 155,
-        "position": [
-          31,
-          3
-        ],
-        "reversed": false,
-        "vertical": 135,
-        "horizontal": 103
-      },
-      {
-        "type": "crossConnect",
-        "compID": 157,
-        "position": [
-          32,
-          6
-        ],
-        "reversed": false,
-        "vertical": 136,
-        "horizontal": 134
-      },
-      {
-        "type": "crossConnect",
-        "compID": 160,
-        "position": [
-          43,
-          6
-        ],
-        "reversed": false,
-        "vertical": 137,
-        "horizontal": 134
-      },
-      {
-        "type": "crossConnect",
-        "compID": 163,
-        "position": [
-          44,
-          4
-        ],
-        "reversed": false,
-        "vertical": 138,
-        "horizontal": 104
-      },
-      {
-        "type": "label",
-        "compID": 164,
-        "position": [
-          20,
-          -5
-        ],
-        "size": [
-          10,
-          1
-        ],
-        "align": "center",
-        "_comment": "Modelling the Duffing Equation"
-      },
-      {
-        "type": "label",
-        "compID": 165,
-        "position": [
-          29,
-          -3
-        ],
-        "size": [
-          4,
-          1
-        ],
-        "align": "center",
-        "_comment": "f(t) = t/T"
-      },
-      {
-        "type": "label",
-        "compID": 166,
-        "position": [
-          33,
-          -3
-        ],
-        "size": [
-          8,
-          1
-        ],
-        "align": "center",
-        "_comment": "Phase Portrait x' vs x"
-      },
-      {
-        "type": "label",
-        "compID": 167,
-        "position": [
-          41,
-          -3
-        ],
-        "size": [
-          6,
-          1
-        ],
-        "align": "center",
-        "_comment": "Time Trace x vs t/T"
-      },
-      {
-        "type": "dial",
-        "compID": 169,
-        "position": [
-          4,
-          3
-        ]
-      }
-    ]
-  }
+  "shafts": [
+    {
+      "id": 60,
+      "start": [
+        4,
+        3
+      ],
+      "end": [
+        33,
+        3
+      ]
+    },
+    {
+      "id": 61,
+      "start": [
+        4,
+        4
+      ],
+      "end": [
+        45,
+        4
+      ]
+    },
+    {
+      "id": 62,
+      "start": [
+        4,
+        5
+      ],
+      "end": [
+        45,
+        5
+      ]
+    },
+    {
+      "id": 63,
+      "start": [
+        4,
+        6
+      ],
+      "end": [
+        27,
+        6
+      ]
+    },
+    {
+      "id": 64,
+      "start": [
+        4,
+        7
+      ],
+      "end": [
+        27,
+        7
+      ]
+    },
+    {
+      "id": 65,
+      "start": [
+        7,
+        2
+      ],
+      "end": [
+        7,
+        3
+      ]
+    },
+    {
+      "id": 66,
+      "start": [
+        8,
+        2
+      ],
+      "end": [
+        8,
+        7
+      ]
+    },
+    {
+      "id": 67,
+      "start": [
+        4,
+        8
+      ],
+      "end": [
+        27,
+        8
+      ]
+    },
+    {
+      "id": 68,
+      "start": [
+        4,
+        9
+      ],
+      "end": [
+        27,
+        9
+      ]
+    },
+    {
+      "id": 69,
+      "start": [
+        4,
+        10
+      ],
+      "end": [
+        27,
+        10
+      ]
+    },
+    {
+      "id": 70,
+      "start": [
+        13,
+        2
+      ],
+      "end": [
+        13,
+        5
+      ]
+    },
+    {
+      "id": 71,
+      "start": [
+        14,
+        2
+      ],
+      "end": [
+        14,
+        9
+      ]
+    },
+    {
+      "id": 72,
+      "start": [
+        19,
+        2
+      ],
+      "end": [
+        19,
+        4
+      ]
+    },
+    {
+      "id": 73,
+      "start": [
+        20,
+        2
+      ],
+      "end": [
+        20,
+        10
+      ]
+    },
+    {
+      "id": 74,
+      "start": [
+        25,
+        2
+      ],
+      "end": [
+        25,
+        4
+      ]
+    },
+    {
+      "id": 75,
+      "start": [
+        26,
+        2
+      ],
+      "end": [
+        26,
+        12
+      ]
+    },
+    {
+      "id": 76,
+      "start": [
+        4,
+        11
+      ],
+      "end": [
+        27,
+        11
+      ]
+    },
+    {
+      "id": 77,
+      "start": [
+        4,
+        12
+      ],
+      "end": [
+        27,
+        12
+      ]
+    },
+    {
+      "id": 78,
+      "start": [
+        4,
+        13
+      ],
+      "end": [
+        27,
+        13
+      ]
+    },
+    {
+      "id": 79,
+      "start": [
+        4,
+        14
+      ],
+      "end": [
+        27,
+        14
+      ]
+    },
+    {
+      "id": 80,
+      "start": [
+        4,
+        15
+      ],
+      "end": [
+        27,
+        15
+      ]
+    },
+    {
+      "id": 81,
+      "start": [
+        7,
+        8
+      ],
+      "end": [
+        7,
+        13
+      ]
+    },
+    {
+      "id": 82,
+      "start": [
+        9,
+        11
+      ],
+      "end": [
+        9,
+        15
+      ]
+    },
+    {
+      "id": 83,
+      "start": [
+        17,
+        14
+      ],
+      "end": [
+        17,
+        17
+      ]
+    },
+    {
+      "id": 84,
+      "start": [
+        16,
+        3
+      ],
+      "end": [
+        16,
+        18
+      ]
+    },
+    {
+      "id": 85,
+      "start": [
+        15,
+        5
+      ],
+      "end": [
+        15,
+        18
+      ]
+    },
+    {
+      "id": 86,
+      "start": [
+        22,
+        4
+      ],
+      "end": [
+        22,
+        17
+      ]
+    },
+    {
+      "id": 87,
+      "start": [
+        23,
+        3
+      ],
+      "end": [
+        23,
+        18
+      ]
+    },
+    {
+      "id": 88,
+      "start": [
+        24,
+        5
+      ],
+      "end": [
+        24,
+        18
+      ]
+    },
+    {
+      "id": 89,
+      "start": [
+        36,
+        1
+      ],
+      "end": [
+        36,
+        4
+      ]
+    },
+    {
+      "id": 90,
+      "start": [
+        37,
+        1
+      ],
+      "end": [
+        37,
+        5
+      ]
+    },
+    {
+      "id": 91,
+      "start": [
+        32,
+        6
+      ],
+      "end": [
+        45,
+        6
+      ]
+    },
+    {
+      "id": 92,
+      "start": [
+        31,
+        2
+      ],
+      "end": [
+        31,
+        3
+      ]
+    },
+    {
+      "id": 93,
+      "start": [
+        32,
+        1
+      ],
+      "end": [
+        32,
+        6
+      ]
+    },
+    {
+      "id": 94,
+      "start": [
+        43,
+        1
+      ],
+      "end": [
+        43,
+        6
+      ]
+    },
+    {
+      "id": 95,
+      "start": [
+        44,
+        2
+      ],
+      "end": [
+        44,
+        4
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "motor",
+      "compID": 0,
+      "position": [
+        2,
+        3
+      ],
+      "reversed": false,
+      "outputShaft": 60
+    },
+    {
+      "type": "functionTable",
+      "compID": 1,
+      "position": [
+        5,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "100",
+      "y_min": "-3",
+      "y_max": "3",
+      "inputShaft": 65,
+      "outputShaft": 66,
+      "lookup": false,
+      "fn": "gamma=0.3;omega=1.4;\ngamma*cos(omega*x)"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 2,
+      "position": [
+        7,
+        3
+      ],
+      "reversed": false,
+      "vertical": 65,
+      "horizontal": 60
+    },
+    {
+      "type": "crossConnect",
+      "compID": 3,
+      "position": [
+        8,
+        7
+      ],
+      "reversed": false,
+      "vertical": 66,
+      "horizontal": 64
+    },
+    {
+      "type": "label",
+      "compID": 4,
+      "position": [
+        4,
+        -3
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "center",
+      "_comment": "f_1(t) = γcos(ωt)"
+    },
+    {
+      "type": "label",
+      "compID": 5,
+      "position": [
+        28,
+        7
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "f_1(t)"
+    },
+    {
+      "type": "label",
+      "compID": 6,
+      "position": [
+        34,
+        3
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "t"
+    },
+    {
+      "type": "functionTable",
+      "compID": 7,
+      "position": [
+        11,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "800",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 70,
+      "outputShaft": 71,
+      "lookup": false,
+      "fn": "delta=0.1;-delta*(x+1)"
+    },
+    {
+      "type": "label",
+      "compID": 8,
+      "position": [
+        10,
+        -3
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "center",
+      "_comment": "f_2(x') = -δx'"
+    },
+    {
+      "type": "functionTable",
+      "compID": 9,
+      "position": [
+        17,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "800",
+      "y_min": "-1",
+      "y_max": "15",
+      "inputShaft": 72,
+      "outputShaft": 73,
+      "lookup": false,
+      "fn": "alpha=-1;-alpha*(x+1)"
+    },
+    {
+      "type": "functionTable",
+      "compID": 10,
+      "position": [
+        23,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "800",
+      "y_min": "-1000",
+      "y_max": "1",
+      "inputShaft": 74,
+      "outputShaft": 75,
+      "lookup": false,
+      "fn": "beta=1;-beta*(x+1)^3"
+    },
+    {
+      "type": "label",
+      "compID": 11,
+      "position": [
+        17,
+        -3
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "f_3(x) = -αx"
+    },
+    {
+      "type": "label",
+      "compID": 12,
+      "position": [
+        22,
+        -3
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "center",
+      "_comment": "f_4(x) = -βx^3"
+    },
+    {
+      "type": "integrator",
+      "compID": 13,
+      "position": [
+        14,
+        18
+      ],
+      "outputShaft": 85,
+      "variableOfIntegrationShaft": 84,
+      "integrandShaft": 83,
+      "initialPosition": "0.2"
+    },
+    {
+      "type": "integrator",
+      "compID": 14,
+      "position": [
+        21,
+        18
+      ],
+      "outputShaft": 86,
+      "variableOfIntegrationShaft": 87,
+      "integrandShaft": 88,
+      "initialPosition": "1"
+    },
+    {
+      "type": "label",
+      "compID": 15,
+      "position": [
+        46,
+        4
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "x"
+    },
+    {
+      "type": "label",
+      "compID": 16,
+      "position": [
+        46,
+        5
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "x'"
+    },
+    {
+      "type": "label",
+      "compID": 17,
+      "position": [
+        28,
+        6
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "x''"
+    },
+    {
+      "type": "label",
+      "compID": 18,
+      "position": [
+        28,
+        9
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "f_2(x')"
+    },
+    {
+      "type": "label",
+      "compID": 19,
+      "position": [
+        28,
+        10
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "f_3(x)"
+    },
+    {
+      "type": "label",
+      "compID": 20,
+      "position": [
+        28,
+        12
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "f_4(x)"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 21,
+      "position": [
+        13,
+        5
+      ],
+      "reversed": false,
+      "vertical": 70,
+      "horizontal": 62
+    },
+    {
+      "type": "crossConnect",
+      "compID": 22,
+      "position": [
+        14,
+        9
+      ],
+      "reversed": false,
+      "vertical": 71,
+      "horizontal": 68
+    },
+    {
+      "type": "crossConnect",
+      "compID": 23,
+      "position": [
+        20,
+        10
+      ],
+      "reversed": false,
+      "vertical": 73,
+      "horizontal": 69
+    },
+    {
+      "type": "crossConnect",
+      "compID": 24,
+      "position": [
+        19,
+        4
+      ],
+      "reversed": false,
+      "vertical": 72,
+      "horizontal": 61
+    },
+    {
+      "type": "crossConnect",
+      "compID": 25,
+      "position": [
+        25,
+        4
+      ],
+      "reversed": false,
+      "vertical": 74,
+      "horizontal": 61
+    },
+    {
+      "type": "label",
+      "compID": 26,
+      "position": [
+        28,
+        8
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "",
+      "_comment": "f_1(t) + f_2(x')"
+    },
+    {
+      "type": "label",
+      "compID": 27,
+      "position": [
+        28,
+        11
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "",
+      "_comment": "f_3(x) + f_4(x)"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 28,
+      "position": [
+        26,
+        12
+      ],
+      "reversed": false,
+      "vertical": 75,
+      "horizontal": 77
+    },
+    {
+      "type": "differential",
+      "compID": 29,
+      "position": [
+        5,
+        10
+      ],
+      "diffShaft1": 69,
+      "sumShaft": 76,
+      "diffShaft2": 77
+    },
+    {
+      "type": "differential",
+      "compID": 30,
+      "position": [
+        5,
+        7
+      ],
+      "diffShaft1": 64,
+      "sumShaft": 67,
+      "diffShaft2": 68
+    },
+    {
+      "type": "crossConnect",
+      "compID": 31,
+      "position": [
+        7,
+        8
+      ],
+      "reversed": false,
+      "vertical": 81,
+      "horizontal": 67
+    },
+    {
+      "type": "crossConnect",
+      "compID": 32,
+      "position": [
+        9,
+        11
+      ],
+      "reversed": false,
+      "vertical": 82,
+      "horizontal": 76
+    },
+    {
+      "type": "crossConnect",
+      "compID": 33,
+      "position": [
+        7,
+        13
+      ],
+      "reversed": false,
+      "vertical": 81,
+      "horizontal": 78
+    },
+    {
+      "type": "crossConnect",
+      "compID": 34,
+      "position": [
+        9,
+        15
+      ],
+      "reversed": false,
+      "vertical": 82,
+      "horizontal": 80
+    },
+    {
+      "type": "differential",
+      "compID": 35,
+      "position": [
+        10,
+        13
+      ],
+      "diffShaft1": 78,
+      "sumShaft": 79,
+      "diffShaft2": 80
+    },
+    {
+      "type": "label",
+      "compID": 36,
+      "position": [
+        28,
+        13
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "",
+      "_comment": "f_1(t) + f_2(x')"
+    },
+    {
+      "type": "label",
+      "compID": 37,
+      "position": [
+        28,
+        14
+      ],
+      "size": [
+        12,
+        1
+      ],
+      "align": "",
+      "_comment": "f_1(t) + f_2(x') + f_3(x) + f_4(x)"
+    },
+    {
+      "type": "label",
+      "compID": 38,
+      "position": [
+        28,
+        15
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "",
+      "_comment": "f_3(x) + f_4(x)"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 39,
+      "position": [
+        17,
+        14
+      ],
+      "reversed": false,
+      "vertical": 83,
+      "horizontal": 79
+    },
+    {
+      "type": "crossConnect",
+      "compID": 40,
+      "position": [
+        16,
+        3
+      ],
+      "reversed": false,
+      "vertical": 84,
+      "horizontal": 60
+    },
+    {
+      "type": "crossConnect",
+      "compID": 41,
+      "position": [
+        15,
+        5
+      ],
+      "reversed": false,
+      "vertical": 85,
+      "horizontal": 62
+    },
+    {
+      "type": "crossConnect",
+      "compID": 42,
+      "position": [
+        22,
+        4
+      ],
+      "reversed": false,
+      "vertical": 86,
+      "horizontal": 61
+    },
+    {
+      "type": "crossConnect",
+      "compID": 43,
+      "position": [
+        23,
+        3
+      ],
+      "reversed": false,
+      "vertical": 87,
+      "horizontal": 60
+    },
+    {
+      "type": "crossConnect",
+      "compID": 44,
+      "position": [
+        24,
+        5
+      ],
+      "reversed": false,
+      "vertical": 88,
+      "horizontal": 62
+    },
+    {
+      "type": "outputTable",
+      "compID": 45,
+      "position": [
+        35,
+        -2
+      ],
+      "x_min": "-3",
+      "x_max": "3",
+      "y_min": "-3",
+      "y_max": "3",
+      "inputShaft": 89,
+      "outputShaft1": 90,
+      "outputShaft2": null,
+      "initialY1": "1",
+      "initialY2": "0"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 46,
+      "position": [
+        36,
+        4
+      ],
+      "reversed": false,
+      "vertical": 89,
+      "horizontal": 61
+    },
+    {
+      "type": "crossConnect",
+      "compID": 47,
+      "position": [
+        37,
+        5
+      ],
+      "reversed": false,
+      "vertical": 90,
+      "horizontal": 62
+    },
+    {
+      "type": "outputTable",
+      "compID": 48,
+      "position": [
+        42,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "200",
+      "y_min": "-1",
+      "y_max": "2",
+      "inputShaft": 94,
+      "outputShaft1": 95,
+      "outputShaft2": null,
+      "initialY1": "0",
+      "initialY2": "0"
+    },
+    {
+      "type": "functionTable",
+      "compID": 49,
+      "position": [
+        29,
+        -2
+      ],
+      "x_min": "0",
+      "x_max": "800",
+      "y_min": "-1.5",
+      "y_max": "1.5",
+      "inputShaft": 92,
+      "outputShaft": 93,
+      "lookup": false,
+      "fn": "omega=1.4;x*omega/(2*pi)"
+    },
+    {
+      "type": "label",
+      "compID": 50,
+      "position": [
+        46,
+        6
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": "t/T"
+    },
+    {
+      "type": "crossConnect",
+      "compID": 51,
+      "position": [
+        31,
+        3
+      ],
+      "reversed": false,
+      "vertical": 92,
+      "horizontal": 60
+    },
+    {
+      "type": "crossConnect",
+      "compID": 52,
+      "position": [
+        32,
+        6
+      ],
+      "reversed": false,
+      "vertical": 93,
+      "horizontal": 91
+    },
+    {
+      "type": "crossConnect",
+      "compID": 53,
+      "position": [
+        43,
+        6
+      ],
+      "reversed": false,
+      "vertical": 94,
+      "horizontal": 91
+    },
+    {
+      "type": "crossConnect",
+      "compID": 54,
+      "position": [
+        44,
+        4
+      ],
+      "reversed": false,
+      "vertical": 95,
+      "horizontal": 61
+    },
+    {
+      "type": "label",
+      "compID": 55,
+      "position": [
+        20,
+        -5
+      ],
+      "size": [
+        10,
+        1
+      ],
+      "align": "center",
+      "_comment": "Modelling the Duffing Equation"
+    },
+    {
+      "type": "label",
+      "compID": 56,
+      "position": [
+        29,
+        -3
+      ],
+      "size": [
+        4,
+        1
+      ],
+      "align": "center",
+      "_comment": "f(t) = t/T"
+    },
+    {
+      "type": "label",
+      "compID": 57,
+      "position": [
+        33,
+        -3
+      ],
+      "size": [
+        8,
+        1
+      ],
+      "align": "center",
+      "_comment": "Phase Portrait x' vs x"
+    },
+    {
+      "type": "label",
+      "compID": 58,
+      "position": [
+        41,
+        -3
+      ],
+      "size": [
+        6,
+        1
+      ],
+      "align": "center",
+      "_comment": "Time Trace x vs t/T"
+    },
+    {
+      "type": "dial",
+      "compID": 59,
+      "position": [
+        4,
+        3
+      ],
+      "inputShaft": 60
+    }
+  ]
+}

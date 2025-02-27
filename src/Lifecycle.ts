@@ -14,11 +14,21 @@ import { Simulator } from "./core/Main";
 import { FunctionTable } from "./core/FunctionTable";
 import Expression from "./expr/Expression";
 import { DialComponentElement } from "./UI/DialComponentElement.ts";
+import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
+import { ConfigError } from "./ConfigError.ts";
+import { ComponentType, resetIDs } from "./UI/Components.ts";
 
 enum State {
     Paused,
     Running,
     Stopped,
+}
+
+export function get_global_ctx(): { [k: string]: number } {
+    const custom_variables = document.querySelector("custom-variables") as CustomVariablesElement;
+    if (!custom_variables) return {}
+
+    return custom_variables.getValues();
 }
 
 /**
@@ -81,6 +91,27 @@ export class Lifecycle {
     @query("#machine")
     machine!: HTMLElement;
 
+    @query("#fullscreen")
+    fullscreen!: HTMLElement;
+
+    @query("#about_button")
+    about_button!: HTMLElement;
+
+    @query("#about")
+    about_screen!: HTMLElement;
+
+    @query("#help_button")
+    help_button!: HTMLElement;
+
+    @query("#help")
+    help_screen!: HTMLElement;
+
+    @query("#constants_button")
+    constants_button!: HTMLElement;
+
+    @query("#constants")
+    constants_screen!: HTMLElement;
+
     currently_demoing: Boolean = false;
 
     state: State = State.Stopped;
@@ -136,7 +167,6 @@ export class Lifecycle {
             const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
             output_tables.forEach(x => {
                 this.reset_output_table(x);
-                x.redraw();
             })
         });
 
@@ -151,6 +181,38 @@ export class Lifecycle {
             if (this.currently_demoing) { this.stop_demo(); } else { this.stop(); }
         });
         this.pause_button.addEventListener("click", _ => this.pause());
+
+        this.fullscreen.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "hidden";
+            this.about_screen.style.visibility = "hidden";
+            this.help_screen.style.visibility = "hidden";
+            this.constants_screen.style.visibility = "hidden";
+        });
+
+        this.about_button.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "visible";
+            this.about_screen.style.visibility = "visible";
+            this.help_screen.style.visibility = "hidden";
+            this.constants_screen.style.visibility = "hidden";
+        })
+
+        this.help_button.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "visible";
+            this.about_screen.style.visibility = "hidden";
+            this.help_screen.style.visibility = "visible";
+            this.constants_screen.style.visibility = "hidden";
+        })
+
+        this.constants_button.addEventListener("click", _ => {
+            this.fullscreen.style.visibility = "visible";
+            this.about_screen.style.visibility = "hidden";
+            this.help_screen.style.visibility = "hidden";
+            this.constants_screen.style.visibility = "visible";
+        })
+
+        document.querySelectorAll("#fullscreen .center").forEach(x => x.addEventListener("click", e => e.stopImmediatePropagation()));
+
+        document.addEventListener("placecomponent", () => this.check_da());
 
         window.addEventListener("keydown", e => {
             if (e.defaultPrevented) {
@@ -243,11 +305,12 @@ export class Lifecycle {
     }
 
     public exportState(): Config {
-        return toConfig();
+        return toConfig()[0];
     }
 
     private _clear_components(): void {
         UNDO_SINGLETON.push();
+        resetIDs();
         for (let component of this.placedComponents) {
             let { top, left, width, height } = component;
             component.remove();
@@ -377,6 +440,14 @@ export class Lifecycle {
         if (this.state !== State.Stopped) {
             console.warn(`Tried to run application when it was not stopped.\nState was ${this.state}`);
         }
+        const simulator = new Simulator(this.exportState())
+        let result = [...simulator.check_config().entries()].map(x => x[1]).find(x => x === ConfigError.FATAL_ERROR);
+
+        // let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
+        if (result === ConfigError.FATAL_ERROR) {
+            return;
+        }
+
         this.state = State.Running;
 
         this.step_period_input.disabled = true;
@@ -388,7 +459,6 @@ export class Lifecycle {
         this.stop_button.disabled = false;
         this.clear_output_tables_button.disabled = true;
 
-        const simulator = new Simulator(this.exportState())
         const step_period = Number(this.step_period_input.value);
         const get_motor_speed = () => Number(this.motor_speed_input.value);
 
@@ -398,13 +468,19 @@ export class Lifecycle {
         simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
             const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
 
-            let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "");
+            let compiled_expr = Expression.compile(function_table_element.data_sets["d1"]?.fn ?? "", get_global_ctx());
             x.fun = x => compiled_expr({ x });
             x.x_position = 0;
         });
 
-        output_tables.forEach(x => {
-            this.reset_output_table(x);
+        simulator.outputTables.forEach(x => {
+            const table = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
+            table.gantry_x = 0;
+            table.data_sets = {};
+            table.set_data_set("d1", []);
+            if (x.y2 !== undefined) {
+                table.set_data_set("d2", [], "red", true);
+            }
         })
 
         const dials = document.querySelectorAll(".dial") as NodeListOf<DraggableComponentElement>;
@@ -473,13 +549,61 @@ export class Lifecycle {
             for (let comp of simulator.components.filter(x => x instanceof FunctionTable)) {
                 const table = document.querySelector(`#component-${comp.id} > graph-table`)! as GraphElement;
                 table.gantry_x = comp.x_position;
-                if (next_steps !== 0 && comp.x_position >= table.x_max && table.parentElement?.dataset.lookup == "0") {
+                if (next_steps !== 0 && (comp.x_position >= table.x_max || comp.x_position < table.x_min) && table.parentElement?.dataset.lookup == "0") {
                     this.pause();
                     this.stop();
                     return;
                 }
             }
         };
+    }
+
+    public check_da(): void {
+        let [config, unfinished_components] = toConfig();
+        let no_motor = false;
+        let components = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
+        components.forEach(x => x.classList.remove("warning"));
+        unfinished_components.forEach(x => {
+            const component = document.querySelector(`#component-${x}`) as DraggableComponentElement;
+            if (component.componentType === "motor") {
+                no_motor = true;
+            }
+            component.classList.add("unconnected");
+            component.classList.add("warning");
+        });
+
+        if (no_motor) {
+            components.forEach(x => x.componentType === "motor" || x.componentType === "label" || x.classList.add("unconnected"));
+            return;
+        }
+
+        const simulator = new Simulator(config)
+        let result = simulator.check_config();
+        let joined_components = new Set([
+            ...simulator.components.map(x => x.getID()),
+            ...simulator.outputTables.map(x => x.getID()),
+            ...simulator.shafts.filter(x => x.ready_flag).map(x => x.id),
+        ]);
+        let unused_components = new Set([...components.entries()].filter(([_, v]) => {
+            return v.componentType !== "label" && !joined_components.has(v.componentID)
+        }).map(x => x[1].componentID));
+        let unfinished_components_set = new Set([...unfinished_components]);
+
+        let error = ![...result.entries()].every(x => x[1] !== ConfigError.FATAL_ERROR);
+        components.forEach(x => {
+            // console.log(unused_components, unfinished_components_set, result);
+            if (unused_components.has(x.componentID) || unfinished_components_set.has(x.componentID) || (result.get(x.componentID) ?? ConfigError.NO_ERROR) === ConfigError.NOT_SET_UP) {
+                x.classList.add("unconnected");
+                x.classList.remove("error");
+            } else {
+                x.classList.remove("unconnected");
+                if (error) {
+                    x.classList.add("error");
+                } else {
+                    x.classList.remove("error");
+                }
+            }
+        });
     }
 
     private _frame(delta: number): void {
@@ -493,8 +617,7 @@ export class Lifecycle {
     }
 
     private reset_output_table(table: GraphElement): void {
-        table.set_data_set("d1", []);
-        table.set_data_set("d2", [], "red", true);
+        table.data_sets = {};
         table.gantry_x = 0;
     }
 }

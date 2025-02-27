@@ -1,0 +1,20 @@
+:host {
+  --svg-bg: white;
+  --svg-fg: black;
+}
+
+.fill-bg {
+  fill: var(--svg-bg);
+}
+
+.fill-fg {
+  fill: var(--svg-fg);
+}
+
+.stroke-bg {
+  stroke: var(--svg-bg);
+}
+
+.stroke-fg {
+  stroke: var(--svg-fg);
+}

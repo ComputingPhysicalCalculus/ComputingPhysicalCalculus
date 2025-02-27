@@ -33,5 +33,3 @@ To preview the website use
 - Simon Solca:   ss3075@cam.ac.uk
 
 Client: Richard Pawson
-
-## Expression reference

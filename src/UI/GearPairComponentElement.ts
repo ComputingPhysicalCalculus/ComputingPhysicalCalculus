@@ -1,8 +1,11 @@
-import { LitElement, svg } from "lit";
+import { css, LitElement, svg, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import styles from "../../styles/SVGElement.css?inline";
 
 @customElement("gear-pair-component")
 export class GearPairComponentElement extends LitElement {
+  static styles = css`${unsafeCSS(styles)}`;
+
   @property({ type: Number })
   ratio_top: number = 1;
 
@@ -19,13 +22,18 @@ export class GearPairComponentElement extends LitElement {
         viewBox="0 0 50 100"
         style="width:100%;height:100%"
       >
-        <rect x="5" y="5" width="40" height="90" fill="white" stroke="black" stroke-width="2" rx=5 />
+        ${[0, 1, 2, 3].map(i => (
+          svg`
+            <rect class="fill-fg" x="${i % 2 == 0 ? 1 : 41}" y="${Math.floor(i / 2) * 50 + 22}" width="8" height="6" rx="1" />
+          `
+        ))}
+        <rect class="fill-bg stroke-fg" x="5" y="5" width="40" height="90" stroke-width="2" rx=5 />
 
-        <text x="${topX}" y="35" font-size="24" fill="black">${this.ratio_top}</text>
-        <text x="${bottomX}" y="83" font-size="24" fill="black">${this.ratio_bottom}</text>
+        <text class="fill-fg" x="${topX}" y="35" font-size="24">${this.ratio_top}</text>
+        <text class="fill-fg" x="${bottomX}" y="83" font-size="24">${this.ratio_bottom}</text>
 
-        <circle cx="18" cy="50" r="2" fill="black" />
-        <circle cx="32" cy="50" r="2" fill="black" />
+        <circle class="fill-fg" cx="18" cy="50" r="2" />
+        <circle class="fill-fg" cx="32" cy="50" r="2" />
       </svg>
     `;
   }

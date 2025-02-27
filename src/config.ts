@@ -1,5 +1,6 @@
-import { setIDCounter, ComponentType, createComponent, stringToComponent } from "./UI/Components";
+import { ComponentType, createComponent, stringToComponent, createUniqueID } from "./UI/Components";
 import { machine } from "./UI/Constants.ts";
+import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { setCells, GRID_SIZE } from "./UI/Grid";
 import Vector2 from "./UI/Vector2.ts";
@@ -7,6 +8,9 @@ import Vector2 from "./UI/Vector2.ts";
 export type Config = {
   shafts: ShaftConfig[];
   components: ComponentConfig[];
+  settings: {
+    custom_variables: string;
+  };
 };
 
 export type ShaftID = number;
@@ -117,6 +121,7 @@ export type DialConfig = {
   type: "dial";
   compID: number;
   position: [number, number];
+  inputShaft: number;
 };
 
 const type_name_dict = {
@@ -133,7 +138,13 @@ const type_name_dict = {
 };
 
 export function loadConfig(config: Config): void {
-  let maxID = 0;
+  let settings = config.settings;
+  if (settings) {
+    if (settings.custom_variables) {
+      (document.querySelector("custom-variables")! as CustomVariablesElement).setText(config.settings.custom_variables);
+    }
+  }
+
   for (let components of config.components) {
     let [left, top] = components.position;
     let componentType = type_name_dict[components.type];
@@ -169,9 +180,8 @@ export function loadConfig(config: Config): void {
     item.left = left;
     item.renderTop = top * GRID_SIZE;
     item.renderLeft = left * GRID_SIZE;
-    item.id = `component-${components.compID}`;
-    item.componentID = components.compID;
-    maxID = Math.max(maxID, components.compID);
+    item.componentID = createUniqueID();
+    item.id = `component-${item.componentID}`;
 
     if (item.componentType != "label") {
       setCells(new Vector2(left, top), item.getSize(), true);
@@ -207,14 +217,12 @@ export function loadConfig(config: Config): void {
     item.renderLeft = left * GRID_SIZE;
     item.width = width;
     item.height = height;
-    item.id = `shaft-component-${shaft.id}`;
-    maxID = Math.max(maxID, shaft.id);
+    item.componentID = createUniqueID();
+    item.id = `shaft-component-${item.componentID}`;
 
     item.hasBeenPlaced = true;
     item.requestUpdate();
 
     machine.appendChild(item);
   }
-
-  setIDCounter(maxID + 1);
 }

@@ -1,3 +1,4 @@
+import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 import { DraggableComponentElement } from "./UI/DraggableElement.ts";
 import { Config } from "./config";
 // used to configure parameters and initial setings
@@ -31,7 +32,7 @@ export function getHShaftID(x: number, y: number): number | null {
 }
 
 // take a component, get it's name, location/position, 
-export function toConfig(): Config {
+export function toConfig(): [Config, number[]] {
   //  iterate through
   const elements = document.querySelectorAll(".placed-component") as NodeListOf<DraggableComponentElement>;
   const shaftElements = Array.from(elements).filter(element => element.componentType.endsWith("Shaft"));
@@ -73,6 +74,8 @@ export function toConfig(): Config {
     // position
     const position = [Number(thisComponent.left), Number(thisComponent.top)];
 
+    let result = null;
+
     switch (thisComponent.componentType) {
       case 'crossConnect':
         {
@@ -82,10 +85,11 @@ export function toConfig(): Config {
           const horizontal = getHShaftID(position[0], position[1]);
 
           if (vertical === null || horizontal == null) {
-            return null;
+            break;;
           }
 
-          return { type, compID, position, reversed, vertical, horizontal }
+          result = { type, compID, position, reversed, vertical, horizontal }
+          break;
         }
       case 'integrator':
         {
@@ -96,10 +100,11 @@ export function toConfig(): Config {
           const integrandShaft = getVShaftID(position[0] + 3, position[1] - 1);
 
           if (outputShaft === null || variableOfIntegrationShaft === null || integrandShaft === null) {
-            return null;
+            break;;
           }
 
-          return { type, compID, position, outputShaft, variableOfIntegrationShaft, integrandShaft, initialPosition };
+          result = { type, compID, position, outputShaft, variableOfIntegrationShaft, integrandShaft, initialPosition };
+          break;
         }
       case 'functionTable':
         {
@@ -109,10 +114,11 @@ export function toConfig(): Config {
           const outputShaft = getVShaftID(position[0] + 3, position[1] + 4);
 
           if (inputShaft === null || outputShaft === null) {
-            return null;
+            break;
           }
 
-          return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft, lookup, fn }
+          result = { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft, lookup, fn }
+          break;
         }
       case 'differential':
         {
@@ -121,10 +127,11 @@ export function toConfig(): Config {
           const diffShaft2 = getHShaftID(position[0], position[1] + 2);
 
           if (diffShaft1 === null || sumShaft === null || diffShaft2 === null) {
-            return null;
+            break;
           }
 
-          return { type, compID, position, diffShaft1, sumShaft, diffShaft2 }
+          result = { type, compID, position, diffShaft1, sumShaft, diffShaft2 }
+          break;
         }
       case 'outputTable':
         {
@@ -135,10 +142,11 @@ export function toConfig(): Config {
           const outputShaft2 = getVShaftID(position[0] + 3, position[1] + 4);
 
           if (inputShaft === null || outputShaft1 === null) {
-            return null;
+            break;
           }
 
-          return { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft1, outputShaft2, initialY1, initialY2 }
+          result = { type, compID, position, x_min, x_max, y_min, y_max, inputShaft, outputShaft1, outputShaft2, initialY1, initialY2 };
+          break;
         }
       case 'motor':
         {
@@ -147,10 +155,11 @@ export function toConfig(): Config {
           const outputShaft = getHShaftID(position[0] + 2, position[1]);
 
           if (outputShaft === null) {
-            return null
+            break;
           }
 
-          return { type, compID, position, reversed, outputShaft }
+          result = { type, compID, position, reversed, outputShaft };
+          break;
         }
 
       case 'multiplier':
@@ -162,17 +171,19 @@ export function toConfig(): Config {
           const multiplicandShaft = getVShaftID(position[0], position[1] - 1);
 
           if (inputShaft === null || outputShaft === null) {
-            return null;
+            break;
           }
 
-          return { type, compID, position, factor, inputShaft, outputShaft, multiplicandShaft }
+          result = { type, compID, position, factor, inputShaft, outputShaft, multiplicandShaft };
+          break;
         }
       case "label":
         {
           const { width, height, align, _comment } = thisComponent.export_fn(thisComponent).data;
 
           const size = [Number(width), Number(height)];
-          return { type, compID, position, size, align, _comment };
+          result = { type, compID, position, size, align, _comment };
+          break;
         }
       case "gearPair":
         {
@@ -182,17 +193,32 @@ export function toConfig(): Config {
           const shaft2 = getHShaftID(position[0], position[1] + 1);
 
           if (shaft1 === null || shaft2 === null) {
-            return null;
+            break;
           }
 
-          return { type, compID, position, inputRatio, outputRatio, shaft1, shaft2 };
+          result = { type, compID, position, inputRatio, outputRatio, shaft1, shaft2 };
+          break;
         }
       case "dial":
         {
-          return { type, compID, position };
+          const shaft1 = getHShaftID(position[0], position[1]);
+          const shaft2 = getVShaftID(position[0], position[1]);
+
+          if (shaft1 === null && shaft2 === null) {
+            break;
+          }
+
+          result = { type, compID, position, inputShaft: shaft1 ?? shaft2 };
+          break;
         }
     }
-  }).filter(x => x !== null);
+
+    if (result === null) {
+      result = { type: "unconnected", compID };
+    }
+
+    return result;
+  });
 
   /*
   if (thisComponent.componentType === "multiplier") {
@@ -234,6 +260,11 @@ export function toConfig(): Config {
 
   const shafts = config1;
   const components: any = config2;
-  const config: Config = { shafts, components };
-  return config;
+  const constants = (document.querySelector("custom-variables")! as CustomVariablesElement).getText();
+  const settings = {
+    "custom_variables": constants,
+  };
+
+  const config: Config = { shafts, components: components.filter((x: { type: string }) => x.type !== "unconnected"), settings };
+  return [config, components.filter((x: { type: string }) => x.type === "unconnected").map((x: { compID: number }) => x.compID)];
 }
