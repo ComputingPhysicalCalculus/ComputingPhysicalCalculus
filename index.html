@@ -91,17 +91,17 @@
 
 
     <div id="content">
-        <div id="machine">
+        <div id="machine" style="cursor:grab">
             <div id="info_buttons">
-                <div id="about_button" class="tooltip">
+                <div id="about_button" class="tooltip" style="cursor:default">
                     <img src="icons/Info.svg" class="nodrag" alt="Info" style="rotate: 180deg;"/>
                     <span class="tooltiptext">About</span>
                 </div>
-                <div id="help_button" class="tooltip">
+                <div id="help_button" class="tooltip" style="cursor:default">
                     <img src="icons/Help.svg" class="nodrag" alt="Help"/>
                     <span class="tooltiptext">Help</span>
                 </div>
-                <div id="constants_button" class="tooltip">
+                <div id="constants_button" class="tooltip" style="cursor:default">
                     <img src="icons/Constants.svg" class="nodrag" alt="Constants"/>
                     <span class="tooltiptext">Constant variables</span>
                 </div>
@@ -110,27 +110,6 @@
         </div>
 
         <div id="user-control">
-            <div id="demo-area">
-                <label>Examples</label>
-                <div>
-                    <select name="examples" id="examples-list">
-                        <option value="LinearIntegration">Linear Integration</option>
-                        <option value="Spring">Damped Oscillation</option>
-                        <option value="GammaFunction">Gamma Function</option>
-                        <option value="WeierstraussFunction">Weierstrauss Function</option>
-                        <option value="GearPair">Gear pair usage</option>
-                        <option value="Epicycloid">Epicycloid</option>
-                        <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
-                        <option value="Freefall">Body in free fall</option>
-                        <option value="DuffingEquation">Duffing equation</option>
-                        <option value="PopulationGrowth">Population Growth</option>
-                        <option value="SimplePendulum">Simple pendulum</option>
-                        <option value="DoublePendulum">Double pendulum</option>
-                    </select>
-
-                    <button id="demo-button">Start Demo</button>
-                </div>
-            </div>
 
             <div id="components-area">
                 <p>Components</p>
@@ -221,8 +200,18 @@
                 </div>
             </div>
 
+            <div id="demo-area">
+                <label>Examples</label>
+                <div>
+
+                    <button id="demo-button">Start Demo</button>
+                </div>
+            </div>
+
             <div id="configuration">
                 <p>Configuration</p>
+
+
                 <div id="control_buttons">
                     <div id="config_buttons">
                         <button id="import-button">Load</button>
@@ -231,6 +220,21 @@
                     </div>
                     <button id="clear-tables-button">Clear Output Tables</button>
                 </div>
+
+                <select name="examples" id="examples-list">
+                    <option value="LinearIntegration">Linear Integration</option>
+                    <option value="Spring">Damped Oscillation</option>
+                    <option value="GammaFunction">Gamma Function</option>
+                    <option value="WeierstraussFunction">Weierstrauss Function</option>
+                    <option value="GearPair">Gear pair usage</option>
+                    <option value="Epicycloid">Epicycloid</option>
+                    <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
+                    <option value="Freefall">Body in free fall</option>
+                    <option value="DuffingEquation">Duffing equation</option>
+                    <option value="PopulationGrowth">Population Growth</option>
+                    <option value="SimplePendulum">Simple pendulum</option>
+                    <option value="DoublePendulum">Double pendulum</option>
+                </select>
 
                 <label for="simulation-step-period">Step period (s)</label>
                 <input id="simulation-step-period" type="number" value="0.005"/>

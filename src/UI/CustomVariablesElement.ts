@@ -36,6 +36,8 @@ export class CustomVariablesElement extends LitElement {
 
     let parsed_expression = Expression.parse(this.expression);
 
+    console.log(parsed_expression);
+
     do {
       if (parsed_expression._type !== "let") {
         const [result, vars] = Expression.partial_eval_expr(parsed_expression, this.values)

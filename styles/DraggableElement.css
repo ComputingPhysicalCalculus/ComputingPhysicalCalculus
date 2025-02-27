@@ -10,6 +10,8 @@
 :host {
   --svg-bg: white;
   --svg-fg: black;
+
+  cursor: default;
 }
 
 :host(.warning) ::slotted(*) {
