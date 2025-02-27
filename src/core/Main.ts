@@ -28,18 +28,19 @@ export class Simulator {
     ordered_components: Device[] = [];
     private rotation: number; // rotation of the motor
     private initial_x_position; // initial x position of the function table
-    private inputFunction: (n: number) => number;
+    private inputFunction: (n: number) => number = Math.sin;
     private mini_steps_n: number = 100;
     private mini_steps_dt: number = 1 / this.mini_steps_n;
 
     constructor(config?: Config,
         rotation: number = 1,
         initial_x_position: number = 0,
-        inputFunction: (n: number) => number = Math.sin  // Hardcoded temporarily
+        inputFunction?: (n: number) => number
     ) {
         this.rotation = rotation;
         this.initial_x_position = initial_x_position;
-        this.inputFunction = inputFunction;
+        if (inputFunction !== undefined)
+            this.inputFunction = inputFunction;
         if (config !== undefined) {
             this.parse_config(config);
             this.setup();
@@ -80,7 +81,6 @@ export class Simulator {
 
         this.ordered_components = ordered_devices;
     }
-
 
     step() {
         // update the components
@@ -149,15 +149,8 @@ export class Simulator {
 
     /**
      * @function parse_config
-     * @description parse the config file and create the corresponding shafts and devices
-     * @param config the config file
-     * @return void
-     * @author Hanzhang Shen
-     */
-    /**
-     * @function parse_config
-     * @description parse the config file and create the corresponding shafts and devices
-     * @param config the config file
+     * @description parse the config and create the corresponding shafts and devices
+     * @param config the Config object parsed from the config JSON file
      * @return void
      * @author Hanzhang Shen
      */
@@ -167,10 +160,6 @@ export class Simulator {
         let outputTables = [];
         let motor = undefined;
 
-        // create the shafts
-        for (const shaft of config.shafts) {
-            shafts.set(shaft.id, new Shaft(shaft.id, []));
-        }
         // create the shafts
         for (const shaft of config.shafts) {
             shafts.set(shaft.id, new Shaft(shaft.id, []));
@@ -192,6 +181,7 @@ export class Simulator {
                     shafts.get(component.sumShaft)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
+
                 case 'integrator':
                     new_component = new Integrator(
                         component.compID,
@@ -265,6 +255,7 @@ export class Simulator {
                     );
                     components.push(motor);
                     break;
+
                 case 'outputTable':
                     let outputTable: OutputTable;
                     if (component.outputShaft2) {
@@ -293,21 +284,24 @@ export class Simulator {
                     // components.push(outputTable);
                     outputTables.push(outputTable);
                     break;
+
                 // only from frontend
                 case 'label':
                     break;
+
                 case 'dial':
                     new_component = new (class Dial implements Device {
                         private id: number;
 
                         constructor(id: number) { this.id = id; }
                         determine_output(): Shaft | undefined { return undefined; }
-                        update(_dt: number): void {}
+                        update(_dt: number): void { }
                         getID(): number { return this.id; }
                     })(component.compID);
                     shafts.get(component.inputShaft)!.outputs.push(new_component);
                     components.push(new_component);
                     break;
+
                 default:
                     throw new Error(`Invalid component type`);
             }
