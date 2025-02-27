@@ -9,7 +9,7 @@
     --colour-highlight3: #364D1A;
     --text-colour: #FCFCFC;
     --unit: calc(max(1vw, 1vh));
-    --text-size: 0.8rem;
+    --text-size: 1.0rem;
     --text-button-size: 0.8rem;
     --text-header-size: 1.5rem;
     --border-radius: calc(0.5 * var(--unit));
@@ -98,39 +98,6 @@ html {
     gap: var(--gap-size);
 
     z-index: 6;
-}
-
-#demo-area {
-    display: flex;
-    flex-direction: column;
-    background: var(--colour-accent2);
-    border-radius: var(--border-radius);
-    padding: var(--gap-size);
-    gap: var(--gap-size);
-}
-
-#demo-area>div {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: var(--gap-size);
-    width: 100%;
-    font-size: var(--text-button-size);
-}
-
-#demo-area>label {
-    text-align: center;
-    font-size: var(--text-header-size);
-    font-weight: bold;
-    margin: 0 0 -5px 0;
-}
-
-#demo-area>select {
-    font-size: var(--text-button-size);
-}
-
-#demo-area>button {
-    font-size: var(--text-button-size);
 }
 
 #configuration {

@@ -16,7 +16,7 @@ import Expression from "./expr/Expression";
 import { DialComponentElement } from "./UI/DialComponentElement.ts";
 import { CustomVariablesElement } from "./UI/CustomVariablesElement.ts";
 import { ConfigError } from "./ConfigError.ts";
-import { ComponentType, resetIDs } from "./UI/Components.ts";
+import { resetIDs } from "./UI/Components.ts";
 
 enum State {
     Paused,
@@ -50,9 +50,6 @@ export class Lifecycle {
     @queryAll(".placed-component")
     private placedComponents!: NodeListOf<DraggableComponentElement>;
 
-    @query("#demo-button")
-    demo_button!: HTMLButtonElement
-
     @query("#examples-list")
     examples_select!: HTMLSelectElement;
 
@@ -76,6 +73,9 @@ export class Lifecycle {
 
     @query("#pause-button")
     pause_button!: HTMLButtonElement
+
+    @query("#loop-check")
+    loop_check!: HTMLInputElement;
 
     config_file_input!: HTMLInputElement;
 
@@ -156,7 +156,6 @@ export class Lifecycle {
 
         this.examples_select.addEventListener("change", e => this.change_example(e));
         this.examples_select.selectedIndex = 0;
-        this.demo_button.addEventListener("click", _ => this.toggle_demo());
 
         this.import_button.addEventListener("click", _ => this.config_file_input.click());
         this.config_file_input.addEventListener("change", _ => this._handle_import_file());
@@ -164,10 +163,13 @@ export class Lifecycle {
         this.clear_button.addEventListener("click", _ => this._clear_components());
 
         this.clear_output_tables_button.addEventListener("click", _ => {
-            const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
-            output_tables.forEach(x => {
+            (document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>).forEach((x: GraphElement) => {
                 this.reset_output_table(x);
-            })
+            });
+
+            (document.querySelectorAll(".functionTable > graph-table")! as NodeListOf<GraphElement>).forEach((x: GraphElement) => {
+                x.gantry_x = 0;
+            });
         });
 
         this.play_button.addEventListener("click", _ => {
@@ -371,32 +373,30 @@ export class Lifecycle {
     }
 
     // Put the simulation into a demo mode
-    stop_demo(): void {
-        this.currently_demoing = false;
-        this.demo_button.textContent = "Start Demo";
-        this.examples_select.disabled = false;
-        this.stop();
-    }
-
-    start_demo(): void {
-        this.currently_demoing = true;
-        this.demo_button.textContent = "Stop Demo";
-        this.examples_select.disabled = true;
-        this.run();
-    }
-
-    toggle_demo(): void {
-        if (this.currently_demoing) {
-            this.stop_demo();
-        } else {
-            this.start_demo();
-        }
-    }
+    // stop_demo(): void {
+    //     this.currently_demoing = false;
+    //     this.examples_select.disabled = false;
+    //     this.stop();
+    // }
+    //
+    // start_demo(): void {
+    //     this.currently_demoing = true;
+    //     this.examples_select.disabled = true;
+    //     this.run();
+    // }
+    //
+    // toggle_demo(): void {
+    //     if (this.currently_demoing) {
+    //         this.stop_demo();
+    //     } else {
+    //         this.start_demo();
+    //     }
+    // }
 
     stop(): void {
         this.state = State.Stopped;
 
-        if (this.currently_demoing) {
+        if (this.loop_check.checked) {
             this.run();
             return;
         }
@@ -409,6 +409,7 @@ export class Lifecycle {
         this.pause_button.disabled = true;
         this.stop_button.disabled = true;
         this.clear_output_tables_button.disabled = false;
+        this.examples_select.disabled = false;
     }
 
     pause(): void {
@@ -422,6 +423,7 @@ export class Lifecycle {
         this.pause_button.disabled = true;
         this.stop_button.disabled = false;
         this.clear_output_tables_button.disabled = true;
+        this.examples_select.disabled = false;
     }
 
     unpause(): void {
@@ -434,12 +436,14 @@ export class Lifecycle {
         this.pause_button.disabled = false;
         this.stop_button.disabled = false;
         this.clear_output_tables_button.disabled = true;
+        this.examples_select.disabled = true;
     }
 
     run(): void {
         if (this.state !== State.Stopped) {
             console.warn(`Tried to run application when it was not stopped.\nState was ${this.state}`);
         }
+
         const simulator = new Simulator(this.exportState())
         let result = [...simulator.check_config().entries()].map(x => x[1]).find(x => x === ConfigError.FATAL_ERROR);
 
@@ -458,12 +462,10 @@ export class Lifecycle {
         this.pause_button.disabled = false;
         this.stop_button.disabled = false;
         this.clear_output_tables_button.disabled = true;
+        this.examples_select.disabled = true;
 
         const step_period = Number(this.step_period_input.value);
         const get_motor_speed = () => Number(this.motor_speed_input.value);
-
-        const output_tables = document.querySelectorAll(".outputTable > graph-table")! as NodeListOf<GraphElement>;
-        // const function_tables = document.querySelectorAll(".functionTable > graph-table")! as NodeListOf<GraphElement>;
 
         simulator.components.filter(x => x instanceof FunctionTable).forEach((x: FunctionTable) => {
             const function_table_element = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
@@ -617,7 +619,9 @@ export class Lifecycle {
     }
 
     private reset_output_table(table: GraphElement): void {
-        table.data_sets = {};
+        table.mutate_data_set("d1", points => { points = [] }, true);
+        table.mutate_data_set("d2", points => { points = [] }, true);
+        table._canvas_graph.getContext("2d")!.clearRect(1, 0, table._canvas_graph.width, table._canvas_graph.height);
         table.gantry_x = 0;
     }
 }

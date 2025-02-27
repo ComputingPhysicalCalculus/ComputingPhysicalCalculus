@@ -231,7 +231,6 @@ export class GraphElement extends LitElement {
 
         ctx.lineWidth = 1;
         for (let data of Object.values(this.data_sets)) {
-
             ctx.strokeStyle = data.style;
             this._draw_points(ctx, data.points, start_index);
         }

@@ -142,7 +142,11 @@ export function loadConfig(config: Config): void {
   if (settings) {
     if (settings.custom_variables) {
       (document.querySelector("custom-variables")! as CustomVariablesElement).setText(config.settings.custom_variables);
+    } else {
+      (document.querySelector("custom-variables")! as CustomVariablesElement).setText("");
     }
+  } else {
+    (document.querySelector("custom-variables")! as CustomVariablesElement).setText("");
   }
 
   for (let components of config.components) {

@@ -200,20 +200,11 @@
                 </div>
             </div>
 
-            <div id="demo-area">
-                <label>Examples</label>
-                <div>
-
-                    <button id="demo-button">Start Demo</button>
-                </div>
-            </div>
-
             <div id="configuration">
-                <p>Configuration</p>
-
+                <p style="margin: 0;">Configuration</p>
 
                 <div id="control_buttons">
-                    <div id="config_buttons">
+                    <div style="padding: 0;" id="config_buttons">
                         <button id="import-button">Load</button>
                         <button id="export-button">Save</button>
                         <button id="clear-button">Clear Screen</button>
@@ -221,6 +212,7 @@
                     <button id="clear-tables-button">Clear Output Tables</button>
                 </div>
 
+                <label>Examples</label>
                 <select name="examples" id="examples-list">
                     <option value="LinearIntegration">Linear Integration</option>
                     <option value="Spring">Damped Oscillation</option>
@@ -249,6 +241,12 @@
                     <button class="TimeButton" id="stop-button" disabled>
                             <img src="icons/Stop.svg" alt="Stop"/>
                     </button>
+                </div>
+
+                <div class="tooltip" style="display: flex; flex-direction: row; justify-content: center;margin: 0;">
+                    <input type="checkbox" id="loop-check"/>
+                    <p style="margin: 0;">Loop</p>
+                    <span class="tooltiptext">Loop the simulation instead of ending</span>
                 </div>
 
                 <label for="motor-speed">Motor speed</label>
