@@ -3129,7 +3129,7 @@
       "inputShaft": 587,
       "outputShaft": 569,
       "lookup": true,
-      "fn": "a=1;\na*cos(x)"
+      "fn": "sin(x+a)"
     },
     {
       "type": "functionTable",
@@ -3145,7 +3145,7 @@
       "inputShaft": 589,
       "outputShaft": 577,
       "lookup": true,
-      "fn": "a=1;\na*sin(x)"
+      "fn": "cos(x+a)"
     },
     {
       "type": "functionTable",
@@ -3161,7 +3161,7 @@
       "inputShaft": 593,
       "outputShaft": 573,
       "lookup": true,
-      "fn": "b=1;\nb*cos(x)"
+      "fn": "b=1;\nb*sin(x)"
     },
     {
       "type": "functionTable",
@@ -3177,7 +3177,7 @@
       "inputShaft": 591,
       "outputShaft": 581,
       "lookup": true,
-      "fn": "b=1;\nb*sin(x)"
+      "fn": "b=1;\nb*cos(x)"
     },
     {
       "type": "differential",
@@ -3219,7 +3219,7 @@
         65,
         -4
       ],
-      "reversed": false,
+      "reversed": true,
       "vertical": 577,
       "horizontal": 575
     },
@@ -3230,7 +3230,7 @@
         75,
         -2
       ],
-      "reversed": false,
+      "reversed": true,
       "vertical": 581,
       "horizontal": 579
     },
@@ -3391,14 +3391,14 @@
         83,
         -14
       ],
-      "x_min": "-3",
-      "x_max": "3",
-      "y_min": "-3",
-      "y_max": "3",
+      "x_min": "-4",
+      "x_max": "4",
+      "y_min": "-4",
+      "y_max": "4",
       "inputShaft": 597,
       "outputShaft1": 601,
       "outputShaft2": null,
-      "initialY1": "0",
+      "initialY1": "-1",
       "initialY2": "0"
     },
     {
@@ -3430,10 +3430,10 @@
         78,
         -14
       ],
-      "x_min": "-3",
-      "x_max": "3",
-      "y_min": "-3",
-      "y_max": "3",
+      "x_min": "-4",
+      "x_max": "4",
+      "y_min": "-4",
+      "y_max": "4",
       "inputShaft": 603,
       "outputShaft1": 605,
       "outputShaft2": null,
@@ -3528,6 +3528,61 @@
       ],
       "align": "",
       "_comment": "a' and b'"
+    },
+    {
+      "type": "label",
+      "compID": 606,
+      "position": [
+        57,
+        -15
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": ""
+    },
+    {
+      "type": "dial",
+      "compID": 607,
+      "position": [
+        58,
+        -7
+      ],
+      "inputShaft": 567
+    },
+    {
+      "type": "dial",
+      "compID": 608,
+      "position": [
+        58,
+        -5
+      ],
+      "inputShaft": 571
+    },
+    {
+      "type": "dial",
+      "compID": 609,
+      "position": [
+        58,
+        -6
+      ],
+      "inputShaft": 595
+    },
+    {
+      "type": "label",
+      "compID": 610,
+      "position": [
+        57,
+        -15
+      ],
+      "size": [
+        3,
+        1
+      ],
+      "align": "",
+      "_comment": ""
     }
   ],
   "settings": {

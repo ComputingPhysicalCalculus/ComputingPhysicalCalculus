@@ -338,7 +338,7 @@ export class GraphElement extends LitElement {
 
     private _draw_points(ctx: CanvasRenderingContext2D, points: Vector2[], start_index: number = 0) {
         ctx.beginPath();
-        for (let point of points.slice(Math.max(start_index - 1, 0))) {
+        for (let point of points.slice(Math.max(start_index - 1, 1))) {
             if (point.x < this.x_min || point.x > this.x_max) {
                 continue;
             }
