@@ -258,29 +258,38 @@ export class Simulator {
 
                 case 'outputTable':
                     let outputTable: OutputTable;
-                    if (component.outputShaft2) {
+                    let outputShaft1 = component.outputShaft1;
+                    let outputShaft2 = component.outputShaft2;
+                    let swap = false;
+                    if (!outputShaft1) {
+                        outputShaft1 = component.outputShaft2;
+                        outputShaft2 - component.outputShaft1;
+                        swap = true;
+                    }
+                    if (outputShaft2) {
                         outputTable = new OutputTable(
                             component.compID,
                             shafts.get(component.inputShaft)!,
-                            shafts.get(component.outputShaft1)!,
+                            shafts.get(outputShaft1)!,
                             Expression.eval(String(component.initialY1), get_global_ctx()), // Accounts for numbers instead of a string being passed into input
-                            shafts.get(component.outputShaft2)!,
+                            shafts.get(outputShaft2)!,
                             Expression.eval(String(component.initialY2), get_global_ctx()),
                         );
-                        shafts.get(component.outputShaft2)!.outputs.push(outputTable);
+                        shafts.get(outputShaft2)!.outputs.push(outputTable);
                     }
                     else {
                         outputTable = new OutputTable(
                             component.compID,
                             shafts.get(component.inputShaft)!,
-                            shafts.get(component.outputShaft1)!,
+                            shafts.get(outputShaft1)!,
                             Expression.eval(String(component.initialY1), get_global_ctx()),
                         );
                     }
+                    outputTable.swap = swap;
                     outputTable.id = component.compID;
 
                     shafts.get(component.inputShaft)!.outputs.push(outputTable);
-                    shafts.get(component.outputShaft1)!.outputs.push(outputTable);
+                    shafts.get(outputShaft1)!.outputs.push(outputTable);
                     // components.push(outputTable);
                     outputTables.push(outputTable);
                     break;

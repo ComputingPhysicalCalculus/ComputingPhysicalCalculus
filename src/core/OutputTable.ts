@@ -20,6 +20,7 @@ export class OutputTable implements Device {
   xHistory: number[];
   y1History: number[];
   y2History: number[] | undefined;
+  swap: boolean;
   constructor(id: number, x: Shaft, y1: Shaft, initialY1: number, y2: Shaft, initialY2: number);
   constructor(id: number, x: Shaft, y1: Shaft, initialY1: number);
 
@@ -38,6 +39,7 @@ export class OutputTable implements Device {
     this.xHistory = [0];
     this.y1 = y1;
     this.y1History = [initialY1];
+    this.swap = false;
     if (y2 != undefined && initialY2 != undefined) {
       this.y2 = y2;
       this.y2History = [initialY2];

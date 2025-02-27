@@ -477,7 +477,7 @@ export class Lifecycle {
             const table = document.querySelector(`#component-${x.id} > graph-table`) as GraphElement;
             table.gantry_x = 0;
             table.data_sets = {};
-            table.set_data_set("d1", []);
+            table.set_data_set(x.swap ? "d2" : "d1", [], x.swap ? "red" : "blue", x.swap);
             if (x.y2 !== undefined) {
                 table.set_data_set("d2", [], "red", true);
             }

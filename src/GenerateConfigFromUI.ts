@@ -141,7 +141,7 @@ export function toConfig(): [Config, number[]] {
           const outputShaft1 = getVShaftID(position[0] + 2, position[1] + 4);
           const outputShaft2 = getVShaftID(position[0] + 3, position[1] + 4);
 
-          if (inputShaft === null || outputShaft1 === null) {
+          if (inputShaft === null || (outputShaft1 === null && outputShaft2 === null)) {
             break;
           }
 
