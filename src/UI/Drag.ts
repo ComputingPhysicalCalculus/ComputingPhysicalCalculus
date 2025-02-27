@@ -49,11 +49,11 @@ function createNewObject(x: number, y: number, typeString: string): void {
 export function setupDragHooks(): void {
   const list = document.querySelectorAll('.component');
   list.forEach(element => {
-    (element as HTMLElement).addEventListener("mousedown", creation);
+    (element as HTMLElement).addEventListener("mousedown", creation, true);
   });
 
   document.addEventListener("mousemove", move, true);
-  document.addEventListener("mouseup", drop);
+  document.addEventListener("mouseup", drop, true);
 }
 
 function creation(event: MouseEvent): void {
@@ -85,6 +85,8 @@ function calculateTopLeftCell(mousePos: Vector2): Vector2 | null {
 
 export function pickup(event: MouseEvent): void {
   if (event.button != 0) { return }
+
+  event.stopImmediatePropagation();
 
   const currentTarget = event.currentTarget as DraggableComponentElement;
   canStartDragging = true;
@@ -130,6 +132,8 @@ function move(event: MouseEvent): void {
     return;
   }
 
+  event.stopImmediatePropagation();
+
   endSelect(event);
 
   if (!startedDragging) {
@@ -163,10 +167,14 @@ function move(event: MouseEvent): void {
 function drop(event: MouseEvent): void {
   if (event.button != 0) { return }
 
+  (document.querySelector("#machine") as HTMLDivElement)!.style.cursor = "auto";
+
   if (curDragItem.item == null || !startedDragging) {
     canStartDragging = false;
     return
   }
+
+  event.stopImmediatePropagation();
 
   canStartDragging = false;
   startedDragging = false;

@@ -43,7 +43,7 @@ function startDrag(e: MouseEvent): void {
   dragging = true;
 
   startPos = new Vector2(e.clientX, e.clientY);
-  document.body.style.cursor = "move";
+  (document.querySelector("#machine") as HTMLDivElement)!.style.cursor = "move";
   currentArrow.style.cursor = "move";
 }
 
@@ -95,7 +95,7 @@ function endDrag(_e: MouseEvent): void {
 
   dragging = false;
 
-  document.body.style.cursor = "auto";
+  (document.querySelector("#machine") as HTMLDivElement)!.style.cursor = "auto";
   currentArrow!.style.cursor = "pointer";
 
   currentArrow = null;
