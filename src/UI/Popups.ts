@@ -40,6 +40,8 @@ export function setupPopups(): void {
 // Default code for opening a popup near to the mouse
 // Opens above the mouse if the popup will be displayed outside the document
 function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
+  closeAllPopups();
+
   const gap = 8;
   popup.style.visibility = "visible";
   popup.style.left = `${e.clientX + gap}px`;
@@ -210,9 +212,14 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
   return false;
 }
 
+function closeAllPopups(): void {
+  const popups = [crossConnectPopup, integratorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
+  popups.forEach(x => x.style.visibility = "hidden");
+}
+
 // Close all popups when a mouse click occurs and it is not contained within a popup
 function documentClick(e: MouseEvent) {
-  let popups = [crossConnectPopup, integratorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
+  const popups = [crossConnectPopup, integratorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
   popups.forEach(popup => {
     if (!mouseWithin(popup, e)) {
       popup.style.visibility = "hidden";
@@ -222,7 +229,7 @@ function documentClick(e: MouseEvent) {
 
 function setupCrossConnectPopup(): void {
   crossConnectPopup = document.getElementById("cross-connect-popup") as HTMLDivElement;
-  crossConnectPopup.addEventListener("mouseleave", closePopup);
+  // crossConnectPopup.addEventListener("mouseleave", closePopup);
 
   const inputs = crossConnectPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
@@ -236,7 +243,7 @@ function setupCrossConnectPopup(): void {
 
 function setupIntegratorPopup(): void {
   integratorPopup = document.getElementById("integrator-popup") as HTMLDivElement;
-  integratorPopup.addEventListener("mouseleave", closePopup);
+  // integratorPopup.addEventListener("mouseleave", closePopup);
 
   setupTextAreaCallback(integratorPopup.querySelector("textarea")!);
 
@@ -253,7 +260,7 @@ function setupIntegratorPopup(): void {
 
 function setupMultiplierPopup(): void {
   multiplierPopup = document.getElementById("multiplier-popup") as HTMLDivElement;
-  multiplierPopup.addEventListener("mouseleave", closePopup);
+  // multiplierPopup.addEventListener("mouseleave", closePopup);
 
   setupTextAreaCallback(multiplierPopup.querySelector("textarea")!);
 
@@ -270,7 +277,7 @@ function setupMultiplierPopup(): void {
 
 function setupGearPairPopup(): void {
   gearPairPopup = document.getElementById("gear-pair-popup") as HTMLDivElement;
-  gearPairPopup.addEventListener("mouseleave", closePopup);
+  // gearPairPopup.addEventListener("mouseleave", closePopup);
 
   const inputs = gearPairPopup.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; i++) {
@@ -296,7 +303,7 @@ function setupGearPairPopup(): void {
 
 function setupFunctionTablePopup(): void {
   functionTablePopup = document.getElementById("function-table-popup") as HTMLDivElement;
-  functionTablePopup.addEventListener("mouseleave", closePopup);
+  // functionTablePopup.addEventListener("mouseleave", closePopup);
 
   setupTextAreaCallback(functionTablePopup.querySelector("textarea")!);
 
@@ -354,7 +361,7 @@ function setupFunctionTablePopup(): void {
 
 function setupOutputTablePopup(): void {
   outputTablePopup = document.getElementById("output-table-popup") as HTMLDivElement;
-  outputTablePopup.addEventListener("mouseleave", closePopup);
+  // outputTablePopup.addEventListener("mouseleave", closePopup);
 
   const button = outputTablePopup.querySelector("* > button") as HTMLButtonElement;
   button.addEventListener("click", e => {
@@ -425,7 +432,7 @@ function setupOutputTablePopup(): void {
 
 function setupLabelPopup(): void {
   labelPopup = document.getElementById("label-popup") as HTMLDivElement;
-  labelPopup.addEventListener("mouseleave", closePopup);
+  // labelPopup.addEventListener("mouseleave", closePopup);
 
   labelPopup.querySelector("#label-popup-text")!.addEventListener("change", (e) => {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
