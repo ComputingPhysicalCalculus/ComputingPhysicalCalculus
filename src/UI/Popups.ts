@@ -213,17 +213,13 @@ function mouseWithin(popup: HTMLDivElement, e: MouseEvent): boolean {
 }
 
 function closeAllPopups(): void {
-  const popups = [crossConnectPopup, integratorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
-  popups.forEach(x => x.style.visibility = "hidden");
+  (document.querySelectorAll(".popup")! as NodeListOf<HTMLDivElement>).forEach((x: HTMLDivElement) => x.style.visibility = "hidden");
 }
 
 // Close all popups when a mouse click occurs and it is not contained within a popup
 function documentClick(e: MouseEvent) {
-  const popups = [crossConnectPopup, integratorPopup, multiplierPopup, gearPairPopup, functionTablePopup, outputTablePopup, labelPopup];
-  popups.forEach(popup => {
-    if (!mouseWithin(popup, e)) {
-      popup.style.visibility = "hidden";
-    }
+  (document.querySelectorAll(".popup")! as NodeListOf<HTMLDivElement>).forEach((x: HTMLDivElement) => {
+    if (!mouseWithin(x, e)) { x.style.visibility = "hidden"; }
   });
 }
 

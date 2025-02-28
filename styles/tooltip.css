@@ -24,6 +24,16 @@
   transition: opacity 0.3s;
 }
 
+.tooltip.left .tooltiptext {
+  top: 45%;
+  left: -80%;
+}
+
+.tooltip.right .tooltiptext {
+  top: 45%;
+  left: 100%;
+}
+
 .tooltip .tooltiptext::after {
   content: "";
   position: absolute;

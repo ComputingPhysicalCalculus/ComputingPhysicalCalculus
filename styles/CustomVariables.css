@@ -1,0 +1,12 @@
+@import url("tooltip.css");
+
+textarea {
+  flex: 1 1 auto;
+  overflow: scroll;
+  resize: none;
+  padding: 0
+}
+
+#output-area {
+  cursor: not-allowed;
+}

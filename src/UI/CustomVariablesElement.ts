@@ -1,15 +1,24 @@
 import Expression from "@src/expr/Expression";
-import { html, LitElement } from "lit";
+import { css, unsafeCSS, html, LitElement } from "lit";
 import { customElement, query } from "lit/decorators.js";
+
+import styles from "../../styles/CustomVariables.css?inline";
 
 @customElement("custom-variables")
 export class CustomVariablesElement extends LitElement {
+  static styles = css`
+    ${unsafeCSS(styles)}
+  `;
+
   private expression: string = "";
 
   private values: { [k: string]: number } = {};
 
-  @query("textarea")
+  @query("#input-area")
   private _textarea!: HTMLTextAreaElement;
+
+  @query("#output-area")
+  private _outputs!: HTMLTextAreaElement;
 
   getValues(): { [k: string]: number } {
     return this.values;
@@ -20,13 +29,13 @@ export class CustomVariablesElement extends LitElement {
   }
 
   setText(text: string): void {
+    this.values = {};
     this._textarea.value = text;
     this.change();
   }
 
   change() {
-    this._textarea.style.height = "auto";
-    this._textarea.style.height = this._textarea.scrollHeight + "px";
+    this._textarea.style.height = `calc(min(${this._textarea.scrollHeight}px, 40vh))`;
 
     this.expression = this._textarea.value;
     if (this.expression.trim() === "") {
@@ -37,6 +46,8 @@ export class CustomVariablesElement extends LitElement {
     let parsed_expression = Expression.parse(this.expression);
 
     console.log(parsed_expression);
+
+    this._outputs.value = "";
 
     do {
       if (parsed_expression._type !== "let") {
@@ -53,8 +64,17 @@ export class CustomVariablesElement extends LitElement {
       }
 
       this.values[parsed_expression.ident] = result.value;
+      this._outputs.value += `${parsed_expression.ident}: ${result.value.toPrecision(8)}\n`;
       parsed_expression = parsed_expression.cons;
     } while (parsed_expression._type === "let");
+  }
+
+  hover(e: MouseEvent): void {
+    const hover = (e.currentTarget! as HTMLDivElement).querySelector("span")! as HTMLSpanElement;
+
+    hover.style.left = `${e.clientX}px`;
+    hover.style.top = `${e.clientY}px`;
+
   }
 
   render() {
@@ -62,15 +82,22 @@ export class CustomVariablesElement extends LitElement {
     const delayed_change = () => window.setTimeout(() => this.change(), 0);
 
     return html`
-      <div style="display:flex;width:100%">
-        <textarea style="flex:1 1 auto;overflow:hidden;resize:none;padding:0" type="text" rows="10"
+      <div style="display:flex;width:100%;gap: var(--gap-size);">
+        <div class="tooltip right" style="display: flex; width: 100%">
+          <textarea id="input-area" type="text" rows="10"
           @change=${delayed_change}
           @cut=${delayed_change}
           @paste=${delayed_change}
           @drop=${delayed_change}
           @keydown=${delayed_change}
-          @input=${delayed_change}
-        ></textarea>
+          @input=${delayed_change}>
+          </textarea>
+          <span class="tooltiptext">Global variables</span>
+        </div>
+        <div class="tooltip right" style="display: flex; width: 100%">
+          <textarea id="output-area" type="text" rows="10" readonly disabled></textarea>
+          <span class="tooltiptext">Evaluated Expressions</span>
+        </div>
       </div>
     `;
   }
