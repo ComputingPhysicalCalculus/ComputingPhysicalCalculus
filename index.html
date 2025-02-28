@@ -261,49 +261,59 @@
             <img id="positiveArrow" class="arrow" src="icons/Arrow.svg" alt="PosArrow"/>
         </div>
 
-        <div id="popups">
-            <div class="popup" id="cross-connect-popup" position="absolute" >
+        <div id="popups" style="visibility: hidden;position:absolute;">
+            <div class="popup" id="cross-connect-popup">
                 <label>Reverse</label>
                 <input id="cross-connect-reversed" type="checkbox">
             </div>
 
-            <div class="popup" id="integrator-popup" position="absolute" >
+            <div class="popup" id="integrator-popup">
                 <label>Initial offset</label>
-                <textarea id="integrator-initial-offset"></textarea>
+                <div class="tooltip top">
+                    <textarea id="integrator-initial-offset"></textarea>
+                    <span class="tooltiptext"></span>
+                </div>
             </div>
 
-            <div class="popup" id="multiplier-popup" position="absolute" >
+            <div class="popup" id="multiplier-popup">
                 <label>Factor</label>
-                <textarea id="multiplier-input-factor"></textarea>
+                <div class="tooltip top">
+                    <textarea id="multiplier-input-factor"></textarea>
+                    <span class="tooltiptext"></span>
+                </div>
             </div>
 
-            <div class="popup" id="gear-pair-popup" position="absolute" >
+            <div class="popup" id="gear-pair-popup">
                 <label>Top Ratio</label>
                 <input id="gear-pair-top-ratio" type="number" min="-9" max="9" value="1">
                 <label>Bottom Ratio</label>
                 <input id="gear-pair-bottom-ratio" type="number" min="-9" max="9" value="1">
             </div>
 
-            <div class="popup" id="function-table-popup" position="absolute" >
-                <div>
+            <div class="popup" id="function-table-popup">
+                <div style="white-space: wrap">
                     <label>f(x)=</label>
                     <textarea rows="3" cols="25" id="function-table-fn"></textarea>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Min</label>
                     <input step="any" id="function-table-x-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Max</label>
                     <input step="any" id="function-table-x-max" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Min</label>
                     <input step="any" id="function-table-y-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Max</label>
                     <input step="any" id="function-table-y-max" />
+                    <span class="tooltiptext"></span>
                 </div>
                 <div class="tooltip">
                     <input type="checkbox" id="function-table-lookup">Lookup Table</input>
@@ -311,37 +321,43 @@
                 </div>
             </div>
 
-            <div class="popup" id="output-table-popup" position="absolute" >
-                <div>
+            <div class="popup" id="output-table-popup">
+                <div class="tooltip top">
                     <label>Initial y (blue)</label>
                     <input step="any" id="output-table-initial-1" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>Initial y (red)</label>
                     <input step="any" id="output-table-initial-2" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Min</label>
                     <input step="any" id="output-table-x-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Max</label>
                     <input step="any" id="output-table-x-max" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Min</label>
                     <input step="any" id="output-table-y-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Max</label>
                     <input step="any" id="output-table-y-max" />
+                    <span class="tooltiptext"></span>
                 </div>
                 <div>
                     <button>Export data as CSV</button>
                 </div>
             </div>
 
-            <div class="popup" id="label-popup" position = "absolute">
+            <div class="popup" id="label-popup">
                 <div>
                     <label>Text</label>
                     <input type="Text" id="label-popup-text"/>

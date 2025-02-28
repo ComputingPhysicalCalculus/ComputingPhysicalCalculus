@@ -52,10 +52,17 @@ function openPopup(e: MouseEvent, popup: HTMLDivElement): void {
   popup.style.top = `${top}px`;
   popup.style.zIndex = "10";
 
+  console.log(e);
+  console.log(`${top}`);
+
   const target: DraggableComponentElement = e.currentTarget as DraggableComponentElement;
   popup.dataset.id = target.id;
 
   clearSelect();
+}
+
+function updateTooltip(input: HTMLInputElement | HTMLTextAreaElement): void {
+  input.parentElement!.querySelector("span")!.textContent = `Eval: ${Expression.eval(input.value, get_global_ctx())}`;
 }
 
 export function openCrossConnectPopup(e: MouseEvent): void {
@@ -81,7 +88,9 @@ export function openIntegratorPopup(e: MouseEvent): void {
 
   updateTextAreaLines(functionTablePopup.querySelector("textarea")!);
 
-  integratorPopup.getElementsByTagName("textarea")[0].value = String(target.dataset.initialValue ?? "0");
+  const textArea = integratorPopup.querySelector("textarea")!;
+  textArea.value = String(target.dataset.initialValue ?? "0");
+  updateTooltip(textArea);
 
   e.preventDefault();
 }
@@ -104,9 +113,13 @@ export function openFunctionTablePopup(e: MouseEvent): void {
 
   let inputs = functionTablePopup.getElementsByTagName("input");
   inputs[0].value = target.dataset.x_min ?? String(graph_element.x_min);
+  updateTooltip(inputs[0]);
   inputs[1].value = target.dataset.x_max ?? String(graph_element.x_max);
+  updateTooltip(inputs[1]);
   inputs[2].value = target.dataset.y_min ?? String(graph_element.y_min);
+  updateTooltip(inputs[2]);
   inputs[3].value = target.dataset.y_max ?? String(graph_element.y_max);
+  updateTooltip(inputs[3]);
   inputs[4].checked = (!target.dataset.lookup) ? false : (target.dataset.lookup == "1");
 
   e.preventDefault();
@@ -121,12 +134,24 @@ export function openOutputTablePopup(e: MouseEvent): void {
   const graph_element = target.querySelector("graph-table") as GraphElement;
 
   let inputs = outputTablePopup.getElementsByTagName("input");
+
   inputs[0].value = target.dataset.initial_1 ?? String(target.inputRatio);
+  updateTooltip(inputs[0]);
+
   inputs[1].value = target.dataset.initial_2 ?? String(target.outputRatio);
+  updateTooltip(inputs[1]);
+
   inputs[2].value = target.dataset.x_min ?? String(graph_element.x_min);
+  updateTooltip(inputs[2]);
+
   inputs[3].value = target.dataset.x_max ?? String(graph_element.x_max);
+  updateTooltip(inputs[3]);
+
   inputs[4].value = target.dataset.y_min ?? String(graph_element.y_min);
+  updateTooltip(inputs[4]);
+
   inputs[5].value = target.dataset.y_max ?? String(graph_element.y_max);
+  updateTooltip(inputs[5]);
 
   e.preventDefault();
 }
@@ -138,8 +163,10 @@ export function openMultiplierPopup(e: MouseEvent): void {
   openPopup(e, multiplierPopup);
 
   const target = e.currentTarget as DraggableComponentElement;
-  updateTextAreaLines(functionTablePopup.querySelector("textarea")!);
-  multiplierPopup.getElementsByTagName("textarea")[0].value = String(target.dataset.factor ?? "1");
+  const textArea = multiplierPopup.querySelector("textarea")!
+  updateTextAreaLines(textArea);
+  textArea.value = String(target.dataset.factor ?? "1");
+  updateTooltip(textArea);
 
   e.preventDefault();
 }
@@ -243,12 +270,13 @@ function setupIntegratorPopup(): void {
 
   setupTextAreaCallback(integratorPopup.querySelector("textarea")!);
 
-  const inputs = integratorPopup.getElementsByTagName("textarea");
-  inputs[0].addEventListener("change", (e) => {
+  const input = integratorPopup.querySelector("textarea")! as HTMLTextAreaElement;
+  input.addEventListener("change", (e) => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
     const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
     updateTextAreaLines(input);
+    updateTooltip(input);
 
     component.dataset.initialValue = input.value;
   })
@@ -266,6 +294,7 @@ function setupMultiplierPopup(): void {
     const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
 
     updateTextAreaLines(input);
+    updateTooltip(input);
 
     component.dataset.factor = input.value;
   });
@@ -328,18 +357,22 @@ function setupFunctionTablePopup(): void {
         case "function-table-x-min":
           component_graph.x_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_min = input.value;
+          updateTooltip(input);
           break;
         case "function-table-x-max":
           component_graph.x_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.x_max = input.value;
+          updateTooltip(input);
           break;
         case "function-table-y-min":
           component_graph.y_min = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_min = input.value;
+          updateTooltip(input);
           break;
         case "function-table-y-max":
           component_graph.y_max = Expression.eval(input.value, get_global_ctx());
           component.dataset.y_max = input.value;
+          updateTooltip(input);
           break;
         case "function-table-lookup":
           component.dataset.lookup = input.checked ? "1" : "0";
@@ -422,6 +455,7 @@ function setupOutputTablePopup(): void {
           component.dataset.y_max = input.value;
           break;
       }
+      updateTooltip(input);
     })
   }
 }
