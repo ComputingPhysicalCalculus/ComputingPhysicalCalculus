@@ -38,6 +38,10 @@
   visibility: hidden;
 }
 
+#integrator-popup textarea {
+  resize: vertical;
+}
+
 #cross-connect-popup {
   display: flex;
   flex-direction: row;
@@ -51,16 +55,16 @@
 #multiplier-popup {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-
-  max-width: 8vw;
   visibility: hidden;
+}
+
+#multiplier-popup textarea {
+  resize: vertical;
 }
 
 #multiplier-popup>label {
   font-weight: bold;
 }
-
 
 #gear-pair-popup {
   display: flex;
