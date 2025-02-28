@@ -12,6 +12,7 @@ import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts"
 import Expression from "@src/expr/Expression.ts";
 import { machine } from "./Constants.ts";
 import { get_global_ctx } from "@src/Lifecycle.ts";
+import { DialComponentElement } from "./DialComponentElement.ts";
 
 export enum ComponentType {
     VShaft,
@@ -43,6 +44,9 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     comp.classList.add("placed-component")
 
     comp.style.position = "absolute";
+
+    comp.addEventListener("mouseover", mouseOver);
+    comp.addEventListener("mouseleave", mouseLeave);
 
     setID(comp);
 
@@ -645,6 +649,10 @@ function createDial(div: DraggableComponentElement): void {
     div.shouldLockCells = true;
     div.classList.add("dial");
 
+    // Tooltips
+    div.classList.add("tooltip");
+    div.classList.add("top");
+
     render(html`<dial-component style="width:100%;height:100%"></dial-component>`, div);
 
     type ExportedData = {
@@ -668,3 +676,55 @@ function createDial(div: DraggableComponentElement): void {
     };
 }
 
+function createTooltipElement(): HTMLSpanElement {
+    if (document.querySelector("#component-tooltip") != undefined) { return; }
+
+    let span = document.createElement("span") as HTMLSpanElement;
+    span.id = "component-tooltip";
+    span.classList.add("tooltiptext");
+
+    (document.querySelector("#machine") as HTMLDivElement).appendChild(span);
+
+    return span;
+}
+
+
+function mouseOver(e: MouseEvent): void {
+    const component = e.currentTarget as DraggableComponentElement;
+    let componentTooltip = document.querySelector("#component-tooltip") as HTMLSpanElement | undefined;
+
+    if (!componentTooltip) {
+        componentTooltip = createTooltipElement()
+    }
+
+    switch (component.componentType) {
+        case "dial":
+            const dial = component.querySelector("dial-component")! as (DialComponentElement);
+            dial.tooltip = componentTooltip;
+            dial.updateTooltip();
+            break;
+
+        default:
+            return;
+    }
+
+    if (componentTooltip.parentElement!.classList.contains("placed-component")) {
+        componentTooltip.parentElement!.removeChild(componentTooltip);
+    }
+
+    (e.currentTarget as DraggableComponentElement).appendChild(componentTooltip);
+}
+
+function mouseLeave(e: MouseEvent): void {
+    const component = e.currentTarget as DraggableComponentElement;
+    let componentTooltip = document.querySelector("#component-tooltip") as HTMLSpanElement | undefined;
+
+    if (!componentTooltip) { return; }
+
+    switch (component.componentType) {
+        case "dial":
+            const dial = component.querySelector("dial-component")! as (DialComponentElement);
+            dial.tooltip = undefined;
+            break;
+    }
+}
