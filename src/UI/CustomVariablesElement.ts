@@ -67,6 +67,10 @@ export class CustomVariablesElement extends LitElement {
       this._outputs.value += `${parsed_expression.ident}: ${result.value.toPrecision(8)}\n`;
       parsed_expression = parsed_expression.cons;
     } while (parsed_expression._type === "let");
+
+    let e = new CustomEvent("constantschanged");
+    document.querySelectorAll(".functionTable").forEach(x => x.dispatchEvent(e));
+    document.querySelectorAll(".outputTable").forEach(x => x.dispatchEvent(e));
   }
 
   hover(e: MouseEvent): void {

@@ -179,10 +179,9 @@ export class Lifecycle {
                 this.unpause();
             }
         });
-        this.stop_button.addEventListener("click", _ => {
-            if (this.currently_demoing) { this.stop_demo(); } else { this.stop(); }
-        });
+
         this.pause_button.addEventListener("click", _ => this.pause());
+        this.stop_button.addEventListener("click", _ => this.stop());
 
         this.fullscreen.addEventListener("click", _ => {
             this.fullscreen.style.visibility = "hidden";
@@ -371,27 +370,6 @@ export class Lifecycle {
         }
         this.stop();
     }
-
-    // Put the simulation into a demo mode
-    // stop_demo(): void {
-    //     this.currently_demoing = false;
-    //     this.examples_select.disabled = false;
-    //     this.stop();
-    // }
-    //
-    // start_demo(): void {
-    //     this.currently_demoing = true;
-    //     this.examples_select.disabled = true;
-    //     this.run();
-    // }
-    //
-    // toggle_demo(): void {
-    //     if (this.currently_demoing) {
-    //         this.stop_demo();
-    //     } else {
-    //         this.start_demo();
-    //     }
-    // }
 
     stop(): void {
         this.state = State.Stopped;

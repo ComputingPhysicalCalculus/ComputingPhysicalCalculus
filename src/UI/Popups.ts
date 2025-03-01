@@ -463,12 +463,16 @@ function setupOutputTablePopup(): void {
 function setupLabelPopup(): void {
   labelPopup = document.getElementById("label-popup") as HTMLDivElement;
   // labelPopup.addEventListener("mouseleave", closePopup);
-
-  labelPopup.querySelector("#label-popup-text")!.addEventListener("change", (e) => {
+  //
+  let changeText = (e: Event) => {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
     const component = document.querySelector(`#${input.parentElement!.parentElement!.dataset.id!} > p`) as HTMLParagraphElement;
     component.textContent = input.value;
-  });
+  }
+
+
+  // labelPopup.querySelector("#label-popup-text")!.addEventListener("change", changeText);
+  labelPopup.querySelector("#label-popup-text")!.addEventListener("input", changeText);
 
   labelPopup.querySelector("#label-popup-width")!.addEventListener("change", (e) => {
     const input: HTMLInputElement = e.currentTarget as HTMLInputElement;
