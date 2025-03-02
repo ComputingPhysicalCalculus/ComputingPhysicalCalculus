@@ -87,7 +87,7 @@ export class CustomVariablesElement extends LitElement {
 
     return html`
       <div style="display:flex;width:100%;gap: var(--gap-size);">
-        <div class="tooltip right" style="display: flex; width: 100%">
+        <div class="tooltip top" style="display: flex; width: 100%">
           <textarea id="input-area" type="text" rows="10"
           @change=${delayed_change}
           @cut=${delayed_change}
@@ -98,7 +98,7 @@ export class CustomVariablesElement extends LitElement {
           </textarea>
           <span class="tooltiptext">Global variables</span>
         </div>
-        <div class="tooltip right" style="display: flex; width: 100%">
+        <div class="tooltip top" style="display: flex; width: 100%">
           <textarea id="output-area" type="text" rows="10" readonly disabled></textarea>
           <span class="tooltiptext">Evaluated Expressions</span>
         </div>

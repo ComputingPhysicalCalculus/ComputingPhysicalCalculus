@@ -731,40 +731,43 @@ function mouseOver(e: MouseEvent): void {
 
     let end = true;
 
+    if (component.classList.contains("warning")) {
+        end = false;
+        span.textContent = "Component is missing required connections";
+    } else if (component.classList.contains("unconnected")) {
+        end = false;
+        span.textContent = "Component has no powered input";
+    } else if (component.classList.contains("error")) {
+        end = false;
+        span.textContent = "A Shaft is being driven by two inputs";
+    }
+
     switch (component.componentType) {
         case "dial":
-            const dial = component.querySelector("dial-component")! as (DialComponentElement);
-            dial.tooltip = span;
-            dial.updateTooltip();
-            end = false;
+            if (end) {
+                const dial = component.querySelector("dial-component")! as (DialComponentElement);
+                dial.tooltip = span;
+                dial.updateTooltip();
+                end = false;
+            }
+            break;
 
         default:
-            if (component.classList.contains("warning")) {
-                end = false;
-                span.textContent = "Component is missing required connections";
-                break;
-            } else if (component.classList.contains("unconnected")) {
-                end = false;
-                span.textContent = "Component has no powered input";
-                break;
-            } else if (component.classList.contains("error")) {
-                end = false;
-                span.textContent = "A Shaft is being driven by two inputs";
-                break;
-            }
+            break;
     }
 
     if (end) { componentTooltip.remove(); return };
 
     span.style.visibility = "visible";
     span.style.opacity = "1";
-    span.style.transform = "translate(-50%, -100%)";
 
     let pos = component.getScreenPosition();
-    let size = component.getSize();
+    let size = component.getScreenSize();
     componentTooltip.style.left = `${pos.x + size.x / 2}px`;
     componentTooltip.style.top = `${pos.y}px`;
     componentTooltip.style.position = "absolute";
+    componentTooltip.style.transform = "translate(-50%, -100%)";
+    componentTooltip.style.zIndex = "100";
 
     document.querySelector("#machine")!.appendChild(componentTooltip);
 }
@@ -781,5 +784,6 @@ function mouseLeave(e: MouseEvent): void {
             dial.tooltip = undefined;
             break;
     }
+
     document.querySelector("#machine")?.removeChild(componentTooltip);
 }
