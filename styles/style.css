@@ -176,7 +176,7 @@ html {
     max-height: calc(2*var(--unit));
     justify-content: center;
     align-items: center;
-    width: auto;
+    width: 100%;
 }
 
 .TimeButton>img {
