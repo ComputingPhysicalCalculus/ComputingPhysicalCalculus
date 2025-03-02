@@ -2,6 +2,7 @@ import { DraggableComponentElement } from "./DraggableElement";
 import { updateArrows } from "./SelectShaft";
 import { machine } from "./Constants.ts"
 import Vector2 from "./Vector2";
+import { startedDragging } from "./Drag.ts";
 
 export let GRID_SIZE: number = 50;
 
@@ -11,13 +12,14 @@ const HIGHLIGHT_CELL: string = "highlighted-cell";
 let lockedCells: Set<string> = new Set<string>;
 let currentCells: Map<string, HTMLDivElement> = new Map<string, HTMLDivElement>;
 
-let canStartDragging: boolean = false;
+let canStartScreenDragging: boolean = false;
 export let screenDragging: boolean = false;
 
 let screenOffset: Vector2;
 let initialDragLocation: Vector2;
 let previousX: number;
 let previousY: number;
+let mouseButton: number;
 
 let touches: { [key: number]: Touch } = {};
 
@@ -54,16 +56,21 @@ export function setupScreenHooks(): void {
   })
 
   machine.addEventListener("mousedown", e => {
-    if (e.button == 2) {
+    if (!canStartScreenDragging && !startedDragging) {
       initialDragLocation = new Vector2(e.clientX, e.clientY);
-      canStartDragging = true;
+      canStartScreenDragging = true;
+      mouseButton = e.button;
+
+      (document.querySelector("#machine") as HTMLDivElement)!.style.cursor = "grabbing";
     }
   })
 
   document.addEventListener("mouseup", e => {
-    if (e.button == 2) {
-      canStartDragging = false;
+    if (e.button == mouseButton) {
+      canStartScreenDragging = false;
       screenDragging = false;
+
+      (document.querySelector("#machine") as HTMLDivElement)!.style.cursor = "grab";
     }
   })
 
@@ -96,7 +103,7 @@ export function setupScreenHooks(): void {
     switch (e.touches.length) {
       case 1:
         initialDragLocation = new Vector2(e.touches[0].clientX, e.touches[0].clientY);
-        canStartDragging = true;
+        canStartScreenDragging = true;
         break;
       case 2:
         touches[e.touches[0].identifier] = e.touches[0];
@@ -163,7 +170,7 @@ export function setupScreenHooks(): void {
   machine.addEventListener("touchend", e => {
     switch (e.touches.length) {
       case 0:
-        canStartDragging = false;
+        canStartScreenDragging = false;
         screenDragging = false;
         break;
     }
@@ -204,7 +211,7 @@ export function worldToScreenPosition(pos: Vector2): Vector2 {
 
 // Move all the components around based on the new x and y
 function dragScreen(x: number, y: number): void {
-  if (!canStartDragging) return;
+  if (!canStartScreenDragging) return;
 
   updateArrows();
 

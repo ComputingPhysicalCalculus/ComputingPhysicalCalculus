@@ -12,6 +12,7 @@ import { CrossConnectComponentElement } from "./CrossConnectComponentElement.ts"
 import Expression from "@src/expr/Expression.ts";
 import { machine } from "./Constants.ts";
 import { get_global_ctx } from "@src/Lifecycle.ts";
+import { DialComponentElement } from "./DialComponentElement.ts";
 
 export enum ComponentType {
     VShaft,
@@ -43,6 +44,9 @@ export function createComponent(component: ComponentType): DraggableComponentEle
     comp.classList.add("placed-component")
 
     comp.style.position = "absolute";
+
+    comp.addEventListener("mouseover", mouseOver);
+    comp.addEventListener("mouseleave", mouseLeave);
 
     setID(comp);
 
@@ -86,6 +90,11 @@ export function createComponent(component: ComponentType): DraggableComponentEle
         default:
             console.error("No function defined for component: ", component);
     }
+
+    // Tooltips
+    comp.classList.add("tooltip");
+    comp.classList.add("top");
+
 
     return comp;
 }
@@ -270,19 +279,32 @@ function createFunctionTable(div: DraggableComponentElement): void {
 
     div.addEventListener("mouseup", openFunctionTablePopup);
 
-    let function_table = document.createElement("graph-table") as GraphElement;
-    function_table.setAttribute("style", "width:100%;height:100%");
-    function_table.setAttribute("x-min", "0.0");
-    function_table.setAttribute("x-max", "10.0");
-    function_table.setAttribute("y-min", "-1.5");
-    function_table.setAttribute("y-max", "1.5");
-    function_table.setAttribute("gantry-x", "0.0");
-    function_table.setAttribute("padding", "5");
-    function_table.isAnOutput = false;
+    let graph = document.createElement("graph-table") as GraphElement;
+    graph.setAttribute("style", "width:100%;height:100%");
+    graph.setAttribute("x-min", "0.0");
+    graph.setAttribute("x-max", "10.0");
+    graph.setAttribute("y-min", "-1.5");
+    graph.setAttribute("y-max", "1.5");
+    graph.setAttribute("gantry-x", "0.0");
+    graph.setAttribute("padding", "5");
+    graph.isAnOutput = false;
 
-    function_table.set_data_set("d1", []);
+    graph.set_data_set("d1", []);
 
-    div.appendChild(function_table);
+    div.addEventListener("constantschanged", _ => {
+        graph.x_min = Expression.eval(div.dataset.x_min ?? `${graph.x_min}`, get_global_ctx());
+        graph.x_max = Expression.eval(div.dataset.x_max ?? `${graph.x_max}`, get_global_ctx());
+        graph.y_min = Expression.eval(div.dataset.y_min ?? `${graph.y_min}`, get_global_ctx());
+        graph.y_max = Expression.eval(div.dataset.y_max ?? `${graph.y_max}`, get_global_ctx());
+
+        let compiled_expr = Expression.compile(graph.data_sets["d1"].fn ?? "0", get_global_ctx());
+        let generator_exp = generator(500, graph.x_min, graph.x_max, x => compiled_expr({ x }));
+        graph.mutate_data_set("d1", points => {
+            points.splice(0, points.length, ...Array.from(generator_exp));
+        }, true);
+    });
+
+    div.appendChild(graph);
 
     type ExportedData = {
         top: number,
@@ -335,7 +357,7 @@ function createFunctionTable(div: DraggableComponentElement): void {
 
         if (data.fn !== undefined && data.fn != "") {
             let compiled_expr = Expression.compile(data.fn, get_global_ctx());
-            let generator_exp = generator(500, function_table.x_min, function_table.x_max, x => compiled_expr({ x }));
+            let generator_exp = generator(500, graph.x_min, graph.x_max, x => compiled_expr({ x }));
             graph_element.set_data_set("d1", Array.from([...generator_exp]));
             graph_element.data_sets["d1"].fn = data.fn;
         }
@@ -402,6 +424,19 @@ function createOutputTable(div: DraggableComponentElement): void {
     graph.set_data_set("d1", [{ x: 0, y: 0 }], "blue");
     graph.set_data_set("d2", [{ x: 0, y: 0 }], "red", true);
     graph.isAnOutput = true;
+
+    div.addEventListener("constantschanged", _ => {
+        graph.x_min = Expression.eval(div.dataset.x_min ?? `${graph.x_min}`, get_global_ctx());
+        graph.x_max = Expression.eval(div.dataset.x_max ?? `${graph.x_max}`, get_global_ctx());
+        graph.y_min = Expression.eval(div.dataset.y_min ?? `${graph.y_min}`, get_global_ctx());
+        graph.y_max = Expression.eval(div.dataset.y_max ?? `${graph.y_max}`, get_global_ctx());
+
+        let compiled_expr = Expression.compile(graph.data_sets["d1"].fn ?? "0", get_global_ctx());
+        let generator_exp = generator(500, graph.x_min, graph.x_max, x => compiled_expr({ x }));
+        graph.mutate_data_set("d1", points => {
+            points.splice(0, points.length, ...Array.from(generator_exp));
+        }, true);
+    });
 
     type ExportedData = {
         top: number,
@@ -546,12 +581,12 @@ function createLabel(div: DraggableComponentElement): void {
 
     let render_p = () => {
         const para = div.querySelector("p") as HTMLParagraphElement;
-        let align = "";
+        let align = "center";
         if (para != null) {
             align = para.style.textAlign;
         }
 
-        render(html`<p style="color:black;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px">This is a label</p>`, div);
+        render(html`<p style="color:black;text-align: center;font-size:${GRID_SIZE / 2}px;width:100%;padding:2px;margin:0;">This is a label</p>`, div);
 
         if (para != null) {
             para.style.textAlign = align;
@@ -668,3 +703,87 @@ function createDial(div: DraggableComponentElement): void {
     };
 }
 
+function createTooltipElement(): HTMLDivElement {
+    let div = document.querySelector("#component-tooltip") as HTMLDivElement;
+    if (div != undefined) return div;
+
+    let span = document.createElement("span") as HTMLSpanElement;
+    span.classList.add("tooltiptext");
+
+    div = document.createElement("div") as HTMLDivElement;
+    div.id = "component-tooltip";
+    div.appendChild(span);
+    div.classList.add("tooltip");
+    div.classList.add("top");
+
+    return div;
+}
+
+
+function mouseOver(e: MouseEvent): void {
+    const component = e.currentTarget as DraggableComponentElement;
+    let componentTooltip = document.querySelector("#component-tooltip") as HTMLSpanElement | undefined;
+
+    if (!componentTooltip) {
+        componentTooltip = createTooltipElement()
+    }
+    let span = componentTooltip.querySelector("span")!;
+
+    let end = true;
+
+    if (component.classList.contains("warning")) {
+        end = false;
+        span.textContent = "Component is missing required connections";
+    } else if (component.classList.contains("unconnected")) {
+        end = false;
+        span.textContent = "Component has no powered input";
+    } else if (component.classList.contains("error")) {
+        end = false;
+        span.textContent = "A Shaft is being driven by two inputs";
+    }
+
+    switch (component.componentType) {
+        case "dial":
+            if (end) {
+                const dial = component.querySelector("dial-component")! as (DialComponentElement);
+                dial.tooltip = span;
+                dial.updateTooltip();
+                end = false;
+            }
+            break;
+
+        default:
+            break;
+    }
+
+    if (end) { componentTooltip.remove(); return };
+
+    span.style.visibility = "visible";
+    span.style.opacity = "1";
+
+    let pos = component.getScreenPosition();
+    let size = component.getScreenSize();
+    componentTooltip.style.left = `${pos.x + size.x / 2}px`;
+    componentTooltip.style.top = `${pos.y}px`;
+    componentTooltip.style.position = "absolute";
+    componentTooltip.style.transform = "translate(-50%, -100%)";
+    componentTooltip.style.zIndex = "100";
+
+    document.querySelector("#machine")!.appendChild(componentTooltip);
+}
+
+function mouseLeave(e: MouseEvent): void {
+    const component = e.currentTarget as DraggableComponentElement;
+    let componentTooltip = document.querySelector("#component-tooltip") as HTMLSpanElement | undefined;
+
+    if (!componentTooltip) { return; }
+
+    switch (component.componentType) {
+        case "dial":
+            const dial = component.querySelector("dial-component")! as (DialComponentElement);
+            dial.tooltip = undefined;
+            break;
+    }
+
+    document.querySelector("#machine")?.removeChild(componentTooltip);
+}

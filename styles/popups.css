@@ -1,7 +1,8 @@
 .popup {
+  position: absolute;
+
   background: var(--colour-accent2);
 
-  position: absolute;
   border-radius: var(--border-radius);
   border-color: var(--colour-accent3);
   border-style: solid;
@@ -11,14 +12,16 @@
   text-decoration: bold;
   z-index: 10;
 
+  white-space: nowrap;
+
   box-sizing: border;
+
+  visibility: hidden;
 }
 
 #shaft-popup {
   display: flex;
   flex-direction: column;
-
-  visibility: hidden;
 }
 
 #shaft-popup>div {
@@ -35,32 +38,29 @@
 #integrator-popup {
   display: flex;
   flex-direction: column;
-  visibility: hidden;
+}
+
+#integrator-popup textarea {
+  resize: vertical;
 }
 
 #cross-connect-popup {
   display: flex;
   flex-direction: row;
-  visibility: hidden;
-}
-
-#motor-popup {
-  visibility: hidden;
 }
 
 #multiplier-popup {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+}
 
-  max-width: 8vw;
-  visibility: hidden;
+#multiplier-popup textarea {
+  resize: vertical;
 }
 
 #multiplier-popup>label {
   font-weight: bold;
 }
-
 
 #gear-pair-popup {
   display: flex;
@@ -68,8 +68,6 @@
   justify-content: center;
 
   max-width: 10vw;
-
-  visibility: hidden;
 }
 
 #gear-pair-popup>div {

@@ -1,9 +1,2 @@
-Sound
-Dial tooltip for exact value
-Selection
-
-Richard things:
-Help and About screen
-
 Bugs:
-final value in constants with ; is ignored
+Changing value in constants doesn't update graphs

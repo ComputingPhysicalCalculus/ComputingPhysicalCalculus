@@ -36,6 +36,10 @@
                             Andy Zhu, Hanzhang Shen, Joseph Hunt, Simon Solca, and Sophie Ring as part of Cambridge's
                             Computer Science IB group project for the client, Richard Pawson.
                         </span>
+
+                        <span>
+                            The source code can be found <a href="https://github.com/DifferentialAnalyser/differentialanalyser.github.io" target="_blank">here</a>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -48,7 +52,7 @@
                         <div style="display:flex;flex-direction: column;gap:var(--gap-size)">
                             <p>Basic controls</p>
                             <span>
-                                The machine can be zoomed by scrolling and panned by holding right click
+                                The machine can be zoomed by scrolling and panned by pressing and holding any mouse button
                             </span>
                             <span>
                                 Components can be dragged from the side panel into the "machine". While in the machine
@@ -78,8 +82,8 @@
             <div class="center">
                 <div class="content-background">
                     <div class="content">
-                        <label>Constants</label>
-                        <span>Global constants written here are accessible in all input fields</span>
+                        <label>Shared constants</label>
+                        <span>constants written here are accessible in all input fields</span>
                         <div class="custom-variables">
                             <custom-variables></custom-variables>
                         </div>
@@ -91,46 +95,27 @@
 
 
     <div id="content">
-        <div id="machine">
+        <div id="machine" style="cursor:grab">
             <div id="info_buttons">
-                <div id="about_button" class="tooltip">
+                <div id="about_button" class="tooltip" style="cursor:pointer">
                     <img src="icons/Info.svg" class="nodrag" alt="Info" style="rotate: 180deg;"/>
                     <span class="tooltiptext">About</span>
                 </div>
-                <div id="help_button" class="tooltip">
+                <div id="help_button" class="tooltip" style="cursor:pointer">
                     <img src="icons/Help.svg" class="nodrag" alt="Help"/>
                     <span class="tooltiptext">Help</span>
                 </div>
-                <div id="constants_button" class="tooltip">
+                <div id="constants_button" class="tooltip" style="cursor:pointer">
                     <img src="icons/Constants.svg" class="nodrag" alt="Constants"/>
-                    <span class="tooltiptext">Constant variables</span>
+                    <span class="tooltiptext">Shared constants</span>
                 </div>
             </div>
             <div id="grid"></div>
+
+            <span id="component-tooltip" class="tooltiptext">Temp</span>
         </div>
 
         <div id="user-control">
-            <div id="demo-area">
-                <label>Examples</label>
-                <div>
-                    <select name="examples" id="examples-list">
-                        <option value="LinearIntegration">Linear Integration</option>
-                        <option value="Spring">Damped Oscillation</option>
-                        <option value="GammaFunction">Gamma Function</option>
-                        <option value="WeierstraussFunction">Weierstrauss Function</option>
-                        <option value="GearPair">Gear pair usage</option>
-                        <option value="Epicycloid">Epicycloid</option>
-                        <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
-                        <option value="Freefall">Body in free fall</option>
-                        <option value="DuffingEquation">Duffing equation</option>
-                        <option value="PopulationGrowth">Population Growth</option>
-                        <option value="SimplePendulum">Simple pendulum</option>
-                        <option value="DoublePendulum">Double pendulum</option>
-                    </select>
-
-                    <button id="demo-button">Start Demo</button>
-                </div>
-            </div>
 
             <div id="components-area">
                 <p>Components</p>
@@ -222,15 +207,32 @@
             </div>
 
             <div id="configuration">
-                <p>Configuration</p>
+                <p style="margin: 0;">Configuration</p>
+
                 <div id="control_buttons">
-                    <div id="config_buttons">
+                    <div style="padding: 0;" id="config_buttons">
                         <button id="import-button">Load</button>
                         <button id="export-button">Save</button>
                         <button id="clear-button">Clear Screen</button>
                     </div>
                     <button id="clear-tables-button">Clear Output Tables</button>
                 </div>
+
+                <label>Examples</label>
+                <select name="examples" id="examples-list">
+                    <option value="LinearIntegration">Linear Integration</option>
+                    <option value="Spring">Damped Oscillation</option>
+                    <option value="GammaFunction">Gamma Function</option>
+                    <option value="WeierstraussFunction">Weierstrauss Function</option>
+                    <option value="GearPair">Gear pair usage</option>
+                    <option value="Epicycloid">Epicycloid</option>
+                    <option value="ExtremeEpicycloid">Extreme Epicycloid</option>
+                    <option value="Freefall">Body in free fall</option>
+                    <option value="DuffingEquation">Duffing equation</option>
+                    <option value="PopulationGrowth">Population Growth</option>
+                    <option value="SimplePendulum">Simple pendulum</option>
+                    <option value="DoublePendulum">Double pendulum</option>
+                </select>
 
                 <label for="simulation-step-period">Step period (s)</label>
                 <input id="simulation-step-period" type="number" value="0.005"/>
@@ -247,6 +249,12 @@
                     </button>
                 </div>
 
+                <div class="tooltip" style="display: flex; flex-direction: row; justify-content: center;margin: 0;">
+                    <input type="checkbox" id="loop-check"/>
+                    <p style="margin: 0;">Loop</p>
+                    <span class="tooltiptext">Loop the simulation instead of ending</span>
+                </div>
+
                 <label for="motor-speed">Motor speed</label>
                 <input id="motor-speed" type="range" min="0.0" max="2" step="0.01" value="0.5" />
             </div>
@@ -257,49 +265,59 @@
             <img id="positiveArrow" class="arrow" src="icons/Arrow.svg" alt="PosArrow"/>
         </div>
 
-        <div id="popups">
-            <div class="popup" id="cross-connect-popup" position="absolute" >
+        <div id="popups" style="visibility: hidden;position:absolute;">
+            <div class="popup" id="cross-connect-popup">
                 <label>Reverse</label>
                 <input id="cross-connect-reversed" type="checkbox">
             </div>
 
-            <div class="popup" id="integrator-popup" position="absolute" >
+            <div class="popup" id="integrator-popup">
                 <label>Initial offset</label>
-                <textarea id="integrator-initial-offset"></textarea>
+                <div class="tooltip top">
+                    <textarea id="integrator-initial-offset"></textarea>
+                    <span class="tooltiptext"></span>
+                </div>
             </div>
 
-            <div class="popup" id="multiplier-popup" position="absolute" >
+            <div class="popup" id="multiplier-popup">
                 <label>Factor</label>
-                <textarea id="multiplier-input-factor"></textarea>
+                <div class="tooltip top">
+                    <textarea id="multiplier-input-factor"></textarea>
+                    <span class="tooltiptext"></span>
+                </div>
             </div>
 
-            <div class="popup" id="gear-pair-popup" position="absolute" >
+            <div class="popup" id="gear-pair-popup">
                 <label>Top Ratio</label>
                 <input id="gear-pair-top-ratio" type="number" min="-9" max="9" value="1">
                 <label>Bottom Ratio</label>
                 <input id="gear-pair-bottom-ratio" type="number" min="-9" max="9" value="1">
             </div>
 
-            <div class="popup" id="function-table-popup" position="absolute" >
-                <div>
+            <div class="popup" id="function-table-popup">
+                <div style="white-space: wrap">
                     <label>f(x)=</label>
                     <textarea rows="3" cols="25" id="function-table-fn"></textarea>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Min</label>
                     <input step="any" id="function-table-x-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Max</label>
                     <input step="any" id="function-table-x-max" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Min</label>
                     <input step="any" id="function-table-y-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Max</label>
                     <input step="any" id="function-table-y-max" />
+                    <span class="tooltiptext"></span>
                 </div>
                 <div class="tooltip">
                     <input type="checkbox" id="function-table-lookup">Lookup Table</input>
@@ -307,37 +325,43 @@
                 </div>
             </div>
 
-            <div class="popup" id="output-table-popup" position="absolute" >
-                <div>
+            <div class="popup" id="output-table-popup">
+                <div class="tooltip top">
                     <label>Initial y (blue)</label>
                     <input step="any" id="output-table-initial-1" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>Initial y (red)</label>
                     <input step="any" id="output-table-initial-2" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Min</label>
                     <input step="any" id="output-table-x-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>x Max</label>
                     <input step="any" id="output-table-x-max" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Min</label>
                     <input step="any" id="output-table-y-min" />
+                    <span class="tooltiptext"></span>
                 </div>
-                <div>
+                <div class="tooltip top">
                     <label>y Max</label>
                     <input step="any" id="output-table-y-max" />
+                    <span class="tooltiptext"></span>
                 </div>
                 <div>
                     <button>Export data as CSV</button>
                 </div>
             </div>
 
-            <div class="popup" id="label-popup" position = "absolute">
+            <div class="popup" id="label-popup">
                 <div>
                     <label>Text</label>
                     <input type="Text" id="label-popup-text"/>
@@ -356,12 +380,12 @@
                     <label>Text Alignment</label>
                     <div id="label-popup-buttons">
                         <div>
-                            <input type="radio" name="label-popup-button" id="label-popup-align-left" class="label-popup-align" checked/>
+                            <input type="radio" name="label-popup-button" id="label-popup-align-left" class="label-popup-align"/>
                             <label for="label-popup-align-left">Left</label>
                         </div>
 
                         <div>
-                            <input type="radio" name="label-popup-button" id="label-popup-align-center" class="label-popup-align"/>
+                            <input type="radio" name="label-popup-button" id="label-popup-align-center" class="label-popup-align" checked/>
                             <label for="label-popup-align-center">Center</label>
                         </div>
 

@@ -177,7 +177,12 @@ export function parse_term(tokens: Token[]): ParsedExpression {
             throw new Error(`Unexpected token '${tk.span}' of type ${tk._type}`);
           }
           if (tokens.length < 1) {
-            lhs = { _type: "lit", value: 0 };
+            lhs = {
+              _type: "let",
+              ident: lhs_tk.span,
+              value,
+              cons: { _type: "lit", value: 0 }
+            };
             break;
           }
           const cons = parse_expr(tokens, 0);
