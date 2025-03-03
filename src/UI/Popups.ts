@@ -273,7 +273,7 @@ function setupIntegratorPopup(): void {
   const input = integratorPopup.querySelector("textarea")! as HTMLTextAreaElement;
   input.addEventListener("change", (e) => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
-    const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+    const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
 
     updateTextAreaLines(input);
     updateTooltip(input);
@@ -291,7 +291,7 @@ function setupMultiplierPopup(): void {
   const inputs = multiplierPopup.getElementsByTagName("textarea");
   inputs[0].addEventListener("change", (e) => {
     const input: HTMLTextAreaElement = e.currentTarget as HTMLTextAreaElement;
-    const component = document.getElementById(input.parentElement!.dataset.id!) as DraggableComponentElement;
+    const component = document.getElementById(input.parentElement!.parentElement!.dataset.id!) as DraggableComponentElement;
 
     updateTextAreaLines(input);
     updateTooltip(input);
